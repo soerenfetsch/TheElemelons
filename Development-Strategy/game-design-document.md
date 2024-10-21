@@ -57,7 +57,7 @@ Amanda Suggestions:
 -**Earth earth**: lingering spike area
   
 ### Level Design
-- **Procedural Dungeon Generation**: Each level is procedurally generated, with different layouts, rooms, traps, and enemy spawns.
+- **Procedural Dungeon Generation**: Each level is procedurally generated, with different layouts, rooms, traps, and enemy spawns. Dungeon should be built in a room-to-room manner, meaning no endlessly long tight corridors. The rooms can vary in size and shape.
 - **Element-Themed Levels**: Each dungeon corresponds to an element (Fire, Water, Earth, Wind), affecting the environment and the types of monsters encountered. The optimal strategy against monsters should be different for each dungeon type. For example:
   - **Fire Dungeon**: Lava pits, fire-themed monsters that are immune to fire spells but weak to water spells.
   - **Wind Dungeon**: Gusty environments where wind enhances mobility but also makes ranged attacks harder to control.
@@ -87,19 +87,27 @@ fire beats earth beats wind beats water beats fire
   -**Stone Golem** Boss of the earth dungeon, tanky and slow, hits rarely but deals a lot of damage at once, protects his       minions with earth wakll and can heal those next to him
   -**Mini Golem** Small Version of Stone Golem, help him out. Can deal medium to minor damage by bumping or charging? player.   seek Stone Golem's protection when health is low.
   -**Log** Tree Log sleeps at home coordinates, wakes up and walks to player when in aggro range, walks back to home            coordinates when outside of aggro range. Deals damage by walking against player. Is not supposed to be challenging alone,     meant more as a first enemy.
+  -**Shield-and Spearsman** Usually spawn in pairs, shieldsman mostly blocks attacks with his shield and rams player if too     close. Spearsman stays behind shieldsman and occasionally pierces through with spear to hist player. Shieldsman follows       spearsman as long as alive. (Idea in case this is too complicated: combine the 2 units into one)
+  -**Mole** Can't be hit while underground, peeks out of ground to attack player
+
+-**Water Monsters**
+  -???**Crab** can only walk sideways, deals damage by running into player
+-**Wind Monsters**
+
+-**Fire Monsters**
   
 
 
 ## 3. Story and World Building
 
 ### Storyline/Premise
-You play as a witch or wizard summoned by a desperate king, through his magic mirror, whose castle has been overrun by an army of monsters led by an evil witch. The monsters have stolen the king’s most prized possessions — the Elemelons, magical fruits that represent the elements and are the source of his power. The player's mission is to recover the Elemelons by battling through dungeons filled with elemental creatures, puzzles, and traps.
+You play as a witch summoned through a magic mirror by a desperate king whose castle has been overrun by an army of monsters led by an evil witch. The monsters have stolen the king’s most prized possessions — the Elemelons, magical fruits that represent the elements and are the source of his power. The player's mission is to recover the Elemelons by battling through dungeons filled with elemental creatures, (very simple) puzzles, and traps.
 
 ### World/Setting
 The game is set in the king’s castle, which has been transformed by the evil witch into a series of dangerous elemental dungeons. Each dungeon represents one of the four classical elements — Fire, Water, Earth, and Wind — where elemental monsters reside, and environmental hazards reflect the dungeon’s theme.
 
 ### Main Characters
-- **The Player (Witch/Wizard)**: A powerful spellcaster with the unique ability to combine elemental forces. 
+- **The Player (Witch)**: A powerful spellcaster with the unique ability to combine elemental forces. 
 - **The King**: Summons the player to retrieve the Elemelons and restore order.
 - **The Evil Witch**: The main antagonist, responsible for the chaos and leader of the monsters.
 - **Monsters**: Element-themed creatures with varying abilities and strengths.
@@ -163,13 +171,13 @@ Each level is procedurally generated, ensuring a unique experience each time the
 - **Final Room**: Contains the dungeon's boss monster, guarding one of the stolen Elemelons.
 
 ### Key Locations
-- **The Castle Hub**: Where the player starts and returns after completing each dungeon. The King provides updates and storyline progression here.
-- **Elemental Dungeons**: Four dungeons, each themed around an element (Fire, Water, Earth, Wind), with unique visual aesthetics, enemies, and environmental hazards.
-- **Boss Rooms**: At the end of each dungeon, the player faces an elemental boss that represents the element of that dungeon (e.g., a fire-themed boss in the Fire Dungeon).
+- **The Castle Hub**: (Royal Bedchamber or Throne Room) Where the player starts and returns after completing each dungeon. The King provides updates and storyline progression here. 
+- **Elemental Dungeons**: Four dungeons, each themed around an element (Fire, Water, Earth, Wind), with unique visual aesthetics, enemies, and environmental hazards. All accessible from the start, but king recommends the easiest yet uncleared dungeon. Entrance accessible from castle hub. Blocked by obstacles like some ice or a big rock that can be removed for example with a bomb spell.
+- **Boss Rooms**: In each dungeon, the player faces an elemental boss that represents the element of that dungeon (e.g., a fire-themed boss in the Fire Dungeon). The boss spawns with some helper monsters. 
 
 ### Pacing and Progression
 - **Increasing Difficulty**: Each dungeon becomes progressively more challenging, with stronger enemies, more complex traps, and tougher bosses.
-- **Exploration vs. Combat**: Balance between exploring the dungeon for hidden loot, solving environmental puzzles, and battling enemies.
+- **Exploration vs. Combat**: Balance between exploring the dungeon, solving environmental puzzles, and battling enemies.
 
 ---
 
@@ -177,21 +185,20 @@ Each level is procedurally generated, ensuring a unique experience each time the
 
 ### UI Design
 - **HUD**: The Heads-Up Display will show the following:
-  - **Health Bar**: Displays the player’s remaining health.
-  - **Mana Bar**: Displays the player’s mana, which regenerates over time.
-  - **Elemental Slots**: Two icons showing the currently equipped elemental combination.
-  - **Spells**: Up to one utility and one attack spell currently selected, represented by a unique icon
-  - **Inventory Quick Access**: Displays quick-use items such as health or mana potions.
-  
+  - **Hearts**: Displays the player’s remaining health.
+  - **Mana Stars**: Displays the player’s mana, which regenerates over time.
+  - **Elemental Slots**: Two icons showing the currently selected elemental charges.
+  - **Spells**: spell currently selected, represented by a unique icon (Amanda: Idk about this one, Prefer to just show charges)
+ 
 - **Dialogue UI**: Simple pixel art portraits of speaking characters will appear with text dialogs at the bottom for dialogue.
   
 - **Menus**:
-  - **Inventory Screen**: A grid-based inventory for viewing collected items (potions, gear, power-ups).
+  -**Starting Menu**: Allows the player to continue the game or to start a new run by clicking "new game". Has fancy            background art.
   - **Settings Menu**: Allows the player to adjust sound, music, keybindings, and other game options.
-
+  - **Spell Tome** Player can look up a spell's effect by pressing the keys to cast the spell he/she wants to select
 ### UX Considerations
-- **Easy to Navigate**: The player can quickly access key items and menus without disrupting the gameplay experience.
-- **Element Switching**: Players can easily swap between elemental combinations using hotkeys (number keys for fire, water, earth, and wind), allowing for fluid spell-casting during combat.
+- **Easy to Navigate**: The player can quickly the menu without disrupting the gameplay experience.
+- **Element Selection**: Players can select elemental combinations using hotkeys (number keys for fire, water, earth, and wind), allowing for fluid spell-casting during combat. 
 - **Feedback System**: Visual and audio feedback for spell effects, health, and mana status to help players make informed decisions in real time.
 
 ---
@@ -199,7 +206,7 @@ Each level is procedurally generated, ensuring a unique experience each time the
 ## 9. Appendix
 
 ### References
-- Inspiration drawn from classic 2D pixel art dungeon crawlers like *The Binding of Isaac* and *Enter the Gungeon*.
+- Inspiration drawn from classic 2D pixel art dungeon crawlers like *The Binding of Isaac*, *Crawl* and *Enter the Gungeon*.
 - Research into elemental spellcasting systems from *Magicka* and *Element TD*.
   
 ### Glossary
