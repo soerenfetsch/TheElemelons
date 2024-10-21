@@ -6,7 +6,7 @@
 - **Target Audience**: Fans of fantasy, dungeon crawlers, and 2D pixel art games. Targeted at ages 12 and above, with casual to midcore players in mind.
 - **Platform**: PC
 - **Project Scope**: The game is a 2D dungeon crawler where the player controls a witch or wizard tasked with defeating an evil witch and retrieving the Elemelons. The primary focus is on elemental spell combinations, procedural dungeons, and monster-slaying combat.
-- **Core Concept**: Elemelon stands out due to its elemental spell combination system. Players use a staff to combine four elements—fire, water, earth, and wind—to create unique offensive and utility spells. The strategic use of these combinations is key to progressing through the procedurally generated dungeons and retrieving the stolen Elemelons.
+- **Core Concept**: Elemelon stands out due to its elemental spell combination system. Players use a wand to combine four elements—fire, water, earth, and wind—to create unique offensive and utility spells. The strategic use of these combinations is key to progressing through the procedurally generated dungeons and retrieving the stolen Elemelons.
 
 ---
 
@@ -20,33 +20,49 @@
 
 ### Player Controls
 - **Movement**: WASD for movement.
-- **Elemental Spell Creation**: Two slots for combining elemental powers. Players select elements with number keys (1–2) to shuffle through fire, water, earth, and wind element, then create spells using a hotkey (F)
-- **Elemental Spell Casting**: Every combination of two elements yields one unique utility and attack spell. Utility spells are cast using the right mouse button, attack spells use the left button
-- **Mana & Health Management**: The player’s spells cost mana, which regenerates over time. Health can be restored through potions found in the dungeon.
-- **Interact**: Use "E" to interact with objects (collect items, open chests, etc.).
-- **Inventory**: Press "I" to open the inventory and view collected gear and potions.
+- **Elemental Spell Creation**: Two slots for combining elemental powers. Players select elements with number keys (1-4), casts spell with mouse left-click and dispells charges with right-click
+- **Elemental Spell Casting**: Every combination of two elements yields a unique spell. 
+- **Mana & Health Management**: The player’s spells cost mana, which regenerates over time. Health can be restored at altars found in the dungeon.
+- **Interact**: Use "E" to interact with objects or NPCs 
 
 ### Combat System
 - **Real-Time Combat**: The game features real-time combat where the player must balance offensive and defensive spell combinations based on the situation.
 - **Element Properties**: Each element has its own properties, resulting in differently styled spell combinations depending on the elements provided
   - **Fire**: Fire creates high risk and high damage spells, that offer an offensive play style
   - **Water**: Water is a source of health and finesse and creates accurate, efficient and healing spells
-  - **Earth**: Earth provides a defensive and slow play style, creating protection spells and strong but slow attacks
+  - **Earth**: Earth provides a defensive and slow play style, spells create stationary effects, creating protection spells and strong but slow attacks
   - **Wind**: Wind is for swift and intelligent attacks, providing speed and agility to the player, but also allowing clever attacks
+-**Element Hierarchy**: Fire is strong against earth is strong against wind is strong against water
+Soeren suggestions:
 - **Attack Spells**: 
   - **Fire-Fire**: High damage fire blast, burning every enemy in its path.
   - **Fire-Earth**: Fire meteor, that on impact creates huge damage in an AOE
 - **Utility Spells**:
   - **Earth-Earth**: Create an earth barrier around your character, shielding from some damage of other monsters
   - **Wind-Wind**: Use this spell to quickly dash forward in the direction you are looking
+Amanda Suggestions:
+-**Fire**: Light
+-**Fire fire**: Fireball that poofs when hitting target
+-**Fire water**: pleasantly warm water vapor, weakens ice enemies , obstructs sight (meaning it reduces aggro range)
+-**Fire earth**: Bomb dropped 
+-**Fire air**: small fire tornado with seeking
+-**Water**: cleansing removes debuffs, “stay hydrated “
+-**Water water**: cone tsunami, knocks back+dmg
+-**Water air**: blizzard freezes enemies
+-**Water earth**: leave puddles of mud while walking crawl style, slows enemies
+-**Air**: speed buff
+-**Air air**: beyblade of wind around you, AoE
+-**Air earth**: shard shroud: lingering floating shards around player that deal damage and disappear uppon impact
+-**Earth**: shield of stone
+-**Earth earth**: lingering spike area
   
 ### Level Design
 - **Procedural Dungeon Generation**: Each level is procedurally generated, with different layouts, rooms, traps, and enemy spawns.
-- **Element-Themed Levels**: Each dungeon corresponds to an element (Fire, Water, Earth, Wind), affecting the environment and the types of monsters encountered. For example:
+- **Element-Themed Levels**: Each dungeon corresponds to an element (Fire, Water, Earth, Wind), affecting the environment and the types of monsters encountered. The optimal strategy against monsters should be different for each dungeon type. For example:
   - **Fire Dungeon**: Lava pits, fire-themed monsters that are immune to fire spells but weak to water spells.
   - **Wind Dungeon**: Gusty environments where wind enhances mobility but also makes ranged attacks harder to control.
   - **Water Dungeon**: Watery and wet map that makes fire attacks less powerful, but allows player to cleverly use wind and water combination to swiftly move across and through the water
-  - **Earth Dungen** Dry and robust dungeon, in which rocks and earth can be used to alter the terrain and attack enemies using the ground
+  - **Earth Dungen** Dry and robust dungeon, in which rocks and earth can be used to alter the terrain and attack enemies using the ground. Monsters are typically more slow and robust, have good defense. 
 - **Traps and Obstacles**: Include pitfalls, spikes, and elemental hazards that the player must avoid or disable using spells or strategy.
 
 ### Progression System
