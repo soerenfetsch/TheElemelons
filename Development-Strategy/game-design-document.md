@@ -61,35 +61,39 @@ Amanda Suggestions:
 - **Element-Themed Levels**: Each dungeon corresponds to an element (Fire, Water, Earth, Wind), affecting the environment and the types of monsters encountered. The optimal strategy against monsters should be different for each dungeon type. For example:
   - **Fire Dungeon**: Lava pits, fire-themed monsters that are immune to fire spells but weak to water spells.
   - **Wind Dungeon**: Gusty environments where wind enhances mobility but also makes ranged attacks harder to control.
+    Enemies are fast and try to dodge your attacks/escape you and keep a safe distance
   - **Water Dungeon**: Watery and wet map that makes fire attacks less powerful, but allows player to cleverly use wind and water combination to swiftly move across and through the water
   - **Earth Dungen** Dry and robust dungeon, in which rocks and earth can be used to alter the terrain and attack enemies using the ground. Monsters are typically more slow and robust, have good defense. 
-- **Traps and Obstacles**: Include pitfalls, spikes, and elemental hazards that the player must avoid or disable using spells or strategy.
+- **Traps and Obstacles**: Include pitfalls, spikes, and elemental hazards that the player must avoid or disable using spells or strategy, teleportataion traps, traps that spawn enemies around player, traps that turn you into a frog for 15s
 
 ### Progression System
-- **Elemelon Collection**: The goal is to collect all the Elemelons, one in each dungeon, and return them to the king.
-- **Character Progression**: Players don’t level up traditionally. Instead, they acquire gear, spell upgrades, and power-ups to become stronger.
-
-### Inventory/Items
-- **Health Potions**: Restores health when consumed.
-- **Mana Potions**: Instant mana recovery.
-- **Gear**: Includes robes, wands, and accessories that grant buffs (e.g., faster mana regeneration, increased health).
-- **Power-ups**: Temporary boosts found in the dungeon (e.g., increased damage, faster movement speed).
-
-### NPCs/Enemies
+- **Elemelon Collection**: The goal is to collect all the 4 Elemelons, one in each dungeon, and return them to the king. The Elemelons can be found in boss rooms (1 per dungeon) and are dropped once the boss and all other enemies in this room have been defeated.
+- **Character Progression**: Players don’t level up traditionally. The progression should mainly show in the players increasing skillfulness at using spells. The player's maximum mana and health is increased after each retrieval of an elemelon.
+  
+fire beats earth beats wind beats water beats fire
+### NPCs/Enemies (Soeren suggestion)
 - **Enemies**: Element-themed monsters with varying resistances and vulnerabilities. Each dungeon level introduces new enemies with elemental affinities that impact combat strategies.
-  - **Fire Monsters**: Resist wind spells but are weak to water-based spells.
+  - **Fire Monsters**: Resist earth spells but are weak to water-based spells.
   - **Water Monsters**: Utilize water-based attacks and are vulnerable to wind spells.
   - **Earth Monsters**: Slow monsters with high HP, use ground attacks and melee combat, vulnerable to earth attacks.
   - **Wind Monsters**: Fast monsters, that are weak to fire attacks.
 - **Bosses**: At the end of each dungeon level, there’s a boss fight that requires mastery of the spell system to defeat.
 - **The Evil Witch**: The final boss, leader of the monsters, fight unlocked when the last Elemelon is returned to the king.
-
 ---
+### NPCs/Enemies (Amanda suggestion)
+-**fire beats earth beats wind beats water beats fire**
+-**Boss Rooms** contain boss monster of the dungeon and some helpers. Location is random, but shouldn't be close to the start of the dungeon
+-**Earth Monsters** 
+  -**Stone Golem** Boss of the earth dungeon, tanky and slow, hits rarely but deals a lot of damage at once, protects his       minions with earth wakll and can heal those next to him
+  -**Mini Golem** Small Version of Stone Golem, help him out. Can deal medium to minor damage by bumping or charging? player.   seek Stone Golem's protection when health is low.
+  -**Log** Tree Log sleeps at home coordinates, wakes up and walks to player when in aggro range, walks back to home            coordinates when outside of aggro range. Deals damage by walking against player. Is not supposed to be challenging alone,     meant more as a first enemy.
+  
+
 
 ## 3. Story and World Building
 
 ### Storyline/Premise
-You play as a witch or wizard summoned by a desperate king whose castle has been overrun by an army of monsters led by an evil witch. The monsters have stolen the king’s most prized possessions — the Elemelons, magical fruits that represent the elements. The player's mission is to recover the Elemelons by battling through dungeons filled with elemental creatures, puzzles, and traps.
+You play as a witch or wizard summoned by a desperate king, through his magic mirror, whose castle has been overrun by an army of monsters led by an evil witch. The monsters have stolen the king’s most prized possessions — the Elemelons, magical fruits that represent the elements and are the source of his power. The player's mission is to recover the Elemelons by battling through dungeons filled with elemental creatures, puzzles, and traps.
 
 ### World/Setting
 The game is set in the king’s castle, which has been transformed by the evil witch into a series of dangerous elemental dungeons. Each dungeon represents one of the four classical elements — Fire, Water, Earth, and Wind — where elemental monsters reside, and environmental hazards reflect the dungeon’s theme.
