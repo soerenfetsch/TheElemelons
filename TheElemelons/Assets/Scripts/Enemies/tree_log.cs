@@ -15,6 +15,7 @@ public class tree_log : Enemy {
     public Animator anim;
 
 
+
 	// Use this for initialization
 	void Start () {
         currentState = EnemyState.idle;
@@ -27,6 +28,8 @@ public class tree_log : Enemy {
         sc.size = new Vector2(1.182424f,1.504254f);
         sc.offset = new Vector2(-0.0402f,0.18755f);
         sc.isTrigger = true;
+
+        type = ChargeTypes.earth;
 	}
 	
 	// Update is called once per frame
@@ -77,7 +80,6 @@ public class tree_log : Enemy {
     public void changeAnim(Vector2 direction){
         if(Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
-            Debug.Log("x" + direction.x);
             if(direction.x > 0){
                 anim.SetFloat("Vertical",0f);
                 anim.SetFloat("Horizontal",1f);

@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
-
-public class Casting : MonoBehaviour
-{
-    public enum ChargeTypes{
+public enum ChargeTypes{
     fire, 
     water, 
     earth, 
-    air
+    wind,
+    notype
     }    
+public class Casting : MonoBehaviour
+{
+    
     public Transform castpoint;
     public GameObject castingObject;
     public Animator wandAnimator;
@@ -28,7 +29,7 @@ public class Casting : MonoBehaviour
     public Sprite fireSprite;
     public Sprite waterSprite;
     public Sprite earthSprite;
-    public Sprite airSprite;
+    public Sprite windSprite;
     void Start(){
         
         mana = maxMana;
@@ -74,9 +75,9 @@ public class Casting : MonoBehaviour
                 loadChargeSprite(earthSprite);
             }
             if(Input.GetKeyDown(KeyCode.Alpha4)){
-                currentCharges.Add(ChargeTypes.air);
+                currentCharges.Add(ChargeTypes.wind);
                 wandAnimator.SetBool("Charge",true);
-                loadChargeSprite(airSprite);
+                loadChargeSprite(windSprite);
             }
         }
 
@@ -93,7 +94,6 @@ public class Casting : MonoBehaviour
     private IEnumerator RemoveWand(){
         yield return new WaitForSeconds(0.75f);
         wandAnimator.SetBool("Charge",false);
-        Debug.Log("no charges pressed");
     }
 
     void Cast(){
@@ -104,8 +104,8 @@ public class Casting : MonoBehaviour
         currentCharges.Clear();
         loadChargeSprite(earthSprite); //loads null as current charges lenth 0
         
-        GameObject spell = Instantiate(castingObject, castpoint.position,Quaternion.Euler(0,0,0));
-        Rigidbody2D rb = spell.GetComponent<Rigidbody2D>();
+        GameObject simple_spell = Instantiate(castingObject, castpoint.position,Quaternion.Euler(0,0,0));
+
         }
     }
 

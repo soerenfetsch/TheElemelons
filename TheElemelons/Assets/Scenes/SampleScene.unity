@@ -221,7 +221,6 @@ GameObject:
   - component: {fileID: 337011287}
   - component: {fileID: 337011288}
   - component: {fileID: 337011289}
-  - component: {fileID: 337011290}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -435,19 +434,7 @@ MonoBehaviour:
   fireSprite: {fileID: 447763290, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
   waterSprite: {fileID: -114867395, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
   earthSprite: {fileID: 328844337, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
-  airSprite: {fileID: -34714264, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
---- !u!114 &337011290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337011282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2e2300ebf47ab54d98803b5012a9172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  windSprite: {fileID: -34714264, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
 --- !u!1 &373324937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3704,15 +3691,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  maxHealth: 3
-  health: 3
+  maxHealth: 4
+  health: 4
   enemyName: tree guy
   baseAttack: 1
   moveSpeed: 1
   homePosition: {x: 0, y: -9}
-  deathEffect: {fileID: 0}
+  Death_Effect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
+  type: 0
+  weaknessResistanceFactor: 0.2
   myRigidbody: {fileID: 1715591266}
-  target: {fileID: 0}
+  target: {fileID: 337011286}
   chaseRadius: 4
   attackRadius: 1.5
   anim: {fileID: 1715591264}

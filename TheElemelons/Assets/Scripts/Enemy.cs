@@ -23,8 +23,11 @@ public class Enemy : MonoBehaviour {
     public Vector2 homePosition;
 
     [Header("Death Effects")]
-    public GameObject deathEffect;
+    public GameObject Death_Effect;
     private float deathEffectDelay = 1f;
+    public ChargeTypes type;
+
+    public float weaknessResistanceFactor = 0.2f;
 
     private void Awake()
     {
@@ -53,17 +56,17 @@ public class Enemy : MonoBehaviour {
 
     private void DeathEffect()
     {
-        if(deathEffect != null)
+        if(Death_Effect != null)
         {
-            GameObject effect = Instantiate(deathEffect, transform.position, Quaternion.identity);
+            GameObject effect = Instantiate(Death_Effect, transform.position, Quaternion.identity);
             Destroy(effect, deathEffectDelay);
         }
     }
 
-    public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage)
+    public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage, ChargeTypes attackType)
     {
         StartCoroutine(KnockCo(myRigidbody, knockTime));
-        TakeDamage(damage);
+        TakeDamage(damage*typeWeaknessResistanceCalc(attackType));
     }
 
     private IEnumerator KnockCo(Rigidbody2D myRigidbody, float knockTime)
@@ -75,5 +78,49 @@ public class Enemy : MonoBehaviour {
             currentState = EnemyState.idle;
             myRigidbody.velocity = Vector2.zero;
         }
+    }
+
+//computes modifier depending on own type and suffered attack type
+// water beats fire beats earth beats wind
+    float typeWeaknessResistanceCalc(ChargeTypes attackType){
+        if (type == ChargeTypes.water){
+            if(attackType == ChargeTypes.wind){
+                //is weak, thus more damage
+                return 1+weaknessResistanceFactor;
+            }else if(attackType == ChargeTypes.fire)
+            {
+                //is resistance, thus less damage
+                return 1-weaknessResistanceFactor;
+            }
+        }else if (type == ChargeTypes.fire){
+            if(attackType == ChargeTypes.water){
+                //is weak, thus more damage
+                return 1+weaknessResistanceFactor;
+            }else if(attackType == ChargeTypes.earth)
+            {
+                //is resistance, thus less damage
+                return 1-weaknessResistanceFactor;
+            }
+        }else if (type == ChargeTypes.earth){
+            if(attackType == ChargeTypes.fire){
+                //is weak, thus more damage
+                return 1+weaknessResistanceFactor;
+            }else if(attackType == ChargeTypes.wind)
+            {
+                //is resistance, thus less damage
+                return 1-weaknessResistanceFactor;
+            }
+        }else if (type == ChargeTypes.wind){
+            if(attackType == ChargeTypes.earth){
+                //is weak, thus more damage
+                return 1+weaknessResistanceFactor;
+            }else if(attackType == ChargeTypes.water)
+            {
+                //is resistance, thus less damage
+                return 1-weaknessResistanceFactor;
+            }
+        }
+
+        return 1;
     }
 }
