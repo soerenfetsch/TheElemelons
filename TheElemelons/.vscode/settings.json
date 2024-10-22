@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Elemelons_prototype.sln"
+    "dotnet.defaultSolution": "TheElemelons.sln"
 }

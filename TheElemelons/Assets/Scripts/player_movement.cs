@@ -51,7 +51,8 @@ public class player_movement : MonoBehaviour
         //Physics
         if (movement!=Vector2.zero)
         {
-            rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
+            movement.Normalize();
+                rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
             animator.SetFloat("Horizontal",movement.x);
             animator.SetFloat("Vertical",movement.y);
             
