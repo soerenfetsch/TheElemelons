@@ -23,6 +23,12 @@ public class player_movement : MonoBehaviour
         currentState = PlayerState.walk;
         animator.SetFloat("Horizontal",0);
         animator.SetFloat("Vertical",-1);
+
+        //player hurtbox
+        BoxCollider2D sc = gameObject.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+        sc.size = new Vector2(0.8931981f,1.579784f);
+        sc.offset = new Vector2(-0.4195804f,0.6255565f);
+        sc.isTrigger = true;
     }
     // Update is called once per frame
     void Update()

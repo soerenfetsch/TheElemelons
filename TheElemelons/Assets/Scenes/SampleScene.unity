@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 66974143}
   - component: {fileID: 66974144}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Aiming Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 337011288}
   - component: {fileID: 337011289}
   - component: {fileID: 337011290}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   m_Component:
   - component: {fileID: 373324939}
   - component: {fileID: 373324938}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Charge2UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 485780613}
   - component: {fileID: 485780616}
   - component: {fileID: 485780615}
+  - component: {fileID: 485780617}
   m_Layer: 0
   m_Name: Walls_Tilemap
   m_TagString: Untagged
@@ -1388,7 +1389,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 485780611}
-  m_BodyType: 1
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1396,7 +1397,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8c0a527379744ba4d867ee6f1b0523b5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1405,7 +1406,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!19719996 &485780616
 TilemapCollider2D:
@@ -1443,6 +1444,49 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!66 &485780617
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485780611}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 8c0a527379744ba4d867ee6f1b0523b5, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+  m_UseDelaunayMesh: 0
+  m_CompositeGameObject: {fileID: 485780611}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3349,7 +3393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 943923969}
   - component: {fileID: 943923968}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Aim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3398,7 +3442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1158424690}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Aiming_Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3628,11 +3672,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715591261}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -3682,7 +3726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1746741213}
   - component: {fileID: 1746741212}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Charge1UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3765,7 +3809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2093316298}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Casting_Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
