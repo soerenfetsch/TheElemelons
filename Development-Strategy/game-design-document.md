@@ -70,32 +70,28 @@ Amanda Suggestions:
 - **Elemelon Collection**: The goal is to collect all the 4 Elemelons, one in each dungeon, and return them to the king. The Elemelons can be found in boss rooms (1 per dungeon) and are dropped once the boss and all other enemies in this room have been defeated.
 - **Character Progression**: Players don’t level up traditionally. The progression should mainly show in the players increasing skillfulness at using spells. The player's maximum mana and health is increased after each retrieval of an elemelon.
   
-fire beats earth beats wind beats water beats fire
-### NPCs/Enemies (Soeren suggestion)
-- **Enemies**: Element-themed monsters with varying resistances and vulnerabilities. Each dungeon level introduces new enemies with elemental affinities that impact combat strategies.
+### NPCs/Enemies
+- **Themed Enemies**: Element-themed monsters with varying resistances and vulnerabilities. Each dungeon level introduces new enemies with elemental affinities that impact combat strategies.
   - **Fire Monsters**: Resist earth spells but are weak to water-based spells.
   - **Water Monsters**: Utilize water-based attacks and are vulnerable to wind spells.
-  - **Earth Monsters**: Slow monsters with high HP, use ground attacks and melee combat, vulnerable to earth attacks.
-  - **Wind Monsters**: Fast monsters, that are weak to fire attacks.
+  - **Earth Monsters**: Slow monsters with high HP, use ground attacks and melee combat, vulnerable to fire attacks.
+  - **Wind Monsters**: Fast monsters, that are weak to earth attacks.
 - **Bosses**: At the end of each dungeon level, there’s a boss fight that requires mastery of the spell system to defeat.
 - **The Evil Witch**: The final boss, leader of the monsters, fight unlocked when the last Elemelon is returned to the king.
----
-### NPCs/Enemies (Amanda suggestion)
--**fire beats earth beats wind beats water beats fire**
--**Boss Rooms** contain boss monster of the dungeon and some helpers. Location is random, but shouldn't be close to the start of the dungeon
--**Earth Monsters** 
-  -**Stone Golem** Boss of the earth dungeon, tanky and slow, hits rarely but deals a lot of damage at once, protects his       minions with earth wakll and can heal those next to him
-  -**Mini Golem** Small Version of Stone Golem, help him out. Can deal medium to minor damage by bumping or charging? player.   seek Stone Golem's protection when health is low.
-  -**Log** Tree Log sleeps at home coordinates, wakes up and walks to player when in aggro range, walks back to home            coordinates when outside of aggro range. Deals damage by walking against player. Is not supposed to be challenging alone,     meant more as a first enemy.
-  -**Shield-and Spearsman** Usually spawn in pairs, shieldsman mostly blocks attacks with his shield and rams player if too     close. Spearsman stays behind shieldsman and occasionally pierces through with spear to hist player. Shieldsman follows       spearsman as long as alive. (Idea in case this is too complicated: combine the 2 units into one)
-  -**Mole** Can't be hit while underground, peeks out of ground to attack player
 
--**Water Monsters**
-  -???**Crab** can only walk sideways, deals damage by running into player
--**Wind Monsters**
+- **Boss Rooms** contain boss monster of the dungeon and some helpers. Location is random, but shouldn't be close to the start of the dungeon
+- **Earth Monsters**
+   - **Stone Golem** Boss of the earth dungeon, tanky and slow, hits rarely but deals a lot of damage at once, protects his       minions with earth wakll and can heal those next to him
+  - **Mini Golem** Small Version of Stone Golem, help him out. Can deal medium to minor damage by bumping or charging? player.   seek Stone Golem's protection when health is low.
+  - **Log** Tree Log sleeps at home coordinates, wakes up and walks to player when in aggro range, walks back to home            coordinates when outside of aggro range. Deals damage by walking against player. Is not supposed to be challenging alone,     meant more as a first enemy.
+  - **Shield-and Spearsman** Usually spawn in pairs, shieldsman mostly blocks attacks with his shield and rams player if too     close. Spearsman stays behind shieldsman and occasionally pierces through with spear to hist player. Shieldsman follows       spearsman as long as alive. (Idea in case this is too complicated: combine the 2 units into one)
+  - **Mole** Can't be hit while underground, peeks out of ground to attack player
 
--**Fire Monsters**
-  
+- **Water Monsters**
+  - **Crab** can only walk sideways, deals damage by running into player
+- **Wind Monsters**
+
+- **Fire Monsters**
 
 
 ## 3. Story and World Building
@@ -133,9 +129,9 @@ The game is set in the king’s castle, which has been transformed by the evil w
 - **Simple Effects**: Spellcasting will include visual effects like fireballs, water splashes, and swirling winds, all done in pixel art.
 
 ### UI/UX Design
-- **HUD**: Displays the player’s health and mana bars, equipped elements, selected spells and small inventory bar.
+- **HUD**: Displays the player’s health and mana bars, equipped elements, selected spells, and collected elemelons
 - **Dialogue**: When characters speak, pixel art portraits appear with simple dialogue in speech bubbles.
-- **Menus**: Inventory and settings menus will follow a pixelated theme, designed to be intuitive and easy to navigate.
+- **Menus**: Settings menus will follow a pixelated theme, designed to be intuitive and easy to navigate.
 
 ### Animations
 - **Spellcasting**: Each spell has a simple animation sequence, like fireballs shooting, wind gusts pushing enemies, and earth barriers forming.
@@ -157,7 +153,7 @@ The game is set in the king’s castle, which has been transformed by the evil w
 ## 6. Technical Requirements
 - **Game Engine**: Unity.
 - **Platform**: PC.
-- **Procedural Generation**: Dungeons are procedurally generated using Unity’s dungeon generation tools.
+- **Operating System**: Windows 10/11.
 
 ---
 
@@ -166,8 +162,9 @@ The game is set in the king’s castle, which has been transformed by the evil w
 ### Procedural Generation
 Each level is procedurally generated, ensuring a unique experience each time the player enters a dungeon. The dungeons will vary in size and structure but will always include:
 - **Enemies**: Rooms filled with monsters that the player must defeat to progress.
-- **Trap Corridors**: Sections with environmental hazards such as spikes, fire traps, or other element-based obstacles.
-- **Loot**: Randomly generated power ups or other loot such as mana and health potions, or gear upgrades scattered around the dungeon, dropped by monsters or in chests.
+- **Traps**: Sections with environmental hazards such as spikes, fire traps, or other element-based obstacles.
+- **Loot**: Randomly generated power ups or other loot such as mana and health potions scattered around the dungeon, dropped by monsters or in chests.
+- **Altars**: Rare structures for one-time-use healing
 - **Final Room**: Contains the dungeon's boss monster, guarding one of the stolen Elemelons.
 
 ### Key Locations
@@ -188,12 +185,12 @@ Each level is procedurally generated, ensuring a unique experience each time the
   - **Hearts**: Displays the player’s remaining health.
   - **Mana Stars**: Displays the player’s mana, which regenerates over time.
   - **Elemental Slots**: Two icons showing the currently selected elemental charges.
-  - **Spells**: spell currently selected, represented by a unique icon (Amanda: Idk about this one, Prefer to just show charges)
+  - **Spells**: spell currently selected, represented by a sprite above the player and possibly by an icon in the users hotbar
  
 - **Dialogue UI**: Simple pixel art portraits of speaking characters will appear with text dialogs at the bottom for dialogue.
   
 - **Menus**:
-  -**Starting Menu**: Allows the player to continue the game or to start a new run by clicking "new game". Has fancy            background art.
+  -**Starting Menu**: Allows the player to continue the game or to start a new run by clicking "new game". Has fancy background art.
   - **Settings Menu**: Allows the player to adjust sound, music, keybindings, and other game options.
   - **Spell Tome** Player can look up a spell's effect by pressing the keys to cast the spell he/she wants to select
 ### UX Considerations
