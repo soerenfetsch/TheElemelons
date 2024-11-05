@@ -151,9 +151,9 @@ The game is set in the king’s castle, which has been transformed by the evil w
 ---
 
 ## 6. Technical Requirements
-- **Game Engine**: Unity.
-- **Platform**: PC.
-- **Operating System**: Windows 10/11.
+- **Game Engine**: Unity (2022.3.50f1)
+- **Platform**: PC
+- **Operating System**: Windows 10/11
 
 ---
 
