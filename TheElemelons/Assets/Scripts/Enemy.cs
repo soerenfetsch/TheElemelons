@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using UnityEngine;
 
 public enum EnemyState{
@@ -29,6 +30,7 @@ public class Enemy : MonoBehaviour {
 
     public float weaknessResistanceFactor = 0.2f;
 
+    
     private void Awake()
     {
         health = maxHealth;
@@ -73,10 +75,12 @@ public class Enemy : MonoBehaviour {
     {
         if (myRigidbody != null)
         {
+            myRigidbody.GetComponent<Animator>().SetBool("Stagger",true);
             yield return new WaitForSeconds(knockTime);
             myRigidbody.velocity = Vector2.zero;
             currentState = EnemyState.idle;
             myRigidbody.velocity = Vector2.zero;
+            myRigidbody.GetComponent<Animator>().SetBool("Stagger",false);
         }
     }
 

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Numerics;
 using UnityEngine;
 public enum PlayerState{
     walk,
@@ -15,19 +17,30 @@ public class player_movement : MonoBehaviour
     public Rigidbody2D rb;
     public Animator animator;
     public Animator wand_animator;
-    Vector2 movement;
-    Vector2 mousePos; 
+    UnityEngine.Vector2 movement;
+    UnityEngine.Vector2 mousePos; 
     public Camera cam; 
     public PlayerState currentState;
+    public float maxhealth = 5;
+    public float health;
+    [Header("Hurtbox")]
+    public UnityEngine.Vector2 size = new UnityEngine.Vector2(0.79932f,1.54092f);
+    public UnityEngine.Vector2 offset = new UnityEngine.Vector2(-0.0558f,-1.0541f);
+
+    [Header("Death Effects")]
+    public GameObject Death_Effect;
+    private float deathEffectDelay = 1f;
     void Start(){
         currentState = PlayerState.walk;
         animator.SetFloat("Horizontal",0);
         animator.SetFloat("Vertical",-1);
 
+        health = maxhealth;
+
         //player hurtbox
         BoxCollider2D sc = gameObject.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-        sc.size = new Vector2(0.8931981f,1.579784f);
-        sc.offset = new Vector2(-0.4195804f,0.6255565f);
+        sc.size = size;
+        sc.offset = offset;
         sc.isTrigger = true;
     }
     // Update is called once per frame
@@ -55,7 +68,7 @@ public class player_movement : MonoBehaviour
 
     void FixedUpdate(){
         //Physics
-        if (movement!=Vector2.zero)
+        if (movement!=UnityEngine.Vector2.zero)
         {
             movement.Normalize();
                 rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
@@ -67,23 +80,46 @@ public class player_movement : MonoBehaviour
             
         }
         //Aiming
-        Vector2 aim_dir = mousePos-rb.position;
+        UnityEngine.Vector2 aim_dir = mousePos-rb.position;
         float angle = Mathf.Atan2(aim_dir.y,aim_dir.x)*Mathf.Rad2Deg -90f;
         
         
 
     }
 
-    public void Knock(float knockTime){
+    public void Knock(float knockTime, float damage){
+        
         StartCoroutine(KnockCo(knockTime));
+        TakeDamage(damage);
     }
     private IEnumerator KnockCo(float knockTime){
         if (rb !=null )
         {
             yield return new WaitForSeconds(knockTime);
-            rb.velocity = Vector2.zero;
+            rb.velocity = UnityEngine.Vector2.zero;
             currentState = PlayerState.idle;
-            rb.velocity = Vector2.zero;
+            rb.velocity = UnityEngine.Vector2.zero;
+            currentState = PlayerState.walk;
+        }
+    }
+    
+    private void TakeDamage(float damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            DeathEffect();
+
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    private void DeathEffect()
+    {
+        if(Death_Effect != null)
+        {
+            GameObject effect = Instantiate(Death_Effect, transform.position, UnityEngine.Quaternion.identity);
+            Destroy(effect, deathEffectDelay);
         }
     }
 }

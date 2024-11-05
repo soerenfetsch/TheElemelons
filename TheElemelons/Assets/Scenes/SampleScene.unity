@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 337011287}
   - component: {fileID: 337011288}
   - component: {fileID: 337011289}
+  - component: {fileID: 337011290}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -246,6 +247,11 @@ MonoBehaviour:
   wand_animator: {fileID: 567773749}
   cam: {fileID: 519420031}
   currentState: 0
+  maxhealth: 5
+  health: 5
+  size: {x: 0.79932, y: 1.54092}
+  offset: {x: -0.0558, y: -1.0541}
+  Death_Effect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
 --- !u!50 &337011284
 Rigidbody2D:
   serializedVersion: 4
@@ -335,7 +341,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 943923969}
@@ -397,7 +403,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0787299, y: -1.5794212}
+  m_Offset: {x: -0.06160289, y: -1.6022575}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -408,7 +414,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8450008, y: 0.6731341}
+  m_Size: {x: 0.8107468, y: 0.44476938}
   m_EdgeRadius: 0
 --- !u!114 &337011289
 MonoBehaviour:
@@ -435,6 +441,18 @@ MonoBehaviour:
   waterSprite: {fileID: -114867395, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
   earthSprite: {fileID: 328844337, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
   windSprite: {fileID: -34714264, guid: 640a26f11866e0c4cad35f9eb48a8540, type: 3}
+--- !u!114 &337011290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337011282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553d78a586f9366468efa7b7391ff266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &373324937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3705,6 +3723,9 @@ MonoBehaviour:
   chaseRadius: 4
   attackRadius: 1.5
   anim: {fileID: 1715591264}
+  knockTime: 1
+  thrust: 3
+  damage: 1
 --- !u!1 &1746741211
 GameObject:
   m_ObjectHideFlags: 0

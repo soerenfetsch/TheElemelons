@@ -14,7 +14,10 @@ public class tree_log : Enemy {
     [Header("Animator")]
     public Animator anim;
 
-
+    [Header("Give Knockback to Player")]
+    public float knockTime = 0.3f;
+    public float thrust = 0.3f;
+    public float damage = 1f;
 
 	// Use this for initialization
 	void Start () {
@@ -106,6 +109,27 @@ public class tree_log : Enemy {
         if(currentState != newState)
         {
             currentState = newState;
+        }
+    }
+
+    //deal damage to player
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player") && other.isTrigger == true)
+        {
+            Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
+            if(hit != null)
+            {
+                Vector2 difference = hit.transform.position - transform.position;
+                difference = difference.normalized * thrust;
+                hit.AddForce(difference, ForceMode2D.Impulse);
+                if (other.gameObject.CompareTag("Player") && other.isTrigger)
+                {
+                    hit.GetComponent<player_movement>().currentState = PlayerState.stagger;
+                    other.GetComponent<player_movement>().Knock(knockTime, damage);
+                }
+                
+            }
         }
     }
 }
