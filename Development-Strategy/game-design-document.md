@@ -41,20 +41,20 @@
   - **Earth-Earth**: Create an earth barrier around your character, shielding from some damage of other monsters
   - **Wind-Wind**: Use this spell to quickly dash forward in the direction you are looking
 ### Amanda Suggestions:
--**Fire**: Light
--**Fire fire**: Fireball that poofs when hitting target
--**Fire water**: pleasantly warm water vapor, weakens ice enemies , obstructs sight (meaning it reduces aggro range)
--**Fire earth**: Bomb dropped 
--**Fire air**: small fire tornado with seeking
--**Water**: cleansing removes debuffs, “stay hydrated “
--**Water water**: cone tsunami, knocks back+dmg
--**Water air**: blizzard freezes enemies
--**Water earth**: leave puddles of mud while walking crawl style, slows enemies
--**Air**: speed buff
--**Air air**: beyblade of wind around you, AoE
--**Air earth**: shard shroud: lingering floating shards around player that deal damage and disappear uppon impact
--**Earth**: shield of stone
--**Earth earth**: lingering spike area
+1.**Fire**: Light
+2.**Fire fire**: Fireball that poofs when hitting target
+3.**Fire water**: pleasantly warm water vapor, weakens ice enemies , obstructs sight (meaning it reduces aggro range)
+4.**Fire earth**: Bomb dropped 
+5.**Fire air**: small fire tornado with seeking
+6.**Water**: cleansing removes debuffs, “stay hydrated “
+7.**Water water**: cone tsunami, knocks back+dmg
+8.**Water air**: blizzard freezes enemies
+9.**Water earth**: leave puddles of mud while walking crawl style, slows enemies
+10.**Air**: speed buff
+11.**Air air**: beyblade of wind around you, AoE
+12.**Air earth**: shard shroud: lingering floating shards around player that deal damage and disappear uppon impact
+13.**Earth**: shield of stone
+14.**Earth earth**: lingering spike area
   
 ### Level Design
 - **Procedural Dungeon Generation**: Each level is procedurally generated, with different layouts, rooms, traps, and enemy spawns. Dungeon should be built in a room-to-room manner, meaning no endlessly long tight corridors. The rooms can vary in size and shape.
