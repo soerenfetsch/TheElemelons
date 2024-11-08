@@ -41,19 +41,33 @@
   - **Earth-Earth**: Create an earth barrier around your character, shielding from some damage of other monsters
   - **Wind-Wind**: Use this spell to quickly dash forward in the direction you are looking
 ### Amanda Suggestions:
+
 -**Fire**: Light
+
 -**Fire fire**: Fireball that poofs when hitting target
+
 -**Fire water**: pleasantly warm water vapor, weakens ice enemies , obstructs sight (meaning it reduces aggro range)
+
 -**Fire earth**: Bomb dropped 
+
 -**Fire air**: small fire tornado with seeking
+
 -**Water**: cleansing removes debuffs, “stay hydrated “
+
 -**Water water**: cone tsunami, knocks back+dmg
+
 -**Water air**: blizzard freezes enemies
+
 -**Water earth**: leave puddles of mud while walking crawl style, slows enemies
+
 -**Air**: speed buff
+
 -**Air air**: beyblade of wind around you, AoE
+
 -**Air earth**: shard shroud: lingering floating shards around player that deal damage and disappear uppon impact
+
 -**Earth**: shield of stone
+
 -**Earth earth**: lingering spike area
   
 ### Level Design
