@@ -33,14 +33,14 @@
   - **Earth**: Earth provides a defensive and slow play style, spells create stationary effects, creating protection spells and strong but slow attacks
   - **Wind**: Wind is for swift and intelligent attacks, providing speed and agility to the player, but also allowing clever attacks
 -**Element Hierarchy**: Fire is strong against earth is strong against wind is strong against water
-Soeren suggestions:
+###Soeren suggestions:
 - **Attack Spells**: 
   - **Fire-Fire**: High damage fire blast, burning every enemy in its path.
   - **Fire-Earth**: Fire meteor, that on impact creates huge damage in an AOE
 - **Utility Spells**:
   - **Earth-Earth**: Create an earth barrier around your character, shielding from some damage of other monsters
   - **Wind-Wind**: Use this spell to quickly dash forward in the direction you are looking
-Amanda Suggestions:
+### Amanda Suggestions:
 -**Fire**: Light
 -**Fire fire**: Fireball that poofs when hitting target
 -**Fire water**: pleasantly warm water vapor, weakens ice enemies , obstructs sight (meaning it reduces aggro range)
