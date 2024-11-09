@@ -58,12 +58,16 @@ public class Mana_UI : MonoBehaviour
                 }else if(mana%1 <=0.25)
                 {
                     manaStars[i].GetComponent<Animator>().SetFloat("fullness",mana%1);
-                    manaStars[i].sprite = manaStar1;
+                    manaStars[i].sprite = manaStar0;
                 }else if(mana%1 <=0.5)
                 {
                     manaStars[i].GetComponent<Animator>().SetFloat("fullness",mana%1);
-                    manaStars[i].sprite = manaStar2;
+                    manaStars[i].sprite = manaStar1;
                 }else if(mana%1 <=0.75)
+                {
+                    manaStars[i].GetComponent<Animator>().SetFloat("fullness",mana%1);
+                    manaStars[i].sprite = manaStar2;
+                }else if(mana%1 <=1)
                 {
                     manaStars[i].GetComponent<Animator>().SetFloat("fullness",mana%1);
                     manaStars[i].sprite = manaStar3;

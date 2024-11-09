@@ -434,13 +434,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   castpoint: {fileID: 2093316298}
-  castingObject: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
   wandAnimator: {fileID: 567773749}
-  spellLifeTime: 1
   maxMana: 3
   mana: 3
-  manaCost: 0.25
-  manaRegenSpeed: 0.03
+  manaPerRegen: 0.25
+  manaRegenSpeed: 1
   maxCharges: 2
   charge1UI: {fileID: 1746741212}
   charge2UI: {fileID: 373324938}
@@ -448,6 +446,10 @@ MonoBehaviour:
   waterSprite: {fileID: 1690825715, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   earthSprite: {fileID: -93482519, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   windSprite: {fileID: 46059240, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  currentSpell: {fileID: 0}
+  noChargeSpell: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
+  fireFireSpell: {fileID: 3000478752136597317, guid: 0aa55fda04b778d449cd6d0ea1c0d651, type: 3}
+  manaCost: 0.25
 --- !u!114 &337011290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +651,7 @@ GameObject:
   - component: {fileID: 485780617}
   m_Layer: 0
   m_Name: Walls_Tilemap
-  m_TagString: Untagged
+  m_TagString: collidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4865,7 +4867,7 @@ Transform:
   m_GameObject: {fileID: 2093316297}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0.24, y: -1.13, z: 0}
+  m_LocalPosition: {x: 0.02, y: -1.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

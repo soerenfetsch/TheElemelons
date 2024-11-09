@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using Microsoft.Unity.VisualStudio.Editor;
+using Unity.VisualScripting;
 using UnityEngine;
+using System.Text;
+using System;
+using System.Linq;
 public enum ChargeTypes{
     fire, 
     water, 
@@ -13,51 +19,71 @@ public class Casting : MonoBehaviour
 {
     
     public Transform castpoint;
-    public GameObject castingObject;
     public Animator wandAnimator;
-    public float spellLifeTime = 1f;
+    [Header("Mana Management")]
     bool canCast;
     public float maxMana = 5f;
     public float mana;
-    public float manaCost = 1f;
-    public float manaRegenSpeed = 0.25f;
+    public float manaPerRegen = 0.25f;
+    public float manaRegenSpeed = 0.5f;
     bool gameRunning = true;
+    [Header("Charges")]
     public int maxCharges = 2;
-    List<ChargeTypes> currentCharges = new List<ChargeTypes>();
+    ChargeTuple currentCharges = new ChargeTuple();
     public SpriteRenderer charge1UI;
     public SpriteRenderer charge2UI;
     public Sprite fireSprite;
     public Sprite waterSprite;
     public Sprite earthSprite;
     public Sprite windSprite;
+    [Header("Spell Selection")]
+    public GameObject currentSpell;
+    public GameObject noChargeSpell;
+    public GameObject fireFireSpell;
+    public float manaCost = 1f;
+    public Dictionary<ChargeTuple,GameObject> chargeToSpell = new Dictionary<ChargeTuple,GameObject>();
     void Start(){
-        
         mana = maxMana;
         StartCoroutine(ManaRegen());
+        currentCharges.Clear();
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype,ChargeTypes.notype),noChargeSpell);
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire),fireFireSpell);
+        determineSpell();        
     }
-    private IEnumerator ManaRegen(){
-        while(gameRunning){
-            yield return new WaitForSeconds(1);
-            mana = Mathf.Clamp(mana+manaRegenSpeed,0f,maxMana);
-        }
-    }
-    void Update()
-    {
-        if (mana>=manaCost)
-        {
-            canCast = true;
-            
+    
+    void determineSpell(){
+        if(chargeToSpell.ContainsKey(currentCharges)){
+            currentSpell = chargeToSpell[currentCharges];
+            manaCost = currentSpell.GetComponent<SpellEffect>().manaCost;
+            if (mana>=manaCost)
+            {
+                canCast = true;
+                
+            }else
+            {
+                canCast = false;
+            }
         }else
         {
             canCast = false;
         }
+    }
+    private IEnumerator ManaRegen(){
+        while(gameRunning){
+            yield return new WaitForSeconds(manaRegenSpeed);
+            mana = Mathf.Clamp(mana+manaPerRegen,0f,maxMana);
+        }
+    }
+    void Update()
+    {
+        
         wandAnimator.SetBool("CanCast",canCast);
         if (Input.GetMouseButtonDown(0)){
             Cast();
         }
 
         //charges
-        if (currentCharges.Count<=maxCharges)
+        if (currentCharges.Count()<=maxCharges)
         {
             if(Input.GetKeyDown(KeyCode.Alpha1)){
                 currentCharges.Add(ChargeTypes.fire);
@@ -88,7 +114,6 @@ public class Casting : MonoBehaviour
         if (wandAnimator.GetBool("Charge") && !Input.GetKeyDown(KeyCode.Alpha1) && !Input.GetKeyDown(KeyCode.Alpha2) && !Input.GetKeyDown(KeyCode.Alpha3) && !Input.GetKeyDown(KeyCode.Alpha4))
         {
             StartCoroutine(RemoveWand());
-            
         }
     }
     private IEnumerator RemoveWand(){
@@ -98,29 +123,119 @@ public class Casting : MonoBehaviour
 
     void Cast(){
         //needs to be generalized to be applicable to all spells
+        determineSpell();  
         if(canCast){
         mana = Mathf.Clamp(mana-manaCost,0f,maxMana);
         GetComponent<Mana_UI>().hurt();
         currentCharges.Clear();
         loadChargeSprite(earthSprite); //loads null as current charges lenth 0
-        Instantiate(castingObject, castpoint.position,Quaternion.Euler(0,0,0));
+        Instantiate(currentSpell, castpoint.position,Quaternion.Euler(0,0,0));
 
         }
     }
 
     void loadChargeSprite(Sprite chargeSprite){
-        if (currentCharges.Count==0)
+        if (currentCharges.Count()==0)
         {
             charge1UI.sprite = null;
             charge2UI.sprite = null;
-        }else if(currentCharges.Count==1)
+        }else if(currentCharges.Count()==1)
         {
             charge1UI.sprite = chargeSprite;
-        }else if(currentCharges.Count==2)
+        }else if(currentCharges.Count()==2)
         {
             charge2UI.sprite = chargeSprite;
         }
 
     }
     
+}
+
+
+
+
+
+
+
+
+public class ChargeTuple{
+    private ChargeTypes charge1;
+    private ChargeTypes charge2;
+    public ChargeTuple(){
+        charge1 = ChargeTypes.notype;
+        charge2 = ChargeTypes.notype;
+    }
+    public ChargeTuple(ChargeTypes chargeOne,ChargeTypes chargeTwo){
+        charge1 = chargeOne;
+        charge2 = chargeTwo;
+    }
+    public void Add(ChargeTypes charge){
+        if (charge1==ChargeTypes.notype)
+        {
+            charge1=charge;
+        }else if(charge2==ChargeTypes.notype){
+            charge2=charge;
+        }
+    }
+    public void Clear(){
+        charge1 = ChargeTypes.notype;
+        charge2 = ChargeTypes.notype;
+    }
+    public List<ChargeTypes> GetCharges(){
+        return new List<ChargeTypes> {charge1,charge2};
+    }
+    public int Count(){
+        int count = 0;
+        if (charge1!=ChargeTypes.notype)
+        {
+            count++;
+        }
+        if (charge2!=ChargeTypes.notype)
+        {
+            count++;
+        }
+        return count;
+    }
+    
+    public ChargeTypes first(){
+        return charge1;
+    }
+    public ChargeTypes second(){
+        return charge1;
+    }
+    // override object.Equals
+    public override bool Equals(object obj)
+    {
+        //
+        // See the full list of guidelines at
+        //   http://go.microsoft.com/fwlink/?LinkID=85237
+        // and also the guidance for operator== at
+        //   http://go.microsoft.com/fwlink/?LinkId=85238
+        //
+        
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+        ChargeTuple chargeObj= (ChargeTuple)obj;
+        // TODO: write your implementation of Equals() here
+        if ((charge1==chargeObj.first() && charge2==chargeObj.second()) 
+        ||(charge2==chargeObj.first() && charge1==chargeObj.second()))
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    //override object.GetHashCode
+    public override int GetHashCode()
+    {
+        // TODO: write your implementation of GetHashCode() here
+        //throw new System.NotImplementedException();
+        byte[] bytes = MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(charge1.HumanName()+charge2.HumanName()));
+        if(BitConverter.IsLittleEndian){
+           Array.Reverse(bytes);
+        }
+        return BitConverter.ToInt32(bytes);
+    }
 }

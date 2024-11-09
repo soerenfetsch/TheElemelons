@@ -2,26 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellEffect : MonoBehaviour
+public class SimpleSpell : SpellEffect
 {
     public float spellLifeTime = 1f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
     public float damage = 1f;
     public ChargeTypes spellType = ChargeTypes.notype;
-    public GameObject effect;
-    public float manaCost = 1f;
     // Start is called before the first frame update
     void Start (){
-        Debug.Log("exist");
         StartCoroutine(SelfDestruct());
+
     }
     void Update()
     {
         
     }
     IEnumerator SelfDestruct(){
-        Destroy(effect,spellLifeTime);
+        Destroy(gameObject,spellLifeTime);
         yield return 1;
     }
     private void OnTriggerEnter2D(Collider2D other)
