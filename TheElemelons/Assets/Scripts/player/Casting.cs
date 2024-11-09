@@ -18,8 +18,8 @@ public class Casting : MonoBehaviour
     public float spellLifeTime = 1f;
     bool canCast;
     public float maxMana = 5f;
-    float mana;
-    float manaCost = 1f;
+    public float mana;
+    public float manaCost = 1f;
     public float manaRegenSpeed = 0.25f;
     bool gameRunning = true;
     public int maxCharges = 2;
@@ -100,11 +100,10 @@ public class Casting : MonoBehaviour
         //needs to be generalized to be applicable to all spells
         if(canCast){
         mana = Mathf.Clamp(mana-manaCost,0f,maxMana);
-        
+        GetComponent<Mana_UI>().hurt();
         currentCharges.Clear();
         loadChargeSprite(earthSprite); //loads null as current charges lenth 0
-        
-        GameObject simple_spell = Instantiate(castingObject, castpoint.position,Quaternion.Euler(0,0,0));
+        Instantiate(castingObject, castpoint.position,Quaternion.Euler(0,0,0));
 
         }
     }

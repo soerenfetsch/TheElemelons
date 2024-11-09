@@ -17,11 +17,12 @@ public class Enemy : MonoBehaviour {
 
     [Header("Enemy Stats")]
     public float maxHealth;
-    public float health;
+    float health;
     public string enemyName;
-    public int baseAttack;
+    public float baseAttack;
     public float moveSpeed;
     public Vector2 homePosition;
+    public float staggerTime = 0.5f;
 
     [Header("Death Effects")]
     public GameObject Death_Effect;
@@ -67,6 +68,9 @@ public class Enemy : MonoBehaviour {
 
     public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage, ChargeTypes attackType)
     {
+        currentState = EnemyState.stagger;
+        myRigidbody.GetComponent<Animator>().SetBool("Stagger",true);
+        myRigidbody.GetComponent<Animator>().SetTrigger("Staggertrig");
         StartCoroutine(KnockCo(myRigidbody, knockTime));
         TakeDamage(damage*typeWeaknessResistanceCalc(attackType));
     }
@@ -75,11 +79,11 @@ public class Enemy : MonoBehaviour {
     {
         if (myRigidbody != null)
         {
-            myRigidbody.GetComponent<Animator>().SetBool("Stagger",true);
             yield return new WaitForSeconds(knockTime);
             myRigidbody.velocity = Vector2.zero;
             currentState = EnemyState.idle;
             myRigidbody.velocity = Vector2.zero;
+            yield return new WaitForSeconds(staggerTime);
             myRigidbody.GetComponent<Animator>().SetBool("Stagger",false);
         }
     }

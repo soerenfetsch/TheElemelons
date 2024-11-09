@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 4094772897226568907}
   - component: {fileID: 613137590342232381}
   - component: {fileID: 7695692042475292381}
-  - component: {fileID: 3843813313159583255}
   - component: {fileID: 8398617219460556959}
   - component: {fileID: 6778273185580537132}
+  - component: {fileID: -5217717144642922164}
   m_Layer: 7
-  m_Name: no_charge_spell
+  m_Name: Simple_Spell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,24 +115,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &3843813313159583255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011104708221749430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f98ec4046d5de4a8f6f7482949bffc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellLifeTime: 0.3
-  thrust: 0.0004
-  knockTime: 0.3
-  damage: 1
-  spellType: 4
-  effect: {fileID: 1011104708221749430}
 --- !u!95 &8398617219460556959
 Animator:
   serializedVersion: 5
@@ -199,3 +181,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9399995, y: 0.9200001}
   m_EdgeRadius: 0
+--- !u!114 &-5217717144642922164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011104708221749430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f98ec4046d5de4a8f6f7482949bffc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellLifeTime: 1
+  thrust: 1
+  knockTime: 0.2
+  damage: 1
+  spellType: 4
+  effect: {fileID: 1011104708221749430}
+  manaCost: 1

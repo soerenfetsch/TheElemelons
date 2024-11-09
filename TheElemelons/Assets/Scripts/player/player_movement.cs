@@ -21,12 +21,14 @@ public class player_movement : MonoBehaviour
     UnityEngine.Vector2 mousePos; 
     public Camera cam; 
     public PlayerState currentState;
-    public float maxhealth = 5;
+    public float maxhealth = 3;
     public float health;
+    public bool iFrames;
+    public float iFramesTime = 0.3f;
+    
     [Header("Hurtbox")]
-    public UnityEngine.Vector2 size = new UnityEngine.Vector2(0.79932f,1.54092f);
-    public UnityEngine.Vector2 offset = new UnityEngine.Vector2(-0.0558f,-1.0541f);
-
+    public BoxCollider2D hurtbox;
+    
     [Header("Death Effects")]
     public GameObject Death_Effect;
     private float deathEffectDelay = 1f;
@@ -37,11 +39,7 @@ public class player_movement : MonoBehaviour
 
         health = maxhealth;
 
-        //player hurtbox
-        BoxCollider2D sc = gameObject.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-        sc.size = size;
-        sc.offset = offset;
-        sc.isTrigger = true;
+        iFrames = false;
     }
     // Update is called once per frame
     void Update()
@@ -56,7 +54,7 @@ public class player_movement : MonoBehaviour
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition); 
 
         //Raise Wand
-        if (Input.GetMouseButtonDown(0) && !wand_animator.GetBool("RaiseWand"))
+        if (Input.GetMouseButtonDown(0) && !wand_animator.GetBool("RaiseWand") && currentState != PlayerState.stagger)
         {
             wand_animator.SetBool("RaiseWand",true);
         } 
@@ -68,7 +66,7 @@ public class player_movement : MonoBehaviour
 
     void FixedUpdate(){
         //Physics
-        if (movement!=UnityEngine.Vector2.zero)
+        if (movement!=UnityEngine.Vector2.zero && currentState != PlayerState.stagger)
         {
             movement.Normalize();
                 rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
@@ -88,28 +86,33 @@ public class player_movement : MonoBehaviour
     }
 
     public void Knock(float knockTime, float damage){
-        
+        animator.SetBool("Stagger",true);
+        animator.SetTrigger("Stagger_trig");
+        wand_animator.SetBool("RaiseWand",false);
         StartCoroutine(KnockCo(knockTime));
         TakeDamage(damage);
     }
     private IEnumerator KnockCo(float knockTime){
         if (rb !=null )
         {
+            iFrames = true;
             yield return new WaitForSeconds(knockTime);
             rb.velocity = UnityEngine.Vector2.zero;
             currentState = PlayerState.idle;
-            rb.velocity = UnityEngine.Vector2.zero;
-            currentState = PlayerState.walk;
+            animator.SetBool("Stagger",false);
+            yield return new WaitForSeconds(iFramesTime);
+            iFrames = false;
         }
     }
     
     private void TakeDamage(float damage)
     {
+        this.GetComponent<Health_UI>().hurt();
         health -= damage;
         if(health <= 0)
         {
+            this.GetComponent<Health_UI>().dead();
             DeathEffect();
-
             this.gameObject.SetActive(false);
         }
     }

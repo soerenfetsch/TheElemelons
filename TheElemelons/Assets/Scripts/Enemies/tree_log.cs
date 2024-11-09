@@ -9,7 +9,7 @@ public class tree_log : Enemy {
     [Header("Target Variables")]
     public Transform target;
     public float chaseRadius;
-    public float attackRadius;
+    public float attackRadius = 0f;
 
     [Header("Animator")]
     public Animator anim;
@@ -17,21 +17,17 @@ public class tree_log : Enemy {
     [Header("Give Knockback to Player")]
     public float knockTime = 0.3f;
     public float thrust = 0.3f;
-    public float damage = 1f;
+    public float damage = 0.25f;
 
+    [Header("Hurtbox")]
+    public BoxCollider2D hurtbox;
 	// Use this for initialization
 	void Start () {
         currentState = EnemyState.idle;
         myRigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        target = GameObject.FindWithTag("Player").transform;
 
-        //Hurtbox
-        BoxCollider2D sc = gameObject.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
-        sc.size = new Vector2(1.182424f,1.504254f);
-        sc.offset = new Vector2(-0.0402f,0.18755f);
-        sc.isTrigger = true;
-
+        
         type = ChargeTypes.earth;
 	}
 	
@@ -45,10 +41,10 @@ public class tree_log : Enemy {
         if(Vector3.Distance(target.position, 
                             transform.position) <= chaseRadius
            && Vector3.Distance(target.position,
-                               transform.position) > attackRadius)
+                               transform.position) > attackRadius
+            && currentState != EnemyState.stagger)
         {
-            if (currentState == EnemyState.idle || currentState == EnemyState.walk
-                && currentState != EnemyState.stagger)
+            if (currentState == EnemyState.idle || currentState == EnemyState.walk)
             {
                 Vector3 temp = Vector3.MoveTowards(transform.position,
                                                          target.position,
@@ -71,7 +67,6 @@ public class tree_log : Enemy {
                 changeAnim(temp - transform.position);
                 myRigidbody.MovePosition(temp);
             }
-            
         }
     }
 
@@ -115,20 +110,21 @@ public class tree_log : Enemy {
     //deal damage to player
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player") && other.isTrigger == true)
+        if (other.gameObject.CompareTag("Player") && other.isTrigger && 
+            other.GetComponent<player_movement>().currentState != PlayerState.stagger )
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
-            if(hit != null)
+            if(hit != null && !hit.GetComponent<player_movement>().iFrames)
             {
                 Vector2 difference = hit.transform.position - transform.position;
                 difference = difference.normalized * thrust;
                 hit.AddForce(difference, ForceMode2D.Impulse);
-                if (other.gameObject.CompareTag("Player") && other.isTrigger)
-                {
-                    hit.GetComponent<player_movement>().currentState = PlayerState.stagger;
-                    other.GetComponent<player_movement>().Knock(knockTime, damage);
-                }
                 
+                hit.GetComponent<player_movement>().currentState = PlayerState.stagger;
+                other.GetComponent<player_movement>().Knock(knockTime, baseAttack);
+
+                myRigidbody.AddForce(-difference/2, ForceMode2D.Impulse);
+                Knock(myRigidbody,0.1f,0,ChargeTypes.notype);
             }
         }
     }
