@@ -155,7 +155,7 @@ The game is set in the king’s castle, which has been transformed by the evil w
 ---
 
 ## 6. Technical Requirements
-- **Game Engine**: Unity.
+- **Game Engine**: Unity (2022.3.50f1).
 - **Platform**: PC.
 - **Procedural Generation**: Dungeons are procedurally generated using Unity’s dungeon generation tools.
 
