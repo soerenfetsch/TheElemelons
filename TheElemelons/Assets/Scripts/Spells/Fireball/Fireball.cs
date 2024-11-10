@@ -51,7 +51,7 @@ public class Fireball : SpellEffect
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if ((other.gameObject.CompareTag("Enemy")&& other.isTrigger) || other.gameObject.CompareTag("collidable"))
+        if ((other.gameObject.CompareTag("Enemy")&& other.isTrigger) || other.gameObject.CompareTag("collidable") && currentState == FireballState.propagating)
         {
             Instantiate(explosion, transform.position,UnityEngine.Quaternion.Euler(0,0,0));
             Destroy(gameObject);

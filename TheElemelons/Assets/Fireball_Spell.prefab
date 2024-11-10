@@ -147,7 +147,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00000011920929, y: -0.023772955}
+  m_Offset: {x: 0.011489153, y: -0.07202673}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -158,7 +158,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1441786, y: 1.2234197}
+  m_Size: {x: 1.010906, y: 1.3658834}
   m_EdgeRadius: 0
 --- !u!95 &3834955031139785445
 Animator:
@@ -194,17 +194,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaCost: 1.5
-  spellLifeTime: 1
+  spellLifeTime: 4
   moveSpeed: 2
-  thrust: 5
-  knockTime: 0.2
-  damage: 2
-  spellType: 0
   explosion: {fileID: 8314004443976540739, guid: 7c9e3705fbaccde40bcf9d3f45e60eb6, type: 3}
-  effect: {fileID: 3000478752136597317}
   myRigidbody: {fileID: 5757059703358525827}
   animator: {fileID: 3834955031139785445}
-  pivot: {fileID: 0}
   castPoint: {fileID: 0}
-  cam: {fileID: 0}
   currentState: 0

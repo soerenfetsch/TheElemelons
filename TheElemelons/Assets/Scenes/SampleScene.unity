@@ -408,7 +408,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06160289, y: -1.5434844}
+  m_Offset: {x: -0.065463305, y: -1.5512044}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -419,7 +419,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8379203, y: 0.56231546}
+  m_Size: {x: 0.8919592, y: 0.5468755}
   m_EdgeRadius: 0
 --- !u!114 &337011289
 MonoBehaviour:
@@ -438,7 +438,7 @@ MonoBehaviour:
   maxMana: 3
   mana: 3
   manaPerRegen: 0.25
-  manaRegenSpeed: 1
+  manaRegenSpeed: 0.2
   maxCharges: 2
   charge1UI: {fileID: 1746741212}
   charge2UI: {fileID: 373324938}
@@ -450,6 +450,8 @@ MonoBehaviour:
   noChargeSpell: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
   fireFireSpell: {fileID: 3000478752136597317, guid: 0aa55fda04b778d449cd6d0ea1c0d651, type: 3}
   manaCost: 0.25
+  current_regenspeed: 0
+  justCasted: 0
 --- !u!114 &337011290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4336,12 +4338,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  maxHealth: 6
+  maxHealth: 4.4
   enemyName: tree guy
   baseAttack: 0.25
   moveSpeed: 1
   homePosition: {x: 0, y: -9}
-  staggerTime: 0.3
+  staggerTime: 0.2
   Death_Effect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
   type: 2
   weaknessResistanceFactor: 0.2

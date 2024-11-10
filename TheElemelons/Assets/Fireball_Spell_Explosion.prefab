@@ -193,9 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637670247ed58c1468cf778478d830c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 8314004443976540739}
-  spellLifeTime: 1
-  thrust: 5
-  knockTime: 0.2
+  thrust: 7
+  knockTime: 0.4
   damage: 2
   spellType: 0

@@ -25,7 +25,7 @@ public class Casting : MonoBehaviour
     public float maxMana = 5f;
     public float mana;
     public float manaPerRegen = 0.25f;
-    public float manaRegenSpeed = 0.5f;
+    public float manaRegenSpeed = 0.2f;
     bool gameRunning = true;
     [Header("Charges")]
     public int maxCharges = 2;
@@ -42,7 +42,11 @@ public class Casting : MonoBehaviour
     public GameObject fireFireSpell;
     public float manaCost = 1f;
     public Dictionary<ChargeTuple,GameObject> chargeToSpell = new Dictionary<ChargeTuple,GameObject>();
+    [Header("Internal Stuff")]
+    public float current_regenspeed;
+    public bool justCasted = false;
     void Start(){
+        current_regenspeed = manaRegenSpeed;
         mana = maxMana;
         StartCoroutine(ManaRegen());
         currentCharges.Clear();
@@ -70,7 +74,15 @@ public class Casting : MonoBehaviour
     }
     private IEnumerator ManaRegen(){
         while(gameRunning){
-            yield return new WaitForSeconds(manaRegenSpeed);
+            if (mana<=0.25)
+            {
+                yield return new WaitForSeconds(current_regenspeed*2);
+            }else if (justCasted)
+            {
+                justCasted = false;
+                yield return new WaitForSeconds(current_regenspeed);
+            }
+            yield return new WaitForSeconds(current_regenspeed);
             mana = Mathf.Clamp(mana+manaPerRegen,0f,maxMana);
         }
     }
@@ -129,8 +141,8 @@ public class Casting : MonoBehaviour
         GetComponent<Mana_UI>().hurt();
         currentCharges.Clear();
         loadChargeSprite(earthSprite); //loads null as current charges lenth 0
+        justCasted = true;
         Instantiate(currentSpell, castpoint.position,Quaternion.Euler(0,0,0));
-
         }
     }
 
