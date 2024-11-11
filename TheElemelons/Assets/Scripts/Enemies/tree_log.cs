@@ -27,7 +27,7 @@ public class tree_log : Enemy {
         myRigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        
+        homePosition = transform.position;
         type = ChargeTypes.earth;
 	}
 	

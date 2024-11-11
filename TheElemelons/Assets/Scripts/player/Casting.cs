@@ -40,6 +40,7 @@ public class Casting : MonoBehaviour
     public GameObject currentSpell;
     public GameObject noChargeSpell;
     public GameObject fireFireSpell;
+    public GameObject windSpell;
     public float manaCost = 1f;
     public Dictionary<ChargeTuple,GameObject> chargeToSpell = new Dictionary<ChargeTuple,GameObject>();
     [Header("Internal Stuff")]
@@ -52,6 +53,7 @@ public class Casting : MonoBehaviour
         currentCharges.Clear();
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype,ChargeTypes.notype),noChargeSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire),fireFireSpell);
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind,ChargeTypes.notype),windSpell);
         determineSpell();        
     }
     
@@ -213,7 +215,7 @@ public class ChargeTuple{
         return charge1;
     }
     public ChargeTypes second(){
-        return charge1;
+        return charge2;
     }
     // override object.Equals
     public override bool Equals(object obj)

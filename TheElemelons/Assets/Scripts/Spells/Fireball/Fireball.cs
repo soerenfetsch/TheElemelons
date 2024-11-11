@@ -35,8 +35,9 @@ public class Fireball : SpellEffect
         StartCoroutine(Focus());
     }
     private IEnumerator Focus(){
-        Destroy(gameObject,spellLifeTime);
-        yield return 1;
+        yield return new WaitForSeconds(spellLifeTime);
+        Instantiate(explosion, transform.position,UnityEngine.Quaternion.Euler(0,0,0));
+        Destroy(gameObject);
     }
     public void startFocus(){
         currentState = FireballState.propagating;

@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaCost: 1.5
-  spellLifeTime: 4
+  spellLifeTime: 2.5
   moveSpeed: 2
   explosion: {fileID: 8314004443976540739, guid: 7c9e3705fbaccde40bcf9d3f45e60eb6, type: 3}
   myRigidbody: {fileID: 5757059703358525827}

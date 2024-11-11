@@ -12,8 +12,8 @@ public enum PlayerState{
     }
 public class player_movement : MonoBehaviour
 {
-    
-    public float moveSpeed = 5f;
+    public float baseSpeed = 5f;
+    public float moveSpeed;
     public Rigidbody2D rb;
     public Animator animator;
     public Animator wand_animator;
@@ -32,14 +32,15 @@ public class player_movement : MonoBehaviour
     [Header("Death Effects")]
     public GameObject Death_Effect;
     private float deathEffectDelay = 1f;
+    [Header("Internal Stuff")]
+    public bool speedBuff = false;
     void Start(){
         currentState = PlayerState.walk;
         animator.SetFloat("Horizontal",0);
         animator.SetFloat("Vertical",-1);
-
         health = maxhealth;
-
         iFrames = false;
+        moveSpeed = baseSpeed;
     }
     // Update is called once per frame
     void Update()
