@@ -28,7 +28,7 @@ public class RuleTilemapVisualizer : AbstractTilemapVisualizer
     }
 
     // Paint the floor tiles at the given positions
-    protected override void PaintFloor(IEnumerable<Vector2Int> positions)
+    protected void PaintFloor(IEnumerable<Vector2Int> positions)
     {
         foreach (var position in positions)
         {
@@ -39,7 +39,7 @@ public class RuleTilemapVisualizer : AbstractTilemapVisualizer
     }
 
     // Paint the wall tiles at the given positions
-    protected override void PaintWalls(IEnumerable<Vector2Int> positions)
+    protected void PaintWalls(IEnumerable<Vector2Int> positions)
     {
         foreach (var position in positions)
         {
@@ -51,7 +51,7 @@ public class RuleTilemapVisualizer : AbstractTilemapVisualizer
     }
 
     // Leave the dungeon undecorated
-    protected override void DecorateDungeon(IEnumerable<Vector2Int> floorPositions)
+    protected void DecorateDungeon(IEnumerable<Vector2Int> floorPositions)
     {
         // TODO Add decorations
     }
