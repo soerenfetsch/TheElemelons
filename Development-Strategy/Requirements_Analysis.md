@@ -16,9 +16,16 @@ The game is designed for casual to midcore players who enjoy fantasy, dungeon cr
 - Accessible user interface and HUD
 
 ### 1.4 Definitions, Acronyms, and Abbreviations
-- **Elemelon**: Magical fruits representing elemental powers (Fire, Water, Earth, Wind).
-- **Mana**: Resource used for casting spells, which regenerates over time.
-- **HUD**: Heads-Up Display, shows health, mana, equipped elements, and items.
+- **Player**: The main character controlled by the user, capable of casting and navigating dungeons.
+- **Spell**: A magical ability created by combining elemental powers, used for combat or interacting with the environment.
+- **Elements**: Basic building blocks for spells; includes Fire, Water, Earth, and Wind.
+- **Enemy**: Non-playable characters that oppose the player, often with elemental strength.
+- **Boss**: A powerful enemy encountered at the end of each dungeon, representing the dungeon's element and guarding an Elemelon.
+- **Dungeons**: Procedurally generated environments where the player encounters enemies, solves puzzles, and collects items.
+- **NPC (Non-Player Character)**: Characters like the King who interact with the player but are not controlled by the player.
+- **Traps**:Environmental hazards that harm or hinder the player, such as spikes or fire pits.
+- **Altar**: An object found in dungeons that restores the player's health when interacted with.
+- **Health**: A resource representing the player's life, displayed as hearts in the HUD.
 
 ### 1.5 Overview
 Players navigate elemental dungeons to retrieve the Elemelons, using unique spell combinations to overcome enemies and obstacles. Each dungeon features themed challenges, leading to a boss battle and the collection of an Elemelon.
@@ -53,10 +60,7 @@ The player takes on the role of a spellcaster tasked with exploring dungeons, us
 10. **Resource Issues**: Optimized CPU and GPU usage.
 
 ### 2.4 Pseudo Requirements
-1. **Technology Choice**: Unity (2022.3.50f1).
-2. **Coding Standards**: Follow established C# conventions.
-3. **Version Control**: Use Git with a structured branching strategy.
-4. **Regular Backups**: Maintain backups of project files and documentation.
+????????????????????????????????????
 
 ---
 
@@ -71,8 +75,8 @@ The player takes on the role of a spellcaster tasked with exploring dungeons, us
 5. **Entering an Elemental Dungeon**
 6. **Navigating Dungeon Traps and Hazards**
 7. **Combat with Elemental Enemies**
-8. **Earth Dungeon Boss Battle: The Golem**
-9. **Collecting the Earth Elemelon and Returning to the King**
+8. **Elemental Dungeon Boss Battle**
+9. **Collecting the Elemental Elemelon and Returning to the King**
 10. **Exploring Other Elemental Dungeons**
 11. **Final Retrieval of All Four Elemelons**
 12. **Entering the Final Battle**
@@ -80,15 +84,9 @@ The player takes on the role of a spellcaster tasked with exploring dungeons, us
 ### 2.5.2 Use Case Model
 
 1. **Starting a New Game**: Player selects "New Game" from the main menu.
-2. **Receiving the Mission**: The king provides the mission to retrieve Elemelons.
-3. **Basic Controls and Spell-Casting Tutorial**: Player learns movement, interaction, and spell-casting.
-4. **Clearing Obstacles with Spells**: Player uses spells to remove obstacles.
-5. **Dungeon Exploration**: Player navigates procedurally generated dungeons.
-6. **Combat with Elemental Enemies**: Player uses elemental spells strategically.
-7. **Boss Battle in the Dungeon**: Player battles the boss to retrieve the Elemelon.
-8. **Collecting and Returning Elemelons**: Player returns Elemelons to the king for rewards.
-9. **Accessing Menus**: Player can access settings, spell information, and HUD.
-10. **Final Battle Setup**: Player prepares to confront the evil witch.
+2. **Basic Controls and Spell-Casting Tutorial**: Player learns movement, interaction, and spell-casting.
+3. **Clearing Obstacles with Spells**: Player uses spells to remove obstacles.
+4. **Accessing Menus**: Player can access settings, spell information, and HUD.
 
 ### 2.5.3 Object Model
 
