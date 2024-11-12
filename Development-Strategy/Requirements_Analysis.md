@@ -4,7 +4,7 @@
 ## 1. Introduction
 
 ### 1.1 Purpose of the System
-*The Elemelons* is a 2D dungeon crawler game where players explore elemental-themed dungeons, battle enemies, and retrieve magical artifacts called Elemelons.
+*The Elemelons* is a 2D dungeon crawler game where players explores elemental-themed dungeons, battles enemies, and retrieves magical artifacts called Elemelons.
 
 ### 1.2 Scope of the System
 The game is designed for casual to midcore players who enjoy fantasy, dungeon crawlers, and pixel art. The player’s goal is to recover all four Elemelons and restore balance to the kingdom.
@@ -16,7 +16,7 @@ The game is designed for casual to midcore players who enjoy fantasy, dungeon cr
 - Accessible user interface and HUD
 
 ### 1.4 Definitions, Acronyms, and Abbreviations
-- **Player**: The main character controlled by the user, capable of casting and navigating dungeons.
+- **Player**: The main character controlled by the user, capable of casting spells and navigating dungeons.
 - **Spell**: A magical ability created by combining elemental powers, used for combat or interacting with the environment.
 - **Elements**: Basic building blocks for spells; includes Fire, Water, Earth, and Wind.
 - **Enemy**: Non-playable characters that oppose the player, often with elemental strength.
