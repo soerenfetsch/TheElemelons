@@ -7,9 +7,9 @@ public class BuffDebuff : MonoBehaviour
 {
     player_movement player_Movement;
     Casting casting;
-    public Animator playerAnimator;
-    public Animator speedBuffAnimator;
-    public Transform speedBuffTransform;
+    Animator playerAnimator;
+    Animator speedBuffAnimator;
+    Transform speedBuffTransform;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +24,6 @@ public class BuffDebuff : MonoBehaviour
         {
             if (player_Movement.speedMultiplier>1)
             {
-                Debug.Log(player_Movement.currentState.HumanName());
-                Debug.Log(player_Movement.currentState == PlayerState.idle);
-                Debug.Log(player_Movement.currentState == PlayerState.stagger);
                 if(player_Movement.currentState!=PlayerState.idle && player_Movement.currentState!=PlayerState.stagger)
                 {
                     speedBuffAnimator.SetBool("run",true);
