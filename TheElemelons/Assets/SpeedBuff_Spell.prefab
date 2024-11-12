@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6040504040626901719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.005635036, y: -0.13472322, z: -0.0036897203}
+  m_LocalPosition: {x: -1.33, y: -0.62, z: -0.0036897203}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaCost: 0.5
-  spellLifeTime: 7
-  moveSpeedFactor: 3
+  spellLifeTime: 30
+  moveSpeedFactor: 2
 --- !u!95 &1272819922048125154
 Animator:
   serializedVersion: 5

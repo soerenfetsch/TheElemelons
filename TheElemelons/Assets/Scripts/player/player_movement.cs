@@ -13,6 +13,7 @@ public enum PlayerState{
 public class player_movement : MonoBehaviour
 {
     public float baseSpeed = 5f;
+    public float speedMultiplier = 1f;
     public float moveSpeed;
     public Rigidbody2D rb;
     public Animator animator;
@@ -32,15 +33,14 @@ public class player_movement : MonoBehaviour
     [Header("Death Effects")]
     public GameObject Death_Effect;
     private float deathEffectDelay = 1f;
-    [Header("Internal Stuff")]
-    public bool speedBuff = false;
+
     void Start(){
-        currentState = PlayerState.walk;
+        currentState = PlayerState.idle;
         animator.SetFloat("Horizontal",0);
         animator.SetFloat("Vertical",-1);
         health = maxhealth;
         iFrames = false;
-        moveSpeed = baseSpeed;
+        moveSpeed = baseSpeed*speedMultiplier;
     }
     // Update is called once per frame
     void Update()
@@ -63,14 +63,23 @@ public class player_movement : MonoBehaviour
         {
             wand_animator.SetBool("RaiseWand",false);
         }
+        //is player walking or idle
+        if (currentState != PlayerState.stagger && Mathf.Abs(movement.x) >0 || Mathf.Abs(movement.y) >0)
+        {
+            currentState = PlayerState.walk;
+        }else if(currentState != PlayerState.stagger && movement.x==0 && movement.y==0)
+        {
+            currentState = PlayerState.idle;
+        }
     }
 
     void FixedUpdate(){
+        moveSpeed = baseSpeed*speedMultiplier;
         //Physics
         if (movement!=UnityEngine.Vector2.zero && currentState != PlayerState.stagger)
         {
             movement.Normalize();
-                rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
+            rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
             animator.SetFloat("Horizontal",movement.x);
             animator.SetFloat("Vertical",movement.y);
             

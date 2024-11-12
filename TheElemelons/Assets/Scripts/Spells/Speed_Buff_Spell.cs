@@ -12,38 +12,19 @@ public class Speed_Buff_Spell : SpellEffect
     public float moveSpeedFactor = 1.5f;
     GameObject player;
     Transform playerTransform;
-    Animator playerAnimator;
     Animator animator;
-    player_movement player_Movement;
+    BuffDebuff buffDebuff;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
-        playerTransform = player.transform;
-        playerAnimator = player.GetComponent<Animator>();
-        StartCoroutine(speedBoost());
-        player_Movement = player.GetComponent<player_movement>();
+        playerTransform = player.GetComponent<Transform>();
         animator = gameObject.GetComponent<Animator>();
+        buffDebuff = player.GetComponent<BuffDebuff>();
+        buffDebuff.speedBuff(moveSpeedFactor,spellLifeTime,gameObject);
     }
     void FixedUpdate(){
-        Debug.Log(player_Movement.currentState.HumanName());
-        Debug.Log(animator.GetBool("run"));
-        if(player_Movement.currentState!=PlayerState.idle && player_Movement.currentState!=PlayerState.stagger)
-        {
-            transform.position = playerTransform.position;
-            animator.SetBool("run",true);
-            animator.SetFloat("Horizontal",playerAnimator.GetFloat("Horizontal"));
-            animator.SetFloat("Vertical",playerAnimator.GetFloat("Vertical"));
-        }else{
-            animator.SetBool("false",false);
-        }    
+        transform.position = playerTransform.position;
     }
-
-    IEnumerator speedBoost(){
-        //TODO: Change this buff system so that player cant buff himself into oblivion
-        player_Movement.moveSpeed *= moveSpeedFactor;
-        yield return new WaitForSeconds(spellLifeTime);
-        player_Movement.moveSpeed /= moveSpeedFactor;
-        Destroy(gameObject);
-    }
+    
 }
