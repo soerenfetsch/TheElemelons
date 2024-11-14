@@ -17,7 +17,7 @@
     - [3.7 UI System](#37-ui-system)
     - [3.8 NPC Interaction System](#38-npc-interaction-system)
   - [4. Class Relationship and Data Flow](#4-class-relationship-and-data-flow)
-    - [4.1 TODO: Class Diagram](#41-todo-class-diagram)
+    - [4.1 Class Diagram](#41-class-diagram)
   - [5. Sequences](#5-sequences)
     - [5.1 TODO: Gameplay Loop](#51-todo-gameplay-loop)
     - [5.2 TODO: Combat Sequence](#52-todo-combat-sequence)
@@ -133,6 +133,7 @@ The most important aspects of our object-oriented architecture include:
   - **UIManager**: Manages the HUD, main menus and settings screens
   - **HealthBar**: Displays the health points of the player
   - **ManaBar**: Displays the mana stars of the player
+  - **SpellChargeDisplay**: Shows the spell charges displayed above the players head
 - Interactions:
   - UIManager updates the health and mana elements based on changes of Player Health/Mana
   - Main Menus and settings can be navigated using the InputManager
@@ -149,7 +150,9 @@ The most important aspects of our object-oriented architecture include:
 
 ## 4. Class Relationship and Data Flow
 
-### 4.1 TODO: Class Diagram
+### 4.1 Class Diagram
+
+![Class Diagram](class-diagram.png)
 
 ## 5. Sequences
 
