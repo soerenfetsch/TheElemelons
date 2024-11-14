@@ -19,9 +19,9 @@
   - [4. Class Relationship and Data Flow](#4-class-relationship-and-data-flow)
     - [4.1 Class Diagram](#41-class-diagram)
   - [5. Sequences](#5-sequences)
-    - [5.1 TODO: Gameplay Loop](#51-todo-gameplay-loop)
-    - [5.2 TODO: Combat Sequence](#52-todo-combat-sequence)
-    - [5.3 TODO: Dialogue Interaction](#53-todo-dialogue-interaction)
+    - [5.1 Player Movement](#51-player-movement)
+    - [5.2 Combat Sequence](#52-combat-sequence)
+    - [5.3 Dungeon Generation](#53-dungeon-generation)
   - [6. Future Expansions](#6-future-expansions)
   - [7. Appendix](#7-appendix)
 
@@ -156,12 +156,20 @@ The most important aspects of our object-oriented architecture include:
 
 ## 5. Sequences
 
-### 5.1 TODO: Gameplay Loop
+### 5.1 Player Movement
 
-### 5.2 TODO: Combat Sequence
+![Player Movement Sequence](playermovement-sequence-diagram.png)
 
-### 5.3 TODO: Dialogue Interaction
+### 5.2 Combat Sequence
+
+![Combat Sequence](combat-sequence-diagram.png)
+
+### 5.3 Dungeon Generation
+
+![Dungeon Generation Sequence](dungeon-generation-sequence-diagram.png)
 
 ## 6. Future Expansions
+
+- 5.4 Dialogue Interaction Sequence and Dialog Requirements
 
 ## 7. Appendix
