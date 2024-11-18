@@ -53,11 +53,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - The **GameSaveProvider** must support saving and loading game states, allowing players to resume their adventure seamlessly.
 - Players should be able to save at specific checkpoints and have multiple save slots for different playthroughs.
 
-### 2.2 User Stories
-- **As a player**, I want to explore dungeons with elemental puzzles so that I can retrieve magical Elemelons and progress the story.
-- **As a player**, I want to engage in strategic combat with enemies using elemental spells to overcome different challenges.
-- **As a player**, I want to interact with NPCs to learn more about the lore and receive quests that guide my adventure.
-
 ## 3. Non-Functional Requirements
 
 ### 3.1 Performance
