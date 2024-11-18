@@ -95,8 +95,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - The game will primarily target **Windows** operating systems.
 - Development tools like **Git** for version control, **Trello** for task management, and **Lucidchart** for diagram creation will be used to ensure efficient project tracking and collaboration.
 
----
-
 ## 5. Scenarios
 
 1. **Starting the Game and Selecting New Game**
@@ -111,8 +109,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 10. **Exploring Other Elemental Dungeons**
 11. **Final Retrieval of All Four Elemelons**
 12. **Entering the Final Battle**
-
----
 
 ### 6. Use Case Model
 
@@ -145,8 +141,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Settings Menu**: Adjust sound, controls, and visual effects.
 - **Grimoire (Spellbook)**: Review spell combinations and effects.
 - **Interaction with King**: Dialogue with king when returning Elemelons.
-
----
 
 ## 7. Glossary
 - **Elemelons**: Magical artifacts representing elemental powers that players must collect.
