@@ -105,7 +105,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 11. **Final Retrieval of All Four Elemelons**
 12. **Entering the Final Battle**
 
-### 6. Use Case Model
+## 6. Use Case Model
 
 1. **Starting a New Game**: Player selects "New Game" from the main menu.
 2. **Basic Controls and Spell-Casting Tutorial**: Player learns movement, interaction, and spell-casting.
