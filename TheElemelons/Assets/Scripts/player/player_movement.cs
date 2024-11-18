@@ -15,6 +15,12 @@ public class player_movement : MonoBehaviour
     public float baseSpeed = 5f;
     public float speedMultiplier = 1f;
     public float moveSpeed;
+    
+    [Header("Hurtbox")]
+    public BoxCollider2D hurtbox;
+    
+
+    [Header("Internal Stuff")]
     public Rigidbody2D rb;
     public Animator animator;
     public Animator wand_animator;
@@ -22,23 +28,15 @@ public class player_movement : MonoBehaviour
     UnityEngine.Vector2 mousePos; 
     public Camera cam; 
     public PlayerState currentState;
-    public float maxhealth = 3;
-    public float health;
     public bool iFrames;
     public float iFramesTime = 0.3f;
-    
-    [Header("Hurtbox")]
-    public BoxCollider2D hurtbox;
-    
-    [Header("Death Effects")]
-    public GameObject Death_Effect;
-    private float deathEffectDelay = 1f;
+    public Health_UI health_UI;
 
     void Start(){
         currentState = PlayerState.idle;
         animator.SetFloat("Horizontal",0);
         animator.SetFloat("Vertical",-1);
-        health = maxhealth;
+        
         iFrames = false;
         moveSpeed = baseSpeed*speedMultiplier;
     }
@@ -100,7 +98,7 @@ public class player_movement : MonoBehaviour
         animator.SetTrigger("Stagger_trig");
         wand_animator.SetBool("RaiseWand",false);
         StartCoroutine(KnockCo(knockTime));
-        TakeDamage(damage);
+        health_UI.TakeDamage(damage);
     }
     private IEnumerator KnockCo(float knockTime){
         if (rb !=null )
@@ -115,24 +113,7 @@ public class player_movement : MonoBehaviour
         }
     }
     
-    private void TakeDamage(float damage)
-    {
-        this.GetComponent<Health_UI>().hurt();
-        health -= damage;
-        if(health <= 0)
-        {
-            this.GetComponent<Health_UI>().dead();
-            DeathEffect();
-            this.gameObject.SetActive(false);
-        }
-    }
+   
 
-    private void DeathEffect()
-    {
-        if(Death_Effect != null)
-        {
-            GameObject effect = Instantiate(Death_Effect, transform.position, UnityEngine.Quaternion.identity);
-            Destroy(effect, deathEffectDelay);
-        }
-    }
+    
 }

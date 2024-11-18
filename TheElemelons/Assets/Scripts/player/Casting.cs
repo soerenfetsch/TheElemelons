@@ -42,6 +42,7 @@ public class Casting : MonoBehaviour
     public GameObject fireFireSpell;
     public GameObject windSpell;
     public GameObject fireEarthSpell;
+    public GameObject fireWindSpell;
     public float manaCost = 1f;
     public Dictionary<ChargeTuple,GameObject> chargeToSpell = new Dictionary<ChargeTuple,GameObject>();
     [Header("Internal Stuff")]
@@ -56,11 +57,11 @@ public class Casting : MonoBehaviour
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire),fireFireSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind,ChargeTypes.notype),windSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.earth),fireEarthSpell);
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.wind),fireWindSpell);
         determineSpell();        
     }
     
     void determineSpell(){
-        Debug.Log("Spell found = "+ chargeToSpell.ContainsKey(currentCharges));
         if(chargeToSpell.ContainsKey(currentCharges)){
             currentSpell = chargeToSpell[currentCharges];
             manaCost = currentSpell.GetComponent<SpellEffect>().manaCost;
@@ -236,9 +237,6 @@ public class ChargeTuple{
         }
         ChargeTuple chargeObj= (ChargeTuple)obj;
         // TODO: write your implementation of Equals() here
-        Debug.Log("ping");
-        Debug.Log(charge1==chargeObj.first() && charge2==chargeObj.second());
-        Debug.Log(charge2==chargeObj.first() && charge1==chargeObj.second());
         if ((charge1==chargeObj.first() && charge2==chargeObj.second()) 
         ||(charge2==chargeObj.first() && charge1==chargeObj.second()))
         {

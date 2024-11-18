@@ -5,13 +5,13 @@ using UnityEngine;
 public class Bomb_Spell : SpellEffect
 {
     public float blinkTime = 0.1f;
-    GameObject blink;
+    Animator blinkingAnimator;
     int blinked = 0;
     public GameObject explosion;
     // Start is called before the first frame update
     void Start()
     {
-        blink = gameObject.transform.GetChild(1).gameObject;
+        blinkingAnimator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -27,9 +27,9 @@ public class Bomb_Spell : SpellEffect
     public IEnumerator BlinkTime(){
         if (blinked<=3)
         {
-            blink.SetActive(true);
+            blinkingAnimator.SetTrigger("blink");
             yield return new WaitForSeconds(blinkTime);
-            blink.SetActive(false);
+            blinkingAnimator.SetTrigger("blink");
             blinked += 1;
         }
         

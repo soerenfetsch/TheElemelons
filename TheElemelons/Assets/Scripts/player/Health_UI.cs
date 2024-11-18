@@ -5,27 +5,28 @@ using UnityEngine.UI;
 
 public class Health_UI : MonoBehaviour
 {
-    float health;
-    float maxhealth;
+    
+    public float maxhealth = 3;
+    public float health;
     public Image[] hearts;
     public Sprite heart0;
     public Sprite heart1;
     public Sprite heart2;
     public Sprite heart3;
     public Sprite heart4;
-    
+    [Header("Death Effects")]
+    public GameObject Death_Effect;
+    private float deathEffectDelay = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
-        maxhealth = this.GetComponent<player_movement>().maxhealth;
-        health = this.GetComponent<player_movement>().health;
+        health = maxhealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        health = this.GetComponent<player_movement>().health;
         for (int i = 0; i < hearts.Length; i++)
         {
             //number of heart containers
@@ -84,6 +85,26 @@ public class Health_UI : MonoBehaviour
         for (int i = 0; i < hearts.Length; i++)
         {
             hearts[i].GetComponent<Animator>().SetFloat("fullness",0);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        this.GetComponent<Health_UI>().hurt();
+        health -= damage;
+        if(health <= 0)
+        {
+            this.GetComponent<Health_UI>().dead();
+            DeathEffect();
+            this.gameObject.SetActive(false);
+        }
+    }
+    private void DeathEffect()
+    {
+        if(Death_Effect != null)
+        {
+            GameObject effect = Instantiate(Death_Effect, transform.position, UnityEngine.Quaternion.identity);
+            Destroy(effect, deathEffectDelay);
         }
     }
 }

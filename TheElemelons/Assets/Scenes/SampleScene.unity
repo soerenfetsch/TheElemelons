@@ -454,6 +454,7 @@ MonoBehaviour:
   fireFireSpell: {fileID: 3000478752136597317, guid: 0aa55fda04b778d449cd6d0ea1c0d651, type: 3}
   windSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
   fireEarthSpell: {fileID: 4447563541554284740, guid: 52c94c63e032eb04ab14aaa15682a2f7, type: 3}
+  fireWindSpell: {fileID: 8996494653879075915, guid: c7fa1788577faa344bc3e20b68f55849, type: 3}
   manaCost: 0.25
   current_regenspeed: 0
   justCasted: 0
@@ -7965,7 +7966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  maxHealth: 4.4
+  maxHealth: 6
   enemyName: tree guy
   baseAttack: 0.25
   moveSpeed: 1
