@@ -43,6 +43,7 @@ public class Casting : MonoBehaviour
     public GameObject windSpell;
     public GameObject fireEarthSpell;
     public GameObject fireWindSpell;
+    public GameObject earthWindSpell;
     public float manaCost = 1f;
     public Dictionary<ChargeTuple,GameObject> chargeToSpell = new Dictionary<ChargeTuple,GameObject>();
     [Header("Internal Stuff")]
@@ -58,6 +59,7 @@ public class Casting : MonoBehaviour
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind,ChargeTypes.notype),windSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.earth),fireEarthSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.wind),fireWindSpell);
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.earth,ChargeTypes.wind),earthWindSpell);
         determineSpell();        
     }
     
@@ -103,22 +105,22 @@ public class Casting : MonoBehaviour
         //charges
         if (currentCharges.Count()<=maxCharges)
         {
-            if(Input.GetKeyDown(KeyCode.Alpha1)){
+            if(Input.GetKeyDown(KeyCode.Alpha1) && currentCharges.Count()<2){
                 currentCharges.Add(ChargeTypes.fire);
                 wandAnimator.SetBool("Charge",true);
                 loadChargeSprite(fireSprite);
             }
-            if(Input.GetKeyDown(KeyCode.Alpha2)){
+            if(Input.GetKeyDown(KeyCode.Alpha2) && currentCharges.Count()<2){
                 currentCharges.Add(ChargeTypes.water);
                 wandAnimator.SetBool("Charge",true);
                 loadChargeSprite(waterSprite);
             }
-            if(Input.GetKeyDown(KeyCode.Alpha3)){
+            if(Input.GetKeyDown(KeyCode.Alpha3) && currentCharges.Count()<2){
                 currentCharges.Add(ChargeTypes.earth);
                 wandAnimator.SetBool("Charge",true);
                 loadChargeSprite(earthSprite);
             }
-            if(Input.GetKeyDown(KeyCode.Alpha4)){
+            if(Input.GetKeyDown(KeyCode.Alpha4) && currentCharges.Count()<2){
                 currentCharges.Add(ChargeTypes.wind);
                 wandAnimator.SetBool("Charge",true);
                 loadChargeSprite(windSprite);

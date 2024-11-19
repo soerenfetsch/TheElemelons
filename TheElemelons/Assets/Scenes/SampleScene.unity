@@ -221,7 +221,6 @@ GameObject:
   - component: {fileID: 337011287}
   - component: {fileID: 337011288}
   - component: {fileID: 337011289}
-  - component: {fileID: 337011290}
   - component: {fileID: 337011291}
   - component: {fileID: 337011292}
   - component: {fileID: 337011293}
@@ -248,17 +247,15 @@ MonoBehaviour:
   baseSpeed: 5
   speedMultiplier: 1
   moveSpeed: 5
+  hurtbox: {fileID: 337011291}
   rb: {fileID: 337011284}
   animator: {fileID: 337011287}
   wand_animator: {fileID: 567773749}
   cam: {fileID: 519420031}
   currentState: 0
-  maxhealth: 3
-  health: 0
   iFrames: 0
   iFramesTime: 0.3
-  hurtbox: {fileID: 337011291}
-  Death_Effect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
+  health_UI: {fileID: 337011292}
 --- !u!50 &337011284
 Rigidbody2D:
   serializedVersion: 4
@@ -455,21 +452,10 @@ MonoBehaviour:
   windSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
   fireEarthSpell: {fileID: 4447563541554284740, guid: 52c94c63e032eb04ab14aaa15682a2f7, type: 3}
   fireWindSpell: {fileID: 8996494653879075915, guid: c7fa1788577faa344bc3e20b68f55849, type: 3}
+  earthWindSpell: {fileID: 8988022091583130409, guid: 1ef865256624ae44cb358de10bacd922, type: 3}
   manaCost: 0.25
   current_regenspeed: 0
   justCasted: 0
---- !u!114 &337011290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337011282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 553d78a586f9366468efa7b7391ff266, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &337011291
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -527,6 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a216a9e553c70584f9feece5ae970af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxhealth: 3
+  health: 3
   hearts:
   - {fileID: 1404478820}
   - {fileID: 862460629}
@@ -537,6 +525,7 @@ MonoBehaviour:
   heart2: {fileID: -1651302757, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   heart3: {fileID: -379885618, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   heart4: {fileID: 152876513, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  Death_Effect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
 --- !u!114 &337011293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7416,7 +7405,7 @@ Transform:
   m_GameObject: {fileID: 1158424689}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.06, z: 0}
+  m_LocalPosition: {x: 0, y: 0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -122,7 +122,6 @@ public class tree_log : Enemy {
                 
                 hit.GetComponent<player_movement>().currentState = PlayerState.stagger;
                 other.GetComponent<player_movement>().Knock(knockTime, baseAttack);
-
                 myRigidbody.AddForce(-difference/2, ForceMode2D.Impulse);
                 Knock(myRigidbody,0.1f,0,ChargeTypes.notype);
             }

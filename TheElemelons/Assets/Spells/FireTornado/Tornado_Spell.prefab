@@ -323,7 +323,7 @@ MonoBehaviour:
   manaCost: 1
   spellLifeTime: 10
   spellDeathTime: 0.5
-  moveSpeed: 5
+  moveSpeed: 2
   aggroRange: 7
   thrust: 10
   knockTime: 0.5
