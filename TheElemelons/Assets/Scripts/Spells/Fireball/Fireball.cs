@@ -26,6 +26,7 @@ public class Fireball : SpellEffect
     // Start is called before the first frame update
     void Start()
     {
+        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire);
         currentState = FireballState.creating;
         castPoint = GameObject.Find("Player/Aim/Casting_Point").transform;
         transform.rotation = castPoint.rotation;

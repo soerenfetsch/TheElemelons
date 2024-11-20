@@ -10,14 +10,23 @@ public class FireballExplosion : MonoBehaviour
     public float thrust = 7f;
     public float knockTime = 0.4f;
     public float damage = 2f;
-    public ChargeTypes spellType = ChargeTypes.fire;
-
+    public ChargeTuple spellType;
+    [Header("Internal Stuff")]
+    bool allow = false;    
+    public void Start(){
+        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire);
+        StartCoroutine(Allow());
+    }
+    private IEnumerator Allow(){
+        yield return new WaitForSeconds(0.01f);
+        allow = true;
+    }
     public void SelfDestruct(){
         Destroy(gameObject);
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().currentState != EnemyState.stagger)
+        if (allow && other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().currentState != EnemyState.stagger)
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
             if(hit != null)

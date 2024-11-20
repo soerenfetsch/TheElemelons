@@ -7,12 +7,13 @@ public class Damage_Collider : MonoBehaviour
     float thrust;
     float knockTime;
     float damage;
-    ChargeTypes spellType;
     FireTornado_Spell fireTornado_Spell;
     Transform tornadoTransform;
+    ChargeTuple spellType;
     // Start is called before the first frame update
     void Start()
     {
+        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.wind);
         fireTornado_Spell = transform.parent.GetComponent<FireTornado_Spell>();
         tornadoTransform = transform.parent.transform;
         thrust = fireTornado_Spell.thrust;

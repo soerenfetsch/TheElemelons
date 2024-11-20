@@ -17,6 +17,7 @@ public class Speed_Buff_Spell : SpellEffect
     // Start is called before the first frame update
     void Start()
     {
+        spellType = new ChargeTuple(ChargeTypes.notype,ChargeTypes.notype);
         player = GameObject.Find("Player");
         playerTransform = player.GetComponent<Transform>();
         animator = gameObject.GetComponent<Animator>();

@@ -12,6 +12,7 @@ public class Bomb_Spell : SpellEffect
     void Start()
     {
         blinkingAnimator = gameObject.GetComponent<Animator>();
+        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.earth);
     }
 
     // Update is called once per frame

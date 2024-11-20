@@ -16,7 +16,6 @@ public class ShardCloud : SpellEffect
     public float thrust = 5f;
     public float damage = 0.25f;
     public float knockTime = 0.5f;
-    public ChargeTypes spellType = ChargeTypes.earth;
     [Header("Internal Stuff")]
     Transform playerTransform;
     GameObject[] Shards;
@@ -25,6 +24,7 @@ public class ShardCloud : SpellEffect
     Transform pivot;
     void Start()
     {
+        spellType = new ChargeTuple(ChargeTypes.wind,ChargeTypes.earth);
         shardDelay = 1/(frequency*((float)shardCount));
         playerTransform = GameObject.Find("Player").transform;
         castPoint = GameObject.Find("Player/Aim/Casting_Point").transform;
@@ -35,6 +35,7 @@ public class ShardCloud : SpellEffect
 
     }
     private IEnumerator shardCreation(){
+        yield return new WaitForSeconds(0.1f);
         Vector3 spawnPos;
         spawnPos = castPoint.position - pivot.position;
         spawnPos.Normalize();
@@ -43,6 +44,7 @@ public class ShardCloud : SpellEffect
         {
             Shards[i] = Instantiate(shardEffect, spawnPos ,Quaternion.Euler(0,0,0));
             Shards[i].GetComponent<Shard>().spellLifeTime = spellLifeTime;
+            Shards[i].GetComponent<Shard>().spellType = spellType;
             yield return new WaitForSeconds(shardDelay);
         }
     }

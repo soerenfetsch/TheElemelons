@@ -13,7 +13,6 @@ public class FireTornado_Spell : SpellEffect
     public float thrust = 7f;
     public float knockTime = 0.4f;
     public float damage = 2f;
-    public ChargeTypes spellType = ChargeTypes.fire;
     [Header("Linked Components")]
     Rigidbody2D myRigidbody;
     Transform castPoint;
@@ -25,6 +24,7 @@ public class FireTornado_Spell : SpellEffect
     public float correctionFactor = 0.3f;
     void Start()
     {
+        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.wind);
         aggroRange = transform.GetComponentInChildren<CircleCollider2D>().radius;
         myRigidbody = gameObject.GetComponent<Rigidbody2D>();
         castPoint = GameObject.Find("Player/Aim/Casting_Point").transform;

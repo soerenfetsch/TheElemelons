@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ public class Enemy : MonoBehaviour {
 
     public float weaknessResistanceFactor = 0.2f;
 
-    
+   
     private void Awake()
     {
         health = maxHealth;
@@ -66,7 +67,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage, ChargeTypes attackType)
+    public void Knock(Rigidbody2D myRigidbody, float knockTime, float damage, ChargeTuple attackType)
     {
         currentState = EnemyState.stagger;
         myRigidbody.GetComponent<Animator>().SetBool("Stagger",true);
@@ -90,45 +91,28 @@ public class Enemy : MonoBehaviour {
 
 //computes modifier depending on own type and suffered attack type
 // water beats fire beats earth beats wind
-    float typeWeaknessResistanceCalc(ChargeTypes attackType){
+    float typeWeaknessResistanceCalc(ChargeTuple attackType){
+        Debug.Log("attackType "+ attackType.first().HumanName()+" "+attackType.second().HumanName());
+        Debug.Log("Has wind "+attackType.HasHowMany(ChargeTypes.wind));
+        Debug.Log("Has fire "+attackType.HasHowMany(ChargeTypes.fire));
+        Debug.Log("Has water "+attackType.HasHowMany(ChargeTypes.water));
+        Debug.Log("Has earth "+attackType.HasHowMany(ChargeTypes.earth));
+        Debug.Log("Has notype "+attackType.HasHowMany(ChargeTypes.notype));
+        float modifier = 1;
         if (type == ChargeTypes.water){
-            if(attackType == ChargeTypes.wind){
-                //is weak, thus more damage
-                return 1+weaknessResistanceFactor;
-            }else if(attackType == ChargeTypes.fire)
-            {
-                //is resistance, thus less damage
-                return 1-weaknessResistanceFactor;
-            }
+            modifier += weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.wind);
+            modifier -= weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.fire);
         }else if (type == ChargeTypes.fire){
-            if(attackType == ChargeTypes.water){
-                //is weak, thus more damage
-                return 1+weaknessResistanceFactor;
-            }else if(attackType == ChargeTypes.earth)
-            {
-                //is resistance, thus less damage
-                return 1-weaknessResistanceFactor;
-            }
+            modifier += weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.water);
+            modifier -= weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.earth);
         }else if (type == ChargeTypes.earth){
-            if(attackType == ChargeTypes.fire){
-                //is weak, thus more damage
-                return 1+weaknessResistanceFactor;
-            }else if(attackType == ChargeTypes.wind)
-            {
-                //is resistance, thus less damage
-                return 1-weaknessResistanceFactor;
-            }
+            modifier += weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.fire);
+            modifier -= weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.wind);
         }else if (type == ChargeTypes.wind){
-            if(attackType == ChargeTypes.earth){
-                //is weak, thus more damage
-                return 1+weaknessResistanceFactor;
-            }else if(attackType == ChargeTypes.water)
-            {
-                //is resistance, thus less damage
-                return 1-weaknessResistanceFactor;
-            }
+            modifier += weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.earth);
+            modifier -= weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.water);
         }
-
-        return 1;
+        Debug.Log(modifier);
+        return modifier;
     }
 }

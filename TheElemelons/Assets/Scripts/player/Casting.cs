@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Text;
 using System;
 using System.Linq;
+using System.Xml;
 public enum ChargeTypes{
     fire, 
     water, 
@@ -147,10 +148,10 @@ public class Casting : MonoBehaviour
         if(canCast){
         mana = Mathf.Clamp(mana-manaCost,0f,maxMana);
         GetComponent<Mana_UI>().hurt();
+        Instantiate(currentSpell, castpoint.position,Quaternion.Euler(0,0,0));
         currentCharges.Clear();
         loadChargeSprite(earthSprite); //loads null as current charges lenth 0
         justCasted = true;
-        Instantiate(currentSpell, castpoint.position,Quaternion.Euler(0,0,0));
         }
     }
 
@@ -222,6 +223,18 @@ public class ChargeTuple{
     }
     public ChargeTypes second(){
         return charge2;
+    }
+    public float HasHowMany(ChargeTypes other){
+        float count = 0;
+        if (charge1.HumanName() == other.HumanName())
+        {   
+            count++;
+        }
+        if (charge2.HumanName() == other.HumanName())
+        {   
+            count++;
+        }
+        return count;
     }
     // override object.Equals
     public override bool Equals(object obj)

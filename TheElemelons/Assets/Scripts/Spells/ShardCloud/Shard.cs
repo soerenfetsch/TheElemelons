@@ -10,7 +10,6 @@ public class Shard : MonoBehaviour
     Transform pivot;
     public ShardCloud shardCloud;
     float radius;
-    float angle = 0f;
     float rotationSpeed;
     Animator animator;
     public float deathTime = 0.4f; 
@@ -18,13 +17,13 @@ public class Shard : MonoBehaviour
     Rigidbody2D myRigidBody;
     public float spellLifeTime;
     bool dying = false;
-
     float thrust;
     float damage;
     float knockTime;
-    ChargeTypes spellType;
+    public ChargeTuple spellType;
     void Start()
     {
+        spellType = new ChargeTuple(ChargeTypes.wind,ChargeTypes.earth);
         pivot = GameObject.Find("Player").transform;
         animator = gameObject.GetComponent<Animator>();
         radius = shardCloud.radius;
@@ -34,7 +33,6 @@ public class Shard : MonoBehaviour
         thrust = shardCloud.thrust;
         damage = shardCloud.damage;
         knockTime = shardCloud.knockTime;
-        spellType = shardCloud.spellType;
         StartCoroutine(TimedDestruction());
     }
     

@@ -8,11 +8,11 @@ public class SimpleSpell : SpellEffect
     public float thrust = 1f;
     public float knockTime = 0.2f;
     public float damage = 0f;
-    public ChargeTypes spellType = ChargeTypes.notype;
     public float delay = 0.2f;
     bool delaydone = false;
     // Start is called before the first frame update
     void Start (){
+        spellType = new ChargeTuple(ChargeTypes.notype,ChargeTypes.notype);
         StartCoroutine(Delay());
         StartCoroutine(SelfDestruct());
     }
