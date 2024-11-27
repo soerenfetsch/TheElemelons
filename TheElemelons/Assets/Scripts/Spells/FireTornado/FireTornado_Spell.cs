@@ -6,7 +6,7 @@ public class FireTornado_Spell : SpellEffect
 {
     [Header("Movement")]
     public float spellLifeTime = 3f;
-    public float spellDeathTime = 1f;
+    public float spellDeathTime = 0.3f;
     public float moveSpeed = 1f;
     public float aggroRange;
     [Header("Hit")]
@@ -22,8 +22,10 @@ public class FireTornado_Spell : SpellEffect
     [Header("Internal Stuff")]
     Vector2 direction;
     public float correctionFactor = 0.3f;
+    Animator animator;
     void Start()
     {
+        animator = gameObject.GetComponent<Animator>();
         spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.wind);
         aggroRange = transform.GetComponentInChildren<CircleCollider2D>().radius;
         myRigidbody = gameObject.GetComponent<Rigidbody2D>();
@@ -58,6 +60,7 @@ public class FireTornado_Spell : SpellEffect
     }
     
     public IEnumerator SelfDestroy(){
+        animator.SetTrigger("Disappear");
         Destroy(gameObject,spellDeathTime);
         yield return null;
     }

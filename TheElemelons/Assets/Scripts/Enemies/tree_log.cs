@@ -118,10 +118,9 @@ public class tree_log : Enemy {
             {
                 Vector2 difference = hit.transform.position - transform.position;
                 difference = difference.normalized * thrust;
-                hit.AddForce(difference, ForceMode2D.Impulse);
-                
-                hit.GetComponent<player_movement>().currentState = PlayerState.stagger;
-                other.GetComponent<player_movement>().Knock(knockTime, baseAttack);
+
+                other.GetComponent<player_movement>().Knock(knockTime, baseAttack, difference);
+
                 myRigidbody.AddForce(-difference/2, ForceMode2D.Impulse);
                 Knock(myRigidbody,0.1f,0,new ChargeTuple());
             }

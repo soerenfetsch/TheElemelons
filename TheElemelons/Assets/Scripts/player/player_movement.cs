@@ -43,24 +43,9 @@ public class player_movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Input
-        //Movement
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        animator.SetFloat("Speed",movement.sqrMagnitude);    
-        
         //Aiming
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition); 
-
-        //Raise Wand
-        if (Input.GetMouseButtonDown(0) && !wand_animator.GetBool("RaiseWand") && currentState != PlayerState.stagger)
-        {
-            wand_animator.SetBool("RaiseWand",true);
-        } 
-        if (Input.GetMouseButtonUp(0) && wand_animator.GetBool("RaiseWand"))
-        {
-            wand_animator.SetBool("RaiseWand",false);
-        }
+        
         //is player walking or idle
         if (currentState != PlayerState.stagger && Mathf.Abs(movement.x) >0 || Mathf.Abs(movement.y) >0)
         {
@@ -70,8 +55,15 @@ public class player_movement : MonoBehaviour
             currentState = PlayerState.idle;
         }
     }
+    void OnInputMove()
+    {
+        //Input
+        //Movement
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        animator.SetFloat("Speed",movement.sqrMagnitude);    
 
-    void FixedUpdate(){
+
         moveSpeed = baseSpeed*speedMultiplier;
         //Physics
         if (movement!=UnityEngine.Vector2.zero && currentState != PlayerState.stagger)
@@ -85,22 +77,26 @@ public class player_movement : MonoBehaviour
             wand_animator.SetFloat("Vertical",movement.y);
             
         }
+    }
+
+    void FixedUpdate(){
+        OnInputMove();
         //Aiming
         UnityEngine.Vector2 aim_dir = mousePos-rb.position;
         float angle = Mathf.Atan2(aim_dir.y,aim_dir.x)*Mathf.Rad2Deg -90f;
-        
-        
-
     }
 
-    public void Knock(float knockTime, float damage){
+    public void Knock(float knockTime, float damage, UnityEngine.Vector2 difference){
+        StartCoroutine(OnKnockbackMoveCo(knockTime,difference));
+        health_UI.SubtractHealth(damage);
+    }
+    private IEnumerator OnKnockbackMoveCo(float knockTime, UnityEngine.Vector2 difference){
+        rb.AddForce(difference, ForceMode2D.Impulse);
+        currentState = PlayerState.stagger;
+
         animator.SetBool("Stagger",true);
         animator.SetTrigger("Stagger_trig");
         wand_animator.SetBool("RaiseWand",false);
-        StartCoroutine(KnockCo(knockTime));
-        health_UI.TakeDamage(damage);
-    }
-    private IEnumerator KnockCo(float knockTime){
         if (rb !=null )
         {
             iFrames = true;

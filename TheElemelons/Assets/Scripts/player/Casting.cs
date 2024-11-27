@@ -23,11 +23,9 @@ public class Casting : MonoBehaviour
     public Animator wandAnimator;
     [Header("Mana Management")]
     bool canCast;
-    public float maxMana = 5f;
-    public float mana;
-    public float manaPerRegen = 0.25f;
-    public float manaRegenSpeed = 0.2f;
-    bool gameRunning = true;
+    float mana;
+    float maxMana;
+    Mana_UI manaScript;
     [Header("Charges")]
     public int maxCharges = 2;
     ChargeTuple currentCharges = new ChargeTuple();
@@ -48,13 +46,13 @@ public class Casting : MonoBehaviour
     public float manaCost = 1f;
     public Dictionary<ChargeTuple,GameObject> chargeToSpell = new Dictionary<ChargeTuple,GameObject>();
     [Header("Internal Stuff")]
-    public float current_regenspeed;
-    public bool justCasted = false;
+    player_movement player_Movement;
     void Start(){
-        current_regenspeed = manaRegenSpeed;
-        mana = maxMana;
-        StartCoroutine(ManaRegen());
-        currentCharges.Clear();
+        player_Movement = gameObject.GetComponent<player_movement>();
+        manaScript = gameObject.GetComponent<Mana_UI>();
+        maxMana = manaScript.maxMana;
+        mana = manaScript.mana;
+        ClearCharges();
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype,ChargeTypes.notype),noChargeSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire),fireFireSpell);
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind,ChargeTypes.notype),windSpell);
@@ -81,28 +79,29 @@ public class Casting : MonoBehaviour
             canCast = false;
         }
     }
-    private IEnumerator ManaRegen(){
-        while(gameRunning){
-            if (mana<=0.25)
-            {
-                yield return new WaitForSeconds(current_regenspeed*2);
-            }else if (justCasted)
-            {
-                justCasted = false;
-                yield return new WaitForSeconds(current_regenspeed);
-            }
-            yield return new WaitForSeconds(current_regenspeed);
-            mana = Mathf.Clamp(mana+manaPerRegen,0f,maxMana);
-        }
-    }
     void Update()
     {
-        
+        mana = manaScript.mana;
+        //sparkles of wand
         wandAnimator.SetBool("CanCast",canCast);
+        //cast
         if (Input.GetMouseButtonDown(0)){
-            Cast();
+            CastSpell();
         }
-
+        //Raise Wand 
+        if (Input.GetMouseButtonDown(0) && !wandAnimator.GetBool("RaiseWand") && player_Movement.currentState != PlayerState.stagger)
+        {
+            wandAnimator.SetBool("RaiseWand",true);
+        } 
+        if (Input.GetMouseButtonUp(0) && wandAnimator.GetBool("RaiseWand"))
+        {
+            wandAnimator.SetBool("RaiseWand",false);
+        }
+        //select charhe
+        OnSelectCharge();
+    }
+    public void OnSelectCharge()
+    {
         //charges
         if (currentCharges.Count()<=maxCharges)
         {
@@ -127,9 +126,8 @@ public class Casting : MonoBehaviour
                 loadChargeSprite(windSprite);
             }
         }
-
         if (Input.GetMouseButtonDown(1)){
-            currentCharges.Clear();
+            ClearCharges();
             loadChargeSprite(earthSprite); //loads null as current charges lenth 0
         }
         if (wandAnimator.GetBool("Charge") && !Input.GetKeyDown(KeyCode.Alpha1) && !Input.GetKeyDown(KeyCode.Alpha2) && !Input.GetKeyDown(KeyCode.Alpha3) && !Input.GetKeyDown(KeyCode.Alpha4))
@@ -142,16 +140,15 @@ public class Casting : MonoBehaviour
         wandAnimator.SetBool("Charge",false);
     }
 
-    void Cast(){
+    void CastSpell(){
         //needs to be generalized to be applicable to all spells
         determineSpell();  
         if(canCast){
-        mana = Mathf.Clamp(mana-manaCost,0f,maxMana);
-        GetComponent<Mana_UI>().hurt();
+        manaScript.SubtractMana(manaCost);
         Instantiate(currentSpell, castpoint.position,Quaternion.Euler(0,0,0));
-        currentCharges.Clear();
+        ClearCharges();
         loadChargeSprite(earthSprite); //loads null as current charges lenth 0
-        justCasted = true;
+        manaScript.justCasted = true;
         }
     }
 
@@ -168,6 +165,11 @@ public class Casting : MonoBehaviour
             charge2UI.sprite = chargeSprite;
         }
 
+    }
+
+    public void ClearCharges()
+    {
+        currentCharges.Clear();
     }
     
 }

@@ -92,12 +92,6 @@ public class Enemy : MonoBehaviour {
 //computes modifier depending on own type and suffered attack type
 // water beats fire beats earth beats wind
     float typeWeaknessResistanceCalc(ChargeTuple attackType){
-        Debug.Log("attackType "+ attackType.first().HumanName()+" "+attackType.second().HumanName());
-        Debug.Log("Has wind "+attackType.HasHowMany(ChargeTypes.wind));
-        Debug.Log("Has fire "+attackType.HasHowMany(ChargeTypes.fire));
-        Debug.Log("Has water "+attackType.HasHowMany(ChargeTypes.water));
-        Debug.Log("Has earth "+attackType.HasHowMany(ChargeTypes.earth));
-        Debug.Log("Has notype "+attackType.HasHowMany(ChargeTypes.notype));
         float modifier = 1;
         if (type == ChargeTypes.water){
             modifier += weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.wind);
@@ -112,7 +106,6 @@ public class Enemy : MonoBehaviour {
             modifier += weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.earth);
             modifier -= weaknessResistanceFactor*attackType.HasHowMany(ChargeTypes.water);
         }
-        Debug.Log(modifier);
         return modifier;
     }
 }

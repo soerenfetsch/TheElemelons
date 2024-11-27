@@ -88,7 +88,7 @@ public class Health_UI : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void SubtractHealth(float damage)
     {
         this.GetComponent<Health_UI>().hurt();
         health -= damage;
@@ -106,5 +106,20 @@ public class Health_UI : MonoBehaviour
             GameObject effect = Instantiate(Death_Effect, transform.position, UnityEngine.Quaternion.identity);
             Destroy(effect, deathEffectDelay);
         }
+    }
+
+    public float GetHealth(){
+        return health;
+    }
+    public bool IsZero(){
+        if (health <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    public void AddHealth(float plus)
+    {
+        health += plus;
     }
 }
