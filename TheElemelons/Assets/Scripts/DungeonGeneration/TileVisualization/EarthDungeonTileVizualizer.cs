@@ -45,19 +45,22 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     // Method to initialize the atlas tilemap from TilemapData
     private void InitializeAtlasTilemap()
     {
-        GameObject atlasTilemapObject = new GameObject("AtlasTilemap");
-        atlasTilemapObject.transform.SetParent(this.transform);
-        atlasTilemap = atlasTilemapObject.AddComponent<Tilemap>();
-
-        for (int i = 0; i < floorAtlasTilemapData.tilePositions.Count; i++)
+        if (atlasTilemap == null)
         {
-            Vector3Int tilePosition = (Vector3Int)floorAtlasTilemapData.tilePositions[i];
-            TileBase tile = floorAtlasTilemapData.tiles[i];
-            atlasTilemap.SetTile(tilePosition, tile);
-        }
+            GameObject atlasTilemapObject = new GameObject("AtlasTilemap");
+            atlasTilemapObject.transform.SetParent(this.transform);
+            atlasTilemap = atlasTilemapObject.AddComponent<Tilemap>();
 
-        // We need to compress the bounds of the tilemap to get accurate BoundsInt
-        atlasTilemap.CompressBounds();
+            for (int i = 0; i < floorAtlasTilemapData.tilePositions.Count; i++)
+            {
+                Vector3Int tilePosition = (Vector3Int)floorAtlasTilemapData.tilePositions[i];
+                TileBase tile = floorAtlasTilemapData.tiles[i];
+                atlasTilemap.SetTile(tilePosition, tile);
+            }
+
+            // We need to compress the bounds of the tilemap to get accurate BoundsInt
+            atlasTilemap.CompressBounds();
+        }
     }
 
     private TileBase SelectTile(Room.RoomType roomType, RimPosition rimPosition)
