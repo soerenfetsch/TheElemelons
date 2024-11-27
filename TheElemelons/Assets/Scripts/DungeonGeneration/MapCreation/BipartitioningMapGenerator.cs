@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Unity.Collections;
 using UnityEngine;
 
 public class BipartitioningMapGenerator : AbstractMapGenerator
@@ -16,49 +17,89 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     // Define how wide the corridors are
     [SerializeField] private int corridorWidth = 2;
 
-    protected override List<Vector2Int> CreateFloor()
+    public override MapData GenerateMap()
     {
-        List<Vector2Int> floorPositions = new List<Vector2Int>();
+        MapData mapData = new MapData();
+        List<Room> rooms = new List<Room>();
+        List<BoundsInt> roomSpaces = CreateRooms(rooms);
+        HashSet<Vector2Int> corridorPositions = CreateCorridorsOrdering(roomSpaces, rooms, mapData);
+        // Add the corridor positions to the map data
+        mapData.AddFloorPositions(corridorPositions);
+        // Edit the type of the last half of the rooms to be advanced rooms
+        for (int i = mapData.rooms.Count / 2; i < rooms.Count; i++)
+        {
+            if (mapData.rooms[i].roomType == Room.RoomType.NORMAL)
+            {
+                mapData.rooms[i].SetRoomType(Room.RoomType.ADVANCED);
+            }
+        }
+        foreach (Room room in mapData.rooms)
+        {
+            Debug.Log("Room type: " + room.roomType);
+        }
+        CreateWalls(mapData);
+        CreateDecorationPositions(mapData);
+        CreateMonsterSpawnPoints(mapData);
+        CreateDoorPositions(mapData);
+        createShrinePositions(mapData);
+        createTrapPositions(mapData);
 
+        return mapData;
+    }
 
+    protected List<BoundsInt> CreateRooms(List<Room> roomList)
+    {
         BoundsInt initialSpace = new BoundsInt((Vector3Int)startPosition, new Vector3Int(dungeonWidth, dungeonHeight, 0));
         List<BoundsInt> roomSpaces = BipartitionSpace(initialSpace, minRoomWidth, minRoomHeight);
         // Create random rooms within the room spaces
         foreach (BoundsInt roomSpace in roomSpaces)
         {
-            floorPositions.AddRange(CreateRandomRoomInSpace(roomSpace));
+            Room room = new Room();
+            room.AddFloorPositions(CreateRandomRoomInSpace(roomSpace));
+            roomList.Add(room);
         }
-        // Connect the rooms via corridor
-        List<Vector2Int> corridorList = CreateCorridors(roomSpaces);
-        // Floor is given by rooms and corridors
-        floorPositions.AddRange(corridorList);
-        return floorPositions;
+
+        return roomSpaces;
     }
 
-    private List<Vector2Int> CreateCorridors(List<BoundsInt> spaceBounds)
+    private HashSet<Vector2Int> CreateCorridorsOrdering(List<BoundsInt> spaceBounds, List<Room> rooms, MapData mapData)
     {
-        // First get the centers of the bounding boxes
+        // Get the centers of the bounding boxes and map them to the corresponding rooms
         List<Vector2Int> roomCenters = new List<Vector2Int>();
+        Dictionary<Vector2Int, int> centerToRoomMapping = new Dictionary<Vector2Int, int>();
+
+        int roomIndex = 0;
         foreach (var space in spaceBounds)
         {
-            roomCenters.Add((Vector2Int)Vector3Int.RoundToInt(space.center));
+            Vector2Int spaceCenter = (Vector2Int)Vector3Int.RoundToInt(space.center);
+            roomCenters.Add(spaceCenter);
+            centerToRoomMapping[spaceCenter] = roomIndex++;
         }
 
-        // Connect the rooms using corridors
-        HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
+        // Connect the rooms by finding the closest room
         var currentRoomCenter = roomCenters[Random.Range(0, roomCenters.Count)];
         roomCenters.Remove(currentRoomCenter);
+        mapData.AddRoom(rooms[centerToRoomMapping[currentRoomCenter]]);
+        rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.START);
 
+        HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
         while (roomCenters.Count > 0)
         {
             Vector2Int closest = FindClosesPointTo(currentRoomCenter, roomCenters);
             roomCenters.Remove(closest);
+            mapData.AddRoom(rooms[centerToRoomMapping[closest]]);
             HashSet<Vector2Int> newCorridor = ConnectRooms(currentRoomCenter, closest);
             currentRoomCenter = closest;
             corridorPositions.UnionWith(newCorridor);
+
+            // Denote the last dungeon room as the end room
+            if (roomCenters.Count == 0)
+            {
+                rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.END);
+            }
         }
 
-        return new List<Vector2Int>(corridorPositions);
+        return corridorPositions;
     }
 
     private HashSet<Vector2Int> ConnectRooms(Vector2Int currentRoomCenter, Vector2Int destination)
@@ -115,54 +156,118 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return closest;
     }
 
-    protected override List<Vector2Int> CreateWalls(List<Vector2Int> floorPositions)
+    protected void CreateWalls(MapData mapData)
     {
-        HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
-        foreach (var position in floorPositions)
+        // First add walls to the rooms
+        foreach (var room in mapData.rooms)
         {
-            // Place walls around each floor tile (in a 1-tile radius)
-            for (int x = -1; x <= 1; x++)
+            foreach (var position in room.floorPositions)
             {
-                for (int y = -1; y <= 1; y++)
+                // Place walls around each floor tile if they are not contained in the map floor
+                for (int x = -1; x <= 1; x++)
                 {
-                    Vector2Int neighborPos = new Vector2Int(position.x + x, position.y + y);
-                    if (!floorPositions.Contains(neighborPos))
+                    for (int y = -1; y <= 1; y++)
                     {
-                        wallPositions.Add(neighborPos);
+                        Vector2Int neighborPos = new Vector2Int(position.x + x, position.y + y);
+                        if (!mapData.floorPositions.Contains(neighborPos))
+                        {
+                            room.AddWallPosition(neighborPos);
+                        }
                     }
                 }
             }
         }
 
-        return new List<Vector2Int>(wallPositions);
-    }
-
-    protected override List<Vector2Int> CreateDecorationPositions(List<Vector2Int> floorPositions)
-    {
-        // Example: Place decorations randomly on some floor positions
-        List<Vector2Int> decorationPositions = new List<Vector2Int>();
-        foreach (var position in floorPositions)
+        // Then add walls to the corridors as well
+        foreach (var position in mapData.floorPositions)
         {
-            if (Random.value > 0.95f) // 5% chance to place a decoration
+            // Place walls around each floor tile if they are not contained in the map floor
+            for (int x = -1; x <= 1; x++)
             {
-                decorationPositions.Add(position);
+                for (int y = -1; y <= 1; y++)
+                {
+                    Vector2Int neighborPos = new Vector2Int(position.x + x, position.y + y);
+                    if (!mapData.floorPositions.Contains(neighborPos))
+                    {
+                        mapData.AddWallPosition(neighborPos);
+                    }
+                }
             }
         }
-        return decorationPositions;
     }
 
-    protected override List<Vector2Int> CreateMonsterSpawnPoints(List<Vector2Int> floorPositions)
+    protected void CreateDecorationPositions(MapData mapData)
     {
-        // Example: Place monsters randomly on floor positions
-        List<Vector2Int> spawnPositions = new List<Vector2Int>();
-        foreach (var position in floorPositions)
+        // Place decorations randomly on some floor positions
+        foreach (Room room in mapData.rooms)
         {
-            if (Random.value > 0.9f) // 10% chance to spawn a monster
+            foreach (var position in room.floorPositions)
             {
-                spawnPositions.Add(position);
+                if (Random.value > 0.98f) // 2% chance to place a decoration
+                {
+                    if (Random.value > 0.50f) // 50/50 if destructable or not
+                    {
+                        room.AddDestructableDecorationPosition(position);
+                        mapData.AddDestructableDecorationPosition(position);
+                    }
+                    else
+                    {
+                        room.AddIndestructableDecorationPosition(position);
+                        mapData.AddIndestructableDecorationPosition(position);
+                    }
+                }
             }
         }
-        return spawnPositions;
+    }
+
+    protected void CreateMonsterSpawnPoints(MapData mapData)
+    {
+        // Place monsters randomly on floor positions
+        foreach (Room room in mapData.rooms)
+        {
+            foreach (var position in room.floorPositions)
+            {
+                if (Random.value > 0.9f) // 10% chance to spawn a monster
+                {
+                    room.AddMonsterSpawnPosition(position);
+                    mapData.AddMonsterSpawnPosition(position);
+                }
+            }
+        }
+    }
+
+    protected void CreateDoorPositions(MapData mapData)
+    {
+        // Determine the positions of doors by finding the corridors
+        foreach (Room room in mapData.rooms)
+        {
+            foreach (var position in room.floorPositions)
+            {
+                // Check if any surrounding floor is in corridor but not in room
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        Vector2Int neighborPos = new Vector2Int(position.x + x, position.y + y);
+                        if (!room.floorPositions.Contains(neighborPos) && mapData.floorPositions.Contains(neighborPos))
+                        {
+                            room.AddDoorPosition(neighborPos);
+                            mapData.AddDoorPosition(neighborPos);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected void createShrinePositions(MapData mapData)
+    {
+        // TODO: Implement this
+    }
+
+    protected void createTrapPositions(MapData mapData)
+    {
+        //TODO: Implement this
     }
 
     // Recursive bipartitioning to split space into rooms
@@ -234,10 +339,10 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     }
 
     // Create a random room shape in a partitioned space
-    private List<Vector2Int> CreateRandomRoomInSpace(BoundsInt space)
+    private HashSet<Vector2Int> CreateRandomRoomInSpace(BoundsInt space)
     {
         // For now just create a rectangle exactly within the space minus the offset for walls
-        List<Vector2Int> roomPositions = new List<Vector2Int>();
+        HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
         for (int col = offset; col < space.size.x - offset; col++)
         {
             for (int row = offset; row < space.size.y - offset; row++)

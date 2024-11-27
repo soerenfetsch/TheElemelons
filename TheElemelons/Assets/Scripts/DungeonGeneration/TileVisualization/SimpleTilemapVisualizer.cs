@@ -11,9 +11,9 @@ public class SimpleTilemapVisualizer : AbstractTilemapVisualizer
     // Public method to paint a list of tiles on the dungeon map.
     public override void PaintTiles(MapData mapData)
     {
-        IEnumerable<Vector2Int> floorPositions = mapData.FloorPositions;
-        IEnumerable<Vector2Int> wallPositions = mapData.WallPositions;
-        IEnumerable<Vector2Int> decorationPositions = mapData.DecorationPositions;
+        IEnumerable<Vector2Int> floorPositions = mapData.floorPositions;
+        IEnumerable<Vector2Int> wallPositions = mapData.wallPositions;
+        IEnumerable<Vector2Int> decorationPositions = mapData.destructableDecorationPositions;
 
         PaintFloor(floorPositions);             // Paint the floor tiles
         PaintWalls(wallPositions);              // Paint the wall tiles

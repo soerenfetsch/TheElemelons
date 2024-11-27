@@ -6,6 +6,12 @@ public class TilemapLoader : MonoBehaviour
     public TilemapData tilemapData;
     public Tilemap tilemap;
 
+    public TilemapLoader(TilemapData tilemapData, Tilemap tilemap)
+    {
+        this.tilemapData = tilemapData;
+        this.tilemap = tilemap;
+    }
+
     [ContextMenu("Load Tilemap Data")]
     public void LoadTilemapData()
     {

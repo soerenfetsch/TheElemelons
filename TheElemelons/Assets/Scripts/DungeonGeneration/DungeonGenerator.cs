@@ -8,7 +8,8 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] protected AbstractTilemapVisualizer tilemapVisualizer; // The Tilemap visualizer that handles the visual representation of the dungeon
     [SerializeField] protected AbstractMapGenerator mapGenerator; // The map generator that creates the lists of positions for a map
 
-    // Public method to generate the dungeon.
+    // Public method to generate the dungeon
+    [ContextMenu("Generate Dungeon")]
     public void GenerateDungeon()
     {
         Debug.Log("Called the Dungeon Generator");
