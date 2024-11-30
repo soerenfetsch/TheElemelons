@@ -79,7 +79,7 @@ PlayerSettings:
   androidAutoRotationBehavior: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
-  runInBackground: 0
+  runInBackground: 1
   captureSingleScreen: 0
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
@@ -707,11 +707,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 75418f03-b304-400e-b878-5ba3c06104a1
+  cloudProjectId: 581ff9f2-d053-4450-b857-c0dc5d4d61cf
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: TheElemelons
-  organizationId: the_carrot_123
+  projectName: Elemelons_prototype
+  organizationId: fieeesch
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
