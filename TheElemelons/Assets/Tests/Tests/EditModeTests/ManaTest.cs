@@ -62,13 +62,13 @@ public class ManaTest
     }
 
     [Test]
-    public void AddMana_ExceedsMaxMana()
+    public void AddMana_DoesntExceedsMaxMana()
     {
-        float manaMultiplier = 2f;
+        float manaPlus = 2f;
+        mana.mana = mana.maxMana;
+        mana.AddMana(manaPlus);
 
-        mana.AddMana(manaMultiplier);
-
-        Assert.Greater(mana.GetMana(), mana.maxMana, "AddMana should allow mana to exceed maxMana in current implementation.");
+        Assert.AreEqual(mana.GetMana(), mana.maxMana, "AddMana shouldnt allow mana to exceed maxMana in current implementation.");
     }
 
     [Test]
@@ -99,5 +99,14 @@ public class ManaTest
         bool isZero = mana.IsZero();
 
         Assert.IsFalse(isZero, "IsZero should return false when mana is above zero.");
+    }
+    [Test]
+    public void SubtractMana_CantGoBelowZero()
+    {
+        float manaCost = 2f;
+        mana.mana = 1f;
+        mana.SubtractMana(manaCost);
+
+        Assert.AreEqual(0f, mana.GetMana(), "SubtractHealth did not decrease health correctly.");
     }
 }

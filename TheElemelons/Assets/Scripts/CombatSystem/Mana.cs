@@ -51,7 +51,7 @@ public class Mana : MonoBehaviour
     
     public void AddMana(float plus)
     {
-        mana *= plus;
+        mana = Mathf.Clamp(mana + plus, 0f, maxMana);
     }
 
     public float GetMana()

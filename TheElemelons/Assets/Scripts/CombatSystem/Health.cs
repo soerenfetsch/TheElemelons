@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
 
     public void SubtractHealth(float damage)
     {
-        health -= damage;
+        health = Mathf.Clamp(health - damage, 0f, maxhealth);
     }
 
     public float GetHealth()
@@ -34,6 +34,6 @@ public class Health : MonoBehaviour
     }
     public void AddHealth(float plus)
     {
-        health += plus;
+        health = Mathf.Clamp(health + plus, 0f, maxhealth);
     }
 }

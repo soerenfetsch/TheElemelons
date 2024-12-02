@@ -89,19 +89,29 @@ public class HealthTest
     public void AddHealth_IncreasesHealthByGivenAmount()
     {
         float healthToAdd = 1f;
-
+        health.health = 1f;
         health.AddHealth(healthToAdd);
 
-        Assert.AreEqual(4f, health.GetHealth(), "AddHealth did not increase health correctly.");
+        Assert.AreEqual(2f, health.GetHealth(), "AddHealth did not increase health correctly.");
     }
 
     [Test]
-    public void AddHealth_AllowsHealthToExceedMaxHealth()
+    public void AddHealth_DoesntAllowHealthToExceedMaxHealth()
     {
         float healthToAdd = 2f;
-
+        health.health = health.maxhealth;
         health.AddHealth(healthToAdd);
 
-        Assert.Greater(health.GetHealth(), health.maxhealth, "AddHealth should allow health to exceed maxhealth in the current implementation.");
+        Assert.AreEqual(health.GetHealth(), health.maxhealth, "AddHealth shouldnt allow health to exceed maxhealth in the current implementation.");
+    }
+
+    [Test]
+    public void SubtractHealth_CantGoBelowZero()
+    {
+        float damage = 2f;
+        health.health = 1f;
+        health.SubtractHealth(damage);
+
+        Assert.AreEqual(0f, health.GetHealth(), "SubtractHealth did not decrease health correctly.");
     }
 }
