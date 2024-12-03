@@ -31,7 +31,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 2.1 Player System
 
-### 2.1.1 Player Movement
+#### 2.1.1 Player Movement
 
 - OnInputMove(): given a movement in x and/or y direction move the character along the given axes using the Player object's velocity
   - Velocity should be normalized so that diagonal movement is as fast and horizontal/vertical
@@ -43,10 +43,10 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - A staggering animation is triggered to show that the knockback is received during the coroutine
   - Animation direction (front, back, left and right) does not reflect the direction the player is moving
  
-### 2.1.2 Spell Casting
+#### 2.1.2 Spell Casting
 
 - OnChargeSelected(): given a ChargeType enum object (fire, wind, water, earth) selects a new charge for the player if any of the two possible charge slots are empty
-  - Instructs the spell charge UI to show the new charge sprite above the player
+  - Instructs the UIManager to show the new charge sprite above the player
   - If both slots are occupied, nothing happens
 
 - ClearCharges(): clears all selected charges of the player
@@ -61,7 +61,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - With no charges selected: cast a basic attack spell that moves through the map during a small spell lifetime, has small damage value and only small knockback on enemies
   - With fire, fire selected casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime, explodes on impact (wall, enemy)
  
-### 2.1.3 Input Manager
+#### 2.1.3 Input Manager
 
 - OnKeyPressed: Input Manager uses its internal key to type mapping to trigger the appropriate key method in the update (see below) for the given game status (enum for 'ingame', 'main menu', 'settings menu', etc..)
 - UpdateKey(): for a given event and new key, update the key to method binding of the 'ingame' methods
@@ -75,17 +75,17 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 2.2 Dungeon Generation
 
-### 2.2.1 Dungeon Generator
+#### 2.2.1 Dungeon Generator
 
 - GeneratorDungeon(): Given a start position and using the selected TilemapVisualizer and MapGenerator generates the map data using the MapGenerator and then visualizes the map using the TilemapVisualizer
 
-### 2.2.2 Map Generator (abstract)
+#### 2.2.2 Map Generator (abstract)
 
 - GenerateMap(): Given a start point create all data necessary for the map data and return a MapData object. Should create floor, wall, deco, monster spawn point, door, shrine and trap positions as well as the different rooms
   - should call abstract methods for all the map positions which can later be implemented in the concrete map generators
   - positions should be saved in hash set objects
  
-### 2.2.3 Bipartitioning Map Generator
+#### 2.2.3 Bipartitioning Map Generator
 
 - CreateFloor(): Uses recursive bipartitioning to partition the given rectangular dungeon with its height and width into rectangular rooms with a minimum height and width as well as an offset between the rooms and then connect the rooms
   - The rooms are connected by choosing a random starting room and then connecting the middle point of that room to the middle point of the other room and the corridors have width with a given corridorWidth
@@ -95,12 +95,12 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - TO BE DEFINED: CreateMonsterSpawnPoints(): Randomly select positions on the floor on which monsters can spawn
 - TO BE DEFINED: CreateDecorationPositions(): Randomly select positions on the floor and wall to place decorations (solid and not solid)
 
-### 2.2.4 Tilemap Visualization (abstract)
+#### 2.2.4 Tilemap Visualization (abstract)
 
 - PaintTiles(): abstract method to paint all tiles given a MapData object, which can be implemented by the concrete visualizers for the different dungeon types
 - Clear(): abstract method to clear the tilemaps of the dungeon
 
-### 2.2.5 Earth Tilemap Visualizer
+#### 2.2.5 Earth Tilemap Visualizer
 
 - PaintTiles(): Paints floor, walls and decorations using the methods specified below
 - PaintFloor(): Using an atlas tilemap with predefined floor patterns, place a rule tile for the rim tiles on the floor rims (adjacent to the walls) and map the atlas floor pattern to the rest of the floor
@@ -113,9 +113,9 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - TO BE DEFINED: DecorateDungeon(): ...
 - Clear(): Clears the floor and wall tilemap
 
-## 2.3 Enemy System
+### 2.3 Enemy System
 
-### 2.3.1 Enemy (abstract)
+#### 2.3.1 Enemy (abstract)
 
 - ChangeState(): abstract method to change the current state/objective of the Enemy
   - Uses a EnemyStatus enum which is defined for all enemies the same
@@ -135,28 +135,53 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - ChangeState(): Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
 - CheckHealthStatus(): If health is zero, the Tree Log Dies and triggers the death animation
 
-## 2.4 Combat System
+### 2.4 Combat System
 
-### TO BE DEFINED 2.4.1 Combat Manager: Manages combat damage, health and mana calculations
+#### TO BE DEFINED 2.4.1 Combat Manager: Manages combat damage, health and mana calculations
 
-### 2.4.2 Health
+#### 2.4.2 Health
 
 - SubtractHealth(): subtracts a floating input from the total health, if health drop below zero, health is set to zero
 - AddHealth(): adds a floating input to the total health, if health gets higher than max health, health is set to max health
 - GetHealth(): Returns the current total health value
 - IsZero(): Returns true if the current health is zero, false otherwise
 
-### 2.4.3 Mana
+#### 2.4.3 Mana
 
 - SubtractMana(): subtracts a floating input from the total mana, if mana drop below zero, mana is set to zero
-- AddManah(): adds a floating input to the total mana, if mana gets higher than max mana, mana is set to max mana
+- AddMana(): adds a floating input to the total mana, if mana gets higher than max mana, mana is set to max mana
 - GetMana(): Returns the current total mana value
 - IsZero(): Returns true if the current mana is zero, false otherwise
 
-#### TO BE DEFINED CONCRETELY 2.5 Game Progression and Save System
+### TO BE DEFINED CONCRETELY 2.5 Game Progression and Save System
 - The **GameManager** must control the overall game state, including dungeon transitions, combat phases, and player progression.
 - The **GameSaveProvider** must support saving and loading game states, allowing players to resume their adventure seamlessly.
 - Players should be able to save at specific checkpoints and have multiple save slots for different playthroughs.
+
+### 2.6 UI System
+
+#### 2.6.1 UI Manager
+
+- **UIManager** should manage UI objects to display and change the UI elements to reflect the game state, should manage healthbar, manabar, spell charges, aiming direction and main menu widgets
+- update health: call the HealthBar to continuously update the health ui using the player health
+- show hurt: call the HealthBar to show the hurt animation
+- update mana: call the ManaBar to continuously update the mana ui using the player mana
+- show hurt: call the ManaBar to show the hurt animation
+- update aiming arrow: using the input manager get the current mouse aiming direction of player and show an arrow around the player sprite in that direction
+- clear spell charge UI: clear all spell charges from the canvas so that no charges are displayed
+- load charge UI: given a charge sprite type, check how many charge UIs are displayed and then if none are, display the charge on top of the player at position 1, if one is displayed then show the charge at position 2, else do nothing
+
+#### 2.6.2 HealthBar
+
+- Update health UI using player health: display max health amount of (red) hearts of which player health are filled and rest are empty
+- Execute hurt animation: If method is called this starts an animation where all hearts shortly light up white
+- Execute heal animation: If method is called this starts an animation where all hearts shortly light up blue
+
+#### 2.6.2 ManaBar
+
+- Update mana UI using player mana: display max mana amount of (blue) stars of which player mana are filled and rest are empty
+- Execute hurt animation: If method is called this starts an animation where all stars shortly light up white
+- Execute heal animation: If method is called this starts an animation where all stars shortly light up violet
 
 ## 3. Non-Functional Requirements
 
