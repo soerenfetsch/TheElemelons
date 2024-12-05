@@ -33,10 +33,6 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
                 mapData.rooms[i].SetRoomType(Room.RoomType.ADVANCED);
             }
         }
-        foreach (Room room in mapData.rooms)
-        {
-            Debug.Log("Room type: " + room.roomType);
-        }
         CreateWalls(mapData);
         CreateDecorationPositions(mapData);
         CreateMonsterSpawnPoints(mapData);
@@ -81,14 +77,19 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         roomCenters.Remove(currentRoomCenter);
         mapData.AddRoom(rooms[centerToRoomMapping[currentRoomCenter]]);
         rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.START);
+        Debug.Log("Start room center: " + currentRoomCenter);
 
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
         while (roomCenters.Count > 0)
         {
             Vector2Int closest = FindClosesPointTo(currentRoomCenter, roomCenters);
             roomCenters.Remove(closest);
-            mapData.AddRoom(rooms[centerToRoomMapping[closest]]);
-            HashSet<Vector2Int> newCorridor = ConnectRooms(currentRoomCenter, closest);
+            Room closestRoom = rooms[centerToRoomMapping[closest]];
+            int xClosestMin = closestRoom.floorPositions.Min(pos => pos.x);
+            int xClosestMax = closestRoom.floorPositions.Max(pos => pos.x);
+            mapData.AddRoom(closestRoom);
+            HashSet<Vector2Int> newCorridor = ConnectRooms(currentRoomCenter, closest,
+                                                           xClosestMin, xClosestMax);
             currentRoomCenter = closest;
             corridorPositions.UnionWith(newCorridor);
 
@@ -96,23 +97,71 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             if (roomCenters.Count == 0)
             {
                 rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.END);
+                Debug.Log("End room center: " + currentRoomCenter);
             }
+            else
+                Debug.Log("Room center: " + currentRoomCenter);
+
         }
 
         return corridorPositions;
     }
 
-    private HashSet<Vector2Int> ConnectRooms(Vector2Int currentRoomCenter, Vector2Int destination)
+    private HashSet<Vector2Int> ConnectRooms(Vector2Int currentRoomCenter, Vector2Int destination,
+                                             int xDestMin, int xDestMax)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
         var position = currentRoomCenter;
-        corridor.Add(position);
+
+        // TODO: Evaluate if this is necessary since we restrict door placment now
+        // // First fix corridors that cross room borders by offsetting the starting point
+
+        // // Corridor overlaps with left border of the room
+        // if (Mathf.Abs(xDestMin - position.x) <= (corridorWidth / 2 + 1))
+        // {
+        //     // Corridor overlaps more inside the room
+        //     if (xDestMin <= position.x)
+        //     {
+        //         position += new Vector2Int(corridorWidth / 2 + 1 - xDestMin - position.x, 0);
+        //     }
+        //     // Corridor overlaps more outside the room
+        //     else
+        //     {
+        //         position += new Vector2Int(xDestMin - position.x - corridorWidth / 2 - 2, 0);
+        //     }
+        // }
+        // else if (Mathf.Abs(xDestMax - position.x) <= (corridorWidth / 2 + 1))
+        // {
+        //     // Corridor overlaps more inside the room
+        //     if (xDestMax >= position.x)
+        //     {
+        //         position += new Vector2Int(xDestMax - position.x - corridorWidth / 2 - 1, 0);
+        //     }
+        //     // Corridor overlaps more outside the room
+        //     else
+        //     {
+        //         position += new Vector2Int(corridorWidth / 2 + 2 - xDestMax - position.x, 0);
+        //     }
+        // }
+
+        // Start a corridor of the given corridorWidth
+        for (int i = 0; i < corridorWidth; ++i)
+        {   
+            int added = (i + 1) / 2;
+            if (i % 2 == 0)
+                added = (-1) * added;
+            corridor.Add(position + new Vector2Int(added, 0));
+        }
+
+        Vector2Int direction = Vector2Int.zero;
         while (position.y != destination.y)
         {
             if (destination.y > position.y)
-                position += Vector2Int.up;
+                direction = Vector2Int.up;
             else if (destination.y < position.y)
-                position += Vector2Int.down;
+                direction = Vector2Int.down;
+            position += direction;
+
             // Add a corridor of the given corridorWidth
             for (int i = 0; i < corridorWidth; ++i)
             {   
@@ -122,12 +171,27 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
                 corridor.Add(position + new Vector2Int(added, 0));
             }
         }
+        // Fix the corners of the corridor by going one step further at the end
+        if (position.y == destination.y)
+        {
+            Vector2Int positionCopy = position;
+            positionCopy += direction;
+            for (int i = 0; i < corridorWidth; ++i)
+            {   
+                int added = (i + 1) / 2;
+                if (i % 2 == 0)
+                    added = (-1) * added;
+                corridor.Add(positionCopy + new Vector2Int(added, 0));
+            }
+        }
         while (position.x != destination.x)
         {
             if (destination.x > position.x)
-                position += Vector2Int.right;
+                direction = Vector2Int.right;
             else if (destination.x < position.x)
-                position += Vector2Int.left;
+                direction = Vector2Int.left;
+            position += direction;
+
             // Add a corridor of the given corridorWidth
             for (int i = 0; i < corridorWidth; ++i)
             {   
@@ -243,17 +307,30 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         {
             foreach (var position in room.floorPositions)
             {
-                // Check if any surrounding floor is in corridor but not in room
-                for (int x = -1; x <= 1; x++)
+                // Check if the any neighbors are not in the room but are in the map floor to place a door
+                foreach (Vector2Int direction in new Vector2Int[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right })
                 {
-                    for (int y = -1; y <= 1; y++)
+                    Vector2Int neighborPos = position + direction;
+                    if (!room.floorPositions.Contains(neighborPos) && mapData.floorPositions.Contains(neighborPos))
                     {
-                        Vector2Int neighborPos = new Vector2Int(position.x + x, position.y + y);
-                        if (!room.floorPositions.Contains(neighborPos) && mapData.floorPositions.Contains(neighborPos))
+                        // Fix corridors intersecting with room borders by only placing doors when the gap is less than the corridor width wide
+                        // This places doors exactly in the middle of the corridor
+                        int halfCorridorWidth = corridorWidth / 2;
+                        if (direction == Vector2Int.up || direction == Vector2Int.down)
                         {
-                            room.AddDoorPosition(neighborPos);
-                            mapData.AddDoorPosition(neighborPos);
+                            if (mapData.floorPositions.Contains(neighborPos + (halfCorridorWidth + 1) * Vector2Int.left)
+                                || mapData.floorPositions.Contains(neighborPos + (halfCorridorWidth + 1) * Vector2Int.right))
+                                continue;
                         }
+                        else if (direction == Vector2Int.left || direction == Vector2Int.right)
+                        {
+                            if (mapData.floorPositions.Contains(neighborPos + (halfCorridorWidth + 1) * Vector2Int.up)
+                                || mapData.floorPositions.Contains(neighborPos + (halfCorridorWidth + 1) * Vector2Int.down))
+                                continue;
+                        }
+                        // Else add a door position right in the middle of the corridor
+                        room.AddDoorPosition(neighborPos);
+                        mapData.AddDoorPosition(neighborPos);
                     }
                 }
             }

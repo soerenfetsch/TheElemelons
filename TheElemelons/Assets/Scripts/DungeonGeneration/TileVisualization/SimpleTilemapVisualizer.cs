@@ -5,8 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class SimpleTilemapVisualizer : AbstractTilemapVisualizer
 {
-    [SerializeField] protected Tilemap floorTilemap, wallTilemap; // Tilemaps for floors and walls
-    [SerializeField] protected TileBase floorTile, wallTile;      // Tiles for floors and walls
+    [SerializeField] protected Tilemap floorTilemap, wallTilemap;         // Tilemaps for floors and walls
+    [SerializeField] protected TileBase floorTile, wallTile, doorTile;     // Tiles for floors and walls
 
     // Public method to paint a list of tiles on the dungeon map.
     public override void PaintTiles(MapData mapData)
@@ -18,6 +18,7 @@ public class SimpleTilemapVisualizer : AbstractTilemapVisualizer
         PaintFloor(floorPositions);             // Paint the floor tiles
         PaintWalls(wallPositions);              // Paint the wall tiles
         DecorateDungeon(decorationPositions);   // Optionally add decorations
+        PaintDoors(mapData.doorPositions);      // Paint the door tiles
     }
 
     // Clear the existing dungeon tiles (reset Tilemap).
@@ -53,6 +54,17 @@ public class SimpleTilemapVisualizer : AbstractTilemapVisualizer
     protected void DecorateDungeon(IEnumerable<Vector2Int> floorPositions)
     {
         // No decorations are being added in this simple version
+    }
+
+    // Paint the door tiles at the given positions
+    protected void PaintDoors(HashSet<Vector2Int> doorPositions)
+    {
+        foreach (var position in doorPositions)
+        {
+            // Convert the 2D position to the 3D cell position for the tilemap
+            var tilePos = wallTilemap.WorldToCell((Vector3Int)position);
+            wallTilemap.SetTile(tilePos, doorTile);
+        }
     }
 }
 

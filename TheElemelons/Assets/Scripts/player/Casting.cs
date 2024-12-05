@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Text;
@@ -232,7 +231,7 @@ public class ChargeTuple{
     {
         // TODO: write your implementation of GetHashCode() here
         //throw new System.NotImplementedException();
-        byte[] bytes = MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(charge1.HumanName()+charge2.HumanName()));
+        byte[] bytes = MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(charge1.ToString()+charge2.ToString()));
         if(BitConverter.IsLittleEndian){
            Array.Reverse(bytes);
         }

@@ -402,7 +402,6 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     protected void PaintDoors(MapData mapData)
     {
-        Debug.Log("Painting doors for positions: " + new List<Vector2Int>(mapData.doorPositions));
         foreach (Room room in mapData.rooms)
         {
             foreach (Vector2Int door in room.doorPositions)
@@ -412,27 +411,24 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 if (room.floorPositions.Contains(door + Vector2Int.down))
                 {
                     // Top door
-                    doorDirection = Vector2Int.right;
+                    doorDirection = Vector2Int.up;
                 }
                 else if (room.floorPositions.Contains(door + Vector2Int.left))
                 {
                     // Right door
-                    doorDirection = Vector2Int.down;
+                    doorDirection = Vector2Int.right;
                 }
                 else if (room.floorPositions.Contains(door + Vector2Int.up))
                 {
                     // Bottom door
-                    doorDirection = Vector2Int.left;
+                    doorDirection = Vector2Int.down;
                 }
                 else
                 {
                     // Left door
-                    doorDirection = Vector2Int.up;
+                    doorDirection = Vector2Int.left;
                 }
-                if (room.doorPositions.Contains(door - doorDirection))
-                {
-                    continue;
-                }
+
                 // Paint the door
                 PaintDoor(door, doorDirection, room);
             }
@@ -470,41 +466,41 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     private void PaintDoor(Vector2Int position, Vector2Int doorDirection, Room room)
     {
-        // Paint the door based on the door direction
-        if (doorDirection == Vector2Int.right)
+        // Paint the door based on the door direction, initial position is in the middle of the door
+        if (doorDirection == Vector2Int.up)
         {
             // Top door
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)position),
+                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right)),
                 topDoorBottomLeft
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
+                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right + Vector2Int.up)),
                 topDoorUpperLeft
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right)),
+                collisionTilemap.WorldToCell((Vector3Int)position),
                 topDoorBottomMiddle
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right + Vector2Int.up)),
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
                 topDoorUpperMiddle
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.right)),
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right)),
                 topDoorBottomRight
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.right + Vector2Int.up)),
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right + Vector2Int.up)),
                 topDoorUpperRight
             );
         }
-        else if (doorDirection == Vector2Int.down)
+        else if (doorDirection == Vector2Int.right)
         {
             // Door on the right
 
             // Top starts two tiles up in the wall
-            position += 2 * Vector2Int.up;
+            position += 3 * Vector2Int.up;
 
             decorationTilemap.SetTile(
                 decorationTilemap.WorldToCell((Vector3Int)position),
@@ -527,56 +523,58 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 rightDoorFive
             );
         }
-        else if (doorDirection == Vector2Int.left)
+        else if (doorDirection == Vector2Int.down)
         {
             // Bottom door
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)position),
-                bottomDoorBottomRight
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
-                bottomDoorUpperRight
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.left)),
-                bottomDoorBottomMiddle
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.left + Vector2Int.up)),
-                bottomDoorUpperMiddle
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.left)),
+                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right)),
                 bottomDoorBottomLeft
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.left + Vector2Int.up)),
+                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right + Vector2Int.up)),
                 bottomDoorUpperLeft
             );
-        }
-        else if (doorDirection == Vector2Int.up)
-        {
-            // Door on the left
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)position),
-                leftDoorFive
+                bottomDoorBottomMiddle
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
+                bottomDoorUpperMiddle
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right)),
+                bottomDoorBottomRight
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right + Vector2Int.up)),
+                bottomDoorUpperRight
+            );
+        }
+        else if (doorDirection == Vector2Int.left)
+        {
+            // Top starts two tiles up in the wall
+            position += 3 * Vector2Int.up;
+
+            decorationTilemap.SetTile(
+                decorationTilemap.WorldToCell((Vector3Int)position),
+                leftDoorOne
+            );
+            decorationTilemap.SetTile(
+                decorationTilemap.WorldToCell((Vector3Int)(position + Vector2Int.down)),
+                leftDoorTwo
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.down)),
+                leftDoorThree
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + 3 * Vector2Int.down)),
                 leftDoorFour
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.up)),
-                leftDoorThree
-            );
-            decorationTilemap.SetTile(
-                decorationTilemap.WorldToCell((Vector3Int)(position + 3 * Vector2Int.up)),
-                leftDoorTwo
-            );
-            decorationTilemap.SetTile(
-                decorationTilemap.WorldToCell((Vector3Int)(position + 4 * Vector2Int.up)),
-                leftDoorOne
+                collisionTilemap.WorldToCell((Vector3Int)(position + 4 * Vector2Int.down)),
+                leftDoorFive
             );
         }
     }
