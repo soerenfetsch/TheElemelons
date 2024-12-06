@@ -10,32 +10,12 @@ using UnityEngine.Tilemaps;
 public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 {
     [SerializeField] protected Tilemap floorTilemap, collisionTilemap, decorationTilemap; // Tilemaps for floors and walls
-    [SerializeField] protected TileBase leftWallBasic, leftCornerBasic, rightWallBasic, rightCornerBasic, // sandy walls
-                                        topBottomWallBasic, topUpperWallBasic, bottomWallBasic;
-    [SerializeField] protected TileBase leftWallAdvanced, leftCornerAdvanced, rightWallAdvanced, rightCornerAdvanced, // grassy walls
-                                        topBottomWallAdvanced, topUpperWallAdvanced, bottomWallAdvanced;
+    [SerializeField] protected WallTileSet basicWalls, advancedWalls; // Tiles for the walls
 
     [SerializeField] protected TilemapData floorAtlasTilemapData;                         // Atlas tilemap for floor patterns
-    // Rim tiles for the floor
-    // Basic rim tiles for when rim is on the upper half of the tile and Other for lower half of the tile
-    [SerializeField] protected TileBase rimTopLeftBasic, rimTopRightBasic, rimBottomLeftBasic, rimBottomRightBasic,
-                                        rimTopBasic, rimLeftBasic, rimRightBasic, rimBottomBasic,
-                                        rimTopLeftBasicOther, rimTopRightBasicOther, rimBottomLeftBasicOther, rimBottomRightBasicOther;
-            
-    // Advanced rim tiles for when rim is on the upper half of the tile and Other for lower half of the tile
-    [SerializeField] protected TileBase rimTopLeftAdvanced, rimTopRightAdvanced, rimBottomLeftAdvanced, rimBottomRightAdvanced,
-                                        rimTopAdvanced, rimLeftAdvanced, rimRightAdvanced, rimBottomAdvanced,
-                                        rimTopLeftAdvancedOther, rimTopRightAdvancedOther, rimBottomLeftAdvancedOther, rimBottomRightAdvancedOther;
+    [SerializeField] protected RimTileSet basicRims, advancedRims; // Rim tiles
     // For the top and bottom doors the tiles are named after their respective position
-    [SerializeField] protected TileBase topDoorBottomLeft, topDoorBottomMiddle, topDoorBottomRight,
-                                        topDoorUpperLeft, topDoorUpperMiddle, topDoorUpperRight;
-    [SerializeField] protected TileBase bottomDoorBottomLeft, bottomDoorBottomMiddle, bottomDoorBottomRight,
-                                        bottomDoorUpperLeft, bottomDoorUpperMiddle, bottomDoorUpperRight;
-    // For the left and right door the tiles are numbered from top to bottom
-    [SerializeField] protected TileBase leftDoorOne, leftDoorTwo, leftDoorThree,
-                                        leftDoorFour, leftDoorFive;
-    [SerializeField] protected TileBase rightDoorOne, rightDoorTwo, rightDoorThree,
-                                        rightDoorFour, rightDoorFive;
+    [SerializeField] protected DoorTileSet doorTileSet; // Door tileset for all four doors
 
     protected enum RimPosition { UpperTopLeft, UpperTopRight, UpperBottomLeft, UpperBottomRight,
                                UpperTop, UpperLeft, UpperRight, UpperBottom,
@@ -63,67 +43,47 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         }
     }
 
-    private TileBase SelectTile(Room.RoomType roomType, RimPosition rimPosition)
+    private TileBase SelectRimTile(Room.RoomType roomType, RimPosition rimPosition)
     {
+        RimTileSet rimTileSet;
         if (roomType == Room.RoomType.START || roomType == Room.RoomType.NORMAL)
         {
-            switch (rimPosition)
-            {
-                case RimPosition.UpperTopLeft:
-                    return rimTopLeftBasic;
-                case RimPosition.UpperTopRight:
-                    return rimTopRightBasic;
-                case RimPosition.UpperBottomLeft:
-                    return rimBottomLeftBasic;
-                case RimPosition.UpperBottomRight:
-                    return rimBottomRightBasic;
-                case RimPosition.UpperTop:
-                    return rimTopBasic;
-                case RimPosition.UpperLeft:
-                    return rimLeftBasic;
-                case RimPosition.UpperRight:
-                    return rimRightBasic;
-                case RimPosition.UpperBottom:
-                    return rimBottomBasic;
-                case RimPosition.LowerTopLeft:
-                    return rimTopLeftBasicOther;
-                case RimPosition.LowerTopRight:
-                    return rimTopRightBasicOther;
-                case RimPosition.LowerBottomLeft:
-                    return rimBottomLeftBasicOther;
-                case RimPosition.LowerBottomRight:
-                    return rimBottomRightBasicOther;
-            }
+            rimTileSet = basicRims;
         }
         else if (roomType == Room.RoomType.ADVANCED || roomType == Room.RoomType.END)
         {
-            switch (rimPosition)
-            {
-                case RimPosition.UpperTopLeft:
-                    return rimTopLeftAdvanced;
-                case RimPosition.UpperTopRight:
-                    return rimTopRightAdvanced;
-                case RimPosition.UpperBottomLeft:
-                    return rimBottomLeftAdvanced;
-                case RimPosition.UpperBottomRight:
-                    return rimBottomRightAdvanced;
-                case RimPosition.UpperTop:
-                    return rimTopAdvanced;
-                case RimPosition.UpperLeft:
-                    return rimLeftAdvanced;
-                case RimPosition.UpperRight:
-                    return rimRightAdvanced;
-                case RimPosition.UpperBottom:
-                    return rimBottomAdvanced;
-                case RimPosition.LowerTopLeft:
-                    return rimTopLeftAdvancedOther;
-                case RimPosition.LowerTopRight:
-                    return rimTopRightAdvancedOther;
-                case RimPosition.LowerBottomLeft:
-                    return rimBottomLeftAdvancedOther;
-                case RimPosition.LowerBottomRight:
-                    return rimBottomRightAdvancedOther;
-            }
+            rimTileSet = advancedRims;
+        }
+        else
+        {
+            return null;
+        }
+        switch (rimPosition)
+        {
+            case RimPosition.UpperTopLeft:
+                return rimTileSet.rimTopLeft;
+            case RimPosition.UpperTopRight:
+                return rimTileSet.rimTopRight;
+            case RimPosition.UpperBottomLeft:
+                return rimTileSet.rimBottomLeft;
+            case RimPosition.UpperBottomRight:
+                return rimTileSet.rimBottomRight;
+            case RimPosition.UpperTop:
+                return rimTileSet.rimTop;
+            case RimPosition.UpperLeft:
+                return rimTileSet.rimLeft;
+            case RimPosition.UpperRight:
+                return rimTileSet.rimRight;
+            case RimPosition.UpperBottom:
+                return rimTileSet.rimBottom;
+            case RimPosition.LowerTopLeft:
+                return rimTileSet.rimTopLeftOther;
+            case RimPosition.LowerTopRight:
+                return rimTileSet.rimTopRightOther;
+            case RimPosition.LowerBottomLeft:
+                return rimTileSet.rimBottomLeftOther;
+            case RimPosition.LowerBottomRight:
+                return rimTileSet.rimBottomRightOther;
         }
         return null;
     }
@@ -204,54 +164,54 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
             if (!mapData.floorPositions.Contains(position + Vector2Int.left)
              && !mapData.floorPositions.Contains(position + Vector2Int.up))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperTopLeft));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperTopLeft));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.up)
                   && !mapData.floorPositions.Contains(position + Vector2Int.right))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperTopRight));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperTopRight));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.left)
                   && !mapData.floorPositions.Contains(position + Vector2Int.down))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperBottomLeft));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperBottomLeft));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.down)
                   && !mapData.floorPositions.Contains(position + Vector2Int.right))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperBottomRight));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperBottomRight));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.up))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperTop));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperTop));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.left))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperLeft));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperLeft));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.right))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperRight));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperRight));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.down))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.UpperBottom));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.UpperBottom));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.left + Vector2Int.down))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.LowerTopRight));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.LowerTopRight));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.right + Vector2Int.down))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.LowerTopLeft));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.LowerTopLeft));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.left + Vector2Int.up))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.LowerBottomRight));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.LowerBottomRight));
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.right + Vector2Int.up))
             {
-                floorTilemap.SetTile(floorPos, SelectTile(closestRoomType, RimPosition.LowerBottomLeft));
+                floorTilemap.SetTile(floorPos, SelectRimTile(closestRoomType, RimPosition.LowerBottomLeft));
             }
             // Else map between the floor positions and the positions on the atlas tilemap
             else
@@ -286,14 +246,14 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
             Vector2Int closestRoomCenter = FindClosestRoomCenter(position, roomCenters.Keys);
             Room.RoomType closestRoomType = roomCenters[closestRoomCenter];
             // Set the wall rule tile based on the closest room type
-            String wallType;
+            WallTileSet wallTileSet;
             if (closestRoomType == Room.RoomType.NORMAL || closestRoomType == Room.RoomType.START)
             {
-                wallType = "Basic";
+                wallTileSet = basicWalls;
             }
             else
             {
-                wallType = "Advanced";
+                wallTileSet = advancedWalls;
             } 
             
             // Handle the different walls
@@ -302,30 +262,15 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 // Upper wall (two tiles high)
                 var upperTilePos = collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up));
                 var lowerTilePos = collisionTilemap.WorldToCell((Vector3Int)position);
-                if (wallType == "Basic")
-                {
-                    collisionTilemap.SetTile(upperTilePos, topUpperWallBasic);
-                    collisionTilemap.SetTile(lowerTilePos, topBottomWallBasic);
-                }
-                else
-                {
-                    collisionTilemap.SetTile(upperTilePos, topUpperWallAdvanced);
-                    collisionTilemap.SetTile(lowerTilePos, topBottomWallAdvanced);
-                }
+                collisionTilemap.SetTile(upperTilePos, wallTileSet.topWallUpper);
+                collisionTilemap.SetTile(lowerTilePos, wallTileSet.topWallBottom);
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.down)
                   && !mapData.wallPositions.Contains(position + Vector2Int.down))
             {
                 // Lower wall (one tile high)
                 var lowerTilePos = collisionTilemap.WorldToCell((Vector3Int)position);
-                if (wallType == "Basic")
-                {
-                    collisionTilemap.SetTile(lowerTilePos, bottomWallBasic);
-                }
-                else
-                {
-                    collisionTilemap.SetTile(lowerTilePos, bottomWallAdvanced);
-                }
+                collisionTilemap.SetTile(lowerTilePos, wallTileSet.bottomWall);
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.left)
                   && !mapData.floorPositions.Contains(position + 2 * Vector2Int.down)
@@ -337,25 +282,11 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 {
                     // Top left corner
                     var cornerTilePos = collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up));
-                    if (wallType == "Basic")
-                    {
-                        collisionTilemap.SetTile(cornerTilePos, leftCornerBasic);
-                    }
-                    else
-                    {
-                        collisionTilemap.SetTile(cornerTilePos, leftCornerAdvanced);
-                    }
+                    collisionTilemap.SetTile(cornerTilePos, wallTileSet.leftCorner);
                 }
 
                 var wallTilePos = collisionTilemap.WorldToCell((Vector3Int)position);
-                if (wallType == "Basic")
-                {
-                    collisionTilemap.SetTile(wallTilePos, leftWallBasic);
-                }
-                else
-                {
-                    collisionTilemap.SetTile(wallTilePos, leftWallAdvanced);
-                }
+                collisionTilemap.SetTile(wallTilePos, wallTileSet.leftWall);
             }
             else if (!mapData.floorPositions.Contains(position + Vector2Int.right)
                   && !mapData.floorPositions.Contains(position + 2 * Vector2Int.down)
@@ -367,29 +298,29 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 {
                     // Top right corner
                     var cornerTilePos = collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up));
-                    if (wallType == "Basic")
-                    {
-                        collisionTilemap.SetTile(cornerTilePos, rightCornerBasic);
-                    }
-                    else
-                    {
-                        collisionTilemap.SetTile(cornerTilePos, rightCornerAdvanced);
-                    }
+                    collisionTilemap.SetTile(cornerTilePos, wallTileSet.rightCorner);
                 }
 
                 var wallTilePos = collisionTilemap.WorldToCell((Vector3Int)position);
-                if (wallType == "Basic")
-                {
-                    collisionTilemap.SetTile(wallTilePos, rightWallBasic);
-                }
-                else
-                {
-                    collisionTilemap.SetTile(wallTilePos, rightWallAdvanced);
-                }
+                collisionTilemap.SetTile(wallTilePos, wallTileSet.rightWall);
             }
             else
             {
-                // Tile handled by upper tile of top wall
+                // Tile handled by upper tile of top wall but one above might be corner
+                if (!mapData.wallPositions.Contains(position + Vector2Int.up)
+                 && mapData.wallPositions.Contains(position + Vector2Int.right))
+                {
+                    // Top left corner
+                    var cornerTilePos = collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up));
+                    collisionTilemap.SetTile(cornerTilePos, wallTileSet.leftCorner);
+                }
+                else if (!mapData.wallPositions.Contains(position + Vector2Int.up)
+                 && mapData.wallPositions.Contains(position + Vector2Int.left))
+                {
+                    // Top right corner
+                    var cornerTilePos = collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up));
+                    collisionTilemap.SetTile(cornerTilePos, wallTileSet.rightCorner);
+                }
             }
         }
     }
@@ -467,114 +398,87 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     private void PaintDoor(Vector2Int position, Vector2Int doorDirection, Room room)
     {
         // Paint the door based on the door direction, initial position is in the middle of the door
-        if (doorDirection == Vector2Int.up)
+        if (doorDirection == Vector2Int.up || doorDirection == Vector2Int.down)
         {
-            // Top door
+            DoorTileSet.HorizontalDoor horizontalDoor = null;
+            if (doorDirection == Vector2Int.up)
+            {
+                // Top door
+                horizontalDoor = doorTileSet.topDoor;
+            }
+            else if (doorDirection == Vector2Int.down)
+            {
+                // Bottom door
+                horizontalDoor = doorTileSet.bottomDoor;
+            }
+            if (horizontalDoor == null)
+            {
+                return;
+            }
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right)),
-                topDoorBottomLeft
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.left)),
+                horizontalDoor.doorBottomLeft
             );
             collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right + Vector2Int.up)),
-                topDoorUpperLeft
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.left + Vector2Int.up)),
+                horizontalDoor.doorUpperLeft
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)position),
-                topDoorBottomMiddle
+                horizontalDoor.doorBottomMiddle
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
-                topDoorUpperMiddle
+                horizontalDoor.doorUpperMiddle
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right)),
-                topDoorBottomRight
+                horizontalDoor.doorBottomRight
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right + Vector2Int.up)),
-                topDoorUpperRight
+                horizontalDoor.doorUpperRight
             );
         }
-        else if (doorDirection == Vector2Int.right)
+        else if (doorDirection == Vector2Int.left || doorDirection == Vector2Int.right)
         {
-            // Door on the right
-
+            DoorTileSet.VerticalDoor verticalDoor = null;
+            if (doorDirection == Vector2Int.left)
+            {
+                // Left door
+                verticalDoor = doorTileSet.leftDoor;
+            }
+            else if (doorDirection == Vector2Int.right)
+            {
+                // Right door
+                verticalDoor = doorTileSet.rightDoor;
+            }
+            if (verticalDoor == null)
+            {
+                return;
+            }
             // Top starts two tiles up in the wall
             position += 3 * Vector2Int.up;
 
             decorationTilemap.SetTile(
                 decorationTilemap.WorldToCell((Vector3Int)position),
-                rightDoorOne
+                verticalDoor.doorOne
             );
             decorationTilemap.SetTile(
                 decorationTilemap.WorldToCell((Vector3Int)(position + Vector2Int.down)),
-                rightDoorTwo
+                verticalDoor.doorTwo
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.down)),
-                rightDoorThree
+                verticalDoor.doorThree
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + 3 * Vector2Int.down)),
-                rightDoorFour
+                verticalDoor.doorFour
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + 4 * Vector2Int.down)),
-                rightDoorFive
-            );
-        }
-        else if (doorDirection == Vector2Int.down)
-        {
-            // Bottom door
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right)),
-                bottomDoorBottomLeft
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position - Vector2Int.right + Vector2Int.up)),
-                bottomDoorUpperLeft
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)position),
-                bottomDoorBottomMiddle
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
-                bottomDoorUpperMiddle
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right)),
-                bottomDoorBottomRight
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right + Vector2Int.up)),
-                bottomDoorUpperRight
-            );
-        }
-        else if (doorDirection == Vector2Int.left)
-        {
-            // Top starts two tiles up in the wall
-            position += 3 * Vector2Int.up;
-
-            decorationTilemap.SetTile(
-                decorationTilemap.WorldToCell((Vector3Int)position),
-                leftDoorOne
-            );
-            decorationTilemap.SetTile(
-                decorationTilemap.WorldToCell((Vector3Int)(position + Vector2Int.down)),
-                leftDoorTwo
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.down)),
-                leftDoorThree
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 3 * Vector2Int.down)),
-                leftDoorFour
-            );
-            collisionTilemap.SetTile(
-                collisionTilemap.WorldToCell((Vector3Int)(position + 4 * Vector2Int.down)),
-                leftDoorFive
+                verticalDoor.doorFive
             );
         }
     }
