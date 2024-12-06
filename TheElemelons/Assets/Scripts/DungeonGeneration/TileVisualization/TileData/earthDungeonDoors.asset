@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77fcde802d062cf4f91b265bc91ba610, type: 3}
+  m_Name: earthDungeonDoors
+  m_EditorClassIdentifier: 
+  topDoor:
+    doorBottomLeft: {fileID: 11400000, guid: ec36778ddeb43204aa43d7d3b460ab68, type: 2}
+    doorBottomMiddle: {fileID: 11400000, guid: d3c37903daf9dba49b3c3ffc5e950bd3, type: 2}
+    doorBottomRight: {fileID: 11400000, guid: c54185e281425e347875f3b529ca0370, type: 2}
+    doorUpperLeft: {fileID: 11400000, guid: 04106d8b4e84d6d4bb3ad3389737a256, type: 2}
+    doorUpperMiddle: {fileID: 11400000, guid: 81fc30e4e882b364280635fd32ff6b7e, type: 2}
+    doorUpperRight: {fileID: 11400000, guid: b796ac5b130a2864db11b7b61b88e315, type: 2}
+  bottomDoor:
+    doorBottomLeft: {fileID: 11400000, guid: d630a09d89ecbc84485b01ae394e32f8, type: 2}
+    doorBottomMiddle: {fileID: 11400000, guid: 64110a68370599d4da68e6cca7a1d4fd, type: 2}
+    doorBottomRight: {fileID: 11400000, guid: 3387cc76ae8667a4eb0015a786caca5a, type: 2}
+    doorUpperLeft: {fileID: 11400000, guid: 04106d8b4e84d6d4bb3ad3389737a256, type: 2}
+    doorUpperMiddle: {fileID: 11400000, guid: 81fc30e4e882b364280635fd32ff6b7e, type: 2}
+    doorUpperRight: {fileID: 11400000, guid: b796ac5b130a2864db11b7b61b88e315, type: 2}
+  leftDoor:
+    doorOne: {fileID: 11400000, guid: 521f80d82648d844983bf2cbcfe75897, type: 2}
+    doorTwo: {fileID: 11400000, guid: f5b5f4175476fc64a84d701b85345a72, type: 2}
+    doorThree: {fileID: 11400000, guid: b9167b9fee7e6c44ca097758e2d23f1a, type: 2}
+    doorFour: {fileID: 11400000, guid: a187a8c0a508d7c4fb3d5c489ea75603, type: 2}
+    doorFive: {fileID: 11400000, guid: dd2930e768ec75a45a4327fa2c5724f2, type: 2}
+  rightDoor:
+    doorOne: {fileID: 11400000, guid: 521f80d82648d844983bf2cbcfe75897, type: 2}
+    doorTwo: {fileID: 11400000, guid: 4a545edd9c266f540a8159ad9939f363, type: 2}
+    doorThree: {fileID: 11400000, guid: f877b376e624587468d2a21e3a1ae9ad, type: 2}
+    doorFour: {fileID: 11400000, guid: 0219a74f9e0dc9c4ca7f132ff6eef327, type: 2}
+    doorFive: {fileID: 11400000, guid: 8fd127a1f1fca654b85e1e7d39081402, type: 2}

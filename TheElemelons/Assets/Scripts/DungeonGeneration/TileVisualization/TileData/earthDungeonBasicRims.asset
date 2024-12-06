@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0af67f03d3e2946a660fe3db3f0c70, type: 3}
+  m_Name: earthDungeonBasicRims
+  m_EditorClassIdentifier: 
+  rimLeft: {fileID: 11400000, guid: 016793db0390dd6478e5aa0711209cc4, type: 2}
+  rimTop: {fileID: 11400000, guid: 6602d33ef1c7fbf4aa2b5c5dee4848a2, type: 2}
+  rimRight: {fileID: 11400000, guid: 600e15cb7d7b0dc43ac77be0a57b9ff1, type: 2}
+  rimBottom: {fileID: 11400000, guid: a117fbc4396d9214fa9d39d13eac8c38, type: 2}
+  rimTopLeft: {fileID: 11400000, guid: 032514e7585a81b4fb8d62ebb8115c42, type: 2}
+  rimTopRight: {fileID: 11400000, guid: 2bb92536efd29c142b59125d940855ec, type: 2}
+  rimBottomLeft: {fileID: 11400000, guid: e0decb298877d2f489e7f77aa7680ff0, type: 2}
+  rimBottomRight: {fileID: 11400000, guid: ea87938d346d2684b92f7ea0a2e87100, type: 2}
+  rimTopLeftOther: {fileID: 11400000, guid: 723a1aa513bd33a4abe5483724ef0af6, type: 2}
+  rimTopRightOther: {fileID: 11400000, guid: 92c19ace6b7f6404995434c47d4f1841, type: 2}
+  rimBottomLeftOther: {fileID: 11400000, guid: 85195e83f26240c4b96b226d4af51350, type: 2}
+  rimBottomRightOther: {fileID: 11400000, guid: 885eb62ca734ba246a5061992b5357c3, type: 2}
