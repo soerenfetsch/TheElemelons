@@ -9,17 +9,20 @@ using UnityEngine.Tilemaps;
 
 public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 {
-    [SerializeField] protected Tilemap floorTilemap, collisionTilemap, decorationTilemap; // Tilemaps for floors and walls
-    [SerializeField] protected WallTileSet basicWalls, advancedWalls; // Tiles for the walls
+    public Tilemap floorTilemap, collisionTilemap, decorationTilemap; // Tilemaps for floors and walls
+    public WallTileSet basicWalls, advancedWalls; // Tiles for the walls
 
-    [SerializeField] protected TilemapData floorAtlasTilemapData;                         // Atlas tilemap for floor patterns
-    [SerializeField] protected RimTileSet basicRims, advancedRims; // Rim tiles
+    public TilemapData floorAtlasTilemapData;                         // Atlas tilemap for floor patterns
+    public RimTileSet basicRims, advancedRims; // Rim tiles
     // For the top and bottom doors the tiles are named after their respective position
-    [SerializeField] protected DoorTileSet doorTileSet; // Door tileset for all four doors
+    public DoorTileSet doorTileSet; // Door tileset for all four doors
 
-    protected enum RimPosition { UpperTopLeft, UpperTopRight, UpperBottomLeft, UpperBottomRight,
-                               UpperTop, UpperLeft, UpperRight, UpperBottom,
-                               LowerTopLeft, LowerTopRight, LowerBottomLeft, LowerBottomRight};
+    protected enum RimPosition
+    {
+        UpperTopLeft, UpperTopRight, UpperBottomLeft, UpperBottomRight,
+        UpperTop, UpperLeft, UpperRight, UpperBottom,
+        LowerTopLeft, LowerTopRight, LowerBottomLeft, LowerBottomRight
+    };
     protected Tilemap atlasTilemap;
 
     // Method to initialize the atlas tilemap from TilemapData
@@ -106,7 +109,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     }
 
     // Paint the floor tiles at the given positions
-    protected void PaintFloor(MapData mapData)
+    public void PaintFloor(MapData mapData)
     {
         // Ensure the atlas tilemap is initialized
         InitializeAtlasTilemap();
@@ -151,7 +154,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         Vector3Int startingPos = new Vector3Int(xRand, yRand, 0);
         Debug.Log("The tile at starting position is: " + atlasTilemap.GetTile(startingPos));
 
-        
+
         foreach (var position in mapData.floorPositions)
         {
             // Get the type of the closest room for each floor position
@@ -231,7 +234,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     /// Paints the upper walls two tiles high with the upper being passable,
     /// the side is one wide and the bottom wall being one block high 
     /// </summary>
-    protected void PaintWalls(MapData mapData)
+    public void PaintWalls(MapData mapData)
     {
         // Calculate the center of each room
         Dictionary<Vector2Int, Room.RoomType> roomCenters = new Dictionary<Vector2Int, Room.RoomType>();
@@ -254,8 +257,8 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
             else
             {
                 wallTileSet = advancedWalls;
-            } 
-            
+            }
+
             // Handle the different walls
             if (mapData.floorPositions.Contains(position + Vector2Int.down))
             {
@@ -326,12 +329,12 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     }
 
     // Leave the dungeon undecorated for now
-    protected void DecorateDungeon(MapData mapData)
+    public void DecorateDungeon(MapData mapData)
     {
         // TODO Add decorations
     }
 
-    protected void PaintDoors(MapData mapData)
+    public void PaintDoors(MapData mapData)
     {
         foreach (Room room in mapData.rooms)
         {

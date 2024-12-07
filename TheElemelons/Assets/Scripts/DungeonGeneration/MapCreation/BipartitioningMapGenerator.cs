@@ -1,25 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using Unity.Collections;
 using UnityEngine;
 
 public class BipartitioningMapGenerator : AbstractMapGenerator
 {
-    [SerializeField] private Vector2Int startPosition = new Vector2Int(0, 0);
-    [SerializeField] private int minRoomWidth = 10;
-    [SerializeField] private int minRoomHeight = 10;
-    [SerializeField] private int dungeonWidth = 100;
-    [SerializeField] private int dungeonHeight = 100;
-    [SerializeField] private int offset = 3; // How many tiles offset for walls, etc.
+    public Vector2Int startPosition = new Vector2Int(0, 0);
+    public int minRoomWidth = 10;
+    public int minRoomHeight = 10;
+    public int dungeonWidth = 100;
+    public int dungeonHeight = 100;
+    public int offset = 3; // How many tiles offset for walls, etc.
 
     // Define how wide the corridors are
-    [SerializeField] private int corridorWidth = 2;
+    public int corridorWidth = 2;
 
     public override MapData GenerateMap()
     {
         MapData mapData = new MapData();
+        CreateFloor(mapData);
+        CreateWalls(mapData);
+        CreateDecorationPositions(mapData);
+        CreateMonsterSpawnPoints(mapData);
+        CreateDoorPositions(mapData);
+        createShrinePositions(mapData);
+        createTrapPositions(mapData);
+
+        return mapData;
+    }
+
+    public void CreateFloor(MapData mapData)
+    {
         List<Room> rooms = new List<Room>();
         List<BoundsInt> roomSpaces = CreateRooms(rooms);
         HashSet<Vector2Int> corridorPositions = CreateCorridorsOrdering(roomSpaces, rooms, mapData);
@@ -33,14 +43,6 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
                 mapData.rooms[i].SetRoomType(Room.RoomType.ADVANCED);
             }
         }
-        CreateWalls(mapData);
-        CreateDecorationPositions(mapData);
-        CreateMonsterSpawnPoints(mapData);
-        CreateDoorPositions(mapData);
-        createShrinePositions(mapData);
-        createTrapPositions(mapData);
-
-        return mapData;
     }
 
     protected List<BoundsInt> CreateRooms(List<Room> roomList)
@@ -58,7 +60,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return roomSpaces;
     }
 
-    private HashSet<Vector2Int> CreateCorridorsOrdering(List<BoundsInt> spaceBounds, List<Room> rooms, MapData mapData)
+    protected HashSet<Vector2Int> CreateCorridorsOrdering(List<BoundsInt> spaceBounds, List<Room> rooms, MapData mapData)
     {
         // Get the centers of the bounding boxes and map them to the corresponding rooms
         List<Vector2Int> roomCenters = new List<Vector2Int>();
@@ -77,7 +79,6 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         roomCenters.Remove(currentRoomCenter);
         mapData.AddRoom(rooms[centerToRoomMapping[currentRoomCenter]]);
         rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.START);
-        Debug.Log("Start room center: " + currentRoomCenter);
 
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
         while (roomCenters.Count > 0)
@@ -97,23 +98,19 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             if (roomCenters.Count == 0)
             {
                 rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.END);
-                Debug.Log("End room center: " + currentRoomCenter);
             }
-            else
-                Debug.Log("Room center: " + currentRoomCenter);
-
         }
 
         return corridorPositions;
     }
 
-    private HashSet<Vector2Int> ConnectRooms(Vector2Int currentRoomCenter, Vector2Int destination,
+    protected HashSet<Vector2Int> ConnectRooms(Vector2Int currentRoomCenter, Vector2Int destination,
                                              int xDestMin, int xDestMax)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
         var position = currentRoomCenter;
 
-        // TODO: Evaluate if this is necessary since we restrict door placment now
+        // TODO: Evaluate if this is necessary since we restrict door placement now
         // // First fix corridors that cross room borders by offsetting the starting point
 
         // // Corridor overlaps with left border of the room
@@ -146,7 +143,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
 
         // Start a corridor of the given corridorWidth
         for (int i = 0; i < corridorWidth; ++i)
-        {   
+        {
             int added = (i + 1) / 2;
             if (i % 2 == 0)
                 added = (-1) * added;
@@ -164,7 +161,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
 
             // Add a corridor of the given corridorWidth
             for (int i = 0; i < corridorWidth; ++i)
-            {   
+            {
                 int added = (i + 1) / 2;
                 if (i % 2 == 0)
                     added = (-1) * added;
@@ -177,7 +174,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             Vector2Int positionCopy = position;
             positionCopy += direction;
             for (int i = 0; i < corridorWidth; ++i)
-            {   
+            {
                 int added = (i + 1) / 2;
                 if (i % 2 == 0)
                     added = (-1) * added;
@@ -194,7 +191,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
 
             // Add a corridor of the given corridorWidth
             for (int i = 0; i < corridorWidth; ++i)
-            {   
+            {
                 int added = (i + 1) / 2;
                 if (i % 2 == 0)
                     added = (-1) * added;
@@ -204,7 +201,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return corridor;
     }
 
-    private Vector2Int FindClosesPointTo(Vector2Int currentRoomCenter, List<Vector2Int> roomCenters)
+    protected Vector2Int FindClosesPointTo(Vector2Int currentRoomCenter, List<Vector2Int> roomCenters)
     {
         Vector2Int closest = Vector2Int.zero;
         float distance = float.MaxValue;
@@ -220,7 +217,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return closest;
     }
 
-    protected void CreateWalls(MapData mapData)
+    public void CreateWalls(MapData mapData)
     {
         // First add walls to the rooms
         foreach (var room in mapData.rooms)
@@ -260,7 +257,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
-    protected void CreateDecorationPositions(MapData mapData)
+    public void CreateDecorationPositions(MapData mapData)
     {
         // Place decorations randomly on some floor positions
         foreach (Room room in mapData.rooms)
@@ -284,7 +281,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
-    protected void CreateMonsterSpawnPoints(MapData mapData)
+    public void CreateMonsterSpawnPoints(MapData mapData)
     {
         // Place monsters randomly on floor positions
         foreach (Room room in mapData.rooms)
@@ -300,7 +297,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
-    protected void CreateDoorPositions(MapData mapData)
+    public void CreateDoorPositions(MapData mapData)
     {
         // Determine the positions of doors by finding the corridors
         foreach (Room room in mapData.rooms)
@@ -337,18 +334,18 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
-    protected void createShrinePositions(MapData mapData)
+    public void createShrinePositions(MapData mapData)
     {
         // TODO: Implement this
     }
 
-    protected void createTrapPositions(MapData mapData)
+    public void createTrapPositions(MapData mapData)
     {
         //TODO: Implement this
     }
 
     // Recursive bipartitioning to split space into rooms
-    private List<BoundsInt> BipartitionSpace(BoundsInt spaceToSplit, int minWidth, int minHeight)
+    protected List<BoundsInt> BipartitionSpace(BoundsInt spaceToSplit, int minWidth, int minHeight)
     {
         Queue<BoundsInt> roomsQueue = new Queue<BoundsInt>();
         List<BoundsInt> roomsList = new List<BoundsInt>();
@@ -395,17 +392,17 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return roomsList;
     }
 
-    private void SplitVertically(Queue<BoundsInt> roomsQueue, BoundsInt room)
+    protected void SplitVertically(Queue<BoundsInt> roomsQueue, BoundsInt room)
     {
         var xSplit = Random.Range(1, room.size.x); // (1, room.size.x - 1)
         BoundsInt room1 = new BoundsInt(room.min, new Vector3Int(xSplit, room.size.y, room.size.z));
         BoundsInt room2 = new BoundsInt(new Vector3Int(room.min.x + xSplit, room.min.y, room.min.z),
-                                        new Vector3Int(room.size.x -  xSplit, room.size.y, room.size.z));
+                                        new Vector3Int(room.size.x - xSplit, room.size.y, room.size.z));
         roomsQueue.Enqueue(room1);
         roomsQueue.Enqueue(room2);
     }
 
-    private void SplitHorizontally(Queue<BoundsInt> roomsQueue, BoundsInt room)
+    protected void SplitHorizontally(Queue<BoundsInt> roomsQueue, BoundsInt room)
     {
         var ySplit = Random.Range(1, room.size.y); // (1, room.size.y - 1)
         BoundsInt room1 = new BoundsInt(room.min, new Vector3Int(room.size.x, ySplit, room.size.z));
@@ -416,7 +413,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     }
 
     // Create a random room shape in a partitioned space
-    private HashSet<Vector2Int> CreateRandomRoomInSpace(BoundsInt space)
+    protected HashSet<Vector2Int> CreateRandomRoomInSpace(BoundsInt space)
     {
         // For now just create a rectangle exactly within the space minus the offset for walls
         HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
