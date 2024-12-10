@@ -92,48 +92,51 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - The rooms are added to the map data in order of the connections
 - **Create walls**: Creates the wall positions by adding the outline of the floor to the wall data
   - Given a hash map of floor positions, the wall positions are the positions adjacent to the floor positions but not contained in them
+- **Create doors**: Creates the door positions between rooms and corridors
+  - Given room positions and corridor positions the door position is in the middle of the corridor adjacent to a room
 - TO BE DEFINED: **Create monster spawnpoints**: Randomly select positions on the floor on which monsters can spawn
 - TO BE DEFINED: **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
+- TO BE DEFINED: **Create shrine positions**: Randomly select positions on the floor to place shrines
 
 #### 2.2.4 Tilemap Visualization (abstract)
 
-- **Paint tiles**): abstract method to paint all tiles given a MapData object, which can be implemented by the concrete visualizers for the different dungeon types
+- **Paint tiles**: abstract method to paint all tiles given a MapData object, which can be implemented by the concrete visualizers for the different dungeon types
 - **Clear**: abstract method to clear the tilemaps of the dungeon
 
 #### 2.2.5 Earth Tilemap Visualizer
 
-- PaintTiles(): Paints floor, walls and decorations using the methods specified below
-- PaintFloor(): Using an atlas tilemap with predefined floor patterns, place a rule tile for the rim tiles on the floor rims (adjacent to the walls) and map the atlas floor pattern to the rest of the floor
+- **Paint tiles**: Paints floor, walls and decorations using the methods specified below
+- **Paint floor**: Using an atlas tilemap with predefined floor patterns, place a rule tile for the rim tiles on the floor rims (adjacent to the walls) and map the atlas floor pattern to the rest of the floor
   - Starting point for the atlas should be seeded randomly in a way that the whole floor map fits into the selected atlas region
   - Rim of the floor should show the 12 possible rim tiles in the correct configuration (4 top corners, 4 bottom corners, 4 left, right, top, bottom straight rims)
-- PaintWalls(): Using the wall positions places different wall tiles depending on the position in the room
+- **Paint walls**: Using the wall positions places different wall tiles depending on the position in the room
   - Walls on top of the room are two positions wide and contain the two tile high wall tiles
   - Walls on the left or right side of the room are one tile wide and contain the upper view of the wall
   - Walls on the bottom of the room are one black tile wide
-- TO BE DEFINED: DecorateDungeon(): ...
-- Clear(): Clears the floor and wall tilemap
+- TO BE DEFINED: **Decorate dungeon**: ...
+- **Clear**: Clears the floor and wall tilemap
 
 ### 2.3 Enemy System
 
 #### 2.3.1 Enemy (abstract)
 
-- ChangeState(): abstract method to change the current state/objective of the Enemy
+- **Change state**: abstract method to change the current state/objective of the Enemy
   - Uses a EnemyStatus enum which is defined for all enemies the same
-- ActOnStatus(): abstract method to act in concretely implemented methods given the current status
-- SubtractHealth(): method to subtract health of the internal Health object
-- SubtractMana(): method to subtract mana of the internal Mana object
-- CheckHealthStatus(): abstract method to act given the current health
-- CheckManaStatus(): abstract method to act given the current mana
+- **Act on status**: abstract method to act in concretely implemented methods given the current status
+- **Subtract Health**: method to subtract health of the internal Health object
+- **Subtract Mana**: method to subtract mana of the internal Mana object
+- **Check health status**: abstract method to act given the current health
+- **Check mana status**: abstract method to act given the current mana
 
 #### 2.3.2 Tree Log (Enemy)
 
-- ActOnStatus():
+- **Act on status**:
   - while status 'idle': If player moves into chase radius then status is updated to 'walking'
   - while status 'walk': If player inside attack radius then status is updated to 'attacking'; If player outside attack radius but inside chase radius then Tree Log pathfinds toward the player; If player outside chase radius and Tree Log not at home position, then Tree Log moves toward home position; If player outside chase raidius and Tree Log at home position, updates status to 'idle'
   - while status 'attacking': Tree log stands still and attempts to engage combat with the player depending on the BoxCollider of both objects, if collision, combat is handles by the Combat Manager (TO BE DEFINED)
   - Animations should reflect the status and if 'walking' also the direction in which the Tree Log is headed
-- ChangeState(): Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
-- CheckHealthStatus(): If health is zero, the Tree Log Dies and triggers the death animation
+- **Change state**: Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
+- **Check health status**: If health is zero, the Tree Log Dies and triggers the death animation
 
 ### 2.4 Combat System
 
@@ -141,17 +144,17 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.4.2 Health
 
-- SubtractHealth(): subtracts a floating input from the total health, if health drop below zero, health is set to zero
-- AddHealth(): adds a floating input to the total health, if health gets higher than max health, health is set to max health
-- GetHealth(): Returns the current total health value
-- IsZero(): Returns true if the current health is zero, false otherwise
+- **Subtract Health**: subtracts a floating input from the total health, if health drop below zero, health is set to zero
+- **Add health**: adds a floating input to the total health, if health gets higher than max health, health is set to max health
+- **Get health**: Returns the current total health value
+- **Is zero**: Returns true if the current health is zero, false otherwise
 
 #### 2.4.3 Mana
 
-- SubtractMana(): subtracts a floating input from the total mana, if mana drop below zero, mana is set to zero
-- AddMana(): adds a floating input to the total mana, if mana gets higher than max mana, mana is set to max mana
-- GetMana(): Returns the current total mana value
-- IsZero(): Returns true if the current mana is zero, false otherwise
+- **Subtract mana**: subtracts a floating input from the total mana, if mana drop below zero, mana is set to zero
+- **Add mana**: adds a floating input to the total mana, if mana gets higher than max mana, mana is set to max mana
+- **Get mana**: Returns the current total mana value
+- **Is zero**: Returns true if the current mana is zero, false otherwise
 
 ### TO BE DEFINED CONCRETELY 2.5 Game Progression and Save System
 - The **GameManager** must control the overall game state, including dungeon transitions, combat phases, and player progression.
@@ -163,25 +166,25 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 #### 2.6.1 UI Manager
 
 - **UIManager** should manage UI objects to display and change the UI elements to reflect the game state, should manage healthbar, manabar, spell charges, aiming direction and main menu widgets
-- update health: call the HealthBar to continuously update the health ui using the player health
-- show hurt: call the HealthBar to show the hurt animation
-- update mana: call the ManaBar to continuously update the mana ui using the player mana
-- show hurt: call the ManaBar to show the hurt animation
-- update aiming arrow: using the input manager get the current mouse aiming direction of player and show an arrow around the player sprite in that direction
-- clear spell charge UI: clear all spell charges from the canvas so that no charges are displayed
-- load charge UI: given a charge sprite type, check how many charge UIs are displayed and then if none are, display the charge on top of the player at position 1, if one is displayed then show the charge at position 2, else do nothing
+- **Update health**: call the HealthBar to continuously update the health ui using the player health
+- **Show hurt**: call the HealthBar to show the hurt animation
+- **Update mana**: call the ManaBar to continuously update the mana ui using the player mana
+- **Show hurt**: call the ManaBar to show the hurt animation
+- **Update aiming arrow**: using the input manager get the current mouse aiming direction of player and show an arrow around the player sprite in that direction
+- **Clear spell charge UI**: clear all spell charges from the canvas so that no charges are displayed
+- **Load charge UI**: given a charge sprite type, check how many charge UIs are displayed and then if none are, display the charge on top of the player at position 1, if one is displayed then show the charge at position 2, else do nothing
 
 #### 2.6.2 HealthBar
 
-- Update health UI using player health: display max health amount of (red) hearts of which player health are filled and rest are empty
-- Execute hurt animation: If method is called this starts an animation where all hearts shortly light up white
-- Execute heal animation: If method is called this starts an animation where all hearts shortly light up blue
+- **Update health UI using player health**: display max health amount of (red) hearts of which player health are filled and rest are empty
+- **Execute hurt animation**: If method is called this starts an animation where all hearts shortly light up white
+- **Execute heal animation**: If method is called this starts an animation where all hearts shortly light up blue
 
 #### 2.6.2 ManaBar
 
-- Update mana UI using player mana: display max mana amount of (blue) stars of which player mana are filled and rest are empty
-- Execute hurt animation: If method is called this starts an animation where all stars shortly light up white
-- Execute heal animation: If method is called this starts an animation where all stars shortly light up violet
+- **Update mana UI using player mana**: display max mana amount of (blue) stars of which player mana are filled and rest are empty
+- **Execute hurt animation**: If method is called this starts an animation where all stars shortly light up white
+- **Execute heal animation**: If method is called this starts an animation where all stars shortly light up violet
 
 ## 3. Non-Functional Requirements
 
