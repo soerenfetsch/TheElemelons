@@ -33,26 +33,26 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.1.1 Player Movement
 
-- OnInputMove(): given a movement in x and/or y direction move the character along the given axes using the Player object's velocity
+- **Move on input**: given a movement in x and/or y direction move the character along the given axes using the Player object's velocity
   - Velocity should be normalized so that diagonal movement is as fast and horizontal/vertical
   - Velocity should be calculated by a baseSpeed times a speedMultiplier which can be altered in other methods
   - Animation direction (front, back, left and right) reflects the direction the player is moving
 
-- OnKnockbackMove(): given a direction a knockbackVelocity and a knockTime the player receives a knock in the given direction and with the given velocity and is unable to act within the given time frame
+- **Move on knockback**: given a direction a knockbackVelocity and a knockTime the player receives a knock in the given direction and with the given velocity and is unable to act within the given time frame
   - Receiving knockback triggers a coroutine in which the player is set to a state where they cannot act
   - A staggering animation is triggered to show that the knockback is received during the coroutine
   - Animation direction (front, back, left and right) does not reflect the direction the player is moving
  
 #### 2.1.2 Spell Casting
 
-- OnChargeSelected(): given a ChargeType enum object (fire, wind, water, earth) selects a new charge for the player if any of the two possible charge slots are empty
+- **Select charge**: given a ChargeType enum object (fire, wind, water, earth) selects a new charge for the player if any of the two possible charge slots are empty
   - Instructs the UIManager to show the new charge sprite above the player
   - If both slots are occupied, nothing happens
 
-- ClearCharges(): clears all selected charges of the player
+- **Clear charges**: clears all selected charges of the player
   - Any selected charge is gone and both charge slots are empty again
 
-- CastSpell(): Given the currently selected charges, determines the appropriate spell of the spell combination and then casts the spell in the direction the player is facing, given the player has enough mana to cast the spell
+- **Cast spell**: Given the currently selected charges, determines the appropriate spell of the spell combination and then casts the spell in the direction the player is facing, given the player has enough mana to cast the spell
   - Direction of cast is determined by the mouse position given by the inputManager (direction from the character)
   - After casting all charges are cleared
   - If the player has sufficient mana and the spell is cast then the mana of the player is subtracted by the spell cost
@@ -63,42 +63,42 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
  
 #### 2.1.3 Input Manager
 
-- OnKeyPressed: Input Manager uses its internal key to type mapping to trigger the appropriate key method in the update (see below) for the given game status (enum for 'ingame', 'main menu', 'settings menu', etc..)
-- UpdateKey(): for a given event and new key, update the key to method binding of the 'ingame' methods
-- GetAimDirection(): given the current mouse position calculates and returns the angle around the player
-- Update(): uses the following methods to map the key inputs to the appropriate actions
-  - UpdateMovementFromKeys(): Uses the internal movement keys for up, down, left, right to trigger the player movement in the given directions
-  - UpdateMousePosition(): Updates the current mouse position
-  - UpdateChargeSelection(): Uses the internal charge selection keys to call the SpellCasting.onChargeSelected() with the given charge if an appropriate key is pressed
-  - UpdateCastButton(): If the cast button is pressed, instruct the SpellCasting object of the player to trigger the CastSpell() method
-  - UpdateClearButton(): If the clear button is pressed, instruct the SpellCasting object of the player to trigger the ClearCharges() method
+- **Act on key pressed**: Input Manager uses its internal key to type mapping to trigger the appropriate key method in the update (see below) for the given game status (enum for 'ingame', 'main menu', 'settings menu', etc..)
+- **Update key mapping**: for a given event and new key, update the key to method binding of the 'ingame' methods
+- **Get aim direction**: given the current mouse position calculates and returns the angle around the player
+- **Update**: uses the following functionalities to map the key inputs to the appropriate actions
+  - **Update movement from keys**: Uses the internal movement keys for up, down, left, right to trigger the player movement in the given directions
+  - **Update mouse position**: Updates the current mouse position
+  - **Update charge selection**: Uses the internal charge selection keys to call the **Select charge** of Spell Casting with the given charge if an appropriate key is pressed
+  - **Update cast**: If the cast button is pressed, instruct the SpellCasting object of the player to trigger the **Cast spell** functionality
+  - **Update clear charges**: If the clear button is pressed, instruct the SpellCasting object of the player to trigger the **Clear charges** functionality
 
 ### 2.2 Dungeon Generation
 
 #### 2.2.1 Dungeon Generator
 
-- GeneratorDungeon(): Given a start position and using the selected TilemapVisualizer and MapGenerator generates the map data using the MapGenerator and then visualizes the map using the TilemapVisualizer
+- **Generate Dungeon**: Given a start position and using the selected TilemapVisualizer and MapGenerator generates the map data using the MapGenerator and then visualizes the map using the TilemapVisualizer
 
 #### 2.2.2 Map Generator (abstract)
 
-- GenerateMap(): Given a start point create all data necessary for the map data and return a MapData object. Should create floor, wall, deco, monster spawn point, door, shrine and trap positions as well as the different rooms
+- **Generate Map**: Given a start point create all data necessary for the map data and return a MapData object. Should create floor, wall, deco, monster spawn point, door, shrine and trap positions as well as the different rooms
   - should call abstract methods for all the map positions which can later be implemented in the concrete map generators
   - positions should be saved in hash set objects
  
 #### 2.2.3 Bipartitioning Map Generator
 
-- CreateFloor(): Uses recursive bipartitioning to partition the given rectangular dungeon with its height and width into rectangular rooms with a minimum height and width as well as an offset between the rooms and then connect the rooms
+- **Create Floor**: Use recursive bipartitioning to partition the given rectangular dungeon with its height and width into rectangular rooms with a minimum height and width as well as an offset between the rooms and then connect the rooms
   - The rooms are connected by choosing a random starting room and then connecting the middle point of that room to the middle point of the other room and the corridors have width with a given corridorWidth
   - The rooms are added to the map data in order of the connections
-- CreateWalls(): Creates the wall positions by adding the outline of the floor to the wall data
+- **Create walls**: Creates the wall positions by adding the outline of the floor to the wall data
   - Given a hash map of floor positions, the wall positions are the positions adjacent to the floor positions but not contained in them
-- TO BE DEFINED: CreateMonsterSpawnPoints(): Randomly select positions on the floor on which monsters can spawn
-- TO BE DEFINED: CreateDecorationPositions(): Randomly select positions on the floor and wall to place decorations (solid and not solid)
+- TO BE DEFINED: **Create monster spawnpoints**: Randomly select positions on the floor on which monsters can spawn
+- TO BE DEFINED: **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
 
 #### 2.2.4 Tilemap Visualization (abstract)
 
-- PaintTiles(): abstract method to paint all tiles given a MapData object, which can be implemented by the concrete visualizers for the different dungeon types
-- Clear(): abstract method to clear the tilemaps of the dungeon
+- **Paint tiles**): abstract method to paint all tiles given a MapData object, which can be implemented by the concrete visualizers for the different dungeon types
+- **Clear**: abstract method to clear the tilemaps of the dungeon
 
 #### 2.2.5 Earth Tilemap Visualizer
 
