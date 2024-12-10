@@ -42,47 +42,49 @@ public class InputManager : MonoBehaviour
 
     void HandleHorizontalVerticalMovementInput()
     {
+        Vector2 newMovement = playerMovement.GetMovement();
         //Horizontal Movement
         if(Input.GetKeyDown(keys["moveLeft"]))
         {
-            playerMovement.movement.x = -1;
+            newMovement.x = -1;
         }else if(Input.GetKeyUp(keys["moveLeft"]) && Input.GetKey(keys["moveRight"]))
         {
-            playerMovement.movement.x = 1;
+            newMovement.x = 1;
         }
         if(Input.GetKeyDown(keys["moveRight"]))
         {
-            playerMovement.movement.x = 1;
+            newMovement.x = 1;
         }else if(Input.GetKeyUp(keys["moveRight"]) && Input.GetKey(keys["moveLeft"]))
         {
-            playerMovement.movement.x = -1;
+            newMovement.x = -1;
         }
         if (!Input.GetKey(keys["moveLeft"]) 
         && !Input.GetKey(keys["moveRight"]))
         {
-            playerMovement.movement.x = 0;
+            newMovement.x = 0;
         }
 
         //Vertical Movement
         if(Input.GetKeyDown(keys["moveDown"]))
         {
-            playerMovement.movement.y = -1;
+            newMovement.y = -1;
         }else if(Input.GetKeyUp(keys["moveDown"]) && Input.GetKey(keys["moveUp"]))
         {
-            playerMovement.movement.y = 1;
+            newMovement.y = 1;
         }
         if(Input.GetKeyDown(keys["moveUp"]))
         {
-            playerMovement.movement.y = 1;
+            newMovement.y = 1;
         }else if(Input.GetKeyUp(keys["moveUp"]) && Input.GetKey(keys["moveDown"]))
         {
-            playerMovement.movement.y = -1;
+            newMovement.y = -1;
         }
         if (!Input.GetKey(keys["moveDown"]) 
         && !Input.GetKey(keys["moveUp"]))
         {
-            playerMovement.movement.y = 0;
+            newMovement.y = 0;
         }
+        playerMovement.SetMovement(newMovement);
     }
     
 }

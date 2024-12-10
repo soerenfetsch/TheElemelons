@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 public enum PlayerState{
     walk,
@@ -24,22 +25,19 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
     Animator wand_animator;
-    public UnityEngine.Vector2 movement;
+    UnityEngine.Vector2 movement;
     public UnityEngine.Vector2 mousePos; 
-    
-    public PlayerState currentState = PlayerState.idle;
+    PlayerState currentState;
     public bool iFrames;
     public float iFramesTime = 0.3f;
     Health health;
-    
-
     void Start(){
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         wand_animator = transform.GetChild(1).GetComponent<Animator>();
-        movement = UnityEngine.Vector2.zero;
+        SetMovement(UnityEngine.Vector2.zero);
         mousePos = UnityEngine.Vector2.zero;
-        currentState = PlayerState.idle;
+        SetCurrentState(PlayerState.idle);
         iFrames = false;
         health = GetComponent<Health>();
         animator.SetFloat("Horizontal",0);
@@ -49,28 +47,27 @@ public class PlayerMovement : MonoBehaviour
     void OnInputMove()
     {
         //Input
-        animator.SetFloat("Speed",movement.sqrMagnitude);    
-
+        animator.SetFloat("Speed",GetMovement().sqrMagnitude);    
 
         moveSpeed = baseSpeed*speedMultiplier;
         //Physics
-        if (movement!=UnityEngine.Vector2.zero && currentState != PlayerState.stagger)
+        if (GetMovement()!=UnityEngine.Vector2.zero && GetCurrentState() != PlayerState.stagger)
         {
-            currentState = PlayerState.walk;
+            SetCurrentState(PlayerState.walk);
             movement.Normalize();
-            rb.MovePosition(rb.position+movement*moveSpeed*Time.fixedDeltaTime);
-            animator.SetFloat("Horizontal",movement.x);
-            animator.SetFloat("Vertical",movement.y);
+            rb.MovePosition(rb.position+GetMovement()*moveSpeed*Time.fixedDeltaTime);
+            animator.SetFloat("Horizontal",GetMovement().x);
+            animator.SetFloat("Vertical",GetMovement().y);
             
-            wand_animator.SetFloat("Horizontal",movement.x);
-            wand_animator.SetFloat("Vertical",movement.y);
+            wand_animator.SetFloat("Horizontal",GetMovement().x);
+            wand_animator.SetFloat("Vertical",GetMovement().y);
             
-        }else if (currentState != PlayerState.stagger && movement == UnityEngine.Vector2.zero)
+        }else if (GetCurrentState() != PlayerState.stagger && GetMovement() == UnityEngine.Vector2.zero)
         {
-            currentState = PlayerState.idle;
+            SetCurrentState(PlayerState.idle);
         }
     }
-
+    
     void FixedUpdate(){
         OnInputMove();
         //Aiming
@@ -84,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private IEnumerator OnKnockbackMoveCo(float knockTime, UnityEngine.Vector2 difference){
         rb.AddForce(difference, ForceMode2D.Impulse);
-        currentState = PlayerState.stagger;
+        SetCurrentState(PlayerState.stagger);
 
         animator.SetBool("Stagger",true);
         animator.SetTrigger("Stagger_trig");
@@ -94,13 +91,28 @@ public class PlayerMovement : MonoBehaviour
             iFrames = true;
             yield return new WaitForSeconds(knockTime);
             rb.velocity = UnityEngine.Vector2.zero;
-            currentState = PlayerState.idle;
+            SetCurrentState(PlayerState.idle);
             animator.SetBool("Stagger",false);
             yield return new WaitForSeconds(iFramesTime);
             iFrames = false;
         }
     }
-    
+    public void SetCurrentState(PlayerState newState)
+    {
+        currentState = newState;
+    }
+    public PlayerState GetCurrentState()
+    {
+        return currentState;
+    }
+    public void SetMovement(UnityEngine.Vector2 newMovement)
+    {
+        movement = newMovement;
+    }
+    public UnityEngine.Vector2 GetMovement()
+    {
+        return movement;
+    }
    
 
     

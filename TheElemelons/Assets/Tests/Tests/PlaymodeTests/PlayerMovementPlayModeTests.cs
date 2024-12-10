@@ -10,7 +10,6 @@ using UnityEditor;
 public class PlayerMovementTests
 {
     private GameObject playerGameObject;
-    private PlayerMovement playerMovement;
 
     [SetUp]
     public void Setup()
@@ -23,10 +22,13 @@ public class PlayerMovementTests
         // Instantiate the Player prefab
         playerGameObject = Object.Instantiate(playerPrefab);
         playerGameObject.GetComponent<InputManager>().enabled = false;
+        playerGameObject.GetComponent<Animator>().enabled = false;     // Disable Animator
+    
         #endif
         // Add a mock Main Camera
         Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
         mainCamera.tag = "MainCamera";
+        playerGameObject.SetActive(true);
     }
     
     [TearDown]
@@ -58,39 +60,44 @@ public class PlayerMovementTests
         
         
     }
-    [Test]
-    public void Player_InitialState_IsIdle()
+    [UnityTest]
+    public IEnumerator Player_InitialState_IsIdle()
     {
+        playerGameObject.SetActive(true);
+        yield return null;
         // Assert initial state is idle
-        Assert.AreEqual(PlayerState.idle, playerMovement.currentState, "Player's initial state should be idle.");
+        Assert.AreEqual(PlayerState.idle, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player's initial state should be idle.");
     }
 
     [UnityTest]
     public IEnumerator Player_Movement_SetsStateToWalk()
     {
         // Suppress expected log message
-        LogAssert.Expect(LogType.Exception, "UnityException: Transform child out of bounds");
-
+        //LogAssert.Expect(LogType.Exception, "UnityException: Transform child out of bounds");
+        playerGameObject.SetActive(true);
+        yield return null; // Simulate frame update
         // Simulate movement
-        playerMovement.movement = new Vector2(1, 0); // Moving right
+        playerGameObject.GetComponent<PlayerMovement>().SetMovement(new Vector2(1, 0)); // Moving right
+        yield return null; // Simulate frame update
         yield return null; // Simulate frame update
         // Assert state changes to walk
-        Assert.AreEqual(PlayerState.walk, playerMovement.currentState, "Player state should change to walk when moving.");
+        Assert.AreEqual(PlayerState.walk, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should change to walk when moving.");
     }
 
     [UnityTest]
     public IEnumerator Player_StopsMoving_SetsStateToIdle()
     {
         // Simulate movement
-        playerMovement.movement = new Vector2(1, 0);
+        playerGameObject.GetComponent<PlayerMovement>().SetMovement(new Vector2(1, 0));
         yield return null; // Simulate frame update
 
         // Simulate stopping
-        playerMovement.movement = Vector2.zero;
+        playerGameObject.GetComponent<PlayerMovement>().SetMovement(Vector2.zero);
+        yield return null; // Simulate another frame update
         yield return null; // Simulate another frame update
 
         // Assert state changes to idle
-        Assert.AreEqual(PlayerState.idle, playerMovement.currentState, "Player state should change to idle when stopping.");
+        Assert.AreEqual(PlayerState.idle, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should change to idle when stopping.");
     }
 
     [UnityTest]
@@ -100,11 +107,11 @@ public class PlayerMovementTests
         Vector2 knockbackForce = new Vector2(2, 0);
         float knockTime = 0.5f;
 
-        playerMovement.Knock(knockTime, 1f, knockbackForce);
+        playerGameObject.GetComponent<PlayerMovement>().Knock(knockTime, 1f, knockbackForce);
         yield return new WaitForSeconds(knockTime / 2); // During knockback
 
         // Assert state is stagger
-        Assert.AreEqual(PlayerState.stagger, playerMovement.currentState, "Player state should be stagger during knockback.");
+        Assert.AreEqual(PlayerState.stagger, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should be stagger during knockback.");
     }
 
     [UnityTest]
@@ -114,11 +121,11 @@ public class PlayerMovementTests
         Vector2 knockbackForce = new Vector2(2, 0);
         float knockTime = 0.5f;
 
-        playerMovement.Knock(knockTime, 1f, knockbackForce);
-        yield return new WaitForSeconds(knockTime + playerMovement.iFramesTime); // After knockback and iFrames
+        playerGameObject.GetComponent<PlayerMovement>().Knock(knockTime, 1f, knockbackForce);
+        yield return new WaitForSeconds(knockTime + playerGameObject.GetComponent<PlayerMovement>().iFramesTime); // After knockback and iFrames
 
         // Assert state returns to idle
-        Assert.AreEqual(PlayerState.idle, playerMovement.currentState, "Player state should return to idle after knockback ends.");
+        Assert.AreEqual(PlayerState.idle, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should return to idle after knockback ends.");
     }
 
     [UnityTest]
@@ -128,8 +135,8 @@ public class PlayerMovementTests
         Vector2 knockbackForce = new Vector2(3, 0);
         float knockTime = 0.5f;
 
-        Rigidbody2D rb = playerGameObject.GetComponent<Rigidbody2D>();
-        playerMovement.Knock(knockTime, 1f, knockbackForce);
+        Rigidbody2D rb = playerGameObject.GetComponent<PlayerMovement>().GetComponent<Rigidbody2D>();
+        playerGameObject.GetComponent<PlayerMovement>().Knock(knockTime, 1f, knockbackForce);
 
         yield return new WaitForFixedUpdate(); // Wait for physics update
 
@@ -141,14 +148,14 @@ public class PlayerMovementTests
     public void Player_MoveSpeed_CalculationIsCorrect()
     {
         // Set baseSpeed and multiplier
-        playerMovement.baseSpeed = 5f;
-        playerMovement.speedMultiplier = 2f;
+        playerGameObject.GetComponent<PlayerMovement>().baseSpeed = 5f;
+        playerGameObject.GetComponent<PlayerMovement>().speedMultiplier = 2f;
 
         // Calculate moveSpeed
-        playerMovement.moveSpeed = playerMovement.baseSpeed * playerMovement.speedMultiplier;
+        playerGameObject.GetComponent<PlayerMovement>().moveSpeed = playerGameObject.GetComponent<PlayerMovement>().GetComponent<PlayerMovement>().baseSpeed * playerGameObject.GetComponent<PlayerMovement>().speedMultiplier;
 
         // Assert moveSpeed calculation
-        Assert.AreEqual(10f, playerMovement.moveSpeed, "MoveSpeed should equal baseSpeed multiplied by speedMultiplier.");
+        Assert.AreEqual(10f, playerGameObject.GetComponent<PlayerMovement>().moveSpeed, "MoveSpeed should equal baseSpeed multiplied by speedMultiplier.");
     }
 
     [UnityTest]
@@ -159,7 +166,7 @@ public class PlayerMovementTests
         float knockTime = 0.5f;
 
         Rigidbody2D rb = playerGameObject.GetComponent<Rigidbody2D>();
-        playerMovement.Knock(knockTime, 1f, knockbackForce);
+        playerGameObject.GetComponent<PlayerMovement>().Knock(knockTime, 1f, knockbackForce);
 
         yield return new WaitForSeconds(knockTime); // Wait for knockback to finish
 
