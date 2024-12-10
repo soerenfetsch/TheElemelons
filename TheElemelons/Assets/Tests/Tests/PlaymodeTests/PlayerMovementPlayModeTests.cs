@@ -21,7 +21,6 @@ public class PlayerMovementTests
 
         // Instantiate the Player prefab
         playerGameObject = Object.Instantiate(playerPrefab);
-        playerGameObject.GetComponent<InputManager>().enabled = false;
         playerGameObject.GetComponent<Animator>().enabled = false;     // Disable Animator
     
         #endif
@@ -42,14 +41,12 @@ public class PlayerMovementTests
     {
         Assert.NotNull(playerGameObject.GetComponent<PlayerMovement>(), "PlayerMovement component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<Rigidbody2D>(), "Rigidbody2D component is missing.");
-        Assert.NotNull(playerGameObject.GetComponent<InputManager>(), "InputManager component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<BoxCollider2D>(), "Boxcollider2D component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<Animator>(), "Animator component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<SpriteRenderer>(), "SpriteRenderer component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<Transform>(), "Transform component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<Health>(), "Health component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<Mana>(), "Mana component is missing.");
-        Assert.NotNull(playerGameObject.GetComponent<InputManager>(), "InputManager component is missing.");
         Assert.NotNull(playerGameObject.transform.GetChild(0), "Aim component is missing.");
         Assert.AreEqual(playerGameObject.transform.GetChild(0).transform.childCount,3,"Aim has all Children");
         Assert.NotNull(playerGameObject.transform.GetChild(0), "Aim component is missing.");
@@ -78,8 +75,7 @@ public class PlayerMovementTests
         yield return null; // Simulate frame update
         // Simulate movement
         playerGameObject.GetComponent<PlayerMovement>().SetMovement(new Vector2(1, 0)); // Moving right
-        yield return null; // Simulate frame update
-        yield return null; // Simulate frame update
+        yield return new WaitForSeconds(0.1f);
         // Assert state changes to walk
         Assert.AreEqual(PlayerState.walk, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should change to walk when moving.");
     }
@@ -93,8 +89,7 @@ public class PlayerMovementTests
 
         // Simulate stopping
         playerGameObject.GetComponent<PlayerMovement>().SetMovement(Vector2.zero);
-        yield return null; // Simulate another frame update
-        yield return null; // Simulate another frame update
+        yield return new WaitForSeconds(0.1f);
 
         // Assert state changes to idle
         Assert.AreEqual(PlayerState.idle, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should change to idle when stopping.");

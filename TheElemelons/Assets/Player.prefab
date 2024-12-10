@@ -272,7 +272,6 @@ GameObject:
   - component: {fileID: 293691296826324780}
   - component: {fileID: 2823182672651674699}
   - component: {fileID: 1581666591548288514}
-  - component: {fileID: 3181140036438424525}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -540,22 +539,9 @@ MonoBehaviour:
   speedMultiplier: 1
   moveSpeed: 1
   hurtbox: {fileID: 3898069961803275140}
-  movement: {x: 0, y: 0}
-  currentState: 0
+  mousePos: {x: 0, y: 0}
   iFrames: 0
   iFramesTime: 0.3
---- !u!114 &3181140036438424525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849979733952565575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffea44568a28d84496c2300868fd1e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4547487574929871031
 GameObject:
   m_ObjectHideFlags: 0
