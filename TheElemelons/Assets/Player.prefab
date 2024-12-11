@@ -273,7 +273,6 @@ GameObject:
   - component: {fileID: 2823182672651674699}
   - component: {fileID: 1581666591548288514}
   - component: {fileID: 8520900134945701756}
-  - component: {fileID: 1412054415637569906}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -567,19 +566,6 @@ MonoBehaviour:
   windSprite: {fileID: 46059240, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   noTypeSpell: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
   manaCost: 1
---- !u!114 &1412054415637569906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3849979733952565575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffea44568a28d84496c2300868fd1e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 0
 --- !u!1 &4547487574929871031
 GameObject:
   m_ObjectHideFlags: 0
