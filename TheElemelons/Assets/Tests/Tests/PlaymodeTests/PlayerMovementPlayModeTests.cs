@@ -22,7 +22,7 @@ public class PlayerMovementTests
         // Instantiate the Player prefab
         playerGameObject = Object.Instantiate(playerPrefab);
         playerGameObject.GetComponent<Animator>().enabled = false;     // Disable Animator
-    
+        playerGameObject.GetComponent<InputManager>().enabled = false;
         #endif
         // Add a mock Main Camera
         Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
@@ -74,7 +74,7 @@ public class PlayerMovementTests
         playerGameObject.SetActive(true);
         yield return null; // Simulate frame update
         // Simulate movement
-        playerGameObject.GetComponent<PlayerMovement>().SetMovement(new Vector2(1, 0)); // Moving right
+        playerGameObject.GetComponent<PlayerMovement>().SetMovement(new UnityEngine.Vector2(1, 0)); // Moving right
         yield return new WaitForSeconds(0.1f);
         // Assert state changes to walk
         Assert.AreEqual(PlayerState.walk, playerGameObject.GetComponent<PlayerMovement>().GetCurrentState(), "Player state should change to walk when moving.");
