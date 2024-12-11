@@ -22,7 +22,8 @@ public class PlayerMovementTests
         // Instantiate the Player prefab
         playerGameObject = Object.Instantiate(playerPrefab);
         playerGameObject.GetComponent<Animator>().enabled = false;     // Disable Animator
-        playerGameObject.GetComponent<InputManager>().enabled = false;
+        //UNCOMMENT IF INPUTMANAGER EXISTS
+        //playerGameObject.GetComponent<InputManager>().enabled = false;
         #endif
         // Add a mock Main Camera
         Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
