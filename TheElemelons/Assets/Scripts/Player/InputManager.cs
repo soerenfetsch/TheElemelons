@@ -83,20 +83,20 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKey(keys["MoveLeft"]))
             moveDirection.x -= 1;
-            else if (Input.GetKey(keys["MoveLeft"]) && Input.GetKey(keys["MoveRight"]))
-                moveDirection.x = 1;
+        else if (Input.GetKey(keys["MoveLeft"]) && Input.GetKey(keys["MoveRight"]))
+            moveDirection.x = 1;
         if (Input.GetKey(keys["MoveRight"]))
             moveDirection.x += 1;
-            else if (Input.GetKey(keys["MoveRight"]) && Input.GetKey(keys["MoveLeft"]))
-                moveDirection.x = -1;
+        else if (Input.GetKey(keys["MoveRight"]) && Input.GetKey(keys["MoveLeft"]))
+            moveDirection.x = -1;
         if (Input.GetKey(keys["MoveUp"]))
             moveDirection.y += 1;
-            else if (Input.GetKey(keys["MoveUp"]) && Input.GetKey(keys["MoveDown"]))
-                moveDirection.y = -1;
+        else if (Input.GetKey(keys["MoveUp"]) && Input.GetKey(keys["MoveDown"]))
+            moveDirection.y = -1;
         if (Input.GetKey(keys["MoveDown"]))
             moveDirection.y -= 1;
-            else if (Input.GetKey(keys["MoveDown"]) && Input.GetKey(keys["MoveUp"]))
-                moveDirection.y = 1;
+        else if (Input.GetKey(keys["MoveDown"]) && Input.GetKey(keys["MoveUp"]))
+            moveDirection.y = 1;
 
         playerMovement?.SetMovement(moveDirection);
     }
@@ -104,7 +104,7 @@ public class InputManager : MonoBehaviour
     // Handles spell casting and charge selection input.
     private void HandleSpellCastingInput()
     {
-        
+
         if (Input.GetKeyDown(keys["CastSpell"]))
         {
             // The ?. operator is the null-conditional operator. It ensures that the CastSpell method is only called if the casting object is not null.
@@ -124,7 +124,6 @@ public class InputManager : MonoBehaviour
             casting?.OnSelectCharge(ChargeTypes.earth);
         if (Input.GetKeyDown(keys["SelectAir"]))
             casting?.OnSelectCharge(ChargeTypes.wind);
-        
     }
 
     // Returns the aim direction based on the player's position and mouse position.

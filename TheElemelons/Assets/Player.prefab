@@ -559,8 +559,8 @@ MonoBehaviour:
   castpoint: {fileID: 6194766439084384170}
   wandAnimator: {fileID: 1854645761170606446}
   maxCharges: 2
-  charge1UI: {fileID: 0}
-  charge2UI: {fileID: 0}
+  charge1UI: {fileID: 3872386005063604112}
+  charge2UI: {fileID: 3964062048412017681}
   fireSprite: {fileID: -1717928868, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   waterSprite: {fileID: 1690825715, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   earthSprite: {fileID: -93482519, guid: 4db143e84d0c39742938c6ef62851634, type: 3}

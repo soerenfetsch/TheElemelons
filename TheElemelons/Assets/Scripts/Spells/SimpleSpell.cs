@@ -8,26 +8,21 @@ public class SimpleSpell : SpellEffect
     public float thrust = 1f;
     public float knockTime = 0.2f;
     public float damage = 0f;
-    public float delay = 0.2f;
-    bool delaydone = false;
     // Start is called before the first frame update
-    void Start (){
-        spellType = new ChargeTuple(ChargeTypes.notype,ChargeTypes.notype);
-        StartCoroutine(Delay());
+    void Start()
+    {
+        spellType = new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype);
         StartCoroutine(SelfDestruct());
     }
-    IEnumerator Delay(){
-        yield return new WaitForSeconds(delay);
-        delaydone = true;
-    }
-    IEnumerator SelfDestruct(){
-        Destroy(gameObject,spellLifeTime);
+    IEnumerator SelfDestruct()
+    {
+        Destroy(gameObject, spellLifeTime);
         yield return 1;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         /*
-        if (delaydone && other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().currentState != EnemyState.stagger)
+        if (other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().currentState != EnemyState.stagger)
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
             if(hit != null)
