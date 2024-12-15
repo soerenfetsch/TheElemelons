@@ -25,10 +25,11 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (healthScript.GetHealth()<health)
+        if (healthScript.GetHealth() < health)
         {
             Hurt();
-        }else if (healthScript.GetHealth()>health)
+        }
+        else if (healthScript.GetHealth() > health)
         {
             Heal();
         }
@@ -36,67 +37,78 @@ public class HealthBar : MonoBehaviour
         for (int i = 0; i < hearts.Length; i++)
         {
             //number of heart containers
-            if (i<maxHealth)
+            if (i < maxHealth)
             {
                 hearts[i].enabled = true;
-            }else
+            }
+            else
             {
                 hearts[i].enabled = false;
             }
             //fullness of heart containers
-            if (i<Mathf.Floor(health))
+            if (i < Mathf.Floor(health))
             {
-                hearts[i].GetComponent<Animator>().SetFloat("fullness",1);
+                hearts[i].GetComponent<Animator>().SetFloat("fullness", 1);
                 hearts[i].sprite = heart4;
-            }else if(i>health)
+            }
+            else if (i > health)
             {
-                hearts[i].GetComponent<Animator>().SetFloat("fullness",0);
+                hearts[i].GetComponent<Animator>().SetFloat("fullness", 0);
                 hearts[i].sprite = heart0;
-            }else
+            }
+            else
             {
-                if(health%1 == 0){
+                if (health % 1 == 0)
+                {
                     if (health < maxHealth)
                     {
-                        hearts[i].GetComponent<Animator>().SetFloat("fullness",0);
+                        hearts[i].GetComponent<Animator>().SetFloat("fullness", 0);
                         hearts[i].sprite = heart0;
-                    }else
+                    }
+                    else
                     {
-                        hearts[i].GetComponent<Animator>().SetFloat("fullness",1);
+                        hearts[i].GetComponent<Animator>().SetFloat("fullness", 1);
                         hearts[i].sprite = heart4;
                     }
-                }else if(health%1 <=0.25)
+                }
+                else if (health % 1 <= 0.25)
                 {
-                    hearts[i].GetComponent<Animator>().SetFloat("fullness",health%1);
+                    hearts[i].GetComponent<Animator>().SetFloat("fullness", health % 1);
                     hearts[i].sprite = heart1;
-                }else if(health%1 <=0.5)
+                }
+                else if (health % 1 <= 0.5)
                 {
-                    hearts[i].GetComponent<Animator>().SetFloat("fullness",health%1);
+                    hearts[i].GetComponent<Animator>().SetFloat("fullness", health % 1);
                     hearts[i].sprite = heart2;
-                }else if(health%1 <=0.75)
+                }
+                else if (health % 1 <= 0.75)
                 {
-                    hearts[i].GetComponent<Animator>().SetFloat("fullness",health%1);
+                    hearts[i].GetComponent<Animator>().SetFloat("fullness", health % 1);
                     hearts[i].sprite = heart3;
                 }
             }
         }
     }
-    public void Hurt(){
+    public void Hurt()
+    {
         for (int i = 0; i < hearts.Length; i++)
         {
             hearts[i].GetComponent<Animator>().SetTrigger("hurt");
         }
     }
-    
-    public void Heal(){
+
+    public void Heal()
+    {
         for (int i = 0; i < hearts.Length; i++)
         {
             hearts[i].GetComponent<Animator>().SetTrigger("heal");
         }
     }
-     public void Dead(){
+    public void Dead()
+    {
         for (int i = 0; i < hearts.Length; i++)
         {
-            hearts[i].GetComponent<Animator>().SetFloat("fullness",0);
+            hearts[i].GetComponent<Animator>().SetFloat("fullness", 0);
         }
     }
 }

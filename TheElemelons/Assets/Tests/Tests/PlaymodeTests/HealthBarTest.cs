@@ -21,10 +21,10 @@ public class HealthBarTests
         healthBar = healthBarGameObject.AddComponent<HealthBar>();
 
         // Load prefab AnimatorController
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         var canvasPrefab = AssetDatabase.LoadAssetAtPath<Canvas>("Assets/UI_Canvas.prefab");
         Assert.NotNull(canvasPrefab, "UI_Canvas prefab not found at specified path.");
-        #endif
+#endif
         Animator prefabHeartAnimator = canvasPrefab.transform.GetChild(0).GetComponent<Animator>();
         Assert.NotNull(prefabHeartAnimator, "Animator not found in the first child of UI_Canvas prefab.");
 
@@ -39,7 +39,7 @@ public class HealthBarTests
             GameObject heartGameObject = new GameObject($"Heart{i}");
             Image heartImage = heartGameObject.AddComponent<Image>();
             Animator heartAnimator = heartGameObject.AddComponent<Animator>();
-            
+
             heartAnimator.runtimeAnimatorController = prefabHeartAnimator.runtimeAnimatorController;
 
             heartGameObject.transform.SetParent(healthBarGameObject.transform, false);
@@ -62,7 +62,7 @@ public class HealthBarTests
     {
         Object.DestroyImmediate(healthBarGameObject);
     }
-    
+
     [UnityTest]
     public IEnumerator HealthBar_Hurt_TriggersHurtAnimation()
     {
@@ -74,7 +74,7 @@ public class HealthBarTests
         // Act
         health.SubtractHealth(1f); // Simulate taking damage
         yield return null; // Wait for Update to process
-        
+
         // Assert
         foreach (var heart in healthBar.hearts)
         {
