@@ -20,10 +20,6 @@ public class Health : MonoBehaviour
         health = Mathf.Clamp(health - damage, 0f, maxhealth);
     }
 
-    public float GetHealth()
-    {
-        return health;
-    }
     public bool IsZero()
     {
         if (health <= 0)
@@ -35,5 +31,22 @@ public class Health : MonoBehaviour
     public void AddHealth(float plus)
     {
         health = Mathf.Clamp(health + plus, 0f, maxhealth);
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxhealth;
+    }
+    public float GetHealth()
+    {
+        return health;
+    }
+    public void SetHealth(float newHealth)
+    {
+        health = newHealth;
+    }
+    public void SetMaxHealth(float newMaxHealth)
+    {
+        maxhealth = newMaxHealth;
     }
 }

@@ -14,7 +14,7 @@ public class PlayerMovementTests
     [SetUp]
     public void Setup()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         // Load Player prefab from the project
         GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
         Assert.NotNull(playerPrefab, "Player prefab not found at the specified path.");
@@ -22,15 +22,17 @@ public class PlayerMovementTests
         // Instantiate the Player prefab
         playerGameObject = Object.Instantiate(playerPrefab);
         playerGameObject.GetComponent<Animator>().enabled = false;     // Disable Animator
-        //UNCOMMENT IF INPUTMANAGER EXISTS
-        //playerGameObject.GetComponent<InputManager>().enabled = false;
-        #endif
+                                                                       //UNCOMMENT IF INPUTMANAGER EXISTS
+                                                                       //playerGameObject.GetComponent<InputManager>().enabled = false;
+        playerGameObject.GetComponent<HealthBar>().enabled = false;     // Disable Healthbar
+
+#endif
         // Add a mock Main Camera
         Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
         mainCamera.tag = "MainCamera";
         playerGameObject.SetActive(true);
     }
-    
+
     [TearDown]
     public void Teardown()
     {
@@ -49,14 +51,14 @@ public class PlayerMovementTests
         Assert.NotNull(playerGameObject.GetComponent<Health>(), "Health component is missing.");
         Assert.NotNull(playerGameObject.GetComponent<Mana>(), "Mana component is missing.");
         Assert.NotNull(playerGameObject.transform.GetChild(0), "Aim component is missing.");
-        Assert.AreEqual(playerGameObject.transform.GetChild(0).transform.childCount,3,"Aim has all Children");
+        Assert.AreEqual(playerGameObject.transform.GetChild(0).transform.childCount, 3, "Aim has all Children");
         Assert.NotNull(playerGameObject.transform.GetChild(0), "Aim component is missing.");
         Assert.NotNull(playerGameObject.transform.GetChild(1), "Wand component is missing.");
         Assert.NotNull(playerGameObject.transform.GetChild(1).GetComponent<Transform>(), "Wand Transform component is missing.");
         Assert.NotNull(playerGameObject.transform.GetChild(1).GetComponent<SpriteRenderer>(), "Wand Sprite Renderer component is missing.");
         Assert.NotNull(playerGameObject.transform.GetChild(1).GetComponent<Animator>(), "Wand Animator component is missing.");
-        
-        
+
+
     }
     [UnityTest]
     public IEnumerator Player_InitialState_IsIdle()
