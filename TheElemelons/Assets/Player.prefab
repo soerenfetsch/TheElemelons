@@ -274,6 +274,7 @@ GameObject:
   - component: {fileID: 1581666591548288514}
   - component: {fileID: 8520900134945701756}
   - component: {fileID: 913547052267167769}
+  - component: {fileID: 8967277064185722604}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -579,6 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 408ee8bf1c542194a994df8dd8db2f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthScript: {fileID: 0}
   hearts:
   - {fileID: 0}
   - {fileID: 0}
@@ -595,6 +597,35 @@ MonoBehaviour:
   heart2: {fileID: -1651302757, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   heart3: {fileID: -379885618, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   heart4: {fileID: 152876513, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+--- !u!114 &8967277064185722604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3849979733952565575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e658d8b1862964a86d7a4415a4bd33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaScript: {fileID: 2823182672651674699}
+  manaStars:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  manaStar0: {fileID: 204421084, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  manaStar1: {fileID: 571560578, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  manaStar2: {fileID: 230753119, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  manaStar3: {fileID: -1755272398, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  manaStar4: {fileID: 1199173443, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
 --- !u!1 &4547487574929871031
 GameObject:
   m_ObjectHideFlags: 0

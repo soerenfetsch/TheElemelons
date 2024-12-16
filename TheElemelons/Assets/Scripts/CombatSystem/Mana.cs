@@ -25,9 +25,9 @@ public class Mana : MonoBehaviour
     }
     void Update()
     {
-        
+
     }
-   public IEnumerator ManaRegen()
+    public IEnumerator ManaRegen()
     {
         while (gameRunning)
         {
@@ -48,7 +48,7 @@ public class Mana : MonoBehaviour
     {
         mana = Mathf.Clamp(mana - manaCost, 0f, maxMana);
     }
-    
+
     public void AddMana(float plus)
     {
         mana = Mathf.Clamp(mana + plus, 0f, maxMana);
@@ -66,5 +66,20 @@ public class Mana : MonoBehaviour
         }
         return false;
     }
-
+    public float GetMaxMana()
+    {
+        return maxMana;
+    }
+    public void SetMana(float newMana)
+    {
+        mana = newMana;
+    }
+    public void SetMaxMana(float newMaxMana)
+    {
+        maxMana = newMaxMana;
+    }
+    public void SetManaPerRegen(float newManaPerRegen)
+    {
+        manaPerRegen = newManaPerRegen;
+    }
 }

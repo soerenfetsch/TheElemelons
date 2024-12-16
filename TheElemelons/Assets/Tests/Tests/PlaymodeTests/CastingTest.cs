@@ -22,7 +22,8 @@ public class CastingTest
 
         // Instantiate the Player prefab
         playerGameObject = Object.Instantiate(playerPrefab);
-        playerGameObject.GetComponent<HealthBar>().enabled = false;     
+        playerGameObject.GetComponent<HealthBar>().enabled = false;    
+        playerGameObject.GetComponent<ManaBar>().enabled = false;     
         #endif
         // Add a mock Main Camera
         Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
