@@ -19,6 +19,7 @@ public class TreeLog : Enemy
     [Header("Behavior")]
     private Vector2 homePosition;
     private bool isStaggering = false;
+    private bool isAlive = true;
     public float moveSpeed = 1f;
     public float staggerTime = 0.5f;
     public float chaseRadius = 5f;
@@ -28,7 +29,7 @@ public class TreeLog : Enemy
 
     [Header("Effects")]
     public GameObject deathEffect;
-    public float deathEffectDelay = 1f;
+    public float deathEffectDelay = 0.5f;
 
 
     public void Initialize(Transform player)
@@ -53,7 +54,7 @@ public class TreeLog : Enemy
     }
 
     // Fixed update to handle physics and movements correctly
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         ActOnStatus();
         ActOnHealth();
@@ -113,7 +114,7 @@ public class TreeLog : Enemy
                 }
                 break;
             case EnemyStatus.Staggered:
-                if (!isStaggering) 
+                if (!isStaggering)
                 {
                     isStaggering = true;
                     StartCoroutine(HandleStagger());
@@ -124,9 +125,15 @@ public class TreeLog : Enemy
 
     public override void ActOnHealth()
     {
-        if (health.IsZero())
+        if (!isAlive)
         {
-            // TODO: start death animation and destroy object
+            ChangeState(EnemyStatus.Staggered);
+        }
+        if (health.IsZero() && isAlive)
+        {
+            isAlive = false;
+            DeathEffect.SpawnDeathEffect(deathEffect, transformComponent.position, deathEffectDelay);
+            Destroy(gameObject, deathEffectDelay);
         }
     }
 
@@ -150,9 +157,9 @@ public class TreeLog : Enemy
                 animator.SetFloat("Horizontal", -1f);
             }
         }
-        else if(Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
+        else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
         {
-            if(direction.y > 0)
+            if (direction.y > 0)
             {
                 animator.SetFloat("Vertical", 1f);
                 animator.SetFloat("Horizontal", 0f);
@@ -179,7 +186,8 @@ public class TreeLog : Enemy
     {
         if (playerTransform == null) return;
 
-        Vector2 direction = (playerTransform.position - transformComponent.position).normalized;
+        Vector2 direction = (Vector2)(playerTransform.position - transformComponent.position);
+        direction = direction.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
     }
@@ -193,14 +201,15 @@ public class TreeLog : Enemy
 
     private bool CheckAtHome()
     {
-        return Vector2.Distance(transformComponent.position, homePosition) < 0.01f;
+        return Vector2.Distance(transformComponent.position, homePosition) < 0.1f;
     }
 
     private IEnumerator HandleStagger()
     {
-        animator.SetTrigger("stagger");
+        animator.SetTrigger("TrStagger");
         yield return new WaitForSeconds(staggerTime);
         isStaggering = false;
+        animator.SetTrigger("TrStopStagger");
         ChangeState(EnemyStatus.Idle);
     }
 }
