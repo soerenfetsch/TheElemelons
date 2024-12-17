@@ -138,6 +138,11 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Change state**: Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
 - **Check health status**: If health is zero, the Tree Log Dies and triggers the death animation
 
+#### 2.3.3 Enemy Path Finding
+- should be able to construct path to player by taking into consideration the collision objects (first walls)
+- implementation should be seemless so that immediate direction where the enemy should walk to approach player should be returned/noted down
+- should be reusable as module for all enemies
+
 ### 2.4 Combat System
 
 #### TO BE DEFINED 2.4.1 Combat Manager: Manages combat damage, health and mana calculations
@@ -180,11 +185,15 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Execute hurt animation**: If method is called this starts an animation where all hearts shortly light up white
 - **Execute heal animation**: If method is called this starts an animation where all hearts shortly light up blue
 
-#### 2.6.2 ManaBar
+#### 2.6.3 ManaBar
 
 - **Update mana UI using player mana**: display max mana amount of (blue) stars of which player mana are filled and rest are empty
 - **Execute hurt animation**: If method is called this starts an animation where all stars shortly light up white
 - **Execute heal animation**: If method is called this starts an animation where all stars shortly light up violet
+
+#### 2.6.4 Camera Movement
+- **Update position using player**: Should be centered at player transform position
+- **Update resolution**: Should have method to adjust the size of the camera view, currently: only sensible constant value allowed
 
 ## 3. Non-Functional Requirements
 
