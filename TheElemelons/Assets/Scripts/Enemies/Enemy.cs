@@ -35,4 +35,19 @@ public abstract class Enemy : MonoBehaviour
     {
         mana.SubtractMana(amount);
     }
+
+    public Health GetHealth()
+    {
+        return health;
+    }
+
+    public Mana GetMana()
+    {
+        return mana;
+    }
+
+    public EnemyStatus GetCurrentState()
+    {
+        return currentState;
+    }
 }

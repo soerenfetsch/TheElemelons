@@ -37,8 +37,7 @@ public class TreeLog : Enemy
         playerTransform = player;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void InitializeComponents()
     {
         transformComponent = GetComponent<Transform>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -51,6 +50,12 @@ public class TreeLog : Enemy
 
         currentState = EnemyStatus.Idle;
         homePosition = transformComponent.position;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        InitializeComponents();
     }
 
     // Fixed update to handle physics and movements correctly
