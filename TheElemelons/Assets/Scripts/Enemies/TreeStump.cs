@@ -130,15 +130,11 @@ public class TreeLog : Enemy
 
     public override void ActOnHealth()
     {
-        if (!isAlive)
-        {
-            ChangeState(EnemyStatus.Staggered);
-        }
         if (health.IsZero() && isAlive)
         {
             isAlive = false;
             DeathEffect.SpawnDeathEffect(deathEffect, transformComponent.position, deathEffectDelay);
-            Destroy(gameObject, deathEffectDelay);
+            Destroy(gameObject, 0);
         }
     }
 
