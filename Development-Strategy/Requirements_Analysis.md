@@ -57,6 +57,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - After casting all charges are cleared
   - If the player has sufficient mana and the spell is cast then the mana of the player is subtracted by the spell cost
   - Order of selected charges does not matter
+  - Use the combat manager to spawn the spell game object
  
   - With no charges selected: cast a basic attack spell that moves through the map during a small spell lifetime, has small damage value and only small knockback on enemies
   - With fire, fire selected casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime, explodes on impact (wall, enemy)
@@ -127,6 +128,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Subtract Mana**: method to subtract mana of the internal Mana object
 - **Check health status**: abstract method to act given the current health
 - **Check mana status**: abstract method to act given the current mana
+- **Get Enemy Element Type**: each enemy is associated with a elemental type, which should be returned here
 
 #### 2.3.2 Tree Log (Enemy)
 
@@ -137,6 +139,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - Animations should reflect the status and if 'walking' also the direction in which the Tree Log is headed
 - **Change state**: Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
 - **Check health status**: If health is zero, the Tree Log Dies and triggers the death animation
+- **Get Enemy Element Type**: Tree Log should be of element type EARTH
 
 #### 2.3.3 Enemy Path Finding
 - should be able to construct path to player by taking into consideration the collision objects (first walls)
@@ -145,26 +148,57 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 2.4 Combat System
 
-#### TO BE DEFINED 2.4.1 Combat Manager: Manages combat damage, health and mana calculations
+#### 2.4.1 Combat Manager: Manages combat damage, health and mana calculations
+- **Cast spells**: Given a spell type with predefined attributes (i.e position, rotation) spawn the given spell object
+- **Add buff or debuff**: For a given object (e.g the player or an enemy), use the Buff/Debuff Manager to apply the given buff/debuff
+- **Calculate Damage**: Using the spell/attack type and the type of the opponent the attack/spell hits, calculates the damage using the formula base_attack_damage * damage_factor(of attacker) * defense_factor(of defender) * attack_type_effectivity_modifier, the effectivity modifier is given as (attack type first - defender type second): Any - BASIC = 1, FIRE - EARTH = 1.25, EARTH - AIR = 1.25, AIR - WATER = 1.25, WATER - FIRE = 1.25, the modifiers should be specified in a dictionary so that they can be changed later.
+- **Execute attack**: callback function for all attacks which are called by the participating objects, given the caller object (attacker) and the hit object (defender) calculate the attack damage, subtract the damage of the defender's health, set defender to status staggered and knock back the defender, if the defender is the player and the player dies, instruct the Game System to act on player death
 
-#### 2.4.2 Health
+#### 2.4.2 Buff/Debuff Manager: Manages buffs and debuffs for the player and enmies alike
+- **Apply Buff or Debuff**: Start a timer of given length to apply the buff or debuff during the timer and execute the effects and delegate the UI Manager to create the buff/debuff effect in the UI, buffs and debuffs should be additive so they can stack on the object (handle a list of them)
+- The different buffs are:
+    - Speed buff: Player or Enemy have increased movement speed during the application
+    - Damage buff: Player or Enemy have increased damage (using a damage factor)
+    - Defense buff: Player or Enemy have increased defense (using a defense factor)
+    - Mana regen buff: Player of Enemy have increased mana regen
+ - The different debuffs are:
+    - Slowness debuff: Player or Enemy have decreased movement speed during the application
+    - Weakness debuff: Player or Enemy have decreased damage (using a damage factor)
+    - Fragility debuff: Player or Enemy have decreased defense (using a defense factor)
+    - Mana regen debuff: Player of Enemy have decreased mana regen
+
+#### 2.4.3 Health
 
 - **Subtract Health**: subtracts a floating input from the total health, if health drop below zero, health is set to zero
 - **Add health**: adds a floating input to the total health, if health gets higher than max health, health is set to max health
 - **Get health**: Returns the current total health value
 - **Is zero**: Returns true if the current health is zero, false otherwise
 
-#### 2.4.3 Mana
+#### 2.4.4 Mana
 
 - **Subtract mana**: subtracts a floating input from the total mana, if mana drop below zero, mana is set to zero
 - **Add mana**: adds a floating input to the total mana, if mana gets higher than max mana, mana is set to max mana
 - **Get mana**: Returns the current total mana value
 - **Is zero**: Returns true if the current mana is zero, false otherwise
 
-### TO BE DEFINED CONCRETELY 2.5 Game Progression and Save System
-- The **GameManager** must control the overall game state, including dungeon transitions, combat phases, and player progression.
-- The **GameSaveProvider** must support saving and loading game states, allowing players to resume their adventure seamlessly.
-- Players should be able to save at specific checkpoints and have multiple save slots for different playthroughs.
+### 2.5 Game Progression and Save System
+
+#### 2.5.1 The **GameManager** must control the overall game state, including dungeon transitions, combat phases, and player progression
+
+- **Manage game progression**: save where the player is in the game progression (which dungeons/levels) and which dialogs and boss fights were successfully finished and allow the access to the current game progression level, saving should be handled by the GameSaveProvider
+- **Manage game status**: Game status should be saved as game status (enum for 'ingame', 'main menu', 'settings menu', etc..) and be able to switch between them through actions
+- **On go to main menu**: Save the game state and return to 'main menu' game status
+- **On quit game**: Save the game state and quit the game
+- **On click options**: Change state to 'settings menu' and open the settings view in UI Manager
+- **On continue game**: Change state to 'ingame' and continue the game
+- **On pause game**: Change state to 'pause menu' open the pause menu view in UI Manager and pause the game
+- **On new game**: Instruct the GameSaveProvider to reset the save file and start a new save and then start the game and set the status to 'ingame'
+- **On continue game**: Instruct the GameSaveProvider to load the current saved game status and then start the game and set the status to 'ingame'
+
+#### 2.5.2 The **GameSaveProvider** must support saving and loading game states, allowing players to resume their adventure seamlessly.
+- **Manage save slot** Players should be able to save at specific checkpoints (collected elemelons = completed dungeons) and have one save slot for one playthrough
+- **Save Game**: Save the collected elemelons and stats (max health and max mana) in a scriptable object
+- **Load Game**: Load the current save using the saved scriptable object for stats and collected elemelons
 
 ### 2.6 UI System
 
@@ -192,8 +226,48 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Execute heal animation**: If method is called this starts an animation where all stars shortly light up violet
 
 #### 2.6.4 Camera Movement
+
 - **Update position using player**: Should be centered at player transform position
 - **Update resolution**: Should have method to adjust the size of the camera view, currently: only sensible constant value allowed
+
+#### 2.6.5 Menu UI
+
+- **Manage menu views**: Allow the display of different menu views: Start game / Main Menu view, pause game view, settings view (and subviews)
+- **Display start game view**: Displays the following widgets: 'New Game', 'Continue Game', 'Options', 'Quit Game'
+- **Display pause game view**: Displays the following widgets: 'Continue Game', 'Options', 'Quit to Main Menu'
+- **Display settings view**: Displays the following widgets: 'Control Settings'
+- **Display Control Settings view**: Show key mapping between action and controls (change keys by clicking on keys and pressing another, handled by input manager)
+- All buttons should have a callback method which can handle the click event (callbacks in Game Manager, except settings which are handled by Input Manager)
+
+#### 2.6.6 Dialogue UI
+
+- **Display Dialogue**: Given a name and dialogue text: dialogue should be as a rectangular dialogue box, text should be written into the box within the given space. When one box is full, the dialogue should wait for continuation and only on continue should further text be displayed. Above the dialog box display the name and portrait of the speaker.
+
+### 2.7 Interaction and Dialogue System
+
+#### 2.7.1 Dialogue Manager
+
+- **Manage internal game state**: Keep track of the current game progression (e.g through the Game Manager) to keep track of current possible dialogs
+- **Manage Dialog Document**: Should be structured by Participating object, current progression level, dialog text
+- **Load Dialog from Document**: Efficiently load the document at appropriate timings to make dialogue accessible at runtime
+- **Execute dialog**: Given a Participating object and the current progression level, get the appropriate dialog text and use the UI manager to display the dialog, dialogue should be displayed until player presses the continue button (add to Input manager), during the dialog the rest of the game should be paused (use Game Manager)
+
+#### 2.7.2 Interactable Object (abstract)
+
+- **Interact Method**: Abstract interaction method which can be implemented by the concrete classes
+- **Manage internal enum**: Interactable object can be destructable, interactable, moveable (acts on player stepping on it), one should be able to change this internal state
+
+#### 2.7.3 NPC (abstract)
+
+- **Change state**: abstract method to change the current state/objective of the NPC
+  - Uses a NPC Status enum which is defined for all NPCs the same
+- **Act on status**: abstract method to act in concretely implemented methods given the current status
+
+#### 2.7.4 King: Implements NPC, Interactable Object
+
+- **On walk status**: Given a number of positions (at least 1) King should find a somewhat straight path to the positions and walk to each one in order, dialog should not be allowed
+- **On idle status**: King should remain in place and should allow interaction to start a dialogue
+- **Interact method**: On interact execute the currently viable dialogue in the current game progression
 
 ## 3. Non-Functional Requirements
 
