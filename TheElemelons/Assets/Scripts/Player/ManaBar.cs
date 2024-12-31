@@ -5,37 +5,14 @@ using UnityEngine.UI;
 
 public class ManaBar : MonoBehaviour
 {
-    [Header("Mana Management")]
-    public Mana manaScript;
-    float maxMana = 5f;
-    float mana;
+
     [Header("UI")]
     public Image[] manaStars;
-    public Sprite manaStar0;
-    public Sprite manaStar1;
-    public Sprite manaStar2;
-    public Sprite manaStar3;
-    public Sprite manaStar4;
-    // Start is called before the first frame update
-    void Start()
-    {
-        manaScript = GetComponent<Mana>();
-        maxMana = manaScript.GetMaxMana();
-        mana = manaScript.GetMana();
-    }
 
-    // Update is called once per frame
-    void Update()
+
+
+    public void UpdateStarFullness(float mana, float maxMana)
     {
-        if (manaScript.GetMana() < mana)
-        {
-            Hurt();
-        }
-        else if (manaScript.GetMana() > mana)
-        {
-            Heal();
-        }
-        mana = manaScript.GetMana();
         for (int i = 0; i < manaStars.Length; i++)
         {
             //number of heart containers
@@ -51,12 +28,10 @@ public class ManaBar : MonoBehaviour
             if (i < Mathf.Floor(mana))
             {
                 manaStars[i].GetComponent<Animator>().SetFloat("fullness", 1);
-                manaStars[i].sprite = manaStar4;
             }
             else if (i > mana)
             {
                 manaStars[i].GetComponent<Animator>().SetFloat("fullness", 0);
-                manaStars[i].sprite = manaStar0;
             }
             else
             {
@@ -65,28 +40,15 @@ public class ManaBar : MonoBehaviour
                     if (mana < maxMana)
                     {
                         manaStars[i].GetComponent<Animator>().SetFloat("fullness", 0);
-                        manaStars[i].sprite = manaStar0;
                     }
                     else
                     {
                         manaStars[i].GetComponent<Animator>().SetFloat("fullness", 1);
-                        manaStars[i].sprite = manaStar4;
                     }
                 }
-                else if (mana % 1 <= 0.25)
+                else
                 {
                     manaStars[i].GetComponent<Animator>().SetFloat("fullness", mana % 1);
-                    manaStars[i].sprite = manaStar1;
-                }
-                else if (mana % 1 <= 0.5)
-                {
-                    manaStars[i].GetComponent<Animator>().SetFloat("fullness", mana % 1);
-                    manaStars[i].sprite = manaStar2;
-                }
-                else if (mana % 1 <= 0.75)
-                {
-                    manaStars[i].GetComponent<Animator>().SetFloat("fullness", mana % 1);
-                    manaStars[i].sprite = manaStar3;
                 }
             }
         }

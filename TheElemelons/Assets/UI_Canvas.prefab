@@ -594,6 +594,7 @@ GameObject:
   - component: {fileID: 853695634026256617}
   - component: {fileID: 4816978035585650282}
   - component: {fileID: 3573733453532388846}
+  - component: {fileID: 7196475654189298621}
   m_Layer: 0
   m_Name: UI_Canvas
   m_TagString: Untagged
@@ -703,6 +704,29 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7196475654189298621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2305246718208910923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff3f843300d1c1468c73bb07f3d4a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  mousePos: {x: 0, y: 0}
+  cam: {fileID: 0}
+  pivot: {fileID: 0}
+  aim_transform: {fileID: 0}
+  charge1UI: {fileID: 0}
+  charge2UI: {fileID: 0}
+  fireSprite: {fileID: -1717928868, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  waterSprite: {fileID: 1690825715, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  earthSprite: {fileID: -93482519, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
+  windSprite: {fileID: 46059240, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
 --- !u!1 &3314644926459707202
 GameObject:
   m_ObjectHideFlags: 0

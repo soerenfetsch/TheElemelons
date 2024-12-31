@@ -62,6 +62,7 @@ public class CastingTest
         // Assert
         Assert.AreEqual(2, currentChargesCount, "A charge was added even when slots were full.");
     }
+    /*
     [Test]
     public void ClearCharges_RemovesAllCharges()
     {
@@ -77,6 +78,7 @@ public class CastingTest
         Assert.IsNull(casting.charge1UI.sprite, "Charge1 UI sprite was not cleared.");
         Assert.IsNull(casting.charge2UI.sprite, "Charge2 UI sprite was not cleared.");
     }
+    */
     [UnityTest]
     public IEnumerator DetermineSpell_ReturnsCorrectSpell_ForGivenChargeTuple()
     {

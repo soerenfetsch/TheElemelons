@@ -22,12 +22,6 @@ public class Casting : MonoBehaviour
     [Header("Charges")]
     public int maxCharges = 2;
     ChargeTuple currentCharges = new ChargeTuple();
-    public SpriteRenderer charge1UI;
-    public SpriteRenderer charge2UI;
-    public Sprite fireSprite;
-    public Sprite waterSprite;
-    public Sprite earthSprite;
-    public Sprite windSprite;
     [Header("Spell Selection")]
     GameObject currentSpell;
     public GameObject noTypeSpell;
@@ -35,6 +29,7 @@ public class Casting : MonoBehaviour
     public Dictionary<ChargeTuple, SpellEffect> chargeToSpell = new Dictionary<ChargeTuple, SpellEffect>();
     [Header("Internal Stuff")]
     PlayerMovement playerMovement;
+    public UIManager uIManager;
     void Start()
     {
         playerMovement = gameObject.GetComponent<PlayerMovement>();
@@ -88,7 +83,7 @@ public class Casting : MonoBehaviour
         {
             currentCharges.Add(selectedCharge);
             wandAnimator.SetBool("Charge", true);
-            loadChargeSprite(selectedCharge);
+            uIManager.loadChargeSprite(selectedCharge);
         }
     }
     private IEnumerator RemoveWand()
@@ -107,7 +102,7 @@ public class Casting : MonoBehaviour
             manaScript.SubtractMana(manaCost);
             Instantiate(newSpell, castpoint.position, Quaternion.Euler(0, 0, 0));
             ClearCharges();
-            ClearChargeSprites();
+            uIManager.ClearChargeSprites();
             manaScript.justCasted = true;
         }
         else
@@ -122,57 +117,11 @@ public class Casting : MonoBehaviour
         wandAnimator.SetBool("RaiseWand", false);
     }
 
-    //Refractor to UI manager
-    void loadChargeSprite(ChargeTypes selectedCharge)
-    {
-        Sprite spriteToBeLoaded = null;
-        if (selectedCharge == ChargeTypes.fire)
-        {
-            spriteToBeLoaded = fireSprite;
-        }
-        if (selectedCharge == ChargeTypes.water)
-        {
-            spriteToBeLoaded = waterSprite;
-        }
-        if (selectedCharge == ChargeTypes.earth)
-        {
-            spriteToBeLoaded = earthSprite;
-        }
-        if (selectedCharge == ChargeTypes.wind)
-        {
-            spriteToBeLoaded = windSprite;
-        }
-
-        if (currentCharges.Count() == 0)
-        {
-            charge1UI.sprite = null;
-            charge2UI.sprite = null;
-        }
-        else if (currentCharges.Count() == 1)
-        {
-            charge1UI.sprite = spriteToBeLoaded;
-        }
-        else if (currentCharges.Count() == 2)
-        {
-            charge2UI.sprite = spriteToBeLoaded;
-        }
-
-    }
-    //Refractor to UI manager
-    void ClearChargeSprites()
-    {
-        if (currentCharges.Count() == 0)
-        {
-            charge1UI.sprite = null;
-            charge2UI.sprite = null;
-        }
-    }
-
     public void ClearCharges()
     {
         wandAnimator.SetBool("Charge", true);
         currentCharges.Clear();
-        ClearChargeSprites();
+        uIManager.ClearChargeSprites();
     }
 
 
