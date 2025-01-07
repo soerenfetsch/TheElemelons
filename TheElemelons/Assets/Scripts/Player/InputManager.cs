@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public enum GameState
 {
@@ -56,18 +55,18 @@ public class InputManager : MonoBehaviour
                 break;
         }
 
-        // Globaler Input: Wechsel ins Pause-Menü
+        // Global input: Toggle Pause Menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (currentState == GameState.InGame)
             {
                 currentState = GameState.PauseMenu;
-                Debug.Log("Spiel pausiert.");
+                Debug.Log("Game Paused.");
             }
             else if (currentState == GameState.PauseMenu)
             {
                 currentState = GameState.InGame;
-                Debug.Log("Spiel fortgesetzt.");
+                Debug.Log("Game Resumed.");
             }
         }
     }
@@ -81,19 +80,20 @@ public class InputManager : MonoBehaviour
             "SelectFire", "SelectWater", "SelectEarth", "SelectAir", 
             "ZoomIn", "ZoomOut" 
         };
-        
+
         KeyCode[] defaultKeys = { 
             KeyCode.A, KeyCode.D, KeyCode.W, KeyCode.S, 
             KeyCode.Mouse0, KeyCode.Mouse1, 
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, 
             KeyCode.Z, KeyCode.X 
         };
-        
+
         keyBindings = new Dictionary<string, KeyCode>();
-        
+
         for (int i = 0; i < actions.Length; i++)
         {
-            keyBindings[actions[i]] = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(actions[i], defaultKeys[i].ToString()));
+            // Initialize with default keys
+            keyBindings[actions[i]] = defaultKeys[i];
         }
     }
 
@@ -101,11 +101,12 @@ public class InputManager : MonoBehaviour
     {
         if (keyBindings.ContainsKey(action))
         {
-            keyBindings[action] = newKey;
-
-            // Speichert die neue Taste in einem lokalen Register was permanent gespeichert wird
-            PlayerPrefs.SetString(action, newKey.ToString());
-            PlayerPrefs.Save();
+            keyBindings[action] = newKey; // Update the key binding in the dictionary
+            Debug.Log($"Key binding for '{action}' updated to: {newKey}");
+        }
+        else
+        {
+            Debug.LogError($"Action '{action}' not found in key bindings.");
         }
     }
 
@@ -147,20 +148,19 @@ public class InputManager : MonoBehaviour
 
     private void HandleCameraInputs()
     {
-        // Zoom-In und Zoom-Out mit Maus-Scroll-Rad
+        // Zoom-In and Zoom-Out with Mouse Scroll Wheel
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        // mainCamera ist private, muss daher über ein Property (Gleicht Getter ab) abgerufen werden
-        if (scroll > 0f) // Mausrad nach oben
+        if (scroll > 0f) // Scroll up
         {
             cameraMovement?.SetCameraSize(cameraMovement.MainCamera.orthographicSize - 1f); // Zoom-In
         }
-        else if (scroll < 0f) // Mausrad nach unten
+        else if (scroll < 0f) // Scroll down
         {
             cameraMovement?.SetCameraSize(cameraMovement.MainCamera.orthographicSize + 1f); // Zoom-Out
         }
 
-        // Alternative: KeyBindings für Zoom-In und Zoom-Out
+        // Alternative: KeyBindings for Zoom-In and Zoom-Out
         if (Input.GetKeyDown(keyBindings["ZoomIn"]))
         {
             cameraMovement?.SetCameraSize(3f); // Zoom in
@@ -173,19 +173,19 @@ public class InputManager : MonoBehaviour
 
     private void HandleMenuInputs()
     {
-        // Handle Main Menu inputs 
+        // Handle Main Menu inputs
         Debug.Log("Main Menu Input Handling");
     }
 
     private void HandleSettingsInputs()
     {
-        // Handle Settings Menu inputs 
+        // Handle Settings Menu inputs
         Debug.Log("Settings Menu Input Handling");
     }
 
     private void HandlePauseMenuInputs()
     {
-        // Inputs im Pause-Menü
+        // Handle inputs in Pause Menu
         Debug.Log("Pause Menu Input Handling");
     }
 
