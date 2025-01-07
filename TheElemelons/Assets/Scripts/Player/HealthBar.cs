@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//UI Element of health bar, managing fullness of heart containers
 public class HealthBar : MonoBehaviour
 {
     public Health healthScript;
@@ -17,6 +18,7 @@ public class HealthBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Assign Variables
         healthScript = GetComponent<Health>();
         maxHealth = healthScript.GetMaxHealth();
         health = healthScript.GetHealth();
@@ -25,6 +27,7 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Check if hurt or heal animation needs to be performed and act on it
         if (healthScript.GetHealth() < health)
         {
             Hurt();
@@ -34,6 +37,7 @@ public class HealthBar : MonoBehaviour
             Heal();
         }
         health = healthScript.GetHealth();
+        //Iterate through all heart container images
         for (int i = 0; i < hearts.Length; i++)
         {
             //number of heart containers
@@ -89,6 +93,7 @@ public class HealthBar : MonoBehaviour
             }
         }
     }
+    //Trigger Hurt animation
     public void Hurt()
     {
         for (int i = 0; i < hearts.Length; i++)
@@ -96,7 +101,7 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("hurt");
         }
     }
-
+    //Trigger Heal animation
     public void Heal()
     {
         for (int i = 0; i < hearts.Length; i++)
@@ -104,6 +109,7 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("heal");
         }
     }
+    //Extra function for when health is 0
     public void Dead()
     {
         for (int i = 0; i < hearts.Length; i++)
