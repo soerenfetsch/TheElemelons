@@ -91,7 +91,6 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         return null;
     }
 
-    // Public method to paint a list of tiles on the dungeon map.
     public override void PaintTiles(MapData mapData)
     {
         PaintFloor(mapData);                               // Paint the floor tiles
@@ -100,7 +99,6 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         DecorateDungeon(mapData);                          // Optionally add decorations
     }
 
-    // Clear the existing dungeon tiles (reset Tilemap).
     public override void Clear()
     {
         floorTilemap.ClearAllTiles();
@@ -108,7 +106,13 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         decorationTilemap.ClearAllTiles();
     }
 
-    // Paint the floor tiles at the given positions
+    /// <summary>
+    /// Paints the floor tiles at the given positions in the map data.
+    /// This method initializes the atlas tilemap, calculates the center of each room, and determines the possible area of the source tilemap.
+    /// It then uses a random seed to select a starting point and paints the floor tiles based on the positions and room types.
+    /// If a floor position is at the rim of the floor, it uses the border tiles; otherwise, it maps between the floor positions and the positions on the atlas tilemap.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void PaintFloor(MapData mapData)
     {
         // Ensure the atlas tilemap is initialized
@@ -334,6 +338,13 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         // TODO Add decorations
     }
 
+    /// <summary>
+    /// Paints the doors at the specified positions in the map data.
+    /// This method iterates through the door positions of each room and determines the direction of each door
+    /// (top, bottom, left, or right) based on the surrounding floor positions. It then paints the door in the
+    /// appropriate direction.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions, rooms, and door positions.</param>
     public void PaintDoors(MapData mapData)
     {
         foreach (Room room in mapData.rooms)

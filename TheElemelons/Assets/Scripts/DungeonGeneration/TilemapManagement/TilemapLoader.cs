@@ -12,6 +12,11 @@ public class TilemapLoader : MonoBehaviour
         this.tilemap = tilemap;
     }
 
+    /// <summary>
+    /// Loads the tilemap data from the TilemapData object and sets the tiles on the tilemap.
+    /// This method clears all existing tiles on the tilemap and then sets the tiles based on the positions
+    /// and tile data stored in the TilemapData object.
+    /// </summary>
     [ContextMenu("Load Tilemap Data")]
     public void LoadTilemapData()
     {
@@ -24,6 +29,10 @@ public class TilemapLoader : MonoBehaviour
         Debug.Log("Tilemap data loaded successfully.");
     }
 
+    /// <summary>
+    /// Clears all tiles on the tilemap.
+    /// This method removes all existing tiles from the tilemap and logs a message indicating that the tilemap has been cleared.
+    /// </summary>
     [ContextMenu("Clear Tilemap")]
     public void ClearTilemap()
     {

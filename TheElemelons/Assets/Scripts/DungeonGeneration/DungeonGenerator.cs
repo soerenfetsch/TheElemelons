@@ -8,7 +8,11 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] protected AbstractTilemapVisualizer tilemapVisualizer; // The Tilemap visualizer that handles the visual representation of the dungeon
     [SerializeField] protected AbstractMapGenerator mapGenerator; // The map generator that creates the lists of positions for a map
 
-    // Public method to generate the dungeon
+    /// <summary>
+    /// Public method to generate the dungeon.
+    /// This method clears the previous dungeon visualization and then calls the procedural generation algorithm
+    /// to create a new dungeon. It can be triggered from the Unity editor using the context menu.
+    /// </summary>
     [ContextMenu("Generate Dungeon")]
     public void GenerateDungeon()
     {
