@@ -3,12 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Abstract class responsible for visualizing the tilemap in the dungeon generation process.
+/// </summary>
+/// <remarks>
+/// This class provides methods to paint and clear tiles on the dungeon map.
+/// </remarks>
+///
 public abstract class AbstractTilemapVisualizer : MonoBehaviour
 {
-    // Public method to paint a list of tiles on the dungeon map.
+    /// <summary>
+    /// Paints a list of tiles on the dungeon map.
+    /// </summary>
+    /// <param name="mapData">The data representing the map to be painted.</param>
     public abstract void PaintTiles(MapData mapData);
 
-    // Clear the existing dungeon tiles (reset Tilemap).
+    /// <summary>
+    /// Clears the existing dungeon tiles, effectively resetting the Tilemap.
+    /// </summary>
     public abstract void Clear();
 }
 

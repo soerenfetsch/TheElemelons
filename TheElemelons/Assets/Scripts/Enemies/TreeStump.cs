@@ -71,6 +71,12 @@ public class TreeLog : Enemy
         currentState = newState;
     }
 
+    /// <summary>
+    /// Acts on the current status of the enemy.
+    /// This method handles the behavior of the enemy based on its current state. The enemy can be in one of the following states:
+    /// Idle, Approaching, Attacking, Retreating, or Staggered. The behavior includes checking the player's distance, moving towards
+    /// the player, attacking, retreating to the home position, and handling the stagger state.
+    /// </summary>
     public override void ActOnStatus()
     {
         switch (currentState)
@@ -128,6 +134,11 @@ public class TreeLog : Enemy
         }
     }
 
+    /// <summary>
+    /// Acts on the current health status of the enemy.
+    /// This method checks if the enemy's health is zero and if the enemy is still alive. If both conditions are met,
+    /// it sets the enemy's alive status to false, spawns a death effect at the enemy's position, and destroys the enemy game object.
+    /// </summary>
     public override void ActOnHealth()
     {
         if (health.IsZero() && isAlive)
@@ -138,6 +149,10 @@ public class TreeLog : Enemy
         }
     }
 
+    /// <summary>
+    /// Acts on the current mana status of the enemy.
+    /// There is no mana behavior for the TreeLog enemy, so this method does nothing.
+    /// </summary>
     public override void ActOnMana()
     {
         // Do nothing

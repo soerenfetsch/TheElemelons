@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//simple spell for casting when no charge selected
+//summons weak short lived sparkles that deal minor damage and some knockback
 public class SimpleSpell : SpellEffect
 {
     public float spellLifeTime = 1f;
@@ -16,11 +17,13 @@ public class SimpleSpell : SpellEffect
     }
     IEnumerator SelfDestruct()
     {
+        //spell disappears after spelllifetime exceeded
         Destroy(gameObject, spellLifeTime);
         yield return 1;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //future code for collisions
         /*
         if (other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().currentState != EnemyState.stagger)
         {

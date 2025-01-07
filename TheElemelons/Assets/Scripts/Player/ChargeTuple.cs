@@ -2,10 +2,17 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+
+/// <summary>
+///Helper class
+///Contains up to two charges (fire, water, earth, wind)
+///IMPORTANT: Order of charges does not matter when comparing two charge tuples
+/// </summary>
 public class ChargeTuple
 {
     private ChargeTypes charge1;
     private ChargeTypes charge2;
+    //Constructors
     public ChargeTuple()
     {
         charge1 = ChargeTypes.notype;
@@ -16,6 +23,7 @@ public class ChargeTuple
         charge1 = chargeOne;
         charge2 = chargeTwo;
     }
+    //Add charge to a chargetuple object
     public void Add(ChargeTypes charge)
     {
         if (charge1 == ChargeTypes.notype)
@@ -27,6 +35,7 @@ public class ChargeTuple
             charge2 = charge;
         }
     }
+    //clear a charge tuple, removing charges from the tuple
     public void Clear()
     {
         charge1 = ChargeTypes.notype;
@@ -36,6 +45,7 @@ public class ChargeTuple
     {
         return new List<ChargeTypes> { charge1, charge2 };
     }
+    //count how many charges in tuple
     public int Count()
     {
         int count = 0;
@@ -49,11 +59,12 @@ public class ChargeTuple
         }
         return count;
     }
-
+    //get first charge
     public ChargeTypes first()
     {
         return charge1;
     }
+    //get second charge
     public ChargeTypes second()
     {
         return charge2;
@@ -71,7 +82,7 @@ public class ChargeTuple
         }
         return count;
     }
-    // override object.Equals
+    // override object.Equals so that charge order doesnt matter
     public override bool Equals(object obj)
     {
         //
