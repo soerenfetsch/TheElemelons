@@ -20,7 +20,7 @@ public class InputManager : MonoBehaviour
 
     // References to other components
     private PlayerMovement playerMovement;
-    private Casting casting;
+    public Casting casting;
     private Camera mainCamera;
 
     private CameraMovement cameraMovement;
@@ -52,7 +52,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case GameState.PauseMenu:
-                HandleMenuInputs();
+                HandlePauseMenuInputs();
                 break;
         }
 
@@ -193,5 +193,12 @@ public class InputManager : MonoBehaviour
         Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 aimDirection = mousePosition - playerPosition;
         return Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+    }
+
+    public KeyCode GetKeyBinding(string action)
+    {
+        if (keyBindings.ContainsKey(action))
+            return keyBindings[action];
+        throw new KeyNotFoundException($"No key binding found for action: {action}");
     }
 }
