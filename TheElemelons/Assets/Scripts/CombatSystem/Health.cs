@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//manage health value of entity 
+/// <summary>
+///manage health value of entity 
 public class Health : MonoBehaviour
 {
 

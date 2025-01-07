@@ -93,7 +93,9 @@ public class HealthBar : MonoBehaviour
             }
         }
     }
-    //Trigger Hurt animation
+    /// <summary>
+    /// Trigger Hurt animation
+    /// </summary>
     public void Hurt()
     {
         for (int i = 0; i < hearts.Length; i++)
@@ -101,7 +103,9 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("hurt");
         }
     }
-    //Trigger Heal animation
+    /// <summary>
+    /// Trigger Heal animation
+    /// </summary>
     public void Heal()
     {
         for (int i = 0; i < hearts.Length; i++)

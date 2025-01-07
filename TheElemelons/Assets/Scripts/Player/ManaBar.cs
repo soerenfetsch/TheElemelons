@@ -96,7 +96,9 @@ public class ManaBar : MonoBehaviour
         }
     }
 
-    //Trigger Hurt animation
+    /// <summary>
+    /// Trigger Hurt animation
+    /// </summary>
     public void Hurt()
     {
         for (int i = 0; i < manaStars.Length; i++)
@@ -105,8 +107,9 @@ public class ManaBar : MonoBehaviour
         }
     }
 
-    //Trigger Heal animation
-
+    /// <summary>
+    /// Trigger Heal animation
+    /// </summary>
     public void Heal()
     {
         for (int i = 0; i < manaStars.Length; i++)

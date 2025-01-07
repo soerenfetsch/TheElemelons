@@ -49,6 +49,9 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Vertical", -1);
         moveSpeed = baseSpeed * speedMultiplier;
     }
+    /// <summary>
+    /// move player character according to player input
+    /// </summary>
     void OnInputMove()
     {
         //movement vector determined by input manager
@@ -84,16 +87,26 @@ public class PlayerMovement : MonoBehaviour
         float angle = Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg - 90f;
     }
 
+    /// <summary>
+    /// apply knockback and damage to player
+    /// </summary>
+    /// <param name="knockTime"></param>
+    /// <param name="damage"></param>
+    /// <param name="difference"></param>
     public void Knock(float knockTime, float damage, UnityEngine.Vector2 difference)
     {
-        //apply knockback and damage to player
         StartCoroutine(OnKnockbackMoveCo(knockTime, difference));
         health.SubtractHealth(damage);
     }
+    /// <summary>
+    /// move player according to input variables
+    /// Update Player State and Animator accordingly
+    /// </summary>
+    /// <param name="knockTime"></param>
+    /// <param name="difference"></param>
+    /// <returns></returns>
     private IEnumerator OnKnockbackMoveCo(float knockTime, UnityEngine.Vector2 difference)
     {
-        //move player according to input variables
-        //Update Player State and Animator accordingly
         rb.AddForce(difference, ForceMode2D.Impulse);
         SetCurrentState(PlayerState.stagger);
 

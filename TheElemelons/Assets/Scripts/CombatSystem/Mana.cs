@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//manage mana value of entity (used for spellcasting)
+
+/// <summary>
+/// manage mana value of entity (used for spellcasting)
 public class Mana : MonoBehaviour
 {
 
@@ -24,6 +26,10 @@ public class Mana : MonoBehaviour
         mana = maxMana;
         StartCoroutine(ManaRegen());
     }
+    /// <summary>
+    /// Handles Mana regeneration coroutine
+    /// regens slower if mana was just exhausted
+    /// </summary>
     public IEnumerator ManaRegen()
     {
         //manaregen coroutine

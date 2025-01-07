@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System;
-//Helper class
-//Contains up to two charges (fire, water, earth, wind)
-//IMPORTANT: Order of charges does not matter when comparing two charge tuples
+
+/// <summary>
+///Helper class
+///Contains up to two charges (fire, water, earth, wind)
+///IMPORTANT: Order of charges does not matter when comparing two charge tuples
+/// </summary>
 public class ChargeTuple
 {
     private ChargeTypes charge1;

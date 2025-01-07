@@ -48,10 +48,11 @@ public class Casting : MonoBehaviour
         currentSpell = noTypeSpell;
         determineSpell();
     }
-
+    /// <summary>
+    /// Determines which spell would be casted according to currently selected charges
+    /// </summary>
     public GameObject determineSpell()
     {
-        //Determines which spell would be casted according to currently selected charges
         if (chargeToSpell.ContainsKey(currentCharges))
         {
             return chargeToSpell[currentCharges].spellObject;
@@ -61,10 +62,12 @@ public class Casting : MonoBehaviour
             return null;
         }
     }
+    /// <summary>
+    /// checks if player can cast selected spell, depending on whether spell for charge combo exists
+    /// and on whether player has enough mana
+    /// </summary>
     public bool CanCast()
     {
-        //checks if player can cast selected spell, depending on whether spell for charge combo exists
-        //and on whether player has enough mana
         if (!chargeToSpell.ContainsKey(currentCharges) || playerMovement.GetCurrentState() == PlayerState.stagger)
         {
             return false;
@@ -86,10 +89,13 @@ public class Casting : MonoBehaviour
             StartCoroutine(RemoveWand());
         }
     }
+    /// <summary>
+    /// select charge for current charge tuple
+    /// cant add charge if chargetuple already full
+    /// </summary>
+    /// <param name="selectedCharge"></param>
     public void OnSelectCharge(ChargeTypes selectedCharge)
     {
-        //select charge for current charge tuple
-        //cant add charge if chargetuple already full
         if (currentCharges.Count() < maxCharges)
         {
             currentCharges.Add(selectedCharge);
@@ -103,7 +109,10 @@ public class Casting : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         wandAnimator.SetBool("Charge", false);
     }
-
+    /// <summary>
+    /// Spawn Spell gameobject correspoding to selected charges
+    /// then clear selected charges and substract manacost of spell
+    /// </summary>
     public void CastSpell()
     {
         //cast spell on input
@@ -137,9 +146,12 @@ public class Casting : MonoBehaviour
     }
 
     //Refractor to UI manager
+    /// <summary>
+    /// load charge sprite ui depending on number of already selected charges and newly selected charge
+    /// </summary>
+    /// <param name="selectedCharge"></param>
     void loadChargeSprite(ChargeTypes selectedCharge)
     {
-        //load charge sprite ui depending on number of already selected charges and newly selected charge
         Sprite spriteToBeLoaded = null;
         if (selectedCharge == ChargeTypes.fire)
         {
