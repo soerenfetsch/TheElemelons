@@ -16,14 +16,13 @@ public class InputManager : MonoBehaviour
     public GameState currentState = GameState.InGame;
 
     [Header("Key Bindings")]
-    private Dictionary<string, KeyCode> keyBindings;
+    public Dictionary<string, KeyCode> keyBindings;
 
     // References to other components
-    private PlayerMovement playerMovement;
-    private Casting casting;
-    private Camera mainCamera;
-
-    private CameraMovement cameraMovement;
+    public PlayerMovement playerMovement;
+    public Casting casting;
+    public Camera mainCamera;
+    public CameraMovement cameraMovement;
 
     private void Awake()
     {
@@ -52,7 +51,7 @@ public class InputManager : MonoBehaviour
                 break;
 
             case GameState.PauseMenu:
-                HandleMenuInputs();
+                HandlePauseMenuInputs();
                 break;
         }
 
@@ -102,6 +101,8 @@ public class InputManager : MonoBehaviour
         if (keyBindings.ContainsKey(action))
         {
             keyBindings[action] = newKey;
+
+            // Speichert die neue Taste in einem lokalen Register was permanent gespeichert wird
             PlayerPrefs.SetString(action, newKey.ToString());
             PlayerPrefs.Save();
         }
