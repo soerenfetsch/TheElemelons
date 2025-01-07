@@ -19,10 +19,11 @@ public class InputManager : MonoBehaviour
     public Dictionary<string, KeyCode> keyBindings;
 
     // References to other components
-    public PlayerMovement playerMovement;
+    private PlayerMovement playerMovement;
     public Casting casting;
-    public Camera mainCamera;
-    public CameraMovement cameraMovement;
+    private Camera mainCamera;
+
+    private CameraMovement cameraMovement;
 
     private void Awake()
     {
@@ -194,5 +195,12 @@ public class InputManager : MonoBehaviour
         Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 aimDirection = mousePosition - playerPosition;
         return Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+    }
+
+    public KeyCode GetKeyBinding(string action)
+    {
+        if (keyBindings.ContainsKey(action))
+            return keyBindings[action];
+        throw new KeyNotFoundException($"No key binding found for action: {action}");
     }
 }
