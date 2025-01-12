@@ -25,7 +25,9 @@ public class TreeStumpTests
 
         // Mocking the player's transform
         var playerObject = new GameObject("Player");
-        treeStump.Initialize(playerObject.transform);
+        var pathfinderObject = new GameObject("Pathfinder");
+        LineOfSightPathfinder pathfinder = pathfinderObject.AddComponent<LineOfSightPathfinder>();
+        treeStump.Initialize(playerObject.transform, pathfinder);
 
         // Explicitly call InitializeComponents for testing
         treeStump.InitializeComponents();

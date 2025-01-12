@@ -33,9 +33,10 @@ public class TreeLog : Enemy
     public float deathEffectDelay = 0.5f;
 
 
-    public void Initialize(Transform player)
+    public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
+        this.pathfinder = pathfinder;
     }
 
     public void InitializeComponents()
