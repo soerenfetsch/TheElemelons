@@ -13,8 +13,9 @@ public class TreeLog : Enemy
     private BoxCollider2D collisionBox;
     private Animator animator;
 
-    [Header("Player Info")]
+    [Header("Pathfinding")]
     public Transform playerTransform; // To store the player's transform for pathfinding.
+    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
     private Vector2 homePosition;
@@ -188,7 +189,13 @@ public class TreeLog : Enemy
         if (playerTransform == null) return;
 
         // Find the best direction to move toward the player using pathfinding (collision at feet level)
-        Vector2 direction = RaycastPathfinder.FindBestDirection(GetFeetPosition(), playerTransform.position);
+        Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
+        if (direction == Vector2.zero)
+        {
+            direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);
+        }
+        if (direction == Vector2.zero) return;
+    
         direction = direction.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
@@ -204,7 +211,7 @@ public class TreeLog : Enemy
 
     private bool CheckAtHome()
     {
-        return Vector2.Distance(transformComponent.position, homePosition) < 0.1f;
+        return Vector2.Distance(GetFeetPosition(), homePosition) < 0.2f;
     }
 
     private Vector2 GetFeetPosition()

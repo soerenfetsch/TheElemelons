@@ -15,6 +15,8 @@ public static class RaycastPathfinder
 
     /// <summary>
     /// Finds the best direction for an object to move toward a goal while avoiding obstacles.
+    /// The function casts rays in a circle around the object and calculates a score for each ray.
+    /// The score is based on the alignment with the goal and the distance to the closest obstacle.
     /// </summary>
     /// <param name="ownPosition">Position of the object.</param>
     /// <param name="goalPosition">Position of the goal (e.g., player).</param>
