@@ -5,143 +5,88 @@ using System.Numerics;
 using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 
-//Handle movement of player character, including movement by player input and movement due to knockback
-public enum PlayerState
-{
-    walk,
-    attack,
-    interact,
-    stagger,
-    idle
-}
+
 public class PlayerMovement : MonoBehaviour
 {
     public float baseSpeed = 5f;
     public float speedMultiplier = 1f;
-    public float moveSpeed;
 
     [Header("Hurtbox")]
     public BoxCollider2D hurtbox;
 
 
     [Header("Internal Stuff")]
+    Player player;
     Rigidbody2D rb;
     Animator animator;
-    Animator wand_animator;
+    Animator wandAnimator;
     UnityEngine.Vector2 movement;
-    public UnityEngine.Vector2 mousePos;
-    PlayerState currentState;
-    public bool iFrames;
-    public float iFramesTime = 0.3f;
-    Health health;
+
     void Start()
     {
-        //Initialize Variables
+        Initialize();
+    }
+
+    //Initialize Variables
+    public void Initialize()
+    {
+        player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        wand_animator = transform.GetChild(1).GetComponent<Animator>();
+        wandAnimator = transform.Find("Wand_Animation").GetComponent<Animator>();
         SetMovement(UnityEngine.Vector2.zero);
-        mousePos = UnityEngine.Vector2.zero;
-        SetCurrentState(PlayerState.idle);
-        iFrames = false;
-        health = GetComponent<Health>();
         animator.SetFloat("Horizontal", 0);
         animator.SetFloat("Vertical", -1);
-        moveSpeed = baseSpeed * speedMultiplier;
     }
+
     /// <summary>
     /// move player character according to player input
     /// </summary>
-    void OnInputMove()
+    public void OnInputMove()
     {
         //movement vector determined by input manager
         animator.SetFloat("Speed", GetMovement().sqrMagnitude);
 
-        moveSpeed = baseSpeed * speedMultiplier;
         //Physics
-        if (GetMovement() != UnityEngine.Vector2.zero && GetCurrentState() != PlayerState.stagger)
+        if (GetMovement() != UnityEngine.Vector2.zero && player.GetCurrentState() != PlayerState.Stagger)
         {
-            SetCurrentState(PlayerState.walk);
+            player.SetCurrentState(PlayerState.Walk);
             movement.Normalize();
             //moving rigid body according to speed, current position and movement vector (which is the direction)
-            rb.MovePosition(rb.position + GetMovement() * moveSpeed * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + GetMovement() * GetMoveSpeed() * Time.fixedDeltaTime);
             //Update animators
             animator.SetFloat("Horizontal", GetMovement().x);
             animator.SetFloat("Vertical", GetMovement().y);
 
-            wand_animator.SetFloat("Horizontal", GetMovement().x);
-            wand_animator.SetFloat("Vertical", GetMovement().y);
+            wandAnimator.SetFloat("Horizontal", GetMovement().x);
+            wandAnimator.SetFloat("Vertical", GetMovement().y);
 
         }
-        else if (GetCurrentState() != PlayerState.stagger && GetMovement() == UnityEngine.Vector2.zero)
+        else if (player.GetCurrentState() != PlayerState.Stagger && GetMovement() == UnityEngine.Vector2.zero)
         {
-            SetCurrentState(PlayerState.idle);
+            player.SetCurrentState(PlayerState.Idle);
         }
     }
 
     void FixedUpdate()
     {
         OnInputMove();
-        //Update Aiming Arrow Direction
-        UnityEngine.Vector2 aim_dir = mousePos - rb.position;
-        float angle = Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg - 90f;
     }
 
-    /// <summary>
-    /// apply knockback and damage to player
-    /// </summary>
-    /// <param name="knockTime"></param>
-    /// <param name="damage"></param>
-    /// <param name="difference"></param>
-    public void Knock(float knockTime, float damage, UnityEngine.Vector2 difference)
-    {
-        StartCoroutine(OnKnockbackMoveCo(knockTime, difference));
-        health.SubtractHealth(damage);
-    }
-    /// <summary>
-    /// move player according to input variables
-    /// Update Player State and Animator accordingly
-    /// </summary>
-    /// <param name="knockTime"></param>
-    /// <param name="difference"></param>
-    /// <returns></returns>
-    private IEnumerator OnKnockbackMoveCo(float knockTime, UnityEngine.Vector2 difference)
-    {
-        rb.AddForce(difference, ForceMode2D.Impulse);
-        SetCurrentState(PlayerState.stagger);
-
-        animator.SetBool("Stagger", true);
-        animator.SetTrigger("Stagger_trig");
-        wand_animator.SetBool("RaiseWand", false);
-        if (rb != null)
-        {
-            iFrames = true;
-            yield return new WaitForSeconds(knockTime);
-            rb.velocity = UnityEngine.Vector2.zero;
-            SetCurrentState(PlayerState.idle);
-            animator.SetBool("Stagger", false);
-            yield return new WaitForSeconds(iFramesTime);
-            iFrames = false;
-        }
-    }
-    public void SetCurrentState(PlayerState newState)
-    {
-        currentState = newState;
-    }
-    public PlayerState GetCurrentState()
-    {
-        return currentState;
-    }
     public void SetMovement(UnityEngine.Vector2 newMovement)
     {
         movement = newMovement;
     }
+
     public UnityEngine.Vector2 GetMovement()
     {
         return movement;
     }
 
-
+    public float GetMoveSpeed()
+    {
+        return baseSpeed * speedMultiplier;
+    }
 
 }
 
