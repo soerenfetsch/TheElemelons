@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//UI Element of health bar, managing fullness of heart containers
 public class HealthBar : MonoBehaviour
 {
     public Image[] hearts;
@@ -50,6 +51,9 @@ public class HealthBar : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Trigger Hurt animation
+    /// </summary>
     public void Hurt()
     {
         for (int i = 0; i < hearts.Length; i++)
@@ -57,7 +61,9 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("hurt");
         }
     }
-
+    /// <summary>
+    /// Trigger Heal animation
+    /// </summary>
     public void Heal()
     {
         for (int i = 0; i < hearts.Length; i++)
@@ -65,5 +71,4 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("heal");
         }
     }
-
 }

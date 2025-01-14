@@ -28,6 +28,11 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return mapData;
     }
 
+    /// <summary>
+    /// Generates the floor layout for the dungeon by creating rooms and corridors, 
+    /// and updates the map data accordingly.
+    /// </summary>
+    /// <param name="mapData">The map data object that holds information about the dungeon layout.</param>
     public void CreateFloor(MapData mapData)
     {
         List<Room> rooms = new List<Room>();
@@ -217,6 +222,13 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return closest;
     }
 
+    /// <summary>
+    /// Creates walls around the floor positions in the map data.
+    /// This method first adds walls around the floor positions of each room,
+    /// and then adds walls around the floor positions of the corridors.
+    /// Walls are placed around each floor tile if they are not contained in the map floor.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void CreateWalls(MapData mapData)
     {
         // First add walls to the rooms
@@ -257,6 +269,12 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    /// <summary>
+    /// Places decorations randomly on some floor positions in the map data.
+    /// This method iterates through the floor positions of each room and places decorations
+    /// with a 2% chance. Decorations can be either destructible or indestructible, with a 50/50 chance.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void CreateDecorationPositions(MapData mapData)
     {
         // Place decorations randomly on some floor positions
@@ -281,6 +299,12 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    /// <summary>
+    /// Places monster spawn points randomly on some floor positions in the map data.
+    /// This method iterates through the floor positions of each room and places monster spawn points
+    /// with a 10% chance.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void CreateMonsterSpawnPoints(MapData mapData)
     {
         // Place monsters randomly on floor positions
@@ -297,6 +321,13 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    /// <summary>
+    /// Determines the positions of doors by finding the corridors.
+    /// This method iterates through the floor positions of each room and places doors
+    /// at positions where the room borders intersect with corridors.
+    /// Doors are placed exactly in the middle of the corridor if the gap is less than the corridor width wide.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void CreateDoorPositions(MapData mapData)
     {
         // Determine the positions of doors by finding the corridors

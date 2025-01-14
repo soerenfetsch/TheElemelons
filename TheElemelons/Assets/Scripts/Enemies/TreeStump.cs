@@ -1,0 +1,282 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TreeLog : Enemy
+{
+    [Header("Components")]
+    private Transform transformComponent;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb2d;
+    private BoxCollider2D hitbox;
+    private BoxCollider2D collisionBox;
+    private Animator animator;
+
+    [Header("Pathfinding")]
+    public Transform playerTransform; // To store the player's transform for pathfinding.
+    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
+
+    [Header("Behavior")]
+    private Vector2 homePosition;
+    private bool isStaggering = false;
+    private bool isAlive = true;
+    public float moveSpeed = 1f;
+    public float staggerTime = 0.5f;
+    public float chaseRadius = 5f;
+    public float attackRadius = 0.2f;
+
+    // TODO: Add more attack behavior variables for combat
+
+    [Header("Effects")]
+    public GameObject deathEffect;
+    public float deathEffectDelay = 0.5f;
+
+
+    public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
+    {
+        playerTransform = player;
+        this.pathfinder = pathfinder;
+    }
+
+    public void InitializeComponents()
+    {
+        transformComponent = GetComponent<Transform>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb2d = GetComponent<Rigidbody2D>();
+        hitbox = GetComponent<BoxCollider2D>();
+        collisionBox = GetComponents<BoxCollider2D>()[1]; // Assuming second collider is for collision.
+        animator = GetComponent<Animator>();
+        health = GetComponent<Health>();
+        mana = GetComponent<Mana>();
+
+        currentState = EnemyStatus.Idle;
+        homePosition = transformComponent.position;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        InitializeComponents();
+    }
+
+    // Fixed update to handle physics and movements correctly
+    private void FixedUpdate()
+    {
+        ActOnStatus();
+        ActOnHealth();
+        ActOnMana();
+    }
+
+    public override void ChangeState(EnemyStatus newState)
+    {
+        currentState = newState;
+    }
+
+    /// <summary>
+    /// Acts on the current status of the enemy.
+    /// This method handles the behavior of the enemy based on its current state. The enemy can be in one of the following states:
+    /// Idle, Approaching, Attacking, Retreating, or Staggered. The behavior includes checking the player's distance, moving towards
+    /// the player, attacking, retreating to the home position, and handling the stagger state.
+    /// </summary>
+    public override void ActOnStatus()
+    {
+        switch (currentState)
+        {
+            case EnemyStatus.Idle:
+                // Wait until player is within chase or attack radius
+                if (CheckPlayerWithinRadius(attackRadius))
+                {
+                    ChangeState(EnemyStatus.Attacking);
+                    animator.SetBool("wakeUp", true);
+                }
+                else if (CheckPlayerReachableWithinRadius(chaseRadius))
+                {
+                    ChangeState(EnemyStatus.Approaching);
+                    animator.SetBool("wakeUp", true);
+                }
+                break;
+            case EnemyStatus.Approaching:
+                MoveTowardPlayer();
+                if (CheckPlayerWithinRadius(attackRadius))
+                {
+                    ChangeState(EnemyStatus.Attacking);
+                }
+                else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
+                {
+                    ChangeState(EnemyStatus.Retreating);
+                }
+                break;
+            case EnemyStatus.Attacking:
+                // TODO: Add attack behavior with combat system
+                if (CheckPlayerOutsideRadius(attackRadius))
+                {
+                    ChangeState(EnemyStatus.Approaching);
+                }
+                break;
+            case EnemyStatus.Retreating:
+                MoveTowardHome();
+                if (CheckPlayerReachableWithinRadius(chaseRadius))
+                {
+                    ChangeState(EnemyStatus.Approaching);
+                }
+                else if (CheckAtHome())
+                {
+                    ChangeState(EnemyStatus.Idle);
+                    animator.SetBool("wakeUp", false);
+                }
+                break;
+            case EnemyStatus.Staggered:
+                if (!isStaggering)
+                {
+                    isStaggering = true;
+                    StartCoroutine(HandleStagger());
+                }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Acts on the current health status of the enemy.
+    /// This method checks if the enemy's health is zero and if the enemy is still alive. If both conditions are met,
+    /// it sets the enemy's alive status to false, spawns a death effect at the enemy's position, and destroys the enemy game object.
+    /// </summary>
+    public override void ActOnHealth()
+    {
+        if (health.IsZero() && isAlive)
+        {
+            isAlive = false;
+            DeathEffect.SpawnDeathEffect(deathEffect, transformComponent.position, deathEffectDelay);
+            Destroy(gameObject, 0);
+        }
+    }
+
+    /// <summary>
+    /// Acts on the current mana status of the enemy.
+    /// There is no mana behavior for the TreeLog enemy, so this method does nothing.
+    /// </summary>
+    public override void ActOnMana()
+    {
+        // Do nothing
+    }
+
+    private void ChangeWalkAnimation(Vector2 direction)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            if (direction.x > 0)
+            {
+                animator.SetFloat("Vertical", 0f);
+                animator.SetFloat("Horizontal", 1f);
+            }
+            else if (direction.x < 0)
+            {
+                animator.SetFloat("Vertical", 0f);
+                animator.SetFloat("Horizontal", -1f);
+            }
+        }
+        else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
+        {
+            if (direction.y > 0)
+            {
+                animator.SetFloat("Vertical", 1f);
+                animator.SetFloat("Horizontal", 0f);
+            }
+            else if (direction.y < 0)
+            {
+                animator.SetFloat("Vertical", -1f);
+                animator.SetFloat("Horizontal", 0f);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Check if the player is within a certain radius of the enemy (just positions)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerWithinRadius(float radius)
+    {
+        return Vector2.Distance(GetFeetPosition(), playerTransform.position) <= radius;
+    }
+
+    /// <summary>
+    /// Check if the player is outside a certain radius of the enemy (just positions)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerOutsideRadius(float radius)
+    {
+        return Vector2.Distance(GetFeetPosition(), playerTransform.position) > radius;
+    }
+
+    /// <summary>
+    /// Check if the player is within a certain reach radius of the enemy (using pathfinding).
+    /// If player is in sight within the radius or a path to the player is reachable inside the
+    /// readius, returns true, else false.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerReachableWithinRadius(float radius)
+    {
+        bool reachable = pathfinder.CheckPlayerInSight(GetFeetPosition(), radius) != Vector2.zero
+                      || pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) != Vector2.zero;  
+        return reachable;
+    }
+
+    /// <summary>
+    /// Check if the player is outside a certain reach radius of the enemy (using pathfinding).
+    /// If player is in sight outside the radius and a path to the player is not reachable inside the
+    /// readius, returns true, else false.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerUnreachableWithinRadius(float radius)
+    {
+        return pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) == Vector2.zero;
+    }
+
+    private void MoveTowardPlayer()
+    {
+        if (playerTransform == null) return;
+
+        // Find the best direction to move toward the player using pathfinding (collision at feet level)
+        Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
+        if (direction == Vector2.zero)
+        {
+            direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);
+        }
+        if (direction == Vector2.zero) return;
+    
+        direction = direction.normalized;
+        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        ChangeWalkAnimation(direction);
+    }
+
+    private void MoveTowardHome()
+    {
+        // Find the best direction to move toward the home using pathfinding (collision at feet level)
+        Vector2 direction = RaycastPathfinder.FindBestDirection(GetFeetPosition(), homePosition);
+        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        ChangeWalkAnimation(direction);
+    }
+
+    private bool CheckAtHome()
+    {
+        return Vector2.Distance(GetFeetPosition(), homePosition) < 0.2f;
+    }
+
+    private Vector2 GetFeetPosition()
+    {
+        return new Vector2(transformComponent.position.x, collisionBox.bounds.min.y);
+    }
+
+    private IEnumerator HandleStagger()
+    {
+        animator.SetTrigger("TrStagger");
+        yield return new WaitForSeconds(staggerTime);
+        isStaggering = false;
+        animator.SetTrigger("TrStopStagger");
+        ChangeState(EnemyStatus.Idle);
+    }
+}

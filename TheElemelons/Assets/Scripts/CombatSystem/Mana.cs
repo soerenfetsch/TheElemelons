@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// manage mana value of entity (used for spellcasting)
 public class Mana : MonoBehaviour
 {
 
@@ -19,16 +21,20 @@ public class Mana : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Assign variables
         current_regenTime = manaRegenTime;
         mana = maxMana;
         StartCoroutine(ManaRegen());
     }
-    void Update()
-    {
-
-    }
+    /// <summary>
+    /// Handles Mana regeneration coroutine
+    /// regens slower if mana was just exhausted
+    /// </summary>
     public IEnumerator ManaRegen()
     {
+        //manaregen coroutine
+        //just a suggestion
+        //later finetune, so that regen is slow i.e. if mana exhausted etc.
         while (gameRunning)
         {
             if (mana <= 0.25)

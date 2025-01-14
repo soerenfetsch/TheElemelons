@@ -8,6 +8,12 @@ public class TilemapSaver : MonoBehaviour
     public Tilemap tilemap;
     public TilemapData tilemapData;
 
+    /// <summary>
+    /// Saves the current tilemap data by storing the positions and tiles into the tilemapData object.
+    /// This method iterates through all positions within the tilemap's cell bounds, checks for non-null tiles,
+    /// and adds their positions and tile references to the tilemapData lists.
+    /// The changes are then made persistent by marking the tilemapData asset as dirty and saving the assets.
+    /// </summary>
     [ContextMenu("Save Tilemap Data")]
     public void SaveTilemapData()
     {

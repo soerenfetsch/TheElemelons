@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Numerics;
 using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
+
+//Handle movement of player character, including movement by player input and movement due to knockback
 public enum PlayerState
 {
     walk,
@@ -34,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     Health health;
     void Start()
     {
+        //Initialize Variables
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         wand_animator = transform.GetChild(1).GetComponent<Animator>();
@@ -46,9 +49,12 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Vertical", -1);
         moveSpeed = baseSpeed * speedMultiplier;
     }
+    /// <summary>
+    /// move player character according to player input
+    /// </summary>
     void OnInputMove()
     {
-        //Input
+        //movement vector determined by input manager
         animator.SetFloat("Speed", GetMovement().sqrMagnitude);
 
         moveSpeed = baseSpeed * speedMultiplier;
@@ -57,7 +63,9 @@ public class PlayerMovement : MonoBehaviour
         {
             SetCurrentState(PlayerState.walk);
             movement.Normalize();
+            //moving rigid body according to speed, current position and movement vector (which is the direction)
             rb.MovePosition(rb.position + GetMovement() * moveSpeed * Time.fixedDeltaTime);
+            //Update animators
             animator.SetFloat("Horizontal", GetMovement().x);
             animator.SetFloat("Vertical", GetMovement().y);
 
@@ -74,16 +82,29 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         OnInputMove();
-        //Aiming
+        //Update Aiming Arrow Direction
         UnityEngine.Vector2 aim_dir = mousePos - rb.position;
         float angle = Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg - 90f;
     }
 
+    /// <summary>
+    /// apply knockback and damage to player
+    /// </summary>
+    /// <param name="knockTime"></param>
+    /// <param name="damage"></param>
+    /// <param name="difference"></param>
     public void Knock(float knockTime, float damage, UnityEngine.Vector2 difference)
     {
         StartCoroutine(OnKnockbackMoveCo(knockTime, difference));
         health.SubtractHealth(damage);
     }
+    /// <summary>
+    /// move player according to input variables
+    /// Update Player State and Animator accordingly
+    /// </summary>
+    /// <param name="knockTime"></param>
+    /// <param name="difference"></param>
+    /// <returns></returns>
     private IEnumerator OnKnockbackMoveCo(float knockTime, UnityEngine.Vector2 difference)
     {
         rb.AddForce(difference, ForceMode2D.Impulse);

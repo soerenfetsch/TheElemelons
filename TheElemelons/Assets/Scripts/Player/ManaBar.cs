@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//UI Element of mana bar, managing fullness of mana star containers
 public class ManaBar : MonoBehaviour
 {
 
@@ -54,6 +55,9 @@ public class ManaBar : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Trigger Hurt animation
+    /// </summary>
     public void Hurt()
     {
         for (int i = 0; i < manaStars.Length; i++)
@@ -62,6 +66,9 @@ public class ManaBar : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Trigger Heal animation
+    /// </summary>
     public void Heal()
     {
         for (int i = 0; i < manaStars.Length; i++)
