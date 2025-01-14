@@ -13,8 +13,9 @@ public class TreeLog : Enemy
     private BoxCollider2D collisionBox;
     private Animator animator;
 
-    [Header("Player Info")]
+    [Header("Pathfinding")]
     public Transform playerTransform; // To store the player's transform for pathfinding.
+    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
     private Vector2 homePosition;
@@ -32,9 +33,10 @@ public class TreeLog : Enemy
     public float deathEffectDelay = 0.5f;
 
 
-    public void Initialize(Transform player)
+    public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
+        this.pathfinder = pathfinder;
     }
 
     public void InitializeComponents()
@@ -88,7 +90,7 @@ public class TreeLog : Enemy
                     ChangeState(EnemyStatus.Attacking);
                     animator.SetBool("wakeUp", true);
                 }
-                else if (CheckPlayerWithinRadius(chaseRadius))
+                else if (CheckPlayerReachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                     animator.SetBool("wakeUp", true);
@@ -100,7 +102,7 @@ public class TreeLog : Enemy
                 {
                     ChangeState(EnemyStatus.Attacking);
                 }
-                else if (CheckPlayerOutsideRadius(chaseRadius))
+                else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Retreating);
                 }
@@ -114,7 +116,7 @@ public class TreeLog : Enemy
                 break;
             case EnemyStatus.Retreating:
                 MoveTowardHome();
-                if (CheckPlayerWithinRadius(chaseRadius))
+                if (CheckPlayerReachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                 }
@@ -188,21 +190,64 @@ public class TreeLog : Enemy
         }
     }
 
+    /// <summary>
+    /// Check if the player is within a certain radius of the enemy (just positions)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
     private bool CheckPlayerWithinRadius(float radius)
     {
-        return Vector2.Distance(transformComponent.position, playerTransform.position) <= radius;
+        return Vector2.Distance(GetFeetPosition(), playerTransform.position) <= radius;
     }
 
+    /// <summary>
+    /// Check if the player is outside a certain radius of the enemy (just positions)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
     private bool CheckPlayerOutsideRadius(float radius)
     {
-        return Vector2.Distance(transformComponent.position, playerTransform.position) > radius;
+        return Vector2.Distance(GetFeetPosition(), playerTransform.position) > radius;
+    }
+
+    /// <summary>
+    /// Check if the player is within a certain reach radius of the enemy (using pathfinding).
+    /// If player is in sight within the radius or a path to the player is reachable inside the
+    /// readius, returns true, else false.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerReachableWithinRadius(float radius)
+    {
+        bool reachable = pathfinder.CheckPlayerInSight(GetFeetPosition(), radius) != Vector2.zero
+                      || pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) != Vector2.zero;  
+        return reachable;
+    }
+
+    /// <summary>
+    /// Check if the player is outside a certain reach radius of the enemy (using pathfinding).
+    /// If player is in sight outside the radius and a path to the player is not reachable inside the
+    /// readius, returns true, else false.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerUnreachableWithinRadius(float radius)
+    {
+        return pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) == Vector2.zero;
     }
 
     private void MoveTowardPlayer()
     {
         if (playerTransform == null) return;
 
-        Vector2 direction = (Vector2)(playerTransform.position - transformComponent.position);
+        // Find the best direction to move toward the player using pathfinding (collision at feet level)
+        Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
+        if (direction == Vector2.zero)
+        {
+            direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);
+        }
+        if (direction == Vector2.zero) return;
+    
         direction = direction.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
@@ -210,14 +255,20 @@ public class TreeLog : Enemy
 
     private void MoveTowardHome()
     {
-        Vector2 direction = (homePosition - (Vector2)transformComponent.position).normalized;
+        // Find the best direction to move toward the home using pathfinding (collision at feet level)
+        Vector2 direction = RaycastPathfinder.FindBestDirection(GetFeetPosition(), homePosition);
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
     }
 
     private bool CheckAtHome()
     {
-        return Vector2.Distance(transformComponent.position, homePosition) < 0.1f;
+        return Vector2.Distance(GetFeetPosition(), homePosition) < 0.2f;
+    }
+
+    private Vector2 GetFeetPosition()
+    {
+        return new Vector2(transformComponent.position.x, collisionBox.bounds.min.y);
     }
 
     private IEnumerator HandleStagger()

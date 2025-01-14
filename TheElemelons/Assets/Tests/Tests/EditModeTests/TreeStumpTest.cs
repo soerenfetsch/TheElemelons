@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -7,12 +8,15 @@ public class TreeStumpTests
     private GameObject treeStumpObject;
     private TreeLog treeStump;
 
+    private LineOfSightPathfinder pathfinder;
+
     [SetUp]
     public void SetUp()
     {
         // Create a new GameObject to hold the TreeStump script
         treeStumpObject = new GameObject("TreeStump");
         treeStump = treeStumpObject.AddComponent<TreeLog>();
+        treeStump.transform.position = Vector3.zero;
 
         // Add required components
         treeStumpObject.AddComponent<Health>();
@@ -25,7 +29,26 @@ public class TreeStumpTests
 
         // Mocking the player's transform
         var playerObject = new GameObject("Player");
-        treeStump.Initialize(playerObject.transform);
+        playerObject.transform.position = Vector3.zero;
+
+        var pathfinderObject = new GameObject("Pathfinder");
+        pathfinder = pathfinderObject.AddComponent<LineOfSightPathfinder>();
+        treeStump.Initialize(playerObject.transform, pathfinder);
+
+        // Initialize visibility grid for pathfinder
+        pathfinder.playerSightRange = 3f;
+        pathfinder.floorPositions = new HashSet<Vector2Int>();
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 10; y++)
+            {
+                pathfinder.floorPositions.Add(new Vector2Int(x, y));
+            }
+        }
+        pathfinder.player = playerObject.transform;
+        pathfinder.InitializeVisibilityGrid();
+        pathfinder.obstacleLayer = LayerMask.GetMask("Walls");
+        pathfinder.UpdateVisibilityGrid();
 
         // Explicitly call InitializeComponents for testing
         treeStump.InitializeComponents();
@@ -50,6 +73,7 @@ public class TreeStumpTests
     {
         // Position the player within the chase radius
         treeStump.playerTransform.position = treeStumpObject.transform.position + new Vector3(treeStump.chaseRadius - 0.1f, 0);
+        pathfinder.UpdateVisibilityGrid();
 
         // Call ActOnStatus
         treeStump.ActOnStatus();
@@ -63,6 +87,7 @@ public class TreeStumpTests
     {
         // Position the player within the attack radius
         treeStump.playerTransform.position = treeStumpObject.transform.position + new Vector3(treeStump.attackRadius - 0.1f, 0);
+        pathfinder.UpdateVisibilityGrid();
 
         // Call ActOnStatus
         treeStump.ActOnStatus();
@@ -78,7 +103,8 @@ public class TreeStumpTests
         treeStump.ChangeState(EnemyStatus.Approaching);
 
         // Position the player outside the chase radius
-        treeStump.playerTransform.position = treeStumpObject.transform.position + new Vector3(treeStump.chaseRadius + 1f, 0);
+        treeStump.playerTransform.position = treeStumpObject.transform.position + new Vector3(treeStump.chaseRadius + 10f, 0);
+        pathfinder.UpdateVisibilityGrid();
 
         // Call ActOnStatus
         treeStump.ActOnStatus();
