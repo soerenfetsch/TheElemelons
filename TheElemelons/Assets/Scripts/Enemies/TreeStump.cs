@@ -84,7 +84,7 @@ public class TreeLog : Enemy
                     ChangeState(EnemyStatus.Attacking);
                     animator.SetBool("wakeUp", true);
                 }
-                else if (CheckPlayerWithinRadius(chaseRadius))
+                else if (CheckPlayerReachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                     animator.SetBool("wakeUp", true);
@@ -96,7 +96,7 @@ public class TreeLog : Enemy
                 {
                     ChangeState(EnemyStatus.Attacking);
                 }
-                else if (CheckPlayerOutsideRadius(chaseRadius))
+                else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Retreating);
                 }
@@ -110,7 +110,7 @@ public class TreeLog : Enemy
                 break;
             case EnemyStatus.Retreating:
                 MoveTowardHome();
-                if (CheckPlayerWithinRadius(chaseRadius))
+                if (CheckPlayerReachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                 }
@@ -175,14 +175,50 @@ public class TreeLog : Enemy
         }
     }
 
+    /// <summary>
+    /// Check if the player is within a certain radius of the enemy (just positions)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
     private bool CheckPlayerWithinRadius(float radius)
     {
         return Vector2.Distance(GetFeetPosition(), playerTransform.position) <= radius;
     }
 
+    /// <summary>
+    /// Check if the player is outside a certain radius of the enemy (just positions)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
     private bool CheckPlayerOutsideRadius(float radius)
     {
         return Vector2.Distance(GetFeetPosition(), playerTransform.position) > radius;
+    }
+
+    /// <summary>
+    /// Check if the player is within a certain reach radius of the enemy (using pathfinding).
+    /// If player is in sight within the radius or a path to the player is reachable inside the
+    /// readius, returns true, else false.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerReachableWithinRadius(float radius)
+    {
+        bool reachable = pathfinder.CheckPlayerInSight(GetFeetPosition(), radius) != Vector2.zero
+                      || pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) != Vector2.zero;  
+        return reachable;
+    }
+
+    /// <summary>
+    /// Check if the player is outside a certain reach radius of the enemy (using pathfinding).
+    /// If player is in sight outside the radius and a path to the player is not reachable inside the
+    /// readius, returns true, else false.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private bool CheckPlayerUnreachableWithinRadius(float radius)
+    {
+        return pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) == Vector2.zero;
     }
 
     private void MoveTowardPlayer()
