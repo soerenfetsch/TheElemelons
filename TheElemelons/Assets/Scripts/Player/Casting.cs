@@ -35,11 +35,11 @@ public class Casting : MonoBehaviour
     public float manaCost = 1f;
     public Dictionary<ChargeTuple, SpellEffect> chargeToSpell = new Dictionary<ChargeTuple, SpellEffect>();
     [Header("Internal Stuff")]
-    PlayerMovement playerMovement;
+    Player player;
     void Start()
     {
         //Variable assignment
-        playerMovement = gameObject.GetComponent<PlayerMovement>();
+        player = gameObject.GetComponent<Player>();
         manaScript = gameObject.GetComponent<Mana>();
         maxMana = manaScript.maxMana;
         mana = manaScript.mana;
@@ -68,7 +68,7 @@ public class Casting : MonoBehaviour
     /// </summary>
     public bool CanCast()
     {
-        if (!chargeToSpell.ContainsKey(currentCharges) || playerMovement.GetCurrentState() == PlayerState.stagger)
+        if (!chargeToSpell.ContainsKey(currentCharges) || player.GetCurrentState() == PlayerState.Stagger)
         {
             return false;
         }
