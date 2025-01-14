@@ -11,7 +11,6 @@ public enum ChargeTypes
 }
 public class Casting : MonoBehaviour
 {
-
     public Transform castpoint;
     public Animator wandAnimator;
     [Header("Mana Management")]

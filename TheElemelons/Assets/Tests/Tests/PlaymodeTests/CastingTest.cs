@@ -3,15 +3,46 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEditor.Animations;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class CastingTest
 {
-   private GameObject playerGameObject;
+   private GameObject castingGameObject;
    private Casting casting; 
    private Mana manaScript;
+   private UIManager uIManager;
+   private GameObject spell;
+   private PlayerMovement playerMovement;
+   private Transform castpoint;
+   private Animator wandAnimator;
+   [SetUp]
+    public void Setup()
+    {
+         // Create HealthBar GameObject
+        castingGameObject = new GameObject("Caster");
+        spell = new GameObject("mockSpell");
+        casting = castingGameObject.AddComponent<Casting>();
+        manaScript = castingGameObject.AddComponent<Mana>();
+        playerMovement = castingGameObject.AddComponent<PlayerMovement>();
+        castingGameObject.AddComponent<BoxCollider2D>();
+        spell.AddComponent<SpellEffect>();
+        casting.noTypeSpell = spell;
+        casting.castpoint = castpoint;
+        #if UNITY_EDITOR
+        var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
+        Assert.NotNull(playerPrefab, "player prefab not found at specified path.");
+        wandAnimator = playerPrefab.transform.GetChild(1).GetComponent<Animator>();
+        wandAnimator.runtimeAnimatorController = playerPrefab.transform.GetChild(1).GetComponent<AnimatorController>();
+#endif
+        casting.wandAnimator = wandAnimator;
+        Object.Instantiate(castingGameObject);
+        castingGameObject.SetActive(true);
+    }
+   /*
     [SetUp]
     public void Setup()
     {
@@ -32,12 +63,12 @@ public class CastingTest
         casting = playerGameObject.GetComponent<Casting>();
         manaScript = playerGameObject.GetComponent<Mana>();
     }
-    
+    */
     [TearDown]
     public void Teardown()
     {
         // Destroy the GameObject after each test
-        Object.DestroyImmediate(playerGameObject);
+        Object.DestroyImmediate(castingGameObject);
     }
     [Test]
     public void OnSelectCharge_AddsCharge_WhenSlotIsEmpty()
