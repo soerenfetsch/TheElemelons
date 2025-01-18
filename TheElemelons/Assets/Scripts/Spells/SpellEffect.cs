@@ -22,6 +22,7 @@ public class SpellEffect : MonoBehaviour
     /// The GameObject associated with the spell.
     /// </summary>
     public GameObject spellObject;
+    public GameObject caster { get; set; } // Reference to the caster.
 
     /// <summary>
     /// Retrieves the mana cost of the spell.

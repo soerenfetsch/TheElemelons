@@ -18,7 +18,7 @@ public enum EnemyStatus
 /// Abstract base class for enemy behavior. 
 /// Defines common properties and enforces implementation of specific behaviors in derived classes.
 /// </summary>
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, ICombatant
 {
     /// <summary>
     /// Reference to the Health script for managing enemy health.
@@ -34,6 +34,11 @@ public abstract class Enemy : MonoBehaviour
     /// Current state of the enemy (e.g., Idle, Attacking).
     /// </summary>
     protected EnemyStatus currentState;
+    public float attackFactor { get; set; }
+    public float defenseFactor { get; set; }
+    public bool isInvincible { get; set; }
+    public ElementType elementType { get; set; }
+
 
     /// <summary>
     /// Abstract method to enforce state transitions in derived classes.
@@ -55,6 +60,7 @@ public abstract class Enemy : MonoBehaviour
     /// Abstract method to define behavior based on the enemy's mana.
     /// </summary>
     public abstract void ActOnMana();
+    public abstract void GetKnocked(float knockTime);
 
     /// <summary>
     /// Reduces the enemy's health by a specified amount.
