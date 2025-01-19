@@ -36,10 +36,7 @@ public class TreeLog : Enemy
         playerTransform = player;
         this.pathfinder = pathfinder;
 
-        attackFactor = 1f;
-        defenseFactor = 1f;
-        isInvincible = false;
-        elementType = ElementType.Earth;
+        InitializeCombatComponents();
     }
 
     public void InitializeComponents()
@@ -57,10 +54,19 @@ public class TreeLog : Enemy
         homePosition = transformComponent.position;
     }
 
+    private void InitializeCombatComponents()
+    {
+        attackFactor = 1f;
+        defenseFactor = 1f;
+        isInvincible = false;
+        elementType = ElementType.Earth;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         InitializeComponents();
+        InitializeCombatComponents();
     }
 
     // Fixed update to handle physics and movements correctly
