@@ -4,6 +4,8 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor.Animations;
+using System.Net.WebSockets;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,6 +13,8 @@ using UnityEditor;
 
 public class CastingTest
 {
+    
+/*
    private GameObject castingGameObject;
    private Casting casting; 
    private Mana manaScript;
@@ -19,10 +23,43 @@ public class CastingTest
    private PlayerMovement playerMovement;
    private Transform castpoint;
    private Animator wandAnimator;
+   private AnimatorController controller;
+   */
+    private GameObject playerGameObject;
+   private Casting casting; 
+   private Mana manaScript;
    [SetUp]
     public void Setup()
     {
-         // Create HealthBar GameObject
+        #if UNITY_EDITOR
+        var canvasPrefab = AssetDatabase.LoadAssetAtPath<Canvas>("Assets/UI_Canvas.prefab");
+        Assert.NotNull(canvasPrefab, "UI_Canvas prefab not found at specified path.");
+
+        // Load Player prefab from the project
+        GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
+        Assert.NotNull(playerPrefab, "Player prefab not found at the specified path.");
+
+        // Instantiate the Player prefab
+        playerGameObject = Object.Instantiate(playerPrefab);
+        playerGameObject.GetComponent<HealthBar>().enabled = false;    
+        playerGameObject.GetComponent<ManaBar>().enabled = false; 
+        manaScript = playerGameObject.GetComponent<Mana>();
+        casting = playerGameObject.GetComponent<Casting>();
+        casting.uIManager = canvasPrefab.GetComponent<UIManager>();
+        
+        #endif
+        // Add a mock Main Camera
+        Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
+        mainCamera.tag = "MainCamera";
+        playerGameObject.SetActive(true);
+        casting = playerGameObject.GetComponent<Casting>();
+        manaScript = playerGameObject.GetComponent<Mana>();
+    }
+   /*
+    [SetUp]
+    public void Setup()
+    {
+        // Create HealthBar GameObject
         castingGameObject = new GameObject("Caster");
         spell = new GameObject("mockSpell");
         casting = castingGameObject.AddComponent<Casting>();
@@ -32,43 +69,28 @@ public class CastingTest
         spell.AddComponent<SpellEffect>();
         casting.noTypeSpell = spell;
         casting.castpoint = castpoint;
-        #if UNITY_EDITOR
-        var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
-        Assert.NotNull(playerPrefab, "player prefab not found at specified path.");
-        wandAnimator = playerPrefab.transform.GetChild(1).GetComponent<Animator>();
-        wandAnimator.runtimeAnimatorController = playerPrefab.transform.GetChild(1).GetComponent<AnimatorController>();
-#endif
-        casting.wandAnimator = wandAnimator;
+        // Creates the controller
+        controller = AnimatorController.CreateAnimatorControllerAtPath("Assets/testcontroller.controller");
+        controller.AddParameter("Charge", AnimatorControllerParameterType.Bool);
+        controller.AddParameter("RaiseWand", AnimatorControllerParameterType.Bool);
+        controller.AddParameter("CanCast", AnimatorControllerParameterType.Bool);
+        controller.AddParameter("Horizontal", AnimatorControllerParameterType.Float);
+        controller.AddParameter("Vertical", AnimatorControllerParameterType.Float);
+        
+        wandAnimator = castingGameObject.AddComponent<Animator>();
+        wandAnimator.runtimeAnimatorController = controller;
+        
+        
+
         Object.Instantiate(castingGameObject);
         castingGameObject.SetActive(true);
-    }
-   /*
-    [SetUp]
-    public void Setup()
-    {
-        #if UNITY_EDITOR
-        // Load Player prefab from the project
-        GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
-        Assert.NotNull(playerPrefab, "Player prefab not found at the specified path.");
-
-        // Instantiate the Player prefab
-        playerGameObject = Object.Instantiate(playerPrefab);
-        playerGameObject.GetComponent<HealthBar>().enabled = false;    
-        playerGameObject.GetComponent<ManaBar>().enabled = false;     
-        #endif
-        // Add a mock Main Camera
-        Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
-        mainCamera.tag = "MainCamera";
-        playerGameObject.SetActive(true);
-        casting = playerGameObject.GetComponent<Casting>();
-        manaScript = playerGameObject.GetComponent<Mana>();
     }
     */
     [TearDown]
     public void Teardown()
     {
         // Destroy the GameObject after each test
-        Object.DestroyImmediate(castingGameObject);
+        Object.DestroyImmediate(playerGameObject);
     }
     [Test]
     public void OnSelectCharge_AddsCharge_WhenSlotIsEmpty()

@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     Mana mana;
     HealthBar healthBar;
     ManaBar manaBar;
+
+    InputManager inputManager;
     [Header("Aim")]
     public Vector2 mousePos;
     public Camera cam;
@@ -34,6 +36,7 @@ public class UIManager : MonoBehaviour
         mana = playerObject.GetComponent<Mana>();
         manaBar = playerObject.GetComponent<ManaBar>();
         castingScript = playerObject.GetComponent<Casting>();
+        inputManager = playerObject.GetComponent<InputManager>();
     }
 
     // Update is called once per frame
@@ -151,13 +154,10 @@ public class UIManager : MonoBehaviour
     //AIM
     void UpdateAimingArrow()
     {
+        mousePos = inputManager.GetMousePosition();
         Vector2 aim_dir = mousePos - new Vector2(pivot.position.x, pivot.position.y);
         float angle = Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg + 90f;
         aim_transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void SetMousePos(Vector2 newMousepos)
-    {
-        mousePos = newMousepos;
-    }
 }

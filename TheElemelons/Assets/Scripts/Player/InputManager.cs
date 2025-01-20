@@ -190,11 +190,16 @@ public class InputManager : MonoBehaviour
     }
 
     public float GetAimDirection()
-    {
+    {   
         Vector2 playerPosition = playerMovement?.transform.position ?? Vector2.zero;
         Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 aimDirection = mousePosition - playerPosition;
         return Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+    }
+
+    public Vector2 GetMousePosition()
+    {
+        return mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 
     public KeyCode GetKeyBinding(string action)
