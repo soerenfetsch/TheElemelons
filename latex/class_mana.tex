@@ -1,0 +1,196 @@
+\doxysection{Mana Class Reference}
+\hypertarget{class_mana}{}\label{class_mana}\index{Mana@{Mana}}
+
+
+Manages the mana value of an entity, including regeneration and consumption for spellcasting.  
+
+
+Inheritance diagram for Mana\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_mana}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+IEnumerator \mbox{\hyperlink{class_mana_a7a5edad741723b93d2b77543452aab6b}{Mana\+Regen}} ()
+\begin{DoxyCompactList}\small\item\em Coroutine for regenerating mana over time. Slows down regeneration when mana is exhausted or recently used. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_mana_a84b2a4a39d1c9e9297c209f87de87704}{Subtract\+Mana}} (float mana\+Cost)
+\begin{DoxyCompactList}\small\item\em Reduces the entity\textquotesingle{}s mana by a specified amount, ensuring it does not drop below 0. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_mana_a13afcc0f9c8ace201b84bca017b5164c}{Add\+Mana}} (float plus)
+\begin{DoxyCompactList}\small\item\em Increases the entity\textquotesingle{}s mana by a specified amount, ensuring it does not exceed the maximum mana. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_mana_aef06c816bb930e81c1f499ca91532c8f}{Get\+Mana}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the current mana value of the entity. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_mana_a30c063d87b6222ce8e8a4a2850375629}{Is\+Zero}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the entity\textquotesingle{}s mana is zero or less. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_mana_a9cd2dcddbd211432064b6edd601caa4e}{Get\+Max\+Mana}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the maximum mana value of the entity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_mana_a1a2846d416c966018d7065f30c19c6ae}{Set\+Mana}} (float new\+Mana)
+\begin{DoxyCompactList}\small\item\em Sets the current mana value of the entity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_mana_a4038fec6e58eaf272d38265ca7cdba03}{Set\+Max\+Mana}} (float new\+Max\+Mana)
+\begin{DoxyCompactList}\small\item\em Sets the maximum mana value of the entity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_mana_af9771ad4782f76f11b25ef548bfeb6aa}{Set\+Mana\+Per\+Regen}} (float new\+Mana\+Per\+Regen)
+\begin{DoxyCompactList}\small\item\em Sets the amount of mana regenerated per cycle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_mana_a5a0c3a511fb8610ac0c45dee5d24322b}\label{class_mana_a5a0c3a511fb8610ac0c45dee5d24322b} 
+float {\bfseries max\+Mana} = 5f
+\begin{DoxyCompactList}\small\item\em The maximum mana value of the entity. \end{DoxyCompactList}\item 
+\Hypertarget{class_mana_a97a384ac49781fdc699c94237a2f7eda}\label{class_mana_a97a384ac49781fdc699c94237a2f7eda} 
+float {\bfseries mana}
+\begin{DoxyCompactList}\small\item\em The current mana value of the entity. \end{DoxyCompactList}\item 
+\Hypertarget{class_mana_ae96caafe401aa035b058027efba0aaf7}\label{class_mana_ae96caafe401aa035b058027efba0aaf7} 
+float {\bfseries mana\+Per\+Regen} = 0.\+25f
+\begin{DoxyCompactList}\small\item\em The amount of mana regenerated per cycle. \end{DoxyCompactList}\item 
+\Hypertarget{class_mana_a45ed9d10b07bd9aed730bbb15615fbe6}\label{class_mana_a45ed9d10b07bd9aed730bbb15615fbe6} 
+float {\bfseries mana\+Regen\+Time} = 0.\+2f
+\begin{DoxyCompactList}\small\item\em The time interval for mana regeneration. \end{DoxyCompactList}\item 
+\Hypertarget{class_mana_a5df569bb39c0254a2b1da13c88a93223}\label{class_mana_a5df569bb39c0254a2b1da13c88a93223} 
+bool {\bfseries game\+Running} = true
+\begin{DoxyCompactList}\small\item\em Indicates whether the game is running. \end{DoxyCompactList}\item 
+\Hypertarget{class_mana_ada2b3204dc4ea835c5ebf3dda59e95db}\label{class_mana_ada2b3204dc4ea835c5ebf3dda59e95db} 
+float {\bfseries current\+\_\+regen\+Time}
+\begin{DoxyCompactList}\small\item\em The current regeneration time interval. \end{DoxyCompactList}\item 
+\Hypertarget{class_mana_a7c6bc9166c59ff1f30c9f1343a5bc7c7}\label{class_mana_a7c6bc9166c59ff1f30c9f1343a5bc7c7} 
+bool {\bfseries just\+Casted} = false
+\begin{DoxyCompactList}\small\item\em Indicates whether mana was recently used. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the mana value of an entity, including regeneration and consumption for spellcasting. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_mana_a13afcc0f9c8ace201b84bca017b5164c}\index{Mana@{Mana}!AddMana@{AddMana}}
+\index{AddMana@{AddMana}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{AddMana()}{AddMana()}}
+{\footnotesize\ttfamily \label{class_mana_a13afcc0f9c8ace201b84bca017b5164c} 
+void Mana.\+Add\+Mana (\begin{DoxyParamCaption}\item[{float}]{plus}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Increases the entity\textquotesingle{}s mana by a specified amount, ensuring it does not exceed the maximum mana. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em plus} & The amount of mana to add.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_mana_aef06c816bb930e81c1f499ca91532c8f}\index{Mana@{Mana}!GetMana@{GetMana}}
+\index{GetMana@{GetMana}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{GetMana()}{GetMana()}}
+{\footnotesize\ttfamily \label{class_mana_aef06c816bb930e81c1f499ca91532c8f} 
+float Mana.\+Get\+Mana (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the current mana value of the entity. 
+
+\begin{DoxyReturn}{Returns}
+The current mana value.
+\end{DoxyReturn}
+\Hypertarget{class_mana_a9cd2dcddbd211432064b6edd601caa4e}\index{Mana@{Mana}!GetMaxMana@{GetMaxMana}}
+\index{GetMaxMana@{GetMaxMana}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{GetMaxMana()}{GetMaxMana()}}
+{\footnotesize\ttfamily \label{class_mana_a9cd2dcddbd211432064b6edd601caa4e} 
+float Mana.\+Get\+Max\+Mana (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the maximum mana value of the entity. 
+
+\begin{DoxyReturn}{Returns}
+The maximum mana value.
+\end{DoxyReturn}
+\Hypertarget{class_mana_a30c063d87b6222ce8e8a4a2850375629}\index{Mana@{Mana}!IsZero@{IsZero}}
+\index{IsZero@{IsZero}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{IsZero()}{IsZero()}}
+{\footnotesize\ttfamily \label{class_mana_a30c063d87b6222ce8e8a4a2850375629} 
+bool Mana.\+Is\+Zero (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the entity\textquotesingle{}s mana is zero or less. 
+
+\begin{DoxyReturn}{Returns}
+True if mana is zero or less; otherwise false.
+\end{DoxyReturn}
+\Hypertarget{class_mana_a7a5edad741723b93d2b77543452aab6b}\index{Mana@{Mana}!ManaRegen@{ManaRegen}}
+\index{ManaRegen@{ManaRegen}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{ManaRegen()}{ManaRegen()}}
+{\footnotesize\ttfamily \label{class_mana_a7a5edad741723b93d2b77543452aab6b} 
+IEnumerator Mana.\+Mana\+Regen (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Coroutine for regenerating mana over time. Slows down regeneration when mana is exhausted or recently used. 
+
+\begin{DoxyReturn}{Returns}
+An enumerator for the coroutine.
+\end{DoxyReturn}
+\Hypertarget{class_mana_a1a2846d416c966018d7065f30c19c6ae}\index{Mana@{Mana}!SetMana@{SetMana}}
+\index{SetMana@{SetMana}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{SetMana()}{SetMana()}}
+{\footnotesize\ttfamily \label{class_mana_a1a2846d416c966018d7065f30c19c6ae} 
+void Mana.\+Set\+Mana (\begin{DoxyParamCaption}\item[{float}]{new\+Mana}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the current mana value of the entity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Mana} & The new mana value to set.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_mana_af9771ad4782f76f11b25ef548bfeb6aa}\index{Mana@{Mana}!SetManaPerRegen@{SetManaPerRegen}}
+\index{SetManaPerRegen@{SetManaPerRegen}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{SetManaPerRegen()}{SetManaPerRegen()}}
+{\footnotesize\ttfamily \label{class_mana_af9771ad4782f76f11b25ef548bfeb6aa} 
+void Mana.\+Set\+Mana\+Per\+Regen (\begin{DoxyParamCaption}\item[{float}]{new\+Mana\+Per\+Regen}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the amount of mana regenerated per cycle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Mana\+Per\+Regen} & The new mana regeneration amount.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_mana_a4038fec6e58eaf272d38265ca7cdba03}\index{Mana@{Mana}!SetMaxMana@{SetMaxMana}}
+\index{SetMaxMana@{SetMaxMana}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{SetMaxMana()}{SetMaxMana()}}
+{\footnotesize\ttfamily \label{class_mana_a4038fec6e58eaf272d38265ca7cdba03} 
+void Mana.\+Set\+Max\+Mana (\begin{DoxyParamCaption}\item[{float}]{new\+Max\+Mana}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the maximum mana value of the entity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Max\+Mana} & The new maximum mana value to set.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_mana_a84b2a4a39d1c9e9297c209f87de87704}\index{Mana@{Mana}!SubtractMana@{SubtractMana}}
+\index{SubtractMana@{SubtractMana}!Mana@{Mana}}
+\doxysubsubsection{\texorpdfstring{SubtractMana()}{SubtractMana()}}
+{\footnotesize\ttfamily \label{class_mana_a84b2a4a39d1c9e9297c209f87de87704} 
+void Mana.\+Subtract\+Mana (\begin{DoxyParamCaption}\item[{float}]{mana\+Cost}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reduces the entity\textquotesingle{}s mana by a specified amount, ensuring it does not drop below 0. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mana\+Cost} & The amount of mana to subtract.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+Combat\+System/Mana.\+cs\end{DoxyCompactItemize}

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Enum representing the different game states.
+/// </summary>
 public enum GameState
 {
     InGame,
@@ -9,21 +12,36 @@ public enum GameState
     PauseMenu
 }
 
+/// <summary>
+/// Manages player input and key bindings across different game states.
+/// </summary>
 public class InputManager : MonoBehaviour
 {
+    /// <summary>
+    /// The current state of the game.
+    /// </summary>
     [Header("Game State")]
     public GameState currentState = GameState.InGame;
 
+    /// <summary>
+    /// Dictionary of actions mapped to their key bindings.
+    /// </summary>
     [Header("Key Bindings")]
     public Dictionary<string, KeyCode> keyBindings;
 
     // References to other components
     private PlayerMovement playerMovement;
+    /// <summary>
+    /// Reference to the Casting component for spell casting functionality.
+    /// </summary>
     public Casting casting;
-    private Camera mainCamera;
 
+    private Camera mainCamera;
     private CameraMovement cameraMovement;
 
+    /// <summary>
+    /// Initializes the InputManager and references required components.
+    /// </summary>
     private void Awake()
     {
         InitializeKeyBindings();
@@ -34,6 +52,9 @@ public class InputManager : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    /// <summary>
+    /// Handles updates for different game states and global inputs.
+    /// </summary>
     private void Update()
     {
         switch (currentState)
@@ -71,6 +92,9 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes default key bindings for player actions.
+    /// </summary>
     private void InitializeKeyBindings()
     {
         // Define default key bindings
@@ -97,6 +121,11 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the key binding for a specified action.
+    /// </summary>
+    /// <param name="action">The action to update.</param>
+    /// <param name="newKey">The new key to bind to the action.</param>
     public void SaveKeyBinding(string action, KeyCode newKey)
     {
         if (keyBindings.ContainsKey(action))
@@ -110,6 +139,9 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles gameplay-related inputs.
+    /// </summary>
     private void HandleGameplayInputs()
     {
         HandleMovementInputs();
@@ -117,6 +149,9 @@ public class InputManager : MonoBehaviour
         HandleCameraInputs();
     }
 
+    /// <summary>
+    /// Processes player movement inputs.
+    /// </summary>
     private void HandleMovementInputs()
     {
         Vector2 direction = Vector2.zero;
@@ -128,6 +163,9 @@ public class InputManager : MonoBehaviour
         playerMovement?.SetMovement(direction.normalized);
     }
 
+    /// <summary>
+    /// Processes spell casting inputs.
+    /// </summary>
     private void HandleSpellCastingInputs()
     {
         if (Input.GetKeyDown(keyBindings["CastSpell"]))
@@ -146,6 +184,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(keyBindings["SelectAir"])) casting?.OnSelectCharge(ChargeTypes.wind);
     }
 
+    /// <summary>
+    /// Processes camera-related inputs.
+    /// </summary>
     private void HandleCameraInputs()
     {
         // Zoom-In and Zoom-Out with Mouse Scroll Wheel
@@ -171,24 +212,34 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles main menu inputs.
+    /// </summary>
     private void HandleMenuInputs()
     {
-        // Handle Main Menu inputs
         Debug.Log("Main Menu Input Handling");
     }
 
+    /// <summary>
+    /// Handles settings menu inputs.
+    /// </summary>
     private void HandleSettingsInputs()
     {
-        // Handle Settings Menu inputs
         Debug.Log("Settings Menu Input Handling");
     }
 
+    /// <summary>
+    /// Handles pause menu inputs.
+    /// </summary>
     private void HandlePauseMenuInputs()
     {
-        // Handle inputs in Pause Menu
         Debug.Log("Pause Menu Input Handling");
     }
 
+    /// <summary>
+    /// Gets the aiming direction based on the mouse position relative to the player.
+    /// </summary>
+    /// <returns>The angle in degrees.</returns>
     public float GetAimDirection()
     {
         Vector2 playerPosition = playerMovement?.transform.position ?? Vector2.zero;
@@ -197,6 +248,12 @@ public class InputManager : MonoBehaviour
         return Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
     }
 
+    /// <summary>
+    /// Retrieves the key binding for a specified action.
+    /// </summary>
+    /// <param name="action">The action to retrieve the key binding for.</param>
+    /// <returns>The KeyCode associated with the action.</returns>
+    /// <exception cref="KeyNotFoundException">Thrown if the action does not exist.</exception>
     public KeyCode GetKeyBinding(string action)
     {
         if (keyBindings.ContainsKey(action))

@@ -3,33 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//UI Element of mana bar, managing fullness of mana star containers
+/// <summary>
+/// UI element representing the mana bar. 
+/// Manages the fullness of mana star containers based on player mana.
+/// </summary>
 public class ManaBar : MonoBehaviour
 {
     [Header("Mana Management")]
+    /// <summary>
+    /// Reference to the Mana script for managing player mana.
+    /// </summary>
     public Mana manaScript;
-    float maxMana = 5f;
-    float mana;
+
+    private float maxMana = 5f;
+    private float mana;
+
     [Header("UI")]
+    /// <summary>
+    /// Array of mana star images representing mana.
+    /// </summary>
     public Image[] manaStars;
-    public Sprite manaStar0;
-    public Sprite manaStar1;
-    public Sprite manaStar2;
-    public Sprite manaStar3;
-    public Sprite manaStar4;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Sprites representing different levels of mana star fullness.
+    /// </summary>
+    public Sprite manaStar0; // Empty star
+    public Sprite manaStar1; // 25% full star
+    public Sprite manaStar2; // 50% full star
+    public Sprite manaStar3; // 75% full star
+    public Sprite manaStar4; // Fully full star
+
+    /// <summary>
+    /// Initializes the mana bar and assigns variables.
+    /// </summary>
     void Start()
     {
-        //Assign Variables
         manaScript = GetComponent<Mana>();
         maxMana = manaScript.GetMaxMana();
         mana = manaScript.GetMana();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Updates the mana bar UI to reflect changes in player mana.
+    /// </summary>
     void Update()
     {
-        //Check if hurt or heal animation needs to be performed and act on it
+        // Check if hurt or heal animation needs to be performed and act on it
         if (manaScript.GetMana() < mana)
         {
             Hurt();
@@ -39,10 +58,11 @@ public class ManaBar : MonoBehaviour
             Heal();
         }
         mana = manaScript.GetMana();
-        //Iterate through all mana star container images
+
+        // Iterate through all mana star images
         for (int i = 0; i < manaStars.Length; i++)
         {
-            //number of heart containers
+            // Manage visibility of mana stars based on max mana
             if (i < maxMana)
             {
                 manaStars[i].enabled = true;
@@ -51,7 +71,8 @@ public class ManaBar : MonoBehaviour
             {
                 manaStars[i].enabled = false;
             }
-            //fullness of heart containers
+
+            // Manage fullness of mana stars
             if (i < Mathf.Floor(mana))
             {
                 manaStars[i].GetComponent<Animator>().SetFloat("fullness", 1);
@@ -97,7 +118,7 @@ public class ManaBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Trigger Hurt animation
+    /// Triggers the hurt animation for all mana stars.
     /// </summary>
     public void Hurt()
     {
@@ -108,7 +129,7 @@ public class ManaBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Trigger Heal animation
+    /// Triggers the heal animation for all mana stars.
     /// </summary>
     public void Heal()
     {

@@ -1,0 +1,149 @@
+\doxysection{Casting Class Reference}
+\hypertarget{class_casting}{}\label{class_casting}\index{Casting@{Casting}}
+
+
+Handles the player\textquotesingle{}s spell-\/casting mechanics, including charge management, spell selection, and mana consumption.  
+
+
+Inheritance diagram for Casting\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_casting}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Game\+Object \mbox{\hyperlink{class_casting_a15ccc285b675fe16aa9266fa1b94761d}{determine\+Spell}} ()
+\begin{DoxyCompactList}\small\item\em Determines the spell associated with the current charges. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_casting_a5218c3949c392f8291915c0f349df3d0}{Can\+Cast}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the player can cast the selected spell. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_casting_aa9cf510d0edd9eca32fff6b8b8e47e2b}{On\+Select\+Charge}} (Charge\+Types selected\+Charge)
+\begin{DoxyCompactList}\small\item\em Adds a selected charge to the current tuple and updates UI. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_a2c0a1d096cc5c71fd9043a5c28eb5b3b}\label{class_casting_a2c0a1d096cc5c71fd9043a5c28eb5b3b} 
+void {\bfseries Cast\+Spell} ()
+\begin{DoxyCompactList}\small\item\em Casts the spell corresponding to the current charges. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_ac6a8c6f94f9748445e1db66cdd123f0c}\label{class_casting_ac6a8c6f94f9748445e1db66cdd123f0c} 
+void {\bfseries Clear\+Charges} ()
+\begin{DoxyCompactList}\small\item\em Resets the current charges and updates UI. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_charge_tuple}{Charge\+Tuple}} \mbox{\hyperlink{class_casting_a118303cf1cc395a372aa42c34ccd1d54}{Get\+Current\+Charges}} ()
+\begin{DoxyCompactList}\small\item\em Gets the current charge tuple. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_casting_ab7607338caa6be0c222669f8ab548570}{Get\+Current\+Charges\+Count}} ()
+\begin{DoxyCompactList}\small\item\em Gets the count of currently selected charges. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_casting_a623dfb8aace13ba479cdf9908553eb7d}\label{class_casting_a623dfb8aace13ba479cdf9908553eb7d} 
+Transform {\bfseries castpoint}
+\begin{DoxyCompactList}\small\item\em The point from which spells are cast. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_ae02a664e452eebf92ff74f6974519889}\label{class_casting_ae02a664e452eebf92ff74f6974519889} 
+Animator {\bfseries wand\+Animator}
+\begin{DoxyCompactList}\small\item\em Animator for managing wand animations. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_a6ad0231bbde81965caecfa10f88bb495}\label{class_casting_a6ad0231bbde81965caecfa10f88bb495} 
+int {\bfseries max\+Charges} = 2
+\begin{DoxyCompactList}\small\item\em Maximum number of charges the player can hold. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_a40049f6584ea3ed482581d047faea069}\label{class_casting_a40049f6584ea3ed482581d047faea069} 
+Sprite\+Renderer {\bfseries charge1\+UI}
+\begin{DoxyCompactList}\small\item\em UI elements representing the first and second charges. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_a1b2a823f10b6da7efc3210e6f22662a7}\label{class_casting_a1b2a823f10b6da7efc3210e6f22662a7} 
+Sprite\+Renderer {\bfseries charge2\+UI}
+\item 
+\Hypertarget{class_casting_a2cde8abcae119998985d2d8775cb77f7}\label{class_casting_a2cde8abcae119998985d2d8775cb77f7} 
+Sprite {\bfseries fire\+Sprite}
+\begin{DoxyCompactList}\small\item\em Sprites representing charge types. \end{DoxyCompactList}\item 
+\Hypertarget{class_casting_a0289d535a7bcf91f4438745d561b00db}\label{class_casting_a0289d535a7bcf91f4438745d561b00db} 
+Sprite {\bfseries water\+Sprite}
+\item 
+\Hypertarget{class_casting_ab747c22172c5968e33bdaa4720fc1306}\label{class_casting_ab747c22172c5968e33bdaa4720fc1306} 
+Sprite {\bfseries earth\+Sprite}
+\item 
+\Hypertarget{class_casting_a038f10ca9a708f73e5dd0875f133231a}\label{class_casting_a038f10ca9a708f73e5dd0875f133231a} 
+Sprite {\bfseries wind\+Sprite}
+\item 
+\Hypertarget{class_casting_a8604f9b1c80da12f43e2c73aa1e85d9f}\label{class_casting_a8604f9b1c80da12f43e2c73aa1e85d9f} 
+Game\+Object {\bfseries no\+Type\+Spell}
+\item 
+\Hypertarget{class_casting_ae1c0874a01b7173d136233f97c9c2efe}\label{class_casting_ae1c0874a01b7173d136233f97c9c2efe} 
+float {\bfseries mana\+Cost} = 1f
+\item 
+\Hypertarget{class_casting_ad7b2d91012970fb70a1bce6bdf70c7e7}\label{class_casting_ad7b2d91012970fb70a1bce6bdf70c7e7} 
+Dictionary$<$ \mbox{\hyperlink{class_charge_tuple}{Charge\+Tuple}}, \mbox{\hyperlink{class_spell_effect}{Spell\+Effect}} $>$ {\bfseries charge\+To\+Spell} = new Dictionary$<$\mbox{\hyperlink{class_charge_tuple}{Charge\+Tuple}}, \mbox{\hyperlink{class_spell_effect}{Spell\+Effect}}$>$()
+\begin{DoxyCompactList}\small\item\em Maps charge combinations to corresponding spell effects. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles the player\textquotesingle{}s spell-\/casting mechanics, including charge management, spell selection, and mana consumption. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_casting_a5218c3949c392f8291915c0f349df3d0}\index{Casting@{Casting}!CanCast@{CanCast}}
+\index{CanCast@{CanCast}!Casting@{Casting}}
+\doxysubsubsection{\texorpdfstring{CanCast()}{CanCast()}}
+{\footnotesize\ttfamily \label{class_casting_a5218c3949c392f8291915c0f349df3d0} 
+bool Casting.\+Can\+Cast (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the player can cast the selected spell. 
+
+\begin{DoxyReturn}{Returns}
+True if casting is possible; otherwise false.
+\end{DoxyReturn}
+\Hypertarget{class_casting_a15ccc285b675fe16aa9266fa1b94761d}\index{Casting@{Casting}!determineSpell@{determineSpell}}
+\index{determineSpell@{determineSpell}!Casting@{Casting}}
+\doxysubsubsection{\texorpdfstring{determineSpell()}{determineSpell()}}
+{\footnotesize\ttfamily \label{class_casting_a15ccc285b675fe16aa9266fa1b94761d} 
+Game\+Object Casting.\+determine\+Spell (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Determines the spell associated with the current charges. 
+
+\begin{DoxyReturn}{Returns}
+The spell Game\+Object, or null if no spell exists.
+\end{DoxyReturn}
+\Hypertarget{class_casting_a118303cf1cc395a372aa42c34ccd1d54}\index{Casting@{Casting}!GetCurrentCharges@{GetCurrentCharges}}
+\index{GetCurrentCharges@{GetCurrentCharges}!Casting@{Casting}}
+\doxysubsubsection{\texorpdfstring{GetCurrentCharges()}{GetCurrentCharges()}}
+{\footnotesize\ttfamily \label{class_casting_a118303cf1cc395a372aa42c34ccd1d54} 
+\mbox{\hyperlink{class_charge_tuple}{Charge\+Tuple}} Casting.\+Get\+Current\+Charges (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the current charge tuple. 
+
+\begin{DoxyReturn}{Returns}
+The current charges as a \doxylink{class_charge_tuple}{Charge\+Tuple}.
+\end{DoxyReturn}
+\Hypertarget{class_casting_ab7607338caa6be0c222669f8ab548570}\index{Casting@{Casting}!GetCurrentChargesCount@{GetCurrentChargesCount}}
+\index{GetCurrentChargesCount@{GetCurrentChargesCount}!Casting@{Casting}}
+\doxysubsubsection{\texorpdfstring{GetCurrentChargesCount()}{GetCurrentChargesCount()}}
+{\footnotesize\ttfamily \label{class_casting_ab7607338caa6be0c222669f8ab548570} 
+int Casting.\+Get\+Current\+Charges\+Count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the count of currently selected charges. 
+
+\begin{DoxyReturn}{Returns}
+The number of selected charges.
+\end{DoxyReturn}
+\Hypertarget{class_casting_aa9cf510d0edd9eca32fff6b8b8e47e2b}\index{Casting@{Casting}!OnSelectCharge@{OnSelectCharge}}
+\index{OnSelectCharge@{OnSelectCharge}!Casting@{Casting}}
+\doxysubsubsection{\texorpdfstring{OnSelectCharge()}{OnSelectCharge()}}
+{\footnotesize\ttfamily \label{class_casting_aa9cf510d0edd9eca32fff6b8b8e47e2b} 
+void Casting.\+On\+Select\+Charge (\begin{DoxyParamCaption}\item[{Charge\+Types}]{selected\+Charge}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a selected charge to the current tuple and updates UI. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em selected\+Charge} & The charge type to add.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+Player/Casting.\+cs\end{DoxyCompactItemize}

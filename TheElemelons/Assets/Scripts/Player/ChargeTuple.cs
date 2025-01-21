@@ -4,26 +4,39 @@ using System.Text;
 using System;
 
 /// <summary>
-///Helper class
-///Contains up to two charges (fire, water, earth, wind)
-///IMPORTANT: Order of charges does not matter when comparing two charge tuples
+/// Helper class to manage elemental charges.
+/// Contains up to two charges (fire, water, earth, wind).
+/// Order of charges does not matter when comparing two ChargeTuple objects.
 /// </summary>
 public class ChargeTuple
 {
     private ChargeTypes charge1;
     private ChargeTypes charge2;
-    //Constructors
+
+    /// <summary>
+    /// Default constructor. Initializes charges to notype.
+    /// </summary>
     public ChargeTuple()
     {
         charge1 = ChargeTypes.notype;
         charge2 = ChargeTypes.notype;
     }
+
+    /// <summary>
+    /// Initializes a ChargeTuple with two charges.
+    /// </summary>
+    /// <param name="chargeOne">The first charge.</param>
+    /// <param name="chargeTwo">The second charge.</param>
     public ChargeTuple(ChargeTypes chargeOne, ChargeTypes chargeTwo)
     {
         charge1 = chargeOne;
         charge2 = chargeTwo;
     }
-    //Add charge to a chargetuple object
+
+    /// <summary>
+    /// Adds a charge to the tuple.
+    /// </summary>
+    /// <param name="charge">The charge to add.</param>
     public void Add(ChargeTypes charge)
     {
         if (charge1 == ChargeTypes.notype)
@@ -35,17 +48,29 @@ public class ChargeTuple
             charge2 = charge;
         }
     }
-    //clear a charge tuple, removing charges from the tuple
+
+    /// <summary>
+    /// Clears all charges from the tuple.
+    /// </summary>
     public void Clear()
     {
         charge1 = ChargeTypes.notype;
         charge2 = ChargeTypes.notype;
     }
+
+    /// <summary>
+    /// Returns the charges as a list.
+    /// </summary>
+    /// <returns>A list of charges.</returns>
     public List<ChargeTypes> GetCharges()
     {
         return new List<ChargeTypes> { charge1, charge2 };
     }
-    //count how many charges in tuple
+
+    /// <summary>
+    /// Counts the number of charges in the tuple.
+    /// </summary>
+    /// <returns>The number of charges (0, 1, or 2).</returns>
     public int Count()
     {
         int count = 0;
@@ -59,16 +84,30 @@ public class ChargeTuple
         }
         return count;
     }
-    //get first charge
+
+    /// <summary>
+    /// Gets the first charge.
+    /// </summary>
+    /// <returns>The first charge.</returns>
     public ChargeTypes first()
     {
         return charge1;
     }
-    //get second charge
+
+    /// <summary>
+    /// Gets the second charge.
+    /// </summary>
+    /// <returns>The second charge.</returns>
     public ChargeTypes second()
     {
         return charge2;
     }
+
+    /// <summary>
+    /// Checks how many times a specific charge exists in the tuple.
+    /// </summary>
+    /// <param name="other">The charge to check.</param>
+    /// <returns>The count of the specified charge.</returns>
     public float HasHowMany(ChargeTypes other)
     {
         float count = 0;
@@ -82,16 +121,19 @@ public class ChargeTuple
         }
         return count;
     }
-    // override object.Equals so that charge order doesnt matter
+
+    /// <summary>
+    /// Determines if two ChargeTuple objects are equal (order of charges does not matter).
+    /// </summary>
+    /// <param name="obj">The other ChargeTuple to compare.</param>
+    /// <returns>True if the tuples are equal; otherwise false.</returns>
     public override bool Equals(object obj)
     {
-        //
-        // See the full list of guidelines at
-        //   http://go.microsoft.com/fwlink/?LinkID=85237
-        // and also the guidance for operator== at
-        //   http://go.microsoft.com/fwlink/?LinkId=85238
-        //
-
+        // 
+        // See the full list of guidelines at 
+        // http://go.microsoft.com/fwlink/?LinkID=85237
+        // and also the guidance for operator == at
+        // http://go.microsoft.com/fwlink/?LinkId=85238
         if (obj == null || GetType() != obj.GetType())
         {
             return false;
@@ -106,11 +148,16 @@ public class ChargeTuple
         return false;
     }
 
-    //override object.GetHashCode
+    /// <summary>
+    /// Generates a hash code for the ChargeTuple.
+    /// </summary>
+    /// <returns>The hash code.</returns>
+
+    // override object.GetHashCode
     public override int GetHashCode()
     {
         // TODO: write your implementation of GetHashCode() here
-        //throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
         byte[] bytes = MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(((int)charge1 + (int)charge2).ToString()));
         if (BitConverter.IsLittleEndian)
         {

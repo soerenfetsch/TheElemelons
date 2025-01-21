@@ -1,13 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//abstract class for all spells
-//all spells have a chargetuple as type and a cost for casting
+
+/// <summary>
+/// Abstract base class for all spells.
+/// Provides common properties and methods for managing spell types and casting costs.
+/// </summary>
 public class SpellEffect : MonoBehaviour
 {
+    /// <summary>
+    /// Mana cost required to cast the spell.
+    /// </summary>
     public float manaCost;
+
+    /// <summary>
+    /// Type of the spell, represented by a <see cref="ChargeTuple"/>.
+    /// </summary>
     public ChargeTuple spellType;
+
+    /// <summary>
+    /// The GameObject associated with the spell.
+    /// </summary>
     public GameObject spellObject;
+
+    /// <summary>
+    /// Retrieves the mana cost of the spell.
+    /// </summary>
+    /// <returns>The mana cost of the spell.</returns>
     public float GetManaCost()
     {
         return manaCost;

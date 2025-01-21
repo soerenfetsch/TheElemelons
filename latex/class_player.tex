@@ -1,0 +1,175 @@
+\doxysection{Player Class Reference}
+\hypertarget{class_player}{}\label{class_player}\index{Player@{Player}}
+
+
+Represents the core player class. Manages player state, animations, and invincibility mechanics.  
+
+
+Inheritance diagram for Player\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_player}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_player_ad425a0d664232b3941dfd56fdcbd5c7a}\label{class_player_ad425a0d664232b3941dfd56fdcbd5c7a} 
+void {\bfseries Initialize} ()
+\begin{DoxyCompactList}\small\item\em Initializes the player by setting the default state to Idle. \end{DoxyCompactList}\item 
+Player\+State \mbox{\hyperlink{class_player_a048b82f40d0ce77a6f6903f7da4dcf70}{Get\+Current\+State}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the current state of the player. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_player_a3415e7f5e4c083f0999e48cb24fd3666}{Set\+Current\+State}} (Player\+State state)
+\begin{DoxyCompactList}\small\item\em Sets the current state of the player. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_player_a15a0e76f45f3043832b6909f0c5fa514}{Get\+Knocked}} (float knock\+Time)
+\begin{DoxyCompactList}\small\item\em Knocks the player back and staggers them for a specified duration. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_player_ae7481b4e50baf64a7d81828bfb5f2161}{Is\+Invincible}} ()
+\begin{DoxyCompactList}\small\item\em Checks whether the player is currently invincible. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_player_aae9436a5615d7404fe733c2d933b48c3}{Set\+Invincible}} (bool invincible)
+\begin{DoxyCompactList}\small\item\em Sets the player\textquotesingle{}s invincibility status. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_player_a0103b54c580bd9f3ce8262cfb51bfd87}{Get\+Damage\+Factor}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the player\textquotesingle{}s damage scaling factor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_player_afdff06a17053f544b26c7a7a544e4fb8}{Set\+Damage\+Factor}} (float factor)
+\begin{DoxyCompactList}\small\item\em Sets the player\textquotesingle{}s damage scaling factor. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_player_ac1a146063c714488c148a31b5a335cd6}{Get\+Defense\+Factor}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the player\textquotesingle{}s defense scaling factor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_player_a8e19af85e5ffdb175b092b9645d9cee2}{Set\+Defense\+Factor}} (float factor)
+\begin{DoxyCompactList}\small\item\em Sets the player\textquotesingle{}s defense scaling factor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents the core player class. Manages player state, animations, and invincibility mechanics. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_player_a048b82f40d0ce77a6f6903f7da4dcf70}\index{Player@{Player}!GetCurrentState@{GetCurrentState}}
+\index{GetCurrentState@{GetCurrentState}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{GetCurrentState()}{GetCurrentState()}}
+{\footnotesize\ttfamily \label{class_player_a048b82f40d0ce77a6f6903f7da4dcf70} 
+Player\+State Player.\+Get\+Current\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the current state of the player. 
+
+\begin{DoxyReturn}{Returns}
+The current player state.
+\end{DoxyReturn}
+\Hypertarget{class_player_a0103b54c580bd9f3ce8262cfb51bfd87}\index{Player@{Player}!GetDamageFactor@{GetDamageFactor}}
+\index{GetDamageFactor@{GetDamageFactor}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{GetDamageFactor()}{GetDamageFactor()}}
+{\footnotesize\ttfamily \label{class_player_a0103b54c580bd9f3ce8262cfb51bfd87} 
+float Player.\+Get\+Damage\+Factor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the player\textquotesingle{}s damage scaling factor. 
+
+\begin{DoxyReturn}{Returns}
+The damage factor.
+\end{DoxyReturn}
+\Hypertarget{class_player_ac1a146063c714488c148a31b5a335cd6}\index{Player@{Player}!GetDefenseFactor@{GetDefenseFactor}}
+\index{GetDefenseFactor@{GetDefenseFactor}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{GetDefenseFactor()}{GetDefenseFactor()}}
+{\footnotesize\ttfamily \label{class_player_ac1a146063c714488c148a31b5a335cd6} 
+float Player.\+Get\+Defense\+Factor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the player\textquotesingle{}s defense scaling factor. 
+
+\begin{DoxyReturn}{Returns}
+The defense factor.
+\end{DoxyReturn}
+\Hypertarget{class_player_a15a0e76f45f3043832b6909f0c5fa514}\index{Player@{Player}!GetKnocked@{GetKnocked}}
+\index{GetKnocked@{GetKnocked}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{GetKnocked()}{GetKnocked()}}
+{\footnotesize\ttfamily \label{class_player_a15a0e76f45f3043832b6909f0c5fa514} 
+void Player.\+Get\+Knocked (\begin{DoxyParamCaption}\item[{float}]{knock\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Knocks the player back and staggers them for a specified duration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em knock\+Time} & The duration of the knockback effect.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_player_ae7481b4e50baf64a7d81828bfb5f2161}\index{Player@{Player}!IsInvincible@{IsInvincible}}
+\index{IsInvincible@{IsInvincible}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{IsInvincible()}{IsInvincible()}}
+{\footnotesize\ttfamily \label{class_player_ae7481b4e50baf64a7d81828bfb5f2161} 
+bool Player.\+Is\+Invincible (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks whether the player is currently invincible. 
+
+\begin{DoxyReturn}{Returns}
+True if the player is invincible, false otherwise.
+\end{DoxyReturn}
+\Hypertarget{class_player_a3415e7f5e4c083f0999e48cb24fd3666}\index{Player@{Player}!SetCurrentState@{SetCurrentState}}
+\index{SetCurrentState@{SetCurrentState}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{SetCurrentState()}{SetCurrentState()}}
+{\footnotesize\ttfamily \label{class_player_a3415e7f5e4c083f0999e48cb24fd3666} 
+void Player.\+Set\+Current\+State (\begin{DoxyParamCaption}\item[{Player\+State}]{state}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the current state of the player. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & The new player state.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_player_afdff06a17053f544b26c7a7a544e4fb8}\index{Player@{Player}!SetDamageFactor@{SetDamageFactor}}
+\index{SetDamageFactor@{SetDamageFactor}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{SetDamageFactor()}{SetDamageFactor()}}
+{\footnotesize\ttfamily \label{class_player_afdff06a17053f544b26c7a7a544e4fb8} 
+void Player.\+Set\+Damage\+Factor (\begin{DoxyParamCaption}\item[{float}]{factor}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the player\textquotesingle{}s damage scaling factor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em factor} & The new damage factor.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_player_a8e19af85e5ffdb175b092b9645d9cee2}\index{Player@{Player}!SetDefenseFactor@{SetDefenseFactor}}
+\index{SetDefenseFactor@{SetDefenseFactor}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{SetDefenseFactor()}{SetDefenseFactor()}}
+{\footnotesize\ttfamily \label{class_player_a8e19af85e5ffdb175b092b9645d9cee2} 
+void Player.\+Set\+Defense\+Factor (\begin{DoxyParamCaption}\item[{float}]{factor}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the player\textquotesingle{}s defense scaling factor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em factor} & The new defense factor.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_player_aae9436a5615d7404fe733c2d933b48c3}\index{Player@{Player}!SetInvincible@{SetInvincible}}
+\index{SetInvincible@{SetInvincible}!Player@{Player}}
+\doxysubsubsection{\texorpdfstring{SetInvincible()}{SetInvincible()}}
+{\footnotesize\ttfamily \label{class_player_aae9436a5615d7404fe733c2d933b48c3} 
+void Player.\+Set\+Invincible (\begin{DoxyParamCaption}\item[{bool}]{invincible}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the player\textquotesingle{}s invincibility status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em invincible} & True to make the player invincible, false otherwise.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+Player/Player.\+cs\end{DoxyCompactItemize}

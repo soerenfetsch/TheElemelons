@@ -1,0 +1,39 @@
+\doxysection{Camera\+Movement\+Tests Class Reference}
+\hypertarget{class_camera_movement_tests}{}\label{class_camera_movement_tests}\index{CameraMovementTests@{CameraMovementTests}}
+
+
+Unit tests for the \doxylink{class_camera_movement}{Camera\+Movement} class. Validates functionality for camera tracking, zoom clamping, and error handling.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_camera_movement_tests_a8ed7e671780eec8d02e0876fe0723435}\label{class_camera_movement_tests_a8ed7e671780eec8d02e0876fe0723435} 
+void {\bfseries Setup} ()
+\begin{DoxyCompactList}\small\item\em Sets up the test environment by creating a camera and player Game\+Object. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_tests_a92406d8c0f474c69757e720355b1e412}\label{class_camera_movement_tests_a92406d8c0f474c69757e720355b1e412} 
+void {\bfseries Teardown} ()
+\begin{DoxyCompactList}\small\item\em Cleans up the test environment by destroying created Game\+Objects. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_tests_a8f05a2b8d9ef271bd03dcf26fd783602}\label{class_camera_movement_tests_a8f05a2b8d9ef271bd03dcf26fd783602} 
+IEnumerator {\bfseries Test\+Default\+Camera\+Size\+Initialization} ()
+\begin{DoxyCompactList}\small\item\em Tests if the default camera size is correctly initialized. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_tests_a7820cf2fd798602f19e7b8e70f49d914}\label{class_camera_movement_tests_a7820cf2fd798602f19e7b8e70f49d914} 
+IEnumerator {\bfseries Test\+Clamped\+Camera\+Size} ()
+\begin{DoxyCompactList}\small\item\em Tests if the camera size is clamped within the defined limits. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_tests_a3d89423b65e0730594b543ce7dbb1ff8}\label{class_camera_movement_tests_a3d89423b65e0730594b543ce7dbb1ff8} 
+IEnumerator {\bfseries Test\+Player\+Transform\+Follow\+Logic} ()
+\begin{DoxyCompactList}\small\item\em Tests if the camera follows the player and maintains a fixed Z-\/axis. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_tests_a8847f8a4fcd8b182ff23f46698de57e1}\label{class_camera_movement_tests_a8847f8a4fcd8b182ff23f46698de57e1} 
+IEnumerator {\bfseries Test\+Fallback\+For\+Main\+Camera} ()
+\begin{DoxyCompactList}\small\item\em Tests the fallback mechanism for Main\+Camera when the camera component is missing. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_tests_a0f15af6a8bcec6330b3322f0b1cd0faa}\label{class_camera_movement_tests_a0f15af6a8bcec6330b3322f0b1cd0faa} 
+IEnumerator {\bfseries Test\+Handle\+Unassigned\+Player\+Transform} ()
+\begin{DoxyCompactList}\small\item\em Tests the camera\textquotesingle{}s behavior when the player\+Transform is unassigned. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Unit tests for the \doxylink{class_camera_movement}{Camera\+Movement} class. Validates functionality for camera tracking, zoom clamping, and error handling. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Tests/\+Tests/\+Playmode\+Tests/Camera\+Movement\+Test.\+cs\end{DoxyCompactItemize}

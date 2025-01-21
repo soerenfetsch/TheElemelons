@@ -23,12 +23,19 @@ public class DeathEffect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes the death effect with a specified delay.
+    /// </summary>
+    /// <param name="delay">The delay before the death effect is destroyed.</param>
     public void Initialize(float delay)
     {
         deathEffectDelay = delay;
         StartCoroutine(SelfDestruct());
     }
 
+    /// <summary>
+    /// Coroutine that destroys the death effect after the specified delay.
+    /// </summary>
     private IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(deathEffectDelay);

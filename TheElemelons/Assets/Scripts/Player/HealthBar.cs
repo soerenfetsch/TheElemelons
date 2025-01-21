@@ -3,31 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//UI Element of health bar, managing fullness of heart containers
+/// <summary>
+/// UI element representing the health bar. 
+/// Manages the fullness of heart containers based on player health.
+/// </summary>
 public class HealthBar : MonoBehaviour
 {
+    /// <summary>
+    /// Reference to the Health script for managing player health.
+    /// </summary>
     public Health healthScript;
-    float maxHealth;
-    float health;
+
+    private float maxHealth;
+    private float health;
+
+    /// <summary>
+    /// Array of heart container images representing health.
+    /// </summary>
     public Image[] hearts;
-    public Sprite heart0;
-    public Sprite heart1;
-    public Sprite heart2;
-    public Sprite heart3;
-    public Sprite heart4;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Sprites representing different levels of heart fullness.
+    /// </summary>
+    public Sprite heart0; // Empty heart
+    public Sprite heart1; // 25% full heart
+    public Sprite heart2; // 50% full heart
+    public Sprite heart3; // 75% full heart
+    public Sprite heart4; // Fully full heart
+
+    /// <summary>
+    /// Initializes the health bar and assigns variables.
+    /// </summary>
     void Start()
     {
-        //Assign Variables
         healthScript = GetComponent<Health>();
         maxHealth = healthScript.GetMaxHealth();
         health = healthScript.GetHealth();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Updates the health bar UI to reflect changes in player health.
+    /// </summary>
     void Update()
     {
-        //Check if hurt or heal animation needs to be performed and act on it
+        // Check if hurt or heal animation needs to be performed and act on it
         if (healthScript.GetHealth() < health)
         {
             Hurt();
@@ -37,10 +56,11 @@ public class HealthBar : MonoBehaviour
             Heal();
         }
         health = healthScript.GetHealth();
-        //Iterate through all heart container images
+
+        // Iterate through all heart container images
         for (int i = 0; i < hearts.Length; i++)
         {
-            //number of heart containers
+            // Manage visibility of heart containers based on max health
             if (i < maxHealth)
             {
                 hearts[i].enabled = true;
@@ -49,7 +69,8 @@ public class HealthBar : MonoBehaviour
             {
                 hearts[i].enabled = false;
             }
-            //fullness of heart containers
+
+            // Manage fullness of heart containers
             if (i < Mathf.Floor(health))
             {
                 hearts[i].GetComponent<Animator>().SetFloat("fullness", 1);
@@ -93,8 +114,9 @@ public class HealthBar : MonoBehaviour
             }
         }
     }
+
     /// <summary>
-    /// Trigger Hurt animation
+    /// Triggers the hurt animation for all hearts.
     /// </summary>
     public void Hurt()
     {
@@ -103,8 +125,9 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("hurt");
         }
     }
+
     /// <summary>
-    /// Trigger Heal animation
+    /// Triggers the heal animation for all hearts.
     /// </summary>
     public void Heal()
     {
@@ -113,7 +136,10 @@ public class HealthBar : MonoBehaviour
             hearts[i].GetComponent<Animator>().SetTrigger("heal");
         }
     }
-    //Extra function for when health is 0
+
+    /// <summary>
+    /// Sets all hearts to empty, used when health is 0.
+    /// </summary>
     public void Dead()
     {
         for (int i = 0; i < hearts.Length; i++)

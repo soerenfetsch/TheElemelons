@@ -1,83 +1,111 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles camera movement and size adjustments in a 2D game.
+/// Follows the player and allows zooming within defined limits.
+/// </summary>
 public class CameraMovement : MonoBehaviour
 {
-    // Referenz auf den Spieler, dem die Kamera folgen soll
+    /// <summary>
+    /// Reference to the player transform for camera tracking.
+    /// </summary>
     public Transform playerTransform;
 
-    // Standardkamera-Größe, falls keine Anpassung erforderlich ist
+    /// <summary>
+    /// Default size of the camera.
+    /// </summary>
     public float defaultCameraSize = 5f;
+
+    /// <summary>
+    /// Minimum allowed size for the camera.
+    /// </summary>
     public float minCameraSize = 3f;
+
+    /// <summary>
+    /// Maximum allowed size for the camera.
+    /// </summary>
     public float maxCameraSize = 10f;
 
-    // Kamera-Komponente, um die Auflösung und die Position zu kontrollieren
+    /// <summary>
+    /// Reference to the main camera component.
+    /// </summary>
     private Camera mainCamera;
 
-    // Property mit Fallback (Kurzform von Getter and Setter)
+    /// <summary>
+    /// Provides access to the main camera with a fallback to Camera.main if not initialized.
+    /// </summary>
     public Camera MainCamera
     {
         get
         {
             if (mainCamera == null)
             {
-                Debug.LogWarning("MainCamera wurde nicht initialisiert. Fallback auf Camera.main.");
-                mainCamera = Camera.main; // Fallback auf Hauptkamera (Ersatzwert wenn nicht vorhanden)
+                Debug.LogWarning("MainCamera not initialized. Falling back to Camera.main.");
+                mainCamera = Camera.main;
             }
             return mainCamera;
         }
     }
 
-
+    /// <summary>
+    /// Unity Awake method. Initializes the camera and checks for required references.
+    /// </summary>
     void Awake()
     {
-        // Holen der Kamera-Komponente von diesem GameObject
+        // Retrieve the Camera component from this GameObject
         mainCamera = GetComponent<Camera>();
 
-        // Setzen der Standardgröße der Kamera
+        // Set the default camera size
         if (mainCamera != null)
         {
             mainCamera.orthographicSize = defaultCameraSize;
         }
         else
         {
-            Debug.LogError("Kamera-Komponente fehlt! Bitte eine Kamera hinzufügen.");
+            Debug.LogError("Camera component missing! Please attach a Camera component.");
         }
 
-        // Spieler-Transform überprüfen
+        // Check for the player transform
         if (playerTransform == null)
         {
-            Debug.LogWarning("Spieler-Transform ist nicht zugewiesen.");
+            Debug.LogWarning("Player Transform is not assigned.");
         }
     }
 
+    /// <summary>
+    /// Unity LateUpdate method. Ensures the camera follows the player.
+    /// </summary>
     void LateUpdate()
     {
-        // Sicherstellen, dass die Kamera auf den Spieler zentriert ist
         if (playerTransform != null)
         {
+            // Center the camera on the player
             Vector3 newCameraPosition = playerTransform.position;
-            newCameraPosition.z = -10f; // Z-Achse fixieren, da Kamera in 2D nach unten schauen sollte
+            newCameraPosition.z = -10f; // Fix the Z-axis for 2D view
             transform.position = newCameraPosition;
         }
         else
         {
-            Debug.LogWarning("Spieler-Transform ist nicht zugewiesen.");
+            Debug.LogWarning("Player Transform is not assigned.");
         }
     }
 
-    // Methode zum Anpassen der Kameraauflösung.
+    /// <summary>
+    /// Adjusts the camera size within the defined limits.
+    /// </summary>
+    /// <param name="newSize">The new size to set for the camera.</param>
     public void SetCameraSize(float newSize)
     {
         if (mainCamera != null)
         {
-            // Kameragröße auf die erlaubten Werte begrenzen
+            // Clamp the camera size to the allowed range
             newSize = Mathf.Clamp(newSize, minCameraSize, maxCameraSize);
             mainCamera.orthographicSize = newSize;
-            Debug.Log($"Kameragröße wurde auf {newSize} gesetzt.");
+            Debug.Log($"Camera size set to {newSize}.");
         }
         else
         {
-            Debug.LogError("Kamera-Komponente nicht gefunden!");
+            Debug.LogError("Camera component not found!");
         }
     }
 }

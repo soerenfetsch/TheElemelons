@@ -1,0 +1,126 @@
+\doxysection{Room Class Reference}
+\hypertarget{class_room}{}\label{class_room}\index{Room@{Room}}
+
+
+Represents a room in the dungeon, storing positions of various elements and their types.  
+
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_room_a776e03aab298c93af8e7afa894916f5a}\label{class_room_a776e03aab298c93af8e7afa894916f5a} 
+enum \mbox{\hyperlink{class_room_a776e03aab298c93af8e7afa894916f5a}{Room\+Type}} \{ \newline
+{\bfseries START}
+, {\bfseries NORMAL}
+, {\bfseries ADVANCED}
+, {\bfseries END}
+, \newline
+{\bfseries BOSS}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum defining types of rooms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_room_aca38f1673fd9264e15575e6faa34ba44}\label{class_room_aca38f1673fd9264e15575e6faa34ba44} 
+{\bfseries Room} ()
+\begin{DoxyCompactList}\small\item\em Initializes a new room with empty positions and a default type. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a0f97435e950239eec2fec25eb62754e5}\label{class_room_a0f97435e950239eec2fec25eb62754e5} 
+void {\bfseries Add\+Floor\+Position} (Vector2\+Int floor\+Position)
+\begin{DoxyCompactList}\small\item\em Adds floor positions to the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a8cb5daa8b5bba729dad9a6d00b27415b}\label{class_room_a8cb5daa8b5bba729dad9a6d00b27415b} 
+void {\bfseries Add\+Floor\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_aca754ec207a6d3018b634a93a06542c3}{floor\+Positions}})
+\item 
+\Hypertarget{class_room_a7d26273fe7de8fdc7aa353788beff767}\label{class_room_a7d26273fe7de8fdc7aa353788beff767} 
+void {\bfseries Add\+Wall\+Position} (Vector2\+Int wall\+Position)
+\begin{DoxyCompactList}\small\item\em Adds wall positions to the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a2a60191109eb98b75e4032df0f4d6d2e}\label{class_room_a2a60191109eb98b75e4032df0f4d6d2e} 
+void {\bfseries Add\+Wall\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_a5fa4653d4788a68e43fad4815b1e8c79}{wall\+Positions}})
+\item 
+\Hypertarget{class_room_a2a77d4ebc87c43072644912ef8592860}\label{class_room_a2a77d4ebc87c43072644912ef8592860} 
+void {\bfseries Add\+Destructable\+Decoration\+Position} (Vector2\+Int deco\+Position)
+\begin{DoxyCompactList}\small\item\em Adds positions of destructible decorations to the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_adde9fc65f984d584bb2e4714f0504862}\label{class_room_adde9fc65f984d584bb2e4714f0504862} 
+void {\bfseries Add\+Destructable\+Decoration\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ decoration\+Positions)
+\item 
+\Hypertarget{class_room_a28d369b03655f36034014872d1fa80d6}\label{class_room_a28d369b03655f36034014872d1fa80d6} 
+void {\bfseries Add\+Indestructable\+Decoration\+Position} (Vector2\+Int deco\+Position)
+\begin{DoxyCompactList}\small\item\em Adds positions of indestructible decorations to the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a941eb061b09fb18271646784aef03d50}\label{class_room_a941eb061b09fb18271646784aef03d50} 
+void {\bfseries Add\+Indestructable\+Decoration\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ decoration\+Positions)
+\item 
+\Hypertarget{class_room_aaf5b07e541cafc8260babfa0a22ff471}\label{class_room_aaf5b07e541cafc8260babfa0a22ff471} 
+void {\bfseries Add\+Monster\+Spawn\+Position} (Vector2\+Int monster\+Spawn\+Position)
+\begin{DoxyCompactList}\small\item\em Adds positions for monster spawns in the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a997ff012c5f3bc454d7e8d497147fc55}\label{class_room_a997ff012c5f3bc454d7e8d497147fc55} 
+void {\bfseries Add\+Monster\+Spawn\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_a2bf808426488c615823063fcd4cf0b07}{monster\+Spawn\+Positions}})
+\item 
+\Hypertarget{class_room_ab8c429026cecbee09292bf305761b4fe}\label{class_room_ab8c429026cecbee09292bf305761b4fe} 
+void {\bfseries Add\+Door\+Position} (Vector2\+Int door\+Position)
+\begin{DoxyCompactList}\small\item\em Adds positions for doors in the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a11c13945188d3e13a0aa0044286a845d}\label{class_room_a11c13945188d3e13a0aa0044286a845d} 
+void {\bfseries Add\+Door\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_a573c57d5ce2e7f210cb8a5b82d93e16e}{door\+Positions}})
+\item 
+\Hypertarget{class_room_a7347d7d9c9c5b070ccebc1f938dde870}\label{class_room_a7347d7d9c9c5b070ccebc1f938dde870} 
+void {\bfseries Add\+Shrine\+Position} (Vector2\+Int shrine\+Position)
+\begin{DoxyCompactList}\small\item\em Adds positions for shrines in the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a3c016ea8013641da6cb3acd1ec12e153}\label{class_room_a3c016ea8013641da6cb3acd1ec12e153} 
+void {\bfseries Add\+Shrine\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_a07b72c62eba55f49f81414bccab04041}{shrine\+Positions}})
+\item 
+\Hypertarget{class_room_aaaf780e5a94aee4d6e9347d79265b10c}\label{class_room_aaaf780e5a94aee4d6e9347d79265b10c} 
+void {\bfseries Add\+Trap\+Position} (Vector2\+Int trap\+Position)
+\begin{DoxyCompactList}\small\item\em Adds positions for traps in the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_af11fb47a697e7306a3cb67f635d4c2a7}\label{class_room_af11fb47a697e7306a3cb67f635d4c2a7} 
+void {\bfseries Add\+Trap\+Positions} (Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_a90c0ebddd57683aa6a8af9d9b889c16b}{trap\+Positions}})
+\item 
+\Hypertarget{class_room_ab2ea19c172adc29d5f15b14fa283ba89}\label{class_room_ab2ea19c172adc29d5f15b14fa283ba89} 
+void {\bfseries Set\+Room\+Type} (\mbox{\hyperlink{class_room_a776e03aab298c93af8e7afa894916f5a}{Room\+Type}} \mbox{\hyperlink{class_room_a2ac9dc808a5c0b830ea41ae336bbb79c}{room\+Type}})
+\begin{DoxyCompactList}\small\item\em Sets the type of the room. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_room_a2ac9dc808a5c0b830ea41ae336bbb79c}\label{class_room_a2ac9dc808a5c0b830ea41ae336bbb79c} 
+\mbox{\hyperlink{class_room_a776e03aab298c93af8e7afa894916f5a}{Room\+Type}} {\bfseries room\+Type}
+\begin{DoxyCompactList}\small\item\em The type of the room. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Hash\+Set$<$ Vector2\+Int $>$ \mbox{\hyperlink{class_room_aca754ec207a6d3018b634a93a06542c3}{floor\+Positions}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\Hypertarget{class_room_a5fa4653d4788a68e43fad4815b1e8c79}\label{class_room_a5fa4653d4788a68e43fad4815b1e8c79} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries wall\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Wall positions within the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a9b8a57a7a9f915b8848a033b1ac69a66}\label{class_room_a9b8a57a7a9f915b8848a033b1ac69a66} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries destructable\+Decoration\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Positions of destructible decorations. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a4d29861ef2259eb1c3556caecc663bf8}\label{class_room_a4d29861ef2259eb1c3556caecc663bf8} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries indestructable\+Decoration\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Positions of indestructible decorations. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a2bf808426488c615823063fcd4cf0b07}\label{class_room_a2bf808426488c615823063fcd4cf0b07} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries monster\+Spawn\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Positions where monsters can spawn. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a573c57d5ce2e7f210cb8a5b82d93e16e}\label{class_room_a573c57d5ce2e7f210cb8a5b82d93e16e} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries door\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Positions of doors in the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a07b72c62eba55f49f81414bccab04041}\label{class_room_a07b72c62eba55f49f81414bccab04041} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries shrine\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Positions of shrines in the room. \end{DoxyCompactList}\item 
+\Hypertarget{class_room_a90c0ebddd57683aa6a8af9d9b889c16b}\label{class_room_a90c0ebddd57683aa6a8af9d9b889c16b} 
+Hash\+Set$<$ Vector2\+Int $>$ {\bfseries trap\+Positions}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Positions of traps in the room. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a room in the dungeon, storing positions of various elements and their types. 
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_room_aca754ec207a6d3018b634a93a06542c3}\index{Room@{Room}!floorPositions@{floorPositions}}
+\index{floorPositions@{floorPositions}!Room@{Room}}
+\doxysubsubsection{\texorpdfstring{floorPositions}{floorPositions}}
+{\footnotesize\ttfamily \label{class_room_aca754ec207a6d3018b634a93a06542c3} 
+Hash\+Set$<$Vector2\+Int$>$ Room.\+floor\+Positions\hspace{0.3cm}{\ttfamily [get]}}
+
+Floor positions within the room. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+Dungeon\+Generation/\+Map\+Creation/Map\+Data.\+cs\end{DoxyCompactItemize}
