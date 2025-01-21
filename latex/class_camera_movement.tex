@@ -1,0 +1,65 @@
+\doxysection{Camera\+Movement Class Reference}
+\hypertarget{class_camera_movement}{}\label{class_camera_movement}\index{CameraMovement@{CameraMovement}}
+
+
+Handles camera movement and size adjustments in a 2D game. Follows the player and allows zooming within defined limits.  
+
+
+Inheritance diagram for Camera\+Movement\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_camera_movement}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_camera_movement_a4258d1a1ab4d7886317b7e190df698f5}{Set\+Camera\+Size}} (float new\+Size)
+\begin{DoxyCompactList}\small\item\em Adjusts the camera size within the defined limits. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_camera_movement_accaffcf02860031a2f67cba1baf3fc20}\label{class_camera_movement_accaffcf02860031a2f67cba1baf3fc20} 
+Transform {\bfseries player\+Transform}
+\begin{DoxyCompactList}\small\item\em Reference to the player transform for camera tracking. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_a4b44f0948e719c5bde89f8bc2df2f340}\label{class_camera_movement_a4b44f0948e719c5bde89f8bc2df2f340} 
+float {\bfseries default\+Camera\+Size} = 5f
+\begin{DoxyCompactList}\small\item\em Default size of the camera. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_af6a7c1ace8228d7c68dcd678b54cc434}\label{class_camera_movement_af6a7c1ace8228d7c68dcd678b54cc434} 
+float {\bfseries min\+Camera\+Size} = 3f
+\begin{DoxyCompactList}\small\item\em Minimum allowed size for the camera. \end{DoxyCompactList}\item 
+\Hypertarget{class_camera_movement_ad49df31cf54aeba0b71525ea68ab1247}\label{class_camera_movement_ad49df31cf54aeba0b71525ea68ab1247} 
+float {\bfseries max\+Camera\+Size} = 10f
+\begin{DoxyCompactList}\small\item\em Maximum allowed size for the camera. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_camera_movement_af10cd2c32ffe8992645615654d1e102f}\label{class_camera_movement_af10cd2c32ffe8992645615654d1e102f} 
+Camera {\bfseries Main\+Camera}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Provides access to the main camera with a fallback to Camera.\+main if not initialized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles camera movement and size adjustments in a 2D game. Follows the player and allows zooming within defined limits. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_camera_movement_a4258d1a1ab4d7886317b7e190df698f5}\index{CameraMovement@{CameraMovement}!SetCameraSize@{SetCameraSize}}
+\index{SetCameraSize@{SetCameraSize}!CameraMovement@{CameraMovement}}
+\doxysubsubsection{\texorpdfstring{SetCameraSize()}{SetCameraSize()}}
+{\footnotesize\ttfamily \label{class_camera_movement_a4258d1a1ab4d7886317b7e190df698f5} 
+void Camera\+Movement.\+Set\+Camera\+Size (\begin{DoxyParamCaption}\item[{float}]{new\+Size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adjusts the camera size within the defined limits. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Size} & The new size to set for the camera.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+UISystem/Camera\+Movement.\+cs\end{DoxyCompactItemize}

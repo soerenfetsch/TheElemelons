@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 
+/// <summary>
+/// Unit tests for the CameraMovement class.
+/// Validates functionality for camera tracking, zoom clamping, and error handling.
+/// </summary>
 public class CameraMovementTests
 {
     private GameObject cameraObject;
@@ -10,6 +14,9 @@ public class CameraMovementTests
     private Camera mainCamera;
     private GameObject playerObject;
 
+    /// <summary>
+    /// Sets up the test environment by creating a camera and player GameObject.
+    /// </summary>
     [SetUp]
     public void Setup()
     {
@@ -23,6 +30,9 @@ public class CameraMovementTests
         cameraMovement.playerTransform = playerObject.transform;
     }
 
+    /// <summary>
+    /// Cleans up the test environment by destroying created GameObjects.
+    /// </summary>
     [TearDown]
     public void Teardown()
     {
@@ -31,6 +41,9 @@ public class CameraMovementTests
         Object.Destroy(playerObject);
     }
 
+    /// <summary>
+    /// Tests if the default camera size is correctly initialized.
+    /// </summary>
     [UnityTest]
     public IEnumerator TestDefaultCameraSizeInitialization()
     {
@@ -40,6 +53,9 @@ public class CameraMovementTests
         Assert.AreEqual(cameraMovement.defaultCameraSize, mainCamera.orthographicSize);
     }
 
+    /// <summary>
+    /// Tests if the camera size is clamped within the defined limits.
+    /// </summary>
     [UnityTest]
     public IEnumerator TestClampedCameraSize()
     {
@@ -59,6 +75,9 @@ public class CameraMovementTests
         Assert.AreEqual(7f, mainCamera.orthographicSize);
     }
 
+    /// <summary>
+    /// Tests if the camera follows the player and maintains a fixed Z-axis.
+    /// </summary>
     [UnityTest]
     public IEnumerator TestPlayerTransformFollowLogic()
     {
@@ -72,6 +91,9 @@ public class CameraMovementTests
         Assert.AreEqual(expectedPosition, cameraObject.transform.position);
     }
 
+    /// <summary>
+    /// Tests the fallback mechanism for MainCamera when the camera component is missing.
+    /// </summary>
     [UnityTest]
     public IEnumerator TestFallbackForMainCamera()
     {
@@ -87,6 +109,9 @@ public class CameraMovementTests
         Assert.AreEqual(Camera.main, fallbackCamera);
     }
 
+    /// <summary>
+    /// Tests the camera's behavior when the playerTransform is unassigned.
+    /// </summary>
     [UnityTest]
     public IEnumerator TestHandleUnassignedPlayerTransform()
     {
@@ -96,22 +121,24 @@ public class CameraMovementTests
         yield return null; // Wait for LateUpdate to run
 
         // Verify that a warning is logged
-        LogAssert.Expect(LogType.Warning, "Spieler-Transform ist nicht zugewiesen.");
+        LogAssert.Expect(LogType.Warning, "Player Transform is not assigned.");
     }
 
-    // should be tested in EditMode!
-    // [UnityTest]
-    // public IEnumerator TestHandleMissingCameraComponent()
-    // {
-    //     // Remove the main camera component before Awake is called
-    //     Object.DestroyImmediate(mainCamera);
+    // Note: The following test should be tested in EditMode due to its behavior.
+    /*
+    [UnityTest]
+    public IEnumerator TestHandleMissingCameraComponent()
+    {
+        // Remove the main camera component before Awake is called
+        Object.DestroyImmediate(mainCamera);
 
-    //     // Manually call Awake to test its behavior
-    //     cameraMovement.Awake();
+        // Manually call Awake to test its behavior
+        cameraMovement.Awake();
 
-    //     // Verify that an error is logged
-    //     LogAssert.Expect(LogType.Error, "Kamera-Komponente fehlt! Bitte eine Kamera hinzufügen.");
+        // Verify that an error is logged
+        LogAssert.Expect(LogType.Error, "Camera component missing! Please attach a Camera component.");
 
-    //     yield return null; // Allow Unity to process the log
-    // }
+        yield return null; // Allow Unity to process the log
+    }
+    */
 }

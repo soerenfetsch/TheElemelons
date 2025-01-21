@@ -1,0 +1,92 @@
+\doxysection{Tree\+Log Class Reference}
+\hypertarget{class_tree_log}{}\label{class_tree_log}\index{TreeLog@{TreeLog}}
+Inheritance diagram for Tree\+Log\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_tree_log}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_tree_log_a5a42ee59fa16daa4c0a9a91b47bf3445}\label{class_tree_log_a5a42ee59fa16daa4c0a9a91b47bf3445} 
+void {\bfseries Initialize} (Transform player, \mbox{\hyperlink{class_line_of_sight_pathfinder}{Line\+Of\+Sight\+Pathfinder}} pathfinder)
+\item 
+\Hypertarget{class_tree_log_a22a9f33b72aff6733d1c23e99dd2185e}\label{class_tree_log_a22a9f33b72aff6733d1c23e99dd2185e} 
+void {\bfseries Initialize\+Components} ()
+\item 
+\Hypertarget{class_tree_log_a1f741c6ab1f9c341e619428fbc131a68}\label{class_tree_log_a1f741c6ab1f9c341e619428fbc131a68} 
+override void {\bfseries Change\+State} (Enemy\+Status new\+State)
+\item 
+\Hypertarget{class_tree_log_a293aae83b3bd22b83d5eaa2a3589c309}\label{class_tree_log_a293aae83b3bd22b83d5eaa2a3589c309} 
+override void {\bfseries Act\+On\+Status} ()
+\begin{DoxyCompactList}\small\item\em Acts on the current status of the enemy. This method handles the behavior of the enemy based on its current state. The enemy can be in one of the following states\+: Idle, Approaching, Attacking, Retreating, or Staggered. The behavior includes checking the player\textquotesingle{}s distance, moving towards the player, attacking, retreating to the home position, and handling the stagger state. \end{DoxyCompactList}\item 
+\Hypertarget{class_tree_log_a0f867159ce704e5e07f9e7ed5d5350d5}\label{class_tree_log_a0f867159ce704e5e07f9e7ed5d5350d5} 
+override void {\bfseries Act\+On\+Health} ()
+\begin{DoxyCompactList}\small\item\em Acts on the current health status of the enemy. This method checks if the enemy\textquotesingle{}s health is zero and if the enemy is still alive. If both conditions are met, it sets the enemy\textquotesingle{}s alive status to false, spawns a death effect at the enemy\textquotesingle{}s position, and destroys the enemy game object. \end{DoxyCompactList}\item 
+\Hypertarget{class_tree_log_a00c1d40cf6c76b03ab55300a8b02d3d7}\label{class_tree_log_a00c1d40cf6c76b03ab55300a8b02d3d7} 
+override void {\bfseries Act\+On\+Mana} ()
+\begin{DoxyCompactList}\small\item\em Acts on the current mana status of the enemy. There is no mana behavior for the \doxylink{class_tree_log}{Tree\+Log} enemy, so this method does nothing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_enemy}{Enemy}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_enemy_a5319ba8d7fd0902598bc0b582ca747e3}{Change\+State}} (Enemy\+Status new\+State)
+\begin{DoxyCompactList}\small\item\em Abstract method to enforce state transitions in derived classes. \end{DoxyCompactList}\item 
+void {\bfseries Act\+On\+Status} ()
+\begin{DoxyCompactList}\small\item\em Abstract method to define behavior based on the current state. \end{DoxyCompactList}\item 
+void {\bfseries Act\+On\+Health} ()
+\begin{DoxyCompactList}\small\item\em Abstract method to define behavior based on the enemy\textquotesingle{}s health. \end{DoxyCompactList}\item 
+void {\bfseries Act\+On\+Mana} ()
+\begin{DoxyCompactList}\small\item\em Abstract method to define behavior based on the enemy\textquotesingle{}s mana. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_enemy_ab54fb7da8524db37b210be55a175e4c9}{Subtract\+Health}} (float amount)
+\begin{DoxyCompactList}\small\item\em Reduces the enemy\textquotesingle{}s health by a specified amount. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_enemy_a79babb99fd126545f5887c4841960b9b}{Subtract\+Mana}} (float amount)
+\begin{DoxyCompactList}\small\item\em Reduces the enemy\textquotesingle{}s mana by a specified amount. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_health}{Health}} \mbox{\hyperlink{class_enemy_a7b90f61ee99fe10ab50d6b5e76064dfb}{Get\+Health}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the enemy\textquotesingle{}s health component. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_mana}{Mana}} \mbox{\hyperlink{class_enemy_a4eef28582ba17d78fed09fb9006c5f90}{Get\+Mana}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the enemy\textquotesingle{}s mana component. \end{DoxyCompactList}\item 
+Enemy\+Status \mbox{\hyperlink{class_enemy_a11ad329c6eeefd7a9c834e3a8a627db8}{Get\+Current\+State}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the current state of the enemy. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_tree_log_a221688c99aae09cf49df7653a633e469}\label{class_tree_log_a221688c99aae09cf49df7653a633e469} 
+Transform {\bfseries player\+Transform}
+\item 
+\Hypertarget{class_tree_log_a0e14f2792c36afc86ff660862bae855e}\label{class_tree_log_a0e14f2792c36afc86ff660862bae855e} 
+\mbox{\hyperlink{class_line_of_sight_pathfinder}{Line\+Of\+Sight\+Pathfinder}} {\bfseries pathfinder}
+\item 
+\Hypertarget{class_tree_log_aef104be6923ce033cdb889b1fd6dcf54}\label{class_tree_log_aef104be6923ce033cdb889b1fd6dcf54} 
+float {\bfseries move\+Speed} = 1f
+\item 
+\Hypertarget{class_tree_log_af71ca795c5680b9d9a2843ad3bd36afe}\label{class_tree_log_af71ca795c5680b9d9a2843ad3bd36afe} 
+float {\bfseries stagger\+Time} = 0.\+5f
+\item 
+\Hypertarget{class_tree_log_a9e8caa9528617c5372f82d63bcf5634e}\label{class_tree_log_a9e8caa9528617c5372f82d63bcf5634e} 
+float {\bfseries chase\+Radius} = 5f
+\item 
+\Hypertarget{class_tree_log_a01c15c1e3b253582fb59533517b4583c}\label{class_tree_log_a01c15c1e3b253582fb59533517b4583c} 
+float {\bfseries attack\+Radius} = 0.\+2f
+\item 
+\Hypertarget{class_tree_log_a2756c8cbe4da786e07812d057472e8ba}\label{class_tree_log_a2756c8cbe4da786e07812d057472e8ba} 
+Game\+Object {\bfseries death\+Effect}
+\item 
+\Hypertarget{class_tree_log_a94f3ef2e91177bb514b894301f6f7e59}\label{class_tree_log_a94f3ef2e91177bb514b894301f6f7e59} 
+float {\bfseries death\+Effect\+Delay} = 0.\+5f
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_enemy}{Enemy}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_health}{Health}} {\bfseries health}
+\begin{DoxyCompactList}\small\item\em Reference to the \doxylink{class_health}{Health} script for managing enemy health. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_mana}{Mana}} {\bfseries mana}
+\begin{DoxyCompactList}\small\item\em Reference to the \doxylink{class_mana}{Mana} script for managing enemy mana. \end{DoxyCompactList}\item 
+Enemy\+Status {\bfseries current\+State}
+\begin{DoxyCompactList}\small\item\em Current state of the enemy (e.\+g., Idle, Attacking). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+Enemies/Tree\+Stump.\+cs\end{DoxyCompactItemize}

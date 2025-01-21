@@ -4,37 +4,69 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// manage mana value of entity (used for spellcasting)
+/// Manages the mana value of an entity, including regeneration and consumption for spellcasting.
+/// </summary>
 public class Mana : MonoBehaviour
 {
-
     [Header("Mana Management")]
-    bool canCast;
+    /// <summary>
+    /// Indicates whether the entity can cast spells.
+    /// </summary>
+    private bool canCast;
+
+    /// <summary>
+    /// The maximum mana value of the entity.
+    /// </summary>
     public float maxMana = 5f;
+
+    /// <summary>
+    /// The current mana value of the entity.
+    /// </summary>
     public float mana;
+
+    /// <summary>
+    /// The amount of mana regenerated per cycle.
+    /// </summary>
     public float manaPerRegen = 0.25f;
+
+    /// <summary>
+    /// The time interval for mana regeneration.
+    /// </summary>
     public float manaRegenTime = 0.2f;
+
+    /// <summary>
+    /// Indicates whether the game is running.
+    /// </summary>
     public bool gameRunning = true;
 
+    /// <summary>
+    /// The current regeneration time interval.
+    /// </summary>
     public float current_regenTime;
+
+    /// <summary>
+    /// Indicates whether mana was recently used.
+    /// </summary>
     public bool justCasted = false;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Unity Start method called before the first frame update.
+    /// Initializes mana values and starts the regeneration coroutine.
+    /// </summary>
     void Start()
     {
-        //Assign variables
         current_regenTime = manaRegenTime;
         mana = maxMana;
         StartCoroutine(ManaRegen());
     }
+
     /// <summary>
-    /// Handles Mana regeneration coroutine
-    /// regens slower if mana was just exhausted
+    /// Coroutine for regenerating mana over time.
+    /// Slows down regeneration when mana is exhausted or recently used.
     /// </summary>
+    /// <returns>An enumerator for the coroutine.</returns>
     public IEnumerator ManaRegen()
     {
-        //manaregen coroutine
-        //just a suggestion
-        //later finetune, so that regen is slow i.e. if mana exhausted etc.
         while (gameRunning)
         {
             if (mana <= 0.25)
@@ -46,44 +78,79 @@ public class Mana : MonoBehaviour
                 justCasted = false;
                 yield return new WaitForSeconds(current_regenTime);
             }
+
             yield return new WaitForSeconds(current_regenTime);
             mana = Mathf.Clamp(mana + manaPerRegen, 0f, maxMana);
         }
     }
+
+    /// <summary>
+    /// Reduces the entity's mana by a specified amount, ensuring it does not drop below 0.
+    /// </summary>
+    /// <param name="manaCost">The amount of mana to subtract.</param>
     public void SubtractMana(float manaCost)
     {
         mana = Mathf.Clamp(mana - manaCost, 0f, maxMana);
     }
 
+    /// <summary>
+    /// Increases the entity's mana by a specified amount, ensuring it does not exceed the maximum mana.
+    /// </summary>
+    /// <param name="plus">The amount of mana to add.</param>
     public void AddMana(float plus)
     {
         mana = Mathf.Clamp(mana + plus, 0f, maxMana);
     }
 
+    /// <summary>
+    /// Retrieves the current mana value of the entity.
+    /// </summary>
+    /// <returns>The current mana value.</returns>
     public float GetMana()
     {
         return mana;
     }
+
+    /// <summary>
+    /// Checks if the entity's mana is zero or less.
+    /// </summary>
+    /// <returns>True if mana is zero or less; otherwise false.</returns>
     public bool IsZero()
     {
-        if (mana <= 0)
-        {
-            return true;
-        }
-        return false;
+        return mana <= 0;
     }
+
+    /// <summary>
+    /// Retrieves the maximum mana value of the entity.
+    /// </summary>
+    /// <returns>The maximum mana value.</returns>
     public float GetMaxMana()
     {
         return maxMana;
     }
+
+    /// <summary>
+    /// Sets the current mana value of the entity.
+    /// </summary>
+    /// <param name="newMana">The new mana value to set.</param>
     public void SetMana(float newMana)
     {
         mana = newMana;
     }
+
+    /// <summary>
+    /// Sets the maximum mana value of the entity.
+    /// </summary>
+    /// <param name="newMaxMana">The new maximum mana value to set.</param>
     public void SetMaxMana(float newMaxMana)
     {
         maxMana = newMaxMana;
     }
+
+    /// <summary>
+    /// Sets the amount of mana regenerated per cycle.
+    /// </summary>
+    /// <param name="newManaPerRegen">The new mana regeneration amount.</param>
     public void SetManaPerRegen(float newManaPerRegen)
     {
         manaPerRegen = newManaPerRegen;

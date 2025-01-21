@@ -1,0 +1,144 @@
+\doxysection{Enemy Class Reference}
+\hypertarget{class_enemy}{}\label{class_enemy}\index{Enemy@{Enemy}}
+
+
+Abstract base class for enemy behavior. Defines common properties and enforces implementation of specific behaviors in derived classes.  
+
+
+Inheritance diagram for Enemy\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_enemy}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_enemy_a5319ba8d7fd0902598bc0b582ca747e3}{Change\+State}} (Enemy\+Status new\+State)
+\begin{DoxyCompactList}\small\item\em Abstract method to enforce state transitions in derived classes. \end{DoxyCompactList}\item 
+\Hypertarget{class_enemy_ac79033433e75ad81fe2f81d1d696795b}\label{class_enemy_ac79033433e75ad81fe2f81d1d696795b} 
+void {\bfseries Act\+On\+Status} ()
+\begin{DoxyCompactList}\small\item\em Abstract method to define behavior based on the current state. \end{DoxyCompactList}\item 
+\Hypertarget{class_enemy_a930afd70ebc1bacd1b2b169d62a10e4e}\label{class_enemy_a930afd70ebc1bacd1b2b169d62a10e4e} 
+void {\bfseries Act\+On\+Health} ()
+\begin{DoxyCompactList}\small\item\em Abstract method to define behavior based on the enemy\textquotesingle{}s health. \end{DoxyCompactList}\item 
+\Hypertarget{class_enemy_a8a81d40abbe31ad358ed918ff4c8ce6f}\label{class_enemy_a8a81d40abbe31ad358ed918ff4c8ce6f} 
+void {\bfseries Act\+On\+Mana} ()
+\begin{DoxyCompactList}\small\item\em Abstract method to define behavior based on the enemy\textquotesingle{}s mana. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_enemy_ab54fb7da8524db37b210be55a175e4c9}{Subtract\+Health}} (float amount)
+\begin{DoxyCompactList}\small\item\em Reduces the enemy\textquotesingle{}s health by a specified amount. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_enemy_a79babb99fd126545f5887c4841960b9b}{Subtract\+Mana}} (float amount)
+\begin{DoxyCompactList}\small\item\em Reduces the enemy\textquotesingle{}s mana by a specified amount. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_health}{Health}} \mbox{\hyperlink{class_enemy_a7b90f61ee99fe10ab50d6b5e76064dfb}{Get\+Health}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the enemy\textquotesingle{}s health component. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_mana}{Mana}} \mbox{\hyperlink{class_enemy_a4eef28582ba17d78fed09fb9006c5f90}{Get\+Mana}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the enemy\textquotesingle{}s mana component. \end{DoxyCompactList}\item 
+Enemy\+Status \mbox{\hyperlink{class_enemy_a11ad329c6eeefd7a9c834e3a8a627db8}{Get\+Current\+State}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the current state of the enemy. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_enemy_a474fe4e9abb35aa14dffabd573a8c65d}\label{class_enemy_a474fe4e9abb35aa14dffabd573a8c65d} 
+\mbox{\hyperlink{class_health}{Health}} {\bfseries health}
+\begin{DoxyCompactList}\small\item\em Reference to the \doxylink{class_health}{Health} script for managing enemy health. \end{DoxyCompactList}\item 
+\Hypertarget{class_enemy_a14aa8ff4e3a3d593073bffe70c3fb324}\label{class_enemy_a14aa8ff4e3a3d593073bffe70c3fb324} 
+\mbox{\hyperlink{class_mana}{Mana}} {\bfseries mana}
+\begin{DoxyCompactList}\small\item\em Reference to the \doxylink{class_mana}{Mana} script for managing enemy mana. \end{DoxyCompactList}\item 
+\Hypertarget{class_enemy_a62834284989914080c72446bb68bb73d}\label{class_enemy_a62834284989914080c72446bb68bb73d} 
+Enemy\+Status {\bfseries current\+State}
+\begin{DoxyCompactList}\small\item\em Current state of the enemy (e.\+g., Idle, Attacking). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstract base class for enemy behavior. Defines common properties and enforces implementation of specific behaviors in derived classes. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_enemy_a5319ba8d7fd0902598bc0b582ca747e3}\index{Enemy@{Enemy}!ChangeState@{ChangeState}}
+\index{ChangeState@{ChangeState}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{ChangeState()}{ChangeState()}}
+{\footnotesize\ttfamily \label{class_enemy_a5319ba8d7fd0902598bc0b582ca747e3} 
+void Enemy.\+Change\+State (\begin{DoxyParamCaption}\item[{Enemy\+Status}]{new\+State}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Abstract method to enforce state transitions in derived classes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+State} & The new state to transition to.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_enemy_a11ad329c6eeefd7a9c834e3a8a627db8}\index{Enemy@{Enemy}!GetCurrentState@{GetCurrentState}}
+\index{GetCurrentState@{GetCurrentState}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{GetCurrentState()}{GetCurrentState()}}
+{\footnotesize\ttfamily \label{class_enemy_a11ad329c6eeefd7a9c834e3a8a627db8} 
+Enemy\+Status Enemy.\+Get\+Current\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the current state of the enemy. 
+
+\begin{DoxyReturn}{Returns}
+The current Enemy\+Status of the enemy.
+\end{DoxyReturn}
+\Hypertarget{class_enemy_a7b90f61ee99fe10ab50d6b5e76064dfb}\index{Enemy@{Enemy}!GetHealth@{GetHealth}}
+\index{GetHealth@{GetHealth}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{GetHealth()}{GetHealth()}}
+{\footnotesize\ttfamily \label{class_enemy_a7b90f61ee99fe10ab50d6b5e76064dfb} 
+\mbox{\hyperlink{class_health}{Health}} Enemy.\+Get\+Health (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the enemy\textquotesingle{}s health component. 
+
+\begin{DoxyReturn}{Returns}
+The \doxylink{class_health}{Health} component of the enemy.
+\end{DoxyReturn}
+\Hypertarget{class_enemy_a4eef28582ba17d78fed09fb9006c5f90}\index{Enemy@{Enemy}!GetMana@{GetMana}}
+\index{GetMana@{GetMana}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{GetMana()}{GetMana()}}
+{\footnotesize\ttfamily \label{class_enemy_a4eef28582ba17d78fed09fb9006c5f90} 
+\mbox{\hyperlink{class_mana}{Mana}} Enemy.\+Get\+Mana (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the enemy\textquotesingle{}s mana component. 
+
+\begin{DoxyReturn}{Returns}
+The \doxylink{class_mana}{Mana} component of the enemy.
+\end{DoxyReturn}
+\Hypertarget{class_enemy_ab54fb7da8524db37b210be55a175e4c9}\index{Enemy@{Enemy}!SubtractHealth@{SubtractHealth}}
+\index{SubtractHealth@{SubtractHealth}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{SubtractHealth()}{SubtractHealth()}}
+{\footnotesize\ttfamily \label{class_enemy_ab54fb7da8524db37b210be55a175e4c9} 
+void Enemy.\+Subtract\+Health (\begin{DoxyParamCaption}\item[{float}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reduces the enemy\textquotesingle{}s health by a specified amount. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount of health to subtract.\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_enemy_a79babb99fd126545f5887c4841960b9b}\index{Enemy@{Enemy}!SubtractMana@{SubtractMana}}
+\index{SubtractMana@{SubtractMana}!Enemy@{Enemy}}
+\doxysubsubsection{\texorpdfstring{SubtractMana()}{SubtractMana()}}
+{\footnotesize\ttfamily \label{class_enemy_a79babb99fd126545f5887c4841960b9b} 
+void Enemy.\+Subtract\+Mana (\begin{DoxyParamCaption}\item[{float}]{amount}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reduces the enemy\textquotesingle{}s mana by a specified amount. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The amount of mana to subtract.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+The\+Elemelons/\+Assets/\+Scripts/\+Enemies/Enemy.\+cs\end{DoxyCompactItemize}

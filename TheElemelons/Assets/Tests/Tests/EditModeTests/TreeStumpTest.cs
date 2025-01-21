@@ -2,14 +2,20 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
+/// <summary>
+/// Unit tests for the TreeStump enemy class.
+/// Validates state transitions, pathfinding integration, and player interactions.
+/// </summary>
 [TestFixture]
 public class TreeStumpTests
 {
     private GameObject treeStumpObject;
     private TreeLog treeStump;
-
     private LineOfSightPathfinder pathfinder;
 
+    /// <summary>
+    /// Sets up the test environment by creating a TreeStump instance, player mock, and pathfinder.
+    /// </summary>
     [SetUp]
     public void SetUp()
     {
@@ -54,6 +60,9 @@ public class TreeStumpTests
         treeStump.InitializeComponents();
     }
 
+    /// <summary>
+    /// Cleans up the test environment by destroying created objects.
+    /// </summary>
     [TearDown]
     public void TearDown()
     {
@@ -61,6 +70,9 @@ public class TreeStumpTests
         Object.DestroyImmediate(treeStumpObject);
     }
 
+    /// <summary>
+    /// Tests if the TreeStump initializes with the Idle state.
+    /// </summary>
     [Test]
     public void TestTreeLogStart_InitializesStateToIdle()
     {
@@ -68,6 +80,9 @@ public class TreeStumpTests
         Assert.AreEqual(EnemyStatus.Idle, treeStump.GetCurrentState());
     }
 
+    /// <summary>
+    /// Tests that the TreeStump transitions to Approaching when the player is within the chase radius.
+    /// </summary>
     [Test]
     public void TestActOnStatus_TransitionsToApproaching_WhenPlayerWithinChaseRadius()
     {
@@ -82,6 +97,9 @@ public class TreeStumpTests
         Assert.AreEqual(EnemyStatus.Approaching, treeStump.GetCurrentState());
     }
 
+    /// <summary>
+    /// Tests that the TreeStump transitions to Attacking when the player is within the attack radius.
+    /// </summary>
     [Test]
     public void TestActOnStatus_TransitionsToAttacking_WhenPlayerWithinAttackRadius()
     {
@@ -96,6 +114,9 @@ public class TreeStumpTests
         Assert.AreEqual(EnemyStatus.Attacking, treeStump.GetCurrentState());
     }
 
+    /// <summary>
+    /// Tests that the TreeStump transitions to Retreating when the player leaves the chase radius.
+    /// </summary>
     [Test]
     public void TestActOnStatus_TransitionsToIdle_WhenPlayerOutOfChaseRadius()
     {

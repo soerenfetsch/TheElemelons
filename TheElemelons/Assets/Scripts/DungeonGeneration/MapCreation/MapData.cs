@@ -4,19 +4,64 @@ using System.Linq;
 using UnityEngine;
 
 
+/// <summary>
+/// Represents a room in the dungeon, storing positions of various elements and their types.
+/// </summary>
 public class Room
 {
+     /// <summary>
+    /// Floor positions within the room.
+    /// </summary>
     public HashSet<Vector2Int> floorPositions { get; private set; }
+
+    /// <summary>
+    /// Wall positions within the room.
+    /// </summary>
     public HashSet<Vector2Int> wallPositions { get; private set; }
+
+    /// <summary>
+    /// Positions of destructible decorations.
+    /// </summary>
     public HashSet<Vector2Int> destructableDecorationPositions { get; private set; }
+
+    /// <summary>
+    /// Positions of indestructible decorations.
+    /// </summary>
     public HashSet<Vector2Int> indestructableDecorationPositions { get; private set; }
+
+    /// <summary>
+    /// Positions where monsters can spawn.
+    /// </summary>
     public HashSet<Vector2Int> monsterSpawnPositions { get; private set; }
+
+    /// <summary>
+    /// Positions of doors in the room.
+    /// </summary>
     public HashSet<Vector2Int> doorPositions { get; private set; }
+
+    /// <summary>
+    /// Positions of shrines in the room.
+    /// </summary>
     public HashSet<Vector2Int> shrinePositions { get; private set; }
+
+    /// <summary>
+    /// Positions of traps in the room.
+    /// </summary>
     public HashSet<Vector2Int> trapPositions { get; private set; }
+
+    /// <summary>
+    /// Enum defining types of rooms.
+    /// </summary>
     public enum RoomType { START, NORMAL, ADVANCED, END, BOSS };
+
+    /// <summary>
+    /// The type of the room.
+    /// </summary>
     public RoomType roomType;
 
+    /// <summary>
+    /// Initializes a new room with empty positions and a default type.
+    /// </summary>
     public Room()
     {
         floorPositions = new HashSet<Vector2Int>();
@@ -29,76 +74,120 @@ public class Room
         trapPositions = new HashSet<Vector2Int>();
         roomType = RoomType.NORMAL;
     }
+
+    /// <summary>
+    /// Adds floor positions to the room.
+    /// </summary>
     public void AddFloorPosition(Vector2Int floorPosition)
     {
         floorPositions.Add(floorPosition);
     }
+
     public void AddFloorPositions(HashSet<Vector2Int> floorPositions)
     {
         this.floorPositions.UnionWith(floorPositions);
     }
+
+    /// <summary>
+    /// Adds wall positions to the room.
+    /// </summary>
     public void AddWallPosition(Vector2Int wallPosition)
     {
         wallPositions.Add(wallPosition);
     }
+
     public void AddWallPositions(HashSet<Vector2Int> wallPositions)
     {
         this.wallPositions.UnionWith(wallPositions);
     }
+
+    /// <summary>
+    /// Adds positions of destructible decorations to the room.
+    /// </summary>
     public void AddDestructableDecorationPosition(Vector2Int decoPosition)
     {
         destructableDecorationPositions.Add(decoPosition);
     }
+
     public void AddDestructableDecorationPositions(HashSet<Vector2Int> decorationPositions)
     {
         this.destructableDecorationPositions.UnionWith(decorationPositions);
     }
+
+    /// <summary>
+    /// Adds positions of indestructible decorations to the room.
+    /// </summary>
     public void AddIndestructableDecorationPosition(Vector2Int decoPosition)
     {
         indestructableDecorationPositions.Add(decoPosition);
     }
+
     public void AddIndestructableDecorationPositions(HashSet<Vector2Int> decorationPositions)
     {
         this.indestructableDecorationPositions.UnionWith(decorationPositions);
     }
+
+    /// <summary>
+    /// Adds positions for monster spawns in the room.
+    /// </summary>
     public void AddMonsterSpawnPosition(Vector2Int monsterSpawnPosition)
     {
         monsterSpawnPositions.Add(monsterSpawnPosition);
     }
+
     public void AddMonsterSpawnPositions(HashSet<Vector2Int> monsterSpawnPositions)
     {
         this.monsterSpawnPositions.UnionWith(monsterSpawnPositions);
     }
-    
+
+    /// <summary>
+    /// Adds positions for doors in the room.
+    /// </summary>
     public void AddDoorPosition(Vector2Int doorPosition)
     {
         doorPositions.Add(doorPosition);
     }
+
     public void AddDoorPositions(HashSet<Vector2Int> doorPositions)
     {
         this.doorPositions.UnionWith(doorPositions);
     }
+
+    /// <summary>
+    /// Adds positions for shrines in the room.
+    /// </summary>
     public void AddShrinePosition(Vector2Int shrinePosition)
     {
         shrinePositions.Add(shrinePosition);
     }
+
     public void AddShrinePositions(HashSet<Vector2Int> shrinePositions)
     {
         this.shrinePositions.UnionWith(shrinePositions);
     }
+
+    /// <summary>
+    /// Adds positions for traps in the room.
+    /// </summary>
     public void AddTrapPosition(Vector2Int trapPosition)
     {
         trapPositions.Add(trapPosition);
     }
+
     public void AddTrapPositions(HashSet<Vector2Int> trapPositions)
     {
         this.trapPositions.UnionWith(trapPositions);
     }
+
+    /// <summary>
+    /// Sets the type of the room.
+    /// </summary>
     public void SetRoomType(RoomType roomType)
     {
         this.roomType = roomType;
     }
 }
+
 
 // Class to hold the map data (positions for floors, walls, decorations, and monsters)
 public class MapData
