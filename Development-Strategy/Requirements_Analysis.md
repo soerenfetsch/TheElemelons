@@ -31,42 +31,50 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 2.1 Player System
 
-#### 2.1.1 Player Movement
+#### 2.1.1 Player
 
-- **Move on input**: given a movement in x and/or y direction move the character along the given axes using the Player object's velocity
-  - Velocity should be normalized so that diagonal movement is as fast and horizontal/vertical
-  - Velocity should be calculated by a baseSpeed times a speedMultiplier which can be altered in other methods
-  - Animation direction (front, back, left and right) reflects the direction the player is moving
-
-- **Move on knockback**: given a direction a knockbackVelocity and a knockTime the player receives a knock in the given direction and with the given velocity and is unable to act within the given time frame
+- **Get knocked**: given a direction a knockTime (float between 0 and 10 seconds) the player is "knocked" and unable to act within the given time frame
   - Receiving knockback triggers a coroutine in which the player is set to a state where they cannot act
   - A staggering animation is triggered to show that the knockback is received during the coroutine
   - Animation direction (front, back, left and right) does not reflect the direction the player is moving
- 
-#### 2.1.2 Spell Casting
 
-- **Select charge**: given a ChargeType enum object (fire, wind, water, earth) selects a new charge for the player if any of the two possible charge slots are empty
-  - Instructs the UIManager to show the new charge sprite above the player
+#### 2.1.2 Player Movement
+
+- **Move on input**: given a two-dimensional movement vector in any direction, move the character along the direction using the Player object's velocity times a unity delta time (Time.fixedDeltaTime)
+  - Movement direction should be normalized so that diagonal movement is as fast as horizontal/vertical
+  - Velocity should be calculated by a baseSpeed times a speedMultiplier both of which can be altered in other methods (changeable attributes)
+  - Animation direction (front, back, left and right) reflects the direction the player is moving (character faces left when moving left etc.)
+ 
+#### 2.1.3 Spell Casting
+
+- **Select charge**: given a ChargeType enum object (fire, wind, water, earth) selects a new charge for the player if any of two possible charge slots are empty
+  - For the player two open slots for charges are given, which can each be occupied by either ChargyType enum
+  - The slots are both initialized as empty
+  - Upon charge selection, if either of the slots is empty, the first empty slot is filled with the charge
   - If both slots are occupied, nothing happens
+  - If a slot was filled with the charge, instructs the UI Manager to show a charge sprite at the occupied slot above the player head (left if first slot, right if second slot), which represents the charge (Fire symbol for fire charge etc.)
 
-- **Clear charges**: clears all selected charges of the player
-  - Any selected charge is gone and both charge slots are empty again
+- **Clear charges**: clears all charges of the player
+  - All selected charges are cleared and both charge slots are empty again
+  - Instructs the UI Manager to remove all shown charge sprites (no sprites shown on top of the player's head)
 
-- **Cast spell**: Given the currently selected charges, determines the appropriate spell of the spell combination and then casts the spell in the direction the player is facing, given the player has enough mana to cast the spell
-  - Direction of cast is determined by the mouse position given by the inputManager (direction from the character)
+- **Cast spell**: Given the player's charge selection cast a corresponding spell.
+  - Given a combination from 0 to 2 charges, determine the spell corresponding to the charge combination (e.g Charge1 Fire, Charge2 Earth --> Bomb Spell). The corresponding spells are shown below.
+  - If the player's current mana amount (float) is greater or equal to the spells mana cost (float) the spell is cast and the mana of the player is subtracted by the spell cost.
+  - Then cast the spell at the Casting Point of the player (given by the aim arrow defined in the UI Manager) in the direction from the player position to the user's mouse position.
+  - Direction of cast is determined through the mouse position in a method given by the Input Manager
   - After casting all charges are cleared
-  - If the player has sufficient mana and the spell is cast then the mana of the player is subtracted by the spell cost
   - Order of selected charges does not matter
-  - Use the combat manager to spawn the spell game object
+  - Use the combat manager to instantiate the spell game object
  
-  - With no charges selected: cast a basic attack spell that moves through the map during a small spell lifetime, has small damage value and only small knockback on enemies
-  - With fire, fire selected casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime, explodes on impact (wall, enemy)
+  - With no charges selected: cast a basic attack spell that is stationary at the casting point. It lingers at the point for a small time (variable to be changed ~ 1 sec) and if it collides with an enemy, deals a small amount of damage (variable to be changed ~ 0.5 hearts)
+  - With fire, fire selected: casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime (variable to be changed ~ 3 sec), explodes on impact (wall, enemy) and deals large amount of damage (variable to be changed ~ 2 hearts) in an AOE where the radius of effect is an edittable variable ~ 1.5 tiles
  
-#### 2.1.3 Input Manager
+#### 2.1.4 Input Manager
 
 - **Act on key pressed**: Input Manager uses its internal key to type mapping to trigger the appropriate key method in the update (see below) for the given game status (enum for 'ingame', 'main menu', 'settings menu', etc..)
 - **Update key mapping**: for a given event and new key, update the key to method binding of the 'ingame' methods
-- **Get aim direction**: given the current mouse position calculates and returns the angle around the player
+- **Get aim direction**: given the current mouse position calculates and returns the angle around the player for a given pivot position on the player (variable, can be changed)
 - **Update**: uses the following functionalities to map the key inputs to the appropriate actions
   - **Update movement from keys**: Uses the internal movement keys for up, down, left, right to trigger the player movement in the given directions
   - **Update mouse position**: Updates the current mouse position
