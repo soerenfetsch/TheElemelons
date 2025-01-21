@@ -5,190 +5,181 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor.Animations;
 using System.Net.WebSockets;
+using Moq;
+using NSubstitute;  // For mocking dependencies
 
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-public class CastingTest
+[TestFixture]
+public class CastingTests
 {
-    
-/*
-   private GameObject castingGameObject;
-   private Casting casting; 
-   private Mana manaScript;
-   private UIManager uIManager;
-   private GameObject spell;
-   private PlayerMovement playerMovement;
-   private Transform castpoint;
-   private Animator wandAnimator;
-   private AnimatorController controller;
-   */
-    private GameObject playerGameObject;
-   private Casting casting; 
-   private Mana manaScript;
-   [SetUp]
-    public void Setup()
-    {
-        #if UNITY_EDITOR
-        var canvasPrefab = AssetDatabase.LoadAssetAtPath<Canvas>("Assets/UI_Canvas.prefab");
-        Assert.NotNull(canvasPrefab, "UI_Canvas prefab not found at specified path.");
+    private Casting casting;
+    private Mana manaMock;
+    private PlayerMovement playerMovementMock;
+    private UIManager uiManagerMock;
+    private Animator wandAnimatorMock;
 
-        // Load Player prefab from the project
-        GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
-        Assert.NotNull(playerPrefab, "Player prefab not found at the specified path.");
-
-        // Instantiate the Player prefab
-        playerGameObject = Object.Instantiate(playerPrefab);
-        playerGameObject.GetComponent<HealthBar>().enabled = false;    
-        playerGameObject.GetComponent<ManaBar>().enabled = false; 
-        manaScript = playerGameObject.GetComponent<Mana>();
-        casting = playerGameObject.GetComponent<Casting>();
-        casting.uIManager = canvasPrefab.GetComponent<UIManager>();
-        
-        #endif
-        // Add a mock Main Camera
-        Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
-        mainCamera.tag = "MainCamera";
-        playerGameObject.SetActive(true);
-        casting = playerGameObject.GetComponent<Casting>();
-        manaScript = playerGameObject.GetComponent<Mana>();
-    }
-   /*
+    private GameObject gameObject;
     [SetUp]
-    public void Setup()
+    public void SetUp()
     {
-        // Create HealthBar GameObject
-        castingGameObject = new GameObject("Caster");
-        spell = new GameObject("mockSpell");
-        casting = castingGameObject.AddComponent<Casting>();
-        manaScript = castingGameObject.AddComponent<Mana>();
-        playerMovement = castingGameObject.AddComponent<PlayerMovement>();
-        castingGameObject.AddComponent<BoxCollider2D>();
-        spell.AddComponent<SpellEffect>();
-        casting.noTypeSpell = spell;
-        casting.castpoint = castpoint;
-        // Creates the controller
-        controller = AnimatorController.CreateAnimatorControllerAtPath("Assets/testcontroller.controller");
-        controller.AddParameter("Charge", AnimatorControllerParameterType.Bool);
-        controller.AddParameter("RaiseWand", AnimatorControllerParameterType.Bool);
-        controller.AddParameter("CanCast", AnimatorControllerParameterType.Bool);
-        controller.AddParameter("Horizontal", AnimatorControllerParameterType.Float);
-        controller.AddParameter("Vertical", AnimatorControllerParameterType.Float);
-        
-        wandAnimator = castingGameObject.AddComponent<Animator>();
-        wandAnimator.runtimeAnimatorController = controller;
-        
-        
+        // Create a new GameObject to attach the Casting component
+        gameObject = new GameObject("GameObject");
 
-        Object.Instantiate(castingGameObject);
-        castingGameObject.SetActive(true);
+        // Create mock objects using NSubstitute
+        manaMock = Substitute.For<Mana>();
+        playerMovementMock = Substitute.For<PlayerMovement>();
+        uiManagerMock = Substitute.For<UIManager>();
+        wandAnimatorMock = Substitute.For<Animator>();
+
+        // Create the Casting instance and inject dependencies
+        casting = gameObject.AddComponent<Casting>();
+        casting.manaScript = manaMock;
+        casting.playerMovement = playerMovementMock;
+        casting.uIManager = uiManagerMock;
+        casting.wandAnimator = wandAnimatorMock;
     }
-    */
+
     [TearDown]
-    public void Teardown()
+    public void TearDown()
     {
-        // Destroy the GameObject after each test
-        Object.DestroyImmediate(playerGameObject);
+        // Clean up the GameObject after each test
+        Object.DestroyImmediate(casting.gameObject);
     }
+    
+    // Example test for 'determineSpell' method
     [Test]
-    public void OnSelectCharge_AddsCharge_WhenSlotIsEmpty()
+    public void TestDetermineSpell_WhenValidSpellExists_ReturnsSpellObject()
     {
-        // Act
-        casting.OnSelectCharge(ChargeTypes.fire);
-        int currentChargesCount = casting.GetCurrentCharges().Count();
-        // Assert
-        Assert.AreEqual(1, currentChargesCount, "Charge was not added to an empty slot.");
-    }
-    [Test]
-    public void OnSelectCharge_DoesNotAddCharge_WhenSlotsAreFull()
-    {
-        // Fill both charge slots
-        casting.OnSelectCharge(ChargeTypes.fire);
-        casting.OnSelectCharge(ChargeTypes.water);
+        // Arrange
+        ChargeTuple chargeTuple = new ChargeTuple(ChargeTypes.fire, ChargeTypes.water);
+        SpellEffect spellEffectMock = Substitute.For<SpellEffect>();
+        GameObject spellObjectMock = new GameObject();
+        spellEffectMock.spellObject = spellObjectMock;
+
+        casting.chargeToSpell.Add(chargeTuple, spellEffectMock);
+        casting.currentCharges = chargeTuple;
 
         // Act
-        casting.OnSelectCharge(ChargeTypes.earth);
+        GameObject result = casting.determineSpell();
 
-        int currentChargesCount = casting.GetCurrentCharges().Count();
         // Assert
-        Assert.AreEqual(2, currentChargesCount, "A charge was added even when slots were full.");
+        Assert.AreEqual(spellObjectMock, result);
     }
-    /*
+    
     [Test]
-    public void ClearCharges_RemovesAllCharges()
+    public void TestDetermineSpell_WhenNoValidSpellExists_ReturnsNull()
     {
-        // Add some charges
-        casting.OnSelectCharge(ChargeTypes.fire);
-        casting.OnSelectCharge(ChargeTypes.water);
+        // Arrange
+        ChargeTuple chargeTuple = new ChargeTuple(ChargeTypes.fire, ChargeTypes.water);
+        casting.currentCharges = chargeTuple;
 
+        // Act
+        GameObject result = casting.determineSpell();
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    // Example test for 'CanCast' method
+    [Test]
+    public void TestCanCast_WhenManaIsSufficient_ReturnsTrue()
+    {
+        // Arrange
+        casting.currentCharges = new ChargeTuple(ChargeTypes.fire, ChargeTypes.water);
+        
+        // Instead of mocking SpellEffect, add a real instance of SpellEffect
+        SpellEffect spellEffect = gameObject.AddComponent<SpellEffect>();
+        spellEffect.manaCost = 1f;  // Set mana cost to 1 for the spell
+        
+        // Add the spell effect to the chargeToSpell dictionary
+        casting.AddSpellToDict(gameObject, casting.currentCharges);
+        
+        // Set mana to a sufficient amount
+        manaMock.mana = 2f;  // Enough mana to cast the spell
+        
+        // Act
+        bool result = casting.CanCast();
+        
+        // Assert
+        Assert.IsTrue(result);
+    }
+    [Test]
+    public void TestCanCast_WhenNotEnoughMana_ReturnsFalse()
+    {
+        // Arrange
+        casting.currentCharges = new ChargeTuple(ChargeTypes.fire, ChargeTypes.water);
+        SpellEffect spellEffectMock = Substitute.For<SpellEffect>();
+        spellEffectMock.manaCost = 5f;
+        casting.chargeToSpell.Add(casting.currentCharges, spellEffectMock);
+        manaMock.mana = 2f;  // Not enough mana
+
+        playerMovementMock.GetCurrentState().Returns(PlayerState.idle);
+
+        // Act
+        bool result = casting.CanCast();
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void TestCanCast_WhenPlayerIsStaggered_ReturnsFalse()
+    {
+        // Arrange
+        casting.currentCharges = new ChargeTuple(ChargeTypes.fire, ChargeTypes.water);
+        SpellEffect spellEffectMock = Substitute.For<SpellEffect>();
+        spellEffectMock.manaCost = 1f;
+        casting.chargeToSpell.Add(casting.currentCharges, spellEffectMock);
+        manaMock.mana = 2f;
+
+        playerMovementMock.GetCurrentState().Returns(PlayerState.stagger);  // Player is staggered
+
+        // Act
+        bool result = casting.CanCast();
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    // Example test for 'OnSelectCharge' method
+    [Test]
+    public void TestOnSelectCharge_WhenChargeCanBeAdded_AddsCharge()
+    {
+        // Arrange
+        casting.currentCharges = new ChargeTuple();
+        ChargeTypes selectedCharge = ChargeTypes.fire;
+
+        // Act
+        casting.OnSelectCharge(selectedCharge);
+
+        // Assert
+        Assert.AreEqual(1, casting.GetCurrentChargesCount());
+    }
+
+    [Test]
+    public void TestOnSelectCharge_WhenMaxChargesReached_DoesNotAddCharge()
+    {
+        // Arrange
+        casting.currentCharges = new ChargeTuple(ChargeTypes.fire, ChargeTypes.water);
+        ChargeTypes selectedCharge = ChargeTypes.earth;
+
+        // Act
+        casting.OnSelectCharge(selectedCharge);
+
+        // Assert
+        Assert.AreEqual(2, casting.GetCurrentChargesCount());
+    }
+
+    // Example test for 'ClearCharges' method
+    [Test]
+    public void TestClearCharges_ClearsCharges()
+    {
+        // Arrange
+        casting.currentCharges.Add(ChargeTypes.fire);
+        casting.currentCharges.Add(ChargeTypes.water);
         // Act
         casting.ClearCharges();
-        int currentChargesCount = casting.GetCurrentCharges().Count();
-        // Assert
-        Assert.AreEqual(0, currentChargesCount, "Charges were not cleared.");
-        Assert.IsNull(casting.charge1UI.sprite, "Charge1 UI sprite was not cleared.");
-        Assert.IsNull(casting.charge2UI.sprite, "Charge2 UI sprite was not cleared.");
-    }
-    */
-    [UnityTest]
-    public IEnumerator DetermineSpell_ReturnsCorrectSpell_ForGivenChargeTuple()
-    {
-        manaScript.mana = 10f; // Ensure sufficient mana
-        manaScript.maxMana = 10f;
-        // Arrange
-        casting.OnSelectCharge(ChargeTypes.notype);
-        casting.OnSelectCharge(ChargeTypes.notype);
-
-        // Act
-        GameObject determinedSpell = casting.determineSpell();
-        yield return null;
-        // Assert
-        Assert.AreEqual(casting.noTypeSpell, determinedSpell, "DetermineSpell did not return the correct spell for the given charge tuple.");
-    }
-
-    [UnityTest]
-    public IEnumerator CastSpell_SuccessfullyCastsSpell_WhenRequirementsAreMet()
-    {
-        // Arrange
-        manaScript.mana = 10f; // Ensure sufficient mana
-        manaScript.maxMana = 10f;
-        casting.OnSelectCharge(ChargeTypes.notype);
-        casting.OnSelectCharge(ChargeTypes.notype);
-        float expectedManaCost = casting.noTypeSpell.GetComponent<SpellEffect>().manaCost;
-        // Mock castpoint
-        var castpoint = new GameObject("CastPoint");
-        casting.castpoint = castpoint.transform;
-
-        // Act
-        casting.CastSpell();
-        yield return null;
 
         // Assert
-        Assert.AreEqual(0, casting.GetCurrentChargesCount(), "Charges were not cleared after casting.");
-        Assert.AreEqual(manaScript.mana, manaScript.maxMana-expectedManaCost, "Mana was not reduced correctly after casting."); // Assuming manaCost is 1
-    }
-
-    [UnityTest]
-    public IEnumerator CastSpell_DoesNotCast_WhenRequirementsAreNotMet()
-    {
-        // Arrange
-        manaScript.mana = 0.5f; // Insufficient mana
-        manaScript.maxMana = 10f;
-        casting.OnSelectCharge(ChargeTypes.fire);
-        casting.OnSelectCharge(ChargeTypes.fire);
-
-        // Mock castpoint
-        var castpoint = new GameObject("CastPoint");
-        casting.castpoint = castpoint.transform;
-
-        // Act
-        casting.CastSpell();
-        yield return null;
-
-        // Assert
-        Assert.AreEqual(2, casting.GetCurrentChargesCount(), "Charges were cleared even though the spell was not cast.");
-        Assert.AreEqual(manaScript.mana, 0.5f, "Mana was incorrectly reduced.");
+        Assert.AreEqual(0, casting.GetCurrentChargesCount());
     }
 }

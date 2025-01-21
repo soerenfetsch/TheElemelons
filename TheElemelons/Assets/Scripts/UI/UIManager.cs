@@ -155,8 +155,7 @@ public class UIManager : MonoBehaviour
     void UpdateAimingArrow()
     {
         mousePos = inputManager.GetMousePosition();
-        Vector2 aim_dir = mousePos - new Vector2(pivot.position.x, pivot.position.y);
-        float angle = Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg + 90f;
+        float angle = inputManager.GetAimDirection();
         aim_transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 

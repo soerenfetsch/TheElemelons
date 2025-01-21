@@ -410,6 +410,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 4da807eac8e0a6a45ada16e979e7c073, type: 2}
     - target: {fileID: 2559166527078801375, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: pivot
+      value: 
+      objectReference: {fileID: 553875836}
+    - target: {fileID: 2559166527078801375, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: casting
       value: 
       objectReference: {fileID: 2076084342}
@@ -465,6 +469,14 @@ PrefabInstance:
       propertyPath: uIManager
       value: 
       objectReference: {fileID: 645477312}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: manaScript
+      value: 
+      objectReference: {fileID: 2076084339}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: playerMovement
+      value: 
+      objectReference: {fileID: 2076084338}
     - target: {fileID: 8967277064185722604, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: manaStars.Array.data[0]
       value: 
@@ -519,6 +531,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cc7205fb501bda4786c2a614533e545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2076084338 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1581666591548288514, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+  m_PrefabInstance: {fileID: 2076084336}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023262263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4af8492eefd6f46bf5dc75babccf7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2076084339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2823182672651674699, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+  m_PrefabInstance: {fileID: 2076084336}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023262263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff45eb1e10c39246af72a0a181382a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2076084342 stripped

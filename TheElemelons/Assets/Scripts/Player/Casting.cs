@@ -15,26 +15,23 @@ public class Casting : MonoBehaviour
     public Transform castpoint;
     public Animator wandAnimator;
     [Header("Mana Management")]
-    bool canCast;
     float mana;
     float maxMana;
-    Mana manaScript;
+    public Mana manaScript;
     [Header("Charges")]
     public int maxCharges = 2;
-    ChargeTuple currentCharges = new ChargeTuple();
+    public ChargeTuple currentCharges = new ChargeTuple();
     [Header("Spell Selection")]
     GameObject currentSpell;
     public GameObject noTypeSpell;
     public float manaCost = 1f;
     public Dictionary<ChargeTuple, SpellEffect> chargeToSpell = new Dictionary<ChargeTuple, SpellEffect>();
     [Header("Internal Stuff")]
-    PlayerMovement playerMovement;
+    public PlayerMovement playerMovement;
     public UIManager uIManager;
     void Start()
     {
         //Variable assignment
-        playerMovement = gameObject.GetComponent<PlayerMovement>();
-        manaScript = gameObject.GetComponent<Mana>();
         maxMana = manaScript.maxMana;
         mana = manaScript.mana;
         ClearCharges();
@@ -154,6 +151,11 @@ public class Casting : MonoBehaviour
     public int GetCurrentChargesCount()
     {
         return currentCharges.Count();
+    }
+
+    public void AddSpellToDict(GameObject newSpell, ChargeTuple chargeTuple)
+    {
+        chargeToSpell.Add(chargeTuple, newSpell.GetComponent<SpellEffect>());
     }
 }
 

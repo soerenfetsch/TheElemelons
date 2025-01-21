@@ -17,12 +17,13 @@ public class InputManager : MonoBehaviour
     [Header("Key Bindings")]
     public Dictionary<string, KeyCode> keyBindings;
 
+    [Header("Internal Stuff")]
     // References to other components
     private PlayerMovement playerMovement;
     public Casting casting;
     private Camera mainCamera;
-
     private CameraMovement cameraMovement;
+    public Transform pivot;
 
     private void Awake()
     {
@@ -191,10 +192,9 @@ public class InputManager : MonoBehaviour
 
     public float GetAimDirection()
     {   
-        Vector2 playerPosition = playerMovement?.transform.position ?? Vector2.zero;
-        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 aimDirection = mousePosition - playerPosition;
-        return Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+        Vector2 mousePos = GetMousePosition();
+        Vector2 aim_dir = mousePos - new Vector2(pivot.position.x, pivot.position.y);
+        return Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg + 90f;
     }
 
     public Vector2 GetMousePosition()
