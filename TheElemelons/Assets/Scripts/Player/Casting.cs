@@ -163,7 +163,8 @@ public class Casting : MonoBehaviour
         {
             wandAnimator.SetBool("CanCast", true);
             manaScript.SubtractMana(manaCost);
-            Instantiate(newSpell, castpoint.position, Quaternion.identity);
+            CombatManager.InstantiateSpell(newSpell, gameObject, castpoint.position, Quaternion.Euler(0, 0, 0));
+            //clear chargetuple and according ui
             ClearCharges();
             ClearChargeSprites();
             manaScript.justCasted = true;

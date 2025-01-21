@@ -27,6 +27,8 @@ public class SimpleSpell : SpellEffect
     /// Damage dealt by the spell to targets.
     /// </summary>
     public float damage = 0f;
+    private bool hasTriggered = false; // Flag to prevent multiple triggers.
+
 
     /// <summary>
     /// Initializes the spell with a default type and starts the self-destruction coroutine.
@@ -52,20 +54,20 @@ public class SimpleSpell : SpellEffect
     /// <param name="other">The collider of the object that the spell collides with.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Future code for handling collisions
-        /*
-        if (other.gameObject.CompareTag("Enemy") && other.isTrigger && other.GetComponent<Enemy>().currentState != EnemyState.stagger)
+        if (hasTriggered) return; // Prevent further execution if already triggered.
+        
+        //if enemy hit, use combat manager to execute attack
+        if (other.gameObject.CompareTag("Enemy"))
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
-            if(hit != null)
+            if (hit != null)
             {
+                hasTriggered = true; // Mark as triggered to prevent further execution.
+
                 Vector2 difference = hit.transform.position - transform.position;
-                difference = difference.normalized * thrust;
-                hit.AddForce(difference, ForceMode2D.Impulse);
-                other.GetComponent<Enemy>().Knock(hit, knockTime, damage, spellType);
+                CombatManager.ExecuteAttack(caster, hit, spellType, difference, damage, thrust, knockTime);
                 Destroy(gameObject);
             }
         }
-        */
     }
 }

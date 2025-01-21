@@ -19,10 +19,8 @@ public class TreeLog : Enemy
 
     [Header("Behavior")]
     private Vector2 homePosition;
-    private bool isStaggering = false;
     private bool isAlive = true;
     public float moveSpeed = 1f;
-    public float staggerTime = 0.5f;
     public float chaseRadius = 5f;
     public float attackRadius = 0.2f;
 
@@ -37,6 +35,8 @@ public class TreeLog : Enemy
     {
         playerTransform = player;
         this.pathfinder = pathfinder;
+
+        InitializeCombatComponents();
     }
 
     public void InitializeComponents()
@@ -54,10 +54,19 @@ public class TreeLog : Enemy
         homePosition = transformComponent.position;
     }
 
+    private void InitializeCombatComponents()
+    {
+        attackFactor = 1f;
+        defenseFactor = 1f;
+        isInvincible = false;
+        elementType = ElementType.Earth;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         InitializeComponents();
+        InitializeCombatComponents();
     }
 
     // Fixed update to handle physics and movements correctly
@@ -127,11 +136,6 @@ public class TreeLog : Enemy
                 }
                 break;
             case EnemyStatus.Staggered:
-                if (!isStaggering)
-                {
-                    isStaggering = true;
-                    StartCoroutine(HandleStagger());
-                }
                 break;
         }
     }
@@ -159,6 +163,16 @@ public class TreeLog : Enemy
     {
         // Do nothing
     }
+
+    /// <summary>
+    /// When the TreeStump gets knocked back, it enters the staggered state for a certain amount of time.
+    /// </summary>
+    /// <param name="knockTime"></param>
+    /// <returns></returns>
+    public override void GetKnocked(float knockTime)
+    {
+        StartCoroutine(HandleStagger(knockTime));
+    } 
 
     private void ChangeWalkAnimation(Vector2 direction)
     {
@@ -271,11 +285,10 @@ public class TreeLog : Enemy
         return new Vector2(transformComponent.position.x, collisionBox.bounds.min.y);
     }
 
-    private IEnumerator HandleStagger()
+    private IEnumerator HandleStagger(float staggerTime)
     {
         animator.SetTrigger("TrStagger");
         yield return new WaitForSeconds(staggerTime);
-        isStaggering = false;
         animator.SetTrigger("TrStopStagger");
         ChangeState(EnemyStatus.Idle);
     }

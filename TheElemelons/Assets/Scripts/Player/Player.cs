@@ -17,7 +17,7 @@ public enum PlayerState
 /// <summary>
 /// Represents the core player class. Manages player state, animations, and invincibility mechanics.
 /// </summary>
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ICombatant
 {
     /// <summary>
     /// Current state of the player (e.g., Walk, Attack, Idle).
@@ -33,21 +33,10 @@ public class Player : MonoBehaviour
     /// Animator for managing wand animations.
     /// </summary>
     private Animator wand_animator;
-
-    /// <summary>
-    /// Indicates whether the player is invincible.
-    /// </summary>
-    private bool isInvincible = false;
-
-    /// <summary>
-    /// Factor to scale the damage dealt by the player.
-    /// </summary>
-    private float damageFactor = 1f;
-
-    /// <summary>
-    /// Factor to scale the damage received by the player.
-    /// </summary>
-    private float defenseFactor = 1f;
+    public float attackFactor { get; set; }
+    public float defenseFactor { get; set; }
+    public bool isInvincible { get; set; }
+    public ElementType elementType { get; set; }
 
     /// <summary>
     /// Initializes the player by setting the default state to Idle.
@@ -55,6 +44,10 @@ public class Player : MonoBehaviour
     public void Initialize()
     {
         SetCurrentState(PlayerState.Idle);
+        attackFactor = 1f;
+        defenseFactor = 1f;
+        isInvincible = false;
+        elementType = ElementType.None;
     }
 
     /// <summary>
@@ -117,59 +110,5 @@ public class Player : MonoBehaviour
 
         SetCurrentState(PlayerState.Idle);
         animator.SetBool("Stagger", false);
-    }
-
-    /// <summary>
-    /// Checks whether the player is currently invincible.
-    /// </summary>
-    /// <returns>True if the player is invincible, false otherwise.</returns>
-    public bool IsInvincible()
-    {
-        return isInvincible;
-    }
-
-    /// <summary>
-    /// Sets the player's invincibility status.
-    /// </summary>
-    /// <param name="invincible">True to make the player invincible, false otherwise.</param>
-    public void SetInvincible(bool invincible)
-    {
-        isInvincible = invincible;
-    }
-
-    /// <summary>
-    /// Retrieves the player's damage scaling factor.
-    /// </summary>
-    /// <returns>The damage factor.</returns>
-    public float GetDamageFactor()
-    {
-        return damageFactor;
-    }
-
-    /// <summary>
-    /// Sets the player's damage scaling factor.
-    /// </summary>
-    /// <param name="factor">The new damage factor.</param>
-    public void SetDamageFactor(float factor)
-    {
-        damageFactor = factor;
-    }
-
-    /// <summary>
-    /// Retrieves the player's defense scaling factor.
-    /// </summary>
-    /// <returns>The defense factor.</returns>
-    public float GetDefenseFactor()
-    {
-        return defenseFactor;
-    }
-
-    /// <summary>
-    /// Sets the player's defense scaling factor.
-    /// </summary>
-    /// <param name="factor">The new defense factor.</param>
-    public void SetDefenseFactor(float factor)
-    {
-        defenseFactor = factor;
     }
 }
