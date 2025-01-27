@@ -230,3 +230,11 @@ Each level is procedurally generated, ensuring a unique experience each time the
 ## Additional Notes
 - **Iterative Design**: The game will be developed in phases with feedback loops for refinement after internal playtesting.
 - **Expandability**: Potential future expansions could introduce new elements (e.g., lightning, ice), additional dungeons, and more complex spell combinations.
+
+
+---
+
+## 10. Ideas for Balancing
+
+### Buffs/Debuffs
+-**stacking** How should they stack? 2 same buffs, should their effect stack or just the effect duration?
