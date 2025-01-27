@@ -31,8 +31,6 @@ public class Casting : MonoBehaviour
     public Animator wandAnimator;
 
     [Header("Mana Management")]
-    float mana;
-    float maxMana;
     public Mana manaScript;
 
     [Header("Charges")]
@@ -61,8 +59,6 @@ public class Casting : MonoBehaviour
         // Initializes variables and setups.
         player = gameObject.GetComponent<Player>();
         manaScript = gameObject.GetComponent<Mana>();
-        maxMana = manaScript.maxMana;
-        mana = manaScript.mana;
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype), noTypeSpell.GetComponent<SpellEffect>());
         currentSpell = noTypeSpell;
         determineSpell();
@@ -95,13 +91,11 @@ public class Casting : MonoBehaviour
             return false;
         }
         manaCost = chargeToSpell[currentCharges].manaCost;
-        return mana >= manaCost;
+        return manaScript.mana >= manaCost;
     }
 
     private void Update()
     {
-        // Gets current mana from the Mana script.
-        mana = manaScript.mana;
 
         // Handles wand animations.
         if (wandAnimator.GetBool("Charge"))

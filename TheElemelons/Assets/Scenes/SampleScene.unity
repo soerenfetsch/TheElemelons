@@ -615,6 +615,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2305246718208910923, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2550744939704757883, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -46.000004
