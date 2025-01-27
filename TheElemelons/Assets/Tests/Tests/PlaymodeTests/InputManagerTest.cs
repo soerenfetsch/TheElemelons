@@ -42,6 +42,7 @@ public class InputManagerPlayModeTests
                                                                        //playerGameObject.GetComponent<InputManager>().enabled = false;
         playerGameObject.GetComponent<HealthBar>().enabled = false;     // Disable Healthbar
         playerGameObject.GetComponent<ManaBar>().enabled = false;    
+        
 
         #endif
         // Add a mock Main Camera

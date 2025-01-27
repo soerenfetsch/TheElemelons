@@ -29,6 +29,7 @@ public class InputManager : MonoBehaviour
     [Header("Key Bindings")]
     public Dictionary<string, KeyCode> keyBindings;
 
+    [Header("Internal Stuff")]
     // References to other components
     private PlayerMovement playerMovement;
     /// <summary>
@@ -38,6 +39,7 @@ public class InputManager : MonoBehaviour
 
     private Camera mainCamera;
     private CameraMovement cameraMovement;
+    public Transform pivot;
 
     /// <summary>
     /// Initializes the InputManager and references required components.
@@ -98,18 +100,18 @@ public class InputManager : MonoBehaviour
     private void InitializeKeyBindings()
     {
         // Define default key bindings
-        string[] actions = { 
-            "MoveLeft", "MoveRight", "MoveUp", "MoveDown", 
-            "CastSpell", "ClearCharges", 
-            "SelectFire", "SelectWater", "SelectEarth", "SelectAir", 
-            "ZoomIn", "ZoomOut" 
+        string[] actions = {
+            "MoveLeft", "MoveRight", "MoveUp", "MoveDown",
+            "CastSpell", "ClearCharges",
+            "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
+            "ZoomIn", "ZoomOut"
         };
 
-        KeyCode[] defaultKeys = { 
-            KeyCode.A, KeyCode.D, KeyCode.W, KeyCode.S, 
-            KeyCode.Mouse0, KeyCode.Mouse1, 
-            KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, 
-            KeyCode.Z, KeyCode.X 
+        KeyCode[] defaultKeys = {
+            KeyCode.A, KeyCode.D, KeyCode.W, KeyCode.S,
+            KeyCode.Mouse0, KeyCode.Mouse1,
+            KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
+            KeyCode.Z, KeyCode.X
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
@@ -242,10 +244,14 @@ public class InputManager : MonoBehaviour
     /// <returns>The angle in degrees.</returns>
     public float GetAimDirection()
     {
-        Vector2 playerPosition = playerMovement?.transform.position ?? Vector2.zero;
-        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 aimDirection = mousePosition - playerPosition;
-        return Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+        Vector2 mousePos = GetMousePosition();
+        Vector2 aim_dir = mousePos - new Vector2(pivot.position.x, pivot.position.y);
+        return Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg + 90f;
+    }
+
+    public Vector2 GetMousePosition()
+    {
+        return mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 
     /// <summary>
