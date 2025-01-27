@@ -31,37 +31,14 @@ public class Casting : MonoBehaviour
     public Animator wandAnimator;
 
     [Header("Mana Management")]
-    private bool canCast;
-    private float mana;
-    private float maxMana;
-
-    /// <summary>
-    /// Reference to the Mana script for managing player mana.
-    /// </summary>
-    private Mana manaScript;
+    public Mana manaScript;
 
     [Header("Charges")]
     /// <summary>
     /// Maximum number of charges the player can hold.
     /// </summary>
     public int maxCharges = 2;
-
-    /// <summary>
-    /// The player's currently selected charges.
-    /// </summary>
-    private ChargeTuple currentCharges = new ChargeTuple();
-
-    /// <summary>
-    /// UI elements representing the first and second charges.
-    /// </summary>
-    public SpriteRenderer charge1UI;
-    public SpriteRenderer charge2UI;
-
-    /// <summary>
-    /// Sprites representing charge types.
-    /// </summary>
-    public Sprite fireSprite, waterSprite, earthSprite, windSprite;
-
+    public ChargeTuple currentCharges = new ChargeTuple();
     [Header("Spell Selection")]
     private GameObject currentSpell;
     public GameObject noTypeSpell;
@@ -73,6 +50,8 @@ public class Casting : MonoBehaviour
     public Dictionary<ChargeTuple, SpellEffect> chargeToSpell = new Dictionary<ChargeTuple, SpellEffect>();
 
     [Header("Internal Stuff")]
+    public PlayerMovement playerMovement;
+    public UIManager uIManager;
     private Player player;
 
     private void Start()
@@ -80,9 +59,6 @@ public class Casting : MonoBehaviour
         // Initializes variables and setups.
         player = gameObject.GetComponent<Player>();
         manaScript = gameObject.GetComponent<Mana>();
-        maxMana = manaScript.maxMana;
-        mana = manaScript.mana;
-        ClearCharges();
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype), noTypeSpell.GetComponent<SpellEffect>());
         currentSpell = noTypeSpell;
         determineSpell();
@@ -115,13 +91,11 @@ public class Casting : MonoBehaviour
             return false;
         }
         manaCost = chargeToSpell[currentCharges].manaCost;
-        return mana >= manaCost;
+        return manaScript.mana >= manaCost;
     }
 
     private void Update()
     {
-        // Gets current mana from the Mana script.
-        mana = manaScript.mana;
 
         // Handles wand animations.
         if (wandAnimator.GetBool("Charge"))
@@ -140,7 +114,7 @@ public class Casting : MonoBehaviour
         {
             currentCharges.Add(selectedCharge);
             wandAnimator.SetBool("Charge", true);
-            loadChargeSprite(selectedCharge);
+            uIManager.loadChargeSprite(selectedCharge);
         }
     }
 
@@ -166,7 +140,7 @@ public class Casting : MonoBehaviour
             CombatManager.InstantiateSpell(newSpell, gameObject, castpoint.position, Quaternion.Euler(0, 0, 0));
             //clear chargetuple and according ui
             ClearCharges();
-            ClearChargeSprites();
+            uIManager.ClearChargeSprites();
             manaScript.justCasted = true;
         }
         else
@@ -184,56 +158,11 @@ public class Casting : MonoBehaviour
         wandAnimator.SetBool("RaiseWand", false);
     }
 
-    /// <summary>
-    /// Updates the UI to display the selected charge.
-    /// </summary>
-    /// <param name="selectedCharge">The charge type to display.</param>
-    private void loadChargeSprite(ChargeTypes selectedCharge)
-    {
-        Sprite spriteToBeLoaded = null;
-        switch (selectedCharge)
-        {
-            case ChargeTypes.fire:
-                spriteToBeLoaded = fireSprite;
-                break;
-            case ChargeTypes.water:
-                spriteToBeLoaded = waterSprite;
-                break;
-            case ChargeTypes.earth:
-                spriteToBeLoaded = earthSprite;
-                break;
-            case ChargeTypes.wind:
-                spriteToBeLoaded = windSprite;
-                break;
-        }
-
-        if (currentCharges.Count() == 1)
-        {
-            charge1UI.sprite = spriteToBeLoaded;
-        }
-        else if (currentCharges.Count() == 2)
-        {
-            charge2UI.sprite = spriteToBeLoaded;
-        }
-    }
-
-    /// <summary>
-    /// Clears all charge sprites from the UI.
-    /// </summary>
-    private void ClearChargeSprites()
-    {
-        charge1UI.sprite = null;
-        charge2UI.sprite = null;
-    }
-
-    /// <summary>
-    /// Resets the current charges and updates UI.
-    /// </summary>
     public void ClearCharges()
     {
         wandAnimator.SetBool("Charge", true);
         currentCharges.Clear();
-        ClearChargeSprites();
+        uIManager.ClearChargeSprites();
     }
 
     /// <summary>
@@ -252,5 +181,10 @@ public class Casting : MonoBehaviour
     public int GetCurrentChargesCount()
     {
         return currentCharges.Count();
+    }
+
+    public void AddSpellToDict(GameObject newSpell, ChargeTuple chargeTuple)
+    {
+        chargeToSpell.Add(chargeTuple, newSpell.GetComponent<SpellEffect>());
     }
 }

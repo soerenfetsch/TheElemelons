@@ -30,8 +30,8 @@ public class HealthBarTests
 
         // Add the Health script
         health = healthBarGameObject.AddComponent<Health>();
-        healthBar.healthScript = health;
-
+        health.SetHealth(5f);
+        health.SetMaxHealth(5f);
         // Initialize hearts array
         healthBar.hearts = new Image[5];
         for (int i = 0; i < healthBar.hearts.Length; i++)
@@ -46,13 +46,6 @@ public class HealthBarTests
             healthBar.hearts[i] = heartImage;
         }
 
-        // Create placeholder textures and sprites
-        Texture2D placeholderTexture = new Texture2D(2, 2);
-        healthBar.heart0 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        healthBar.heart1 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        healthBar.heart2 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        healthBar.heart3 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        healthBar.heart4 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
 
         healthBarGameObject.SetActive(true);
     }
@@ -63,18 +56,10 @@ public class HealthBarTests
         Object.DestroyImmediate(healthBarGameObject);
     }
 
-    [UnityTest]
-    public IEnumerator HealthBar_Hurt_TriggersHurtAnimation()
+    [Test]
+    public void HealthBar_Hurt_TriggersHurtAnimation()
     {
-        // Arrange
-        health.SetHealth(3f);
-        health.SetMaxHealth(5f);
-        yield return null; // Wait for Start to initialize
-
-        // Act
-        health.SubtractHealth(1f); // Simulate taking damage
-        yield return null; // Wait for Update to process
-
+        healthBar.Hurt();
         // Assert
         foreach (var heart in healthBar.hearts)
         {
@@ -83,17 +68,11 @@ public class HealthBarTests
         }
     }
 
-    [UnityTest]
-    public IEnumerator HealthBar_Heal_TriggersHealAnimation()
+    [Test]
+    public void HealthBar_Heal_TriggersHealAnimation()
     {
-        // Arrange
-        health.SetHealth(2f);
-        health.SetMaxHealth(5f);
-        yield return null; // Wait for Start to initialize
-
-        // Act
-        health.AddHealth(1f); // Simulate healing
-        yield return null; // Wait for Update to process
+        
+        healthBar.Heal();
 
         // Assert
         foreach (var heart in healthBar.hearts)
@@ -103,34 +82,14 @@ public class HealthBarTests
         }
     }
 
-    [UnityTest]
-    public IEnumerator HealthBar_Dead_SetsFullnessToZero()
-    {
-        // Arrange
-        health.SetHealth(0f);
-        health.SetMaxHealth(5f);
-        yield return null; // Wait for Start to initialize
-
-        // Act
-        healthBar.Dead();
-        yield return null;
-
-        // Assert
-        foreach (var heart in healthBar.hearts)
-        {
-            var fullness = heart.GetComponent<Animator>().GetFloat("fullness");
-            Assert.AreEqual(0f, fullness, "Fullness should be set to 0 for all hearts.");
-        }
-    }
+    
 
     [UnityTest]
     public IEnumerator HealthBar_UpdatesHeartSpritesBasedOnHealth()
     {
-        // Arrange
-        health.SetHealth(3.5f);
-        health.SetMaxHealth(5f);
         yield return null; // Wait for Start to initialize
-
+        
+        healthBar.UpdateHeartFullness(3.5f,5f);
         // Act
         yield return null;
 
@@ -139,15 +98,15 @@ public class HealthBarTests
         {
             if (i < 3)
             {
-                Assert.AreEqual(healthBar.heart4, healthBar.hearts[i].sprite, $"Heart {i} sprite should be full.");
+                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 1f, $"Heart {i} sprite should be full.");
             }
             else if (i == 3)
             {
-                Assert.AreEqual(healthBar.heart2, healthBar.hearts[i].sprite, $"Heart {i} sprite should be half full.");
+                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0.5f ,$"Heart {i} sprite should be half full.");
             }
             else
             {
-                Assert.AreEqual(healthBar.heart0, healthBar.hearts[i].sprite, $"Heart {i} sprite should be empty.");
+                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0f, $"Heart {i} sprite should be empty.");
             }
         }
     }

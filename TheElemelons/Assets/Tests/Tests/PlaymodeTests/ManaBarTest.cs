@@ -30,7 +30,6 @@ public class ManaBarTest
 
         // Add the Mana script
         mana = manaBarGameObject.AddComponent<Mana>();
-        manaBar.manaScript = mana;
 
         // Initialize manaStars array
         manaBar.manaStars = new Image[5];
@@ -46,14 +45,6 @@ public class ManaBarTest
             manaBar.manaStars[i] = heartImage;
         }
 
-        // Create placeholder textures and sprites
-        Texture2D placeholderTexture = new Texture2D(2, 2);
-        manaBar.manaStar0 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        manaBar.manaStar1 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        manaBar.manaStar2 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        manaBar.manaStar3 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-        manaBar.manaStar4 = Sprite.Create(placeholderTexture, new Rect(0, 0, 2, 2), Vector2.zero);
-
         manaBarGameObject.SetActive(true);
     }
 
@@ -63,17 +54,10 @@ public class ManaBarTest
         Object.DestroyImmediate(manaBarGameObject);
     }
 
-    [UnityTest]
-    public IEnumerator ManaBar_Hurt_TriggersHurtAnimation()
+    [Test]
+    public void ManaBar_Hurt_TriggersHurtAnimation()
     {
-        // Arrange
-        mana.SetMana(3f);
-        mana.SetMaxMana(5f);
-        yield return null; // Wait for Start to initialize
-
-        // Act
-        mana.SubtractMana(1f); // Simulate taking damage
-        yield return null; // Wait for Update to process
+        manaBar.Hurt();
 
         // Assert
         foreach (var heart in manaBar.manaStars)
@@ -83,18 +67,10 @@ public class ManaBarTest
         }
     }
 
-    [UnityTest]
-    public IEnumerator ManaBar_Heal_TriggersHealAnimation()
+    [Test]
+    public void ManaBar_Heal_TriggersHealAnimation()
     {
-        // Arrange
-        mana.SetMana(2f);
-        mana.SetMaxMana(5f);
-        yield return null; // Wait for Start to initialize
-
-        // Act
-        mana.AddMana(1f); // Simulate healing
-        yield return null; // Wait for Update to process
-
+        manaBar.Heal();
         // Assert
         foreach (var heart in manaBar.manaStars)
         {
@@ -107,35 +83,28 @@ public class ManaBarTest
 
 
     [UnityTest]
-    public IEnumerator ManaBar_UpdatesHeartSpritesBasedOnMana()
+    public IEnumerator HealthBar_UpdatesHeartSpritesBasedOnHealth()
     {
-        // Arrange
-        mana.SetMana(3.5f);
-        mana.SetMaxMana(5f);
-        mana.SetManaPerRegen(0f);
         yield return null; // Wait for Start to initialize
-
+        
+        manaBar.UpdateStarFullness(3.5f,5f);
         // Act
         yield return null;
+
         // Assert
-        for (int i = 0; i < manaBar.manaStars.Length; i++)
+        for (int i = 0; i <manaBar.manaStars.Length; i++)
         {
-            Debug.Log(i);
             if (i < 3)
             {
-                Assert.AreEqual(manaBar.manaStar4, manaBar.manaStars[i].sprite, $"ManaStarSprite {i} sprite should be full.");
+                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 1f, $"Heart {i} sprite should be full.");
             }
             else if (i == 3)
             {
-                Assert.AreNotEqual(manaBar.manaStar0, manaBar.manaStars[i].sprite, "is 0");
-                Assert.AreNotEqual(manaBar.manaStar1, manaBar.manaStars[i].sprite, "is 1");
-                Assert.AreNotEqual(manaBar.manaStar3, manaBar.manaStars[i].sprite, "is 3");
-                Assert.AreNotEqual(manaBar.manaStar4, manaBar.manaStars[i].sprite, "is 4");
-                Assert.AreEqual(manaBar.manaStar2, manaBar.manaStars[i].sprite, $"ManaStarSprite {i} sprite should be half full");
+                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0.5f ,$"Heart {i} sprite should be half full.");
             }
             else
             {
-                Assert.AreEqual(manaBar.manaStar0, manaBar.manaStars[i].sprite, $"ManaStarSprite {i} sprite should be empty.");
+                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0f, $"Heart {i} sprite should be empty.");
             }
         }
     }
