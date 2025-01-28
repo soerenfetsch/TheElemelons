@@ -292,4 +292,24 @@ public class TreeLog : Enemy
         animator.SetTrigger("TrStopStagger");
         ChangeState(EnemyStatus.Idle);
     }
+
+    public override void ModifySpeed(float factor)
+    {
+        moveSpeed *= factor;
+    }
+
+    public override void ModifyDamage(float factor)
+    {
+        attackFactor *= factor;
+    }
+
+    public override void ModifyDefense(float factor)
+    {
+        defenseFactor *= factor;
+    }
+
+    public override void ModifyManaRegen(float factor)
+    {
+        // Do nothing
+    }
 }

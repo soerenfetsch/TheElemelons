@@ -17,7 +17,7 @@ public enum PlayerState
 /// <summary>
 /// Represents the core player class. Manages player state, animations, and invincibility mechanics.
 /// </summary>
-public class Player : MonoBehaviour, ICombatant
+public class Player : MonoBehaviour, ICombatant, IBuffable
 {
     /// <summary>
     /// Current state of the player (e.g., Walk, Attack, Idle).
@@ -110,5 +110,27 @@ public class Player : MonoBehaviour, ICombatant
 
         SetCurrentState(PlayerState.Idle);
         animator.SetBool("Stagger", false);
+    }
+
+    public void ModifySpeed(float factor)
+    {
+        var movement = GetComponent<PlayerMovement>();
+        movement.speedMultiplier *= factor;
+    }
+
+    public void ModifyDamage(float factor)
+    {
+        attackFactor *= factor;
+    }
+
+    public void ModifyDefense(float factor)
+    {
+        defenseFactor *= factor;
+    }
+
+    public void ModifyManaRegen(float factor)
+    {
+        var mana = GetComponent<Mana>();
+        mana.SetManaPerRegen(mana.manaPerRegen * factor);
     }
 }
