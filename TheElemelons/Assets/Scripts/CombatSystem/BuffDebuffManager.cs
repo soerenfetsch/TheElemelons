@@ -25,7 +25,7 @@ public class BuffDebuffManager : MonoBehaviour
         _uiManager = FindObjectOfType<UIManager>();
         if (_uiManager == null)
         {
-            Debug.LogError("UIManager not found in the scene. Ensure there is a UIManager component.");
+            Debug.LogWarning("UIManager not found in the scene. Ensure there is a UIManager component.");
         }
     }
 
@@ -66,8 +66,6 @@ public class BuffDebuffManager : MonoBehaviour
     {
         public string Name { get; private set; } // Name of the target
         public List<BuffDebuff> ActiveEffects = new List<BuffDebuff>();
-        public Action<BuffDebuff> OnEffectStart; // Delegate for handling UI updates
-        public Action<BuffDebuff> OnEffectEnd;   // Delegate for ending effects
 
         public TargetEntity(string name)
         {
@@ -78,7 +76,6 @@ public class BuffDebuffManager : MonoBehaviour
             Debug.Log($"Applying {effect.type} effect to target {Name}.");
             ActiveEffects.Add(effect);
             effect.OnApply?.Invoke(effect);
-            OnEffectStart?.Invoke(effect);
         }
 
         public void RemoveEffect(BuffDebuff effect)
@@ -86,7 +83,6 @@ public class BuffDebuffManager : MonoBehaviour
             Debug.Log($"Removing {effect.type} effect from target {Name}.");
             ActiveEffects.Remove(effect);
             effect.OnExpire?.Invoke(effect);
-            OnEffectEnd?.Invoke(effect);
         }
     }
 
@@ -112,6 +108,9 @@ public class BuffDebuffManager : MonoBehaviour
         {
             OnApply = effect =>
             {
+                // Add buff/debuff icon to UI
+                _uiManager?.AddBuffDebuffIcon(effect.type);
+                // Start the speed buff animation if buff is speed buff
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
                 {
                     _uiManager?.SetSpeedBuffAnimation(true);
@@ -119,7 +118,9 @@ public class BuffDebuffManager : MonoBehaviour
             },
             OnExpire = effect =>
             {
-                // Only stop the animation if there is no other speed buff active
+                // Remove buff/debuff icon from UI
+                _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                // Only stop the speed buff animation if there is no other speed buff active
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff
                     && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
                 {
@@ -129,7 +130,6 @@ public class BuffDebuffManager : MonoBehaviour
         };
 
         // TODO: Add more OnApply and OnExpire delegates for other effects
-        // TODO: Add delegates for OnEffectStart and OnEffectEnd for UI display of buff icons
 
         // Apply effect to target stats
         ApplyEffectToStats(target, effect, true);
@@ -218,7 +218,7 @@ public class BuffDebuffManager : MonoBehaviour
             TargetEntity entity = targets[target];
             foreach (var effect in entity.ActiveEffects)
             {
-                entity.OnEffectEnd?.Invoke(effect);
+                effect.OnExpire?.Invoke(effect);
             }
 
             entity.ActiveEffects.Clear();

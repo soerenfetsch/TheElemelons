@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     Mana mana;
     HealthBar healthBar;
     ManaBar manaBar;
+    BuffDebuffIconBar buffDebuffIconBar;
     PlayerMovement playerMovement;
 
     InputManager inputManager;
@@ -38,6 +39,7 @@ public class UIManager : MonoBehaviour
         healthBar = playerObject.GetComponent<HealthBar>();
         mana = playerObject.GetComponent<Mana>();
         manaBar = playerObject.GetComponent<ManaBar>();
+        buffDebuffIconBar = playerObject.GetComponent<BuffDebuffIconBar>();
         castingScript = playerObject.GetComponent<Casting>();
         inputManager = playerObject.GetComponent<InputManager>();
         playerMovement = playerObject.GetComponent<PlayerMovement>();
@@ -48,6 +50,7 @@ public class UIManager : MonoBehaviour
     {
         UpdateHealthBar();
         UpdateManaBar();
+        UpdateBuffDebuffIcons();
         AutoManaShowHurtHeal();
         AutoHealthShowHurtHeal();
 
@@ -185,6 +188,22 @@ public class UIManager : MonoBehaviour
     public void SetSpeedBuffAnimation(bool isBuffed)
     {
         speedBuffAnimator.SetBool("run", isBuffed);
+    }
+
+    // BuffDebuff Icon Management
+    private void UpdateBuffDebuffIcons()
+    {
+        buffDebuffIconBar.UpdateIconBar();
+    }
+
+    public void AddBuffDebuffIcon(BuffDebuffManager.BuffDebuffType type)
+    {
+        buffDebuffIconBar.AddBuff(type);
+    }
+
+    public void RemoveBuffDebuffIcon(BuffDebuffManager.BuffDebuffType type)
+    {
+        buffDebuffIconBar.RemoveBuff(type);
     }
 
 }
