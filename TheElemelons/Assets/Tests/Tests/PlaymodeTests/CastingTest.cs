@@ -35,7 +35,7 @@ public class CastingTests
         casting = gameObject.AddComponent<Casting>();
         casting.manaScript = manaMock;
         casting.playerMovement = playerMovementMock;
-        casting.uIManager = uiManagerMock;
+        casting.uiManager = uiManagerMock;
         casting.wandAnimator = wandAnimatorMock;
     }
 
