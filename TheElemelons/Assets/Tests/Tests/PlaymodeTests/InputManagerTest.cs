@@ -20,37 +20,23 @@ public class MockCasting : MonoBehaviour
 
 public class InputManagerPlayModeTests
 {
-    private InputManager inputManager;
-
     private GameObject playerGameObject;
 
     [SetUp]
     public void SetUp()
     {
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+        playerGameObject = new GameObject("Player");
+        var casting = playerGameObject.AddComponent<Casting>();
+        var playerMovement = playerGameObject.AddComponent<PlayerMovement>();
 
-    	#if UNITY_EDITOR
-        // Load Player prefab from the project
-        GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Player.prefab");
-        Assert.NotNull(playerPrefab, "Player prefab not found at the specified path.");
+        // Disable the casting and player movement scripts
+        casting.enabled = false;
+        playerMovement.enabled = false;
 
-        // Instantiate the Player prefab
-        playerGameObject = Object.Instantiate(playerPrefab);
-        playerGameObject.GetComponent<Animator>().enabled = false;     // Disable Animator
-                                                                       //UNCOMMENT IF INPUTMANAGER EXISTS
-                                                                       //playerGameObject.GetComponent<InputManager>().enabled = false;
-        playerGameObject.GetComponent<HealthBar>().enabled = false;     // Disable Healthbar
-        playerGameObject.GetComponent<ManaBar>().enabled = false;    
-        
-
-        #endif
         // Add a mock Main Camera
         Camera mainCamera = new GameObject("Main_Camera").AddComponent<Camera>();
         mainCamera.tag = "MainCamera";
         playerGameObject.SetActive(true);
-
-        Debug.Log("Setup complete: PlayerPrefs cleared and saved.");
     }
 
     [UnityTest]
