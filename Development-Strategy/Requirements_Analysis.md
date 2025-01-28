@@ -69,7 +69,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
  
   - With no charges selected: cast a basic attack spell that is stationary at the casting point. It lingers at the point for a small time (variable to be changed ~ 1 sec) and if it collides with an enemy, deals a small amount of damage (variable to be changed ~ 0.5 hearts)
   - With fire, fire selected: casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime (variable to be changed ~ 3 sec), explodes on impact (wall, enemy) and deals large amount of damage (variable to be changed ~ 2 hearts) in an AOE where the radius of effect is an edittable variable ~ 1.5 tiles
-  - With wind, none selected: casts a speed buff spell that boosts the movement speed of the player by a factor (variable between 1 and 2) for a variable amount of time (3-30 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the speed buff animation as long as the buff is applicable
+  - With wind, none selected: casts a speed buff spell that boosts the movement speed of the player by a factor (variable between 1 and 2) for a variable amount of time (3-30 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the speed buff animation as long as the buff is applied (see Buff/Debuff Manager for details)
  
 #### 2.1.4 Input Manager
 
@@ -164,7 +164,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Execute attack**: callback function for all attacks which are called by the participating objects, given the caller object (attacker) and the hit object (defender) calculate the attack damage, subtract the damage of the defender's health, set defender to status staggered and knock back the defender, if the defender is the player and the player dies, instruct the Game System to act on player death
 
 #### 2.4.2 Buff/Debuff Manager: Manages buffs and debuffs for the player and enmies alike
-- **Apply Buff or Debuff**: Start a timer of given length to apply the buff or debuff during the timer and execute the effects and delegate the UI Manager to create the buff/debuff effect in the UI, buffs and debuffs should be additive so they can stack on the object (handle a list of them)
+- **Apply Buff or Debuff**: Start a timer of given length to apply the buff or debuff during the timer to any buffable object (Enemy or Player) and execute the effects. Then if the target of the buff/debuff is the player, delegate the UI Manager to create the buff/debuff effect in the UI, buffs and debuffs should be additive so they can stack on the object (handle a list of them)
 - The different buffs are:
     - Speed buff: Player or Enemy have increased movement speed during the application
     - Damage buff: Player or Enemy have increased damage (using a damage factor)
@@ -175,6 +175,8 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
     - Weakness debuff: Player or Enemy have decreased damage (using a damage factor)
     - Fragility debuff: Player or Enemy have decreased defense (using a defense factor)
     - Mana regen debuff: Player of Enemy have decreased mana regen
+  - Each buff has an associated duration and an effect factor, for the duration of the effect the respective attribute (movement speed, damage, etc.) is multiplied (buff) or divided (debuff) by the given factor (factors stack, i.e if two buffs with factor 2 are applied, the resulting factor is 4)
+  - **Speed Buff** additional animations: If the speed buff is applied to the player, the UI Manager should continuously update the speed buff animation which shows dust particles in the opposite direction of the movement during the duration of the speed buff (see update and start speed buff animation in the UI Manager)
 
 #### 2.4.3 Health
 
@@ -221,6 +223,8 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Update aiming arrow**: using the input manager get the current mouse aiming direction of player and show an arrow around the player sprite in that direction
 - **Clear spell charge UI**: clear all spell charges from the canvas so that no charges are displayed
 - **Load charge UI**: given a charge sprite type, check how many charge UIs are displayed and then if none are, display the charge on top of the player at position 1, if one is displayed then show the charge at position 2, else do nothing
+- **Update speed buff animation**: Continuously update the horizontal and vertical direction vector of the speed buff animator by getting the direction of the player movement. The animation is not be displayed by this but just updates the necessary variables
+- **Start/Stop speed buff animation**: Start or stop the animation which displays blue dust particles at the players feet flying in the opposite direction of the player's movement
 
 #### 2.6.2 HealthBar
 
