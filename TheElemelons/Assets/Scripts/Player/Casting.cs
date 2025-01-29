@@ -40,8 +40,8 @@ public class Casting : MonoBehaviour
     public int maxCharges = 2;
     public ChargeTuple currentCharges = new ChargeTuple();
     [Header("Spell Selection")]
-    private GameObject currentSpell;
     public GameObject noTypeSpell;
+    public GameObject speedBuffSpell;
     public float manaCost = 1f;
 
     /// <summary>
@@ -51,7 +51,7 @@ public class Casting : MonoBehaviour
 
     [Header("Internal Stuff")]
     public PlayerMovement playerMovement;
-    public UIManager uIManager;
+    public UIManager uiManager;
     private Player player;
 
     private void Start()
@@ -60,8 +60,7 @@ public class Casting : MonoBehaviour
         player = gameObject.GetComponent<Player>();
         manaScript = gameObject.GetComponent<Mana>();
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype), noTypeSpell.GetComponent<SpellEffect>());
-        currentSpell = noTypeSpell;
-        determineSpell();
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.notype), speedBuffSpell.GetComponent<SpellEffect>());
     }
 
     /// <summary>
@@ -114,7 +113,7 @@ public class Casting : MonoBehaviour
         {
             currentCharges.Add(selectedCharge);
             wandAnimator.SetBool("Charge", true);
-            uIManager.loadChargeSprite(selectedCharge);
+            uiManager.loadChargeSprite(selectedCharge);
         }
     }
 
@@ -140,7 +139,7 @@ public class Casting : MonoBehaviour
             CombatManager.InstantiateSpell(newSpell, gameObject, castpoint.position, Quaternion.Euler(0, 0, 0));
             //clear chargetuple and according ui
             ClearCharges();
-            uIManager.ClearChargeSprites();
+            uiManager.ClearChargeSprites();
             manaScript.justCasted = true;
         }
         else
@@ -162,7 +161,7 @@ public class Casting : MonoBehaviour
     {
         wandAnimator.SetBool("Charge", true);
         currentCharges.Clear();
-        uIManager.ClearChargeSprites();
+        uiManager.ClearChargeSprites();
     }
 
     /// <summary>

@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BuffDebuffManager : MonoBehaviour
 {
     // Singleton instance
     public static BuffDebuffManager Instance { get; private set; }
+    private UIManager _uiManager;
 
     private void Awake()
     {
@@ -17,6 +19,13 @@ public class BuffDebuffManager : MonoBehaviour
         else
         {
             Destroy(gameObject); // Enforce singleton
+        }
+
+        // Cache UIManager reference
+        _uiManager = FindObjectOfType<UIManager>();
+        if (_uiManager == null)
+        {
+            Debug.LogWarning("UIManager not found in the scene. Ensure there is a UIManager component.");
         }
     }
 
@@ -41,6 +50,9 @@ public class BuffDebuffManager : MonoBehaviour
         public float duration;
         public float effectValue;
 
+        public Action<BuffDebuff> OnApply;
+        public Action<BuffDebuff> OnExpire;
+
         public BuffDebuff(BuffDebuffType type, float duration, float effectValue)
         {
             this.type = type;
@@ -52,22 +64,25 @@ public class BuffDebuffManager : MonoBehaviour
     // Target entity structure
     public class TargetEntity
     {
+        public string Name { get; private set; } // Name of the target
         public List<BuffDebuff> ActiveEffects = new List<BuffDebuff>();
-        public Action<BuffDebuff> OnEffectStart; // Delegate for handling UI updates
-        public Action<BuffDebuff> OnEffectEnd;   // Delegate for ending effects
 
+        public TargetEntity(string name)
+        {
+            Name = name;
+        }
         public void ApplyEffect(BuffDebuff effect)
         {
-            Debug.Log($"Applying {effect.type} effect to target.");
+            Debug.Log($"Applying {effect.type} effect to target {Name}.");
             ActiveEffects.Add(effect);
-            OnEffectStart?.Invoke(effect);
+            effect.OnApply?.Invoke(effect);
         }
 
         public void RemoveEffect(BuffDebuff effect)
         {
-            Debug.Log($"Removing {effect.type} effect from target.");
+            Debug.Log($"Removing {effect.type} effect from target {Name}.");
             ActiveEffects.Remove(effect);
-            OnEffectEnd?.Invoke(effect);
+            effect.OnExpire?.Invoke(effect);
         }
     }
 
@@ -84,14 +99,37 @@ public class BuffDebuffManager : MonoBehaviour
     {
         if (!targets.ContainsKey(target))
         {
-            targets[target] = new TargetEntity();
+            targets[target] = new TargetEntity(target.name);
         }
 
         TargetEntity entity = targets[target];
 
-        BuffDebuff effect = new BuffDebuff(effectType, duration, effectValue);
+        BuffDebuff effect = new BuffDebuff(effectType, duration, effectValue)
+        {
+            OnApply = effect =>
+            {
+                // Add buff/debuff icon to UI
+                _uiManager?.AddBuffDebuffIcon(effect.type);
+                // Start the speed buff animation if buff is speed buff
+                if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
+                {
+                    _uiManager?.SetSpeedBuffAnimation(true);
+                }
+            },
+            OnExpire = effect =>
+            {
+                // Remove buff/debuff icon from UI
+                _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                // Only stop the speed buff animation if there is no other speed buff active
+                if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff
+                    && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
+                {
+                    _uiManager?.SetSpeedBuffAnimation(false);
+                }
+            }
+        };
 
-        // TODO: Attach UIManager gui buff display to the player via delegates
+        // TODO: Add more OnApply and OnExpire delegates for other effects
 
         // Apply effect to target stats
         ApplyEffectToStats(target, effect, true);
@@ -180,7 +218,7 @@ public class BuffDebuffManager : MonoBehaviour
             TargetEntity entity = targets[target];
             foreach (var effect in entity.ActiveEffects)
             {
-                entity.OnEffectEnd?.Invoke(effect);
+                effect.OnExpire?.Invoke(effect);
             }
 
             entity.ActiveEffects.Clear();
