@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     Mana mana;
     HealthBar healthBar;
     ManaBar manaBar;
+    BuffDebuffIconBar buffDebuffIconBar;
+    PlayerMovement playerMovement;
 
     InputManager inputManager;
     [Header("Aim")]
@@ -27,6 +29,8 @@ public class UIManager : MonoBehaviour
     [Header("ManaHealthBar Management")]
     float lastMana;
     float lastHealth;
+    [Header("BuffDebuff Animation Management")]
+    public Animator speedBuffAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +39,10 @@ public class UIManager : MonoBehaviour
         healthBar = playerObject.GetComponent<HealthBar>();
         mana = playerObject.GetComponent<Mana>();
         manaBar = playerObject.GetComponent<ManaBar>();
+        buffDebuffIconBar = playerObject.GetComponent<BuffDebuffIconBar>();
         castingScript = playerObject.GetComponent<Casting>();
         inputManager = playerObject.GetComponent<InputManager>();
+        playerMovement = playerObject.GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -44,8 +50,11 @@ public class UIManager : MonoBehaviour
     {
         UpdateHealthBar();
         UpdateManaBar();
+        UpdateBuffDebuffIcons();
         AutoManaShowHurtHeal();
         AutoHealthShowHurtHeal();
+
+        UpdateSpeedBuffAnimation();
 
         lastHealth = health.GetHealth();
         lastMana = mana.GetMana();
@@ -62,10 +71,12 @@ public class UIManager : MonoBehaviour
     }
     public void HealthShowHurt()
     {
+        Debug.Log("HealthShowHurt");
         healthBar.Hurt();
     }
     public void HealthShowHeal()
     {
+        Debug.Log("HealthShowHeal");
         healthBar.Heal();
     }
     public void AutoHealthShowHurtHeal()
@@ -87,10 +98,12 @@ public class UIManager : MonoBehaviour
     }
     public void ManaShowHurt()
     {
+        Debug.Log("ManaShowHurt");
         manaBar.Hurt();
     }
     public void ManaShowHeal()
     {
+        Debug.Log("ManaShowHeal");
         manaBar.Heal();
     }
     public void AutoManaShowHurtHeal()
@@ -157,6 +170,40 @@ public class UIManager : MonoBehaviour
         mousePos = inputManager.GetMousePosition();
         float angle = inputManager.GetAimDirection();
         aim_transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    //BuffDebuff Animation Management
+    private void UpdateSpeedBuffAnimation()
+    {
+        Vector2 movement = playerMovement.GetMovement();
+        speedBuffAnimator.SetFloat("Horizontal", movement.x);
+        speedBuffAnimator.SetFloat("Vertical", movement.y);
+    }
+
+    /// <summary>
+    /// Start or stop the speed buff animation.
+    /// Should be called at the start and at the end of the speed buff effect.
+    /// </summary>
+    /// <param name="isBuffed"></param>
+    public void SetSpeedBuffAnimation(bool isBuffed)
+    {
+        speedBuffAnimator.SetBool("run", isBuffed);
+    }
+
+    // BuffDebuff Icon Management
+    private void UpdateBuffDebuffIcons()
+    {
+        buffDebuffIconBar.UpdateIconBar();
+    }
+
+    public void AddBuffDebuffIcon(BuffDebuffManager.BuffDebuffType type)
+    {
+        buffDebuffIconBar.AddBuff(type);
+    }
+
+    public void RemoveBuffDebuffIcon(BuffDebuffManager.BuffDebuffType type)
+    {
+        buffDebuffIconBar.RemoveBuff(type);
     }
 
 }
