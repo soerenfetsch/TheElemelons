@@ -18,7 +18,7 @@ public enum EnemyStatus
 /// Abstract base class for enemy behavior. 
 /// Defines common properties and enforces implementation of specific behaviors in derived classes.
 /// </summary>
-public abstract class Enemy : MonoBehaviour, ICombatant
+public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
 {
     /// <summary>
     /// Reference to the Health script for managing enemy health.
@@ -106,4 +106,9 @@ public abstract class Enemy : MonoBehaviour, ICombatant
     {
         return currentState;
     }
+
+    public abstract void ModifySpeed(float factor);
+    public abstract void ModifyDamage(float factor);
+    public abstract void ModifyDefense(float factor);
+    public abstract void ModifyManaRegen(float factor);
 }
