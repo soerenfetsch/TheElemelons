@@ -159,7 +159,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.4.1 Combat Manager: Manages combat damage, health and mana calculations
 - **Cast spells**: Given a spell type with predefined attributes (i.e position, rotation) spawn the given spell object
-- **Add buff or debuff**: For a given object (e.g the player or an enemy), use the Buff/Debuff Manager to apply the given buff/debuff
+- **Add buff or debuff**: For a given object (e.g the player or an enemy), use the Manager to apply the given buff/debuff
 - **Calculate Damage**: Using the spell/attack type and the type of the opponent the attack/spell hits, calculates the damage using the formula base_attack_damage * damage_factor(of attacker) * defense_factor(of defender) * attack_type_effectivity_modifier, the effectivity modifier is given as (attack type first - defender type second): Any - BASIC = 1, FIRE - EARTH = 1.25, EARTH - AIR = 1.25, AIR - WATER = 1.25, WATER - FIRE = 1.25, the modifiers should be specified in a dictionary so that they can be changed later.
 - **Execute attack**: callback function for all attacks which are called by the participating objects, given the caller object (attacker) and the hit object (defender) calculate the attack damage, subtract the damage of the defender's health, set defender to status staggered and knock back the defender, if the defender is the player and the player dies, instruct the Game System to act on player death
 
@@ -225,6 +225,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Load charge UI**: given a charge sprite type, check how many charge UIs are displayed and then if none are, display the charge on top of the player at position 1, if one is displayed then show the charge at position 2, else do nothing
 - **Update speed buff animation**: Continuously update the horizontal and vertical direction vector of the speed buff animator by getting the direction of the player movement. The animation is not be displayed by this but just updates the necessary variables
 - **Start/Stop speed buff animation**: Start or stop the animation which displays blue dust particles at the players feet flying in the opposite direction of the player's movement
+- **Update Buff/Debuff Icon Bar**: call the Buff/Debuff Icon Bar to continuously update the icon bar ui using the player's active buffs
 
 #### 2.6.2 HealthBar
 
@@ -255,6 +256,12 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 #### 2.6.6 Dialogue UI
 
 - **Display Dialogue**: Given a name and dialogue text: dialogue should be as a rectangular dialogue box, text should be written into the box within the given space. When one box is full, the dialogue should wait for continuation and only on continue should further text be displayed. Above the dialog box display the name and portrait of the speaker.
+
+#### 2.6.7 Buff/Debuff Icon Bar
+
+- **Add buff**: Add a buff type to the player's buffs, player can have unlimited buffs and buffs of the same type.
+- **Remove buff**: Remove a buff type from the player's buffs, if player has multiple of this type, only one is removed.
+- **Update and display icon bar**: Given a fixed list of images of fixed length 'L' (length can be altered in the GUI) where buff icons can be displayed, select the sprite corresponding to the first L buffs of the player and display them in the images.
 
 ### 2.7 Interaction and Dialogue System
 
