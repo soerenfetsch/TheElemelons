@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 69778666745280560}
   m_Layer: 0
   m_Name: TreeStump
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,10 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
+  pathfinder: {fileID: 0}
   moveSpeed: 1
-  staggerTime: 0.5
-  chaseRadius: 5
-  attackRadius: 0.2
+  chaseRadius: 10
+  attackRadius: 0.5
   deathEffect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
   deathEffectDelay: 1
 --- !u!212 &6894997854453123198
