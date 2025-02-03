@@ -10,11 +10,28 @@ public class LineOfSightPathfinder : MonoBehaviour
 {
     public Transform player; // Reference to the player.
     public LayerMask obstacleLayer; // Layer mask for obstacles.
+    public TilePositionData tilePositionData; // Optional data to get floor positions.
     public HashSet<Vector2Int> floorPositions; // The possible map floor positions.
     public float playerSightRange = 10f; // Maximum range for reachable path for player.
+    public bool drawDebugGizmos = true; // Toggle for drawing debug gizmos.
 
     private Dictionary<Vector2Int, bool> visibilityGrid; // Grid to track reachable positions to the player.
     private bool isGridInitialized = false; // Tracks if the visibility grid has been initialized.
+
+    /// <summary>
+    /// Initializes the floor positions based on the TilePositionData object.
+    /// Gives a warning if the object is not set.
+    /// </summary>
+    [ContextMenu("Initialize Floor Positions")]
+    public void InitializeFloorPositions()
+    {
+        if (tilePositionData == null)
+        {
+            Debug.LogWarning("TilePositionData object is not set.");
+            return;
+        }
+        floorPositions = new HashSet<Vector2Int>(tilePositionData.tilePositions);
+    }
 
     /// <summary>
     /// Initializes the visibility grid based on the MapData object.
@@ -81,7 +98,8 @@ public class LineOfSightPathfinder : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, distance, obstacleLayer);
 
         // Draw a debug ray to visualize the line-of-sight.
-        Debug.DrawRay(startPosition, direction * distance, hit.collider ? Color.red : Color.green);
+        if (drawDebugGizmos)
+            Debug.DrawRay(startPosition, direction * distance, hit.collider ? Color.red : Color.green);
 
         // The player is visible if there's no hit or if the hit is the player itself.
         return hit.collider == null || hit.collider.transform == player;
@@ -154,7 +172,7 @@ public class LineOfSightPathfinder : MonoBehaviour
     private void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        if (visibilityGrid == null || !isGridInitialized) return;
+        if (visibilityGrid == null || !isGridInitialized || !drawDebugGizmos) return;
 
         foreach (var pair in visibilityGrid)
         {
@@ -173,9 +191,11 @@ public class LineOfSightPathfinder : MonoBehaviour
         UpdateVisibilityGrid();
     }
 
-    private void Start()
+    private void Awake()
     {
         obstacleLayer = LayerMask.GetMask("Obstacles", "Walls");
+        InitializeFloorPositions();
+        InitializeVisibilityGrid();
     }
 }
 

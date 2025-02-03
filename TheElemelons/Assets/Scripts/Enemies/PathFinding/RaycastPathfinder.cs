@@ -13,6 +13,9 @@ public static class RaycastPathfinder
     public static float maxGoalWeight = 1f; // Weight for the ray perfectly aligned with the target.
     public static float maxPenalty = 1f; // Maximum penalty for a ray hitting a close obstacle.
 
+    [Header("Debug")]
+    public static bool drawDebugRays = false; // Toggle for drawing debug rays.
+
     /// <summary>
     /// Finds the best direction for an object to move toward a goal while avoiding obstacles.
     /// The function casts rays in a circle around the object and calculates a score for each ray.
@@ -58,7 +61,8 @@ public static class RaycastPathfinder
             }
 
             // Debug visualization
-            Debug.DrawRay(ownPosition, rayDirection * score, hit.collider ? Color.red : Color.green);
+            if (drawDebugRays)
+                Debug.DrawRay(ownPosition, rayDirection * score, hit.collider ? Color.red : Color.green);
         }
 
         return bestDirection;
