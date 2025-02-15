@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3849979733952565575, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_Name
-      value: Player Variant
+      value: Player (with InputManager)
       objectReference: {fileID: 0}
     - target: {fileID: 6394807734325234049, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -59,6 +59,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3849979733952565575, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3540597155270295182}
+    - targetCorrespondingSourceObject: {fileID: 3849979733952565575, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1481874422509197686}
   m_SourcePrefab: {fileID: 100100000, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
 --- !u!1 &1950012835412239447 stripped
 GameObject:
@@ -78,3 +81,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  casting: {fileID: 0}
+  pivot: {fileID: 0}
+--- !u!114 &1481874422509197686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950012835412239447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378bc7e00518b1247bae1dbb5553a622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 0}
+  sentences:
+  - does this work?
+  typingSpeed: 0
