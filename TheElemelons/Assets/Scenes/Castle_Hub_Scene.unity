@@ -15519,22 +15519,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.08
       objectReference: {fileID: 0}
-    - target: {fileID: 708902967062599466, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 708902967062599466, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: m_SpriteSortPoint
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 913547052267167769, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: healthScript
       value: 
       objectReference: {fileID: 2076084337}
-    - target: {fileID: 913547052267167769, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: hearts.Array.size
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 913547052267167769, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: hearts.Array.data[0]
       value: 
@@ -15575,10 +15563,6 @@ PrefabInstance:
       propertyPath: hearts.Array.data[9]
       value: 
       objectReference: {fileID: 6120705487494583997}
-    - target: {fileID: 1136253471469142775, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.35
-      objectReference: {fileID: 0}
     - target: {fileID: 1589180229325968192, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_TagString
       value: Feet
@@ -15591,17 +15575,9 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.86
       objectReference: {fileID: 0}
-    - target: {fileID: 2823182672651674699, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: maxMana
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 3849979733952565575, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3898069961803275140, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4112205898563254887, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15671,18 +15647,6 @@ PrefabInstance:
       propertyPath: uiManager
       value: 
       objectReference: {fileID: 969396629}
-    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: playerMovement
-      value: 
-      objectReference: {fileID: 2076084352}
-    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: speedBuffSpell
-      value: 
-      objectReference: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffIcons.Array.size
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: buffIcons.Array.data[0]
       value: 
@@ -15723,74 +15687,6 @@ PrefabInstance:
       propertyPath: buffIcons.Array.data[9]
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[0].type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[1].type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[2].type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[3].type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[4].type
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[5].type
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[6].type
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[7].type
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[0].sprite
-      value: 
-      objectReference: {fileID: -1405974274, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[1].sprite
-      value: 
-      objectReference: {fileID: 1087799196, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[2].sprite
-      value: 
-      objectReference: {fileID: -1985229345, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[3].sprite
-      value: 
-      objectReference: {fileID: 1372432030, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[4].sprite
-      value: 
-      objectReference: {fileID: 288986662, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[5].sprite
-      value: 
-      objectReference: {fileID: -1312854629, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[6].sprite
-      value: 
-      objectReference: {fileID: 1144984600, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-    - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-      propertyPath: buffSpritePairs.Array.data[7].sprite
-      value: 
-      objectReference: {fileID: 2011474405, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
     - target: {fileID: 8967277064185722604, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: manaStars.Array.data[0]
       value: 
@@ -15845,17 +15741,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cc7205fb501bda4786c2a614533e545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2076084352 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1581666591548288514, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
-  m_PrefabInstance: {fileID: 2076084336}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1837542580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c4af8492eefd6f46bf5dc75babccf7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &2076084353 stripped

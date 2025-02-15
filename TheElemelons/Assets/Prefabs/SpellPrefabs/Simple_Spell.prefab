@@ -197,5 +197,5 @@ MonoBehaviour:
   spellObject: {fileID: 1011104708221749430}
   spellLifeTime: 1
   thrust: 2
-  knockTime: 0.4
+  knockTime: 0.2
   damage: 0.5

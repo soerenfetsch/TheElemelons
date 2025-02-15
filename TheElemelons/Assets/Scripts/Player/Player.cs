@@ -28,11 +28,10 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     /// Animator for managing player animations.
     /// </summary>
     private Animator animator;
-
     /// <summary>
     /// Animator for managing wand animations.
     /// </summary>
-    private Animator wand_animator;
+    private Animator wandAnimator;
     public float attackFactor { get; set; }
     public float defenseFactor { get; set; }
     public bool isInvincible { get; set; }
@@ -48,6 +47,9 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
         defenseFactor = 1f;
         isInvincible = false;
         elementType = ElementType.None;
+
+        animator = GetComponent<Animator>();
+        wandAnimator = transform.Find("Wand_Animation").GetComponent<Animator>();
     }
 
     /// <summary>
@@ -104,7 +106,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
         SetCurrentState(PlayerState.Stagger);
         animator.SetBool("Stagger", true);
         animator.SetTrigger("Stagger_trig");
-        wand_animator.SetBool("RaiseWand", false);
+        wandAnimator.SetBool("RaiseWand", false);
 
         yield return new WaitForSeconds(knockTime);
 

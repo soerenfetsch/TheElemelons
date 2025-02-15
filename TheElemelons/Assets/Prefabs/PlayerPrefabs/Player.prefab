@@ -477,7 +477,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1819832235
+  m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -995277943, guid: 5d05d470020937341ba0765dcf3b3195, type: 3}
@@ -490,7 +490,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!50 &3797554276017824808
 Rigidbody2D:
   serializedVersion: 4
@@ -504,7 +504,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -571,7 +571,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.065463305, y: -1.5512044}
+  m_Offset: {x: -0.065463305, y: 0.35}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -616,7 +616,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0558, y: -1.07}
+  m_Offset: {x: -0.0558, y: 0.8}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -658,7 +658,7 @@ MonoBehaviour:
   maxMana: 3
   mana: 3
   manaPerRegen: 0.25
-  manaRegenTime: 0.2
+  manaRegenTime: 0.5
   gameRunning: 1
   current_regenTime: 0.2
   justCasted: 0
@@ -694,9 +694,9 @@ MonoBehaviour:
   manaScript: {fileID: 0}
   maxCharges: 2
   noTypeSpell: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
-  speedBuffSpell: {fileID: 0}
+  speedBuffSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
   manaCost: 1
-  playerMovement: {fileID: 0}
+  playerMovement: {fileID: 1581666591548288514}
   uiManager: {fileID: 0}
 --- !u!114 &913547052267167769
 MonoBehaviour:
@@ -765,10 +765,24 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   defaultSprite: {fileID: 602036574, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
-  buffSpritePairs: []
+  buffSpritePairs:
+  - type: 0
+    sprite: {fileID: -1405974274, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 1
+    sprite: {fileID: 1087799196, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 2
+    sprite: {fileID: -1985229345, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 3
+    sprite: {fileID: 1372432030, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 4
+    sprite: {fileID: 288986662, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 5
+    sprite: {fileID: -1312854629, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 6
+    sprite: {fileID: 1144984600, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 7
+    sprite: {fileID: 2011474405, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
 --- !u!114 &6168585797730868514
 MonoBehaviour:
   m_ObjectHideFlags: 0
