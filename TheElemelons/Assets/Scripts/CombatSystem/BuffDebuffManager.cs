@@ -8,6 +8,7 @@ public class BuffDebuffManager : MonoBehaviour
     // Singleton instance
     public static BuffDebuffManager Instance { get; private set; }
     private UIManager _uiManager;
+    private BuffDebuffManager() { } // Prevent instantiation
 
     private void Awake()
     {
@@ -71,6 +72,10 @@ public class BuffDebuffManager : MonoBehaviour
         {
             Name = name;
         }
+        /// <summary>
+        /// Applies a buff or debuff effect to the target.
+        /// </summary>
+        /// <param name="effect">The buff or debuff effect to apply.</param>
         public void ApplyEffect(BuffDebuff effect)
         {
             Debug.Log($"Applying {effect.type} effect to target {Name}.");
@@ -78,6 +83,10 @@ public class BuffDebuffManager : MonoBehaviour
             effect.OnApply?.Invoke(effect);
         }
 
+        /// <summary>
+        /// Removes a buff or debuff effect from the target.
+        /// </summary>
+        /// <param name="effect">The buff or debuff effect to remove.</param>
         public void RemoveEffect(BuffDebuff effect)
         {
             Debug.Log($"Removing {effect.type} effect from target {Name}.");
@@ -93,10 +102,22 @@ public class BuffDebuffManager : MonoBehaviour
     /// </summary>
     /// <param name="target">The target GameObject.</param>
     /// <param name="effectType">Type of buff or debuff.</param>
-    /// <param name="duration">Duration of the effect.</param>
-    /// <param name="effectValue">Value of the effect (e.g., damage factor).</param>
+    /// <param name="duration">Duration of the effect. Must be greater than 0.</param>
+    /// <param name="effectValue">Value of the effect as a factor. Must be greater or equal 1.</param>
     public void ApplyBuffDebuff(GameObject target, BuffDebuffType effectType, float duration, float effectValue)
     {
+        // Assert that duration is greater than 0 and effect value is greater than or equal to 1
+        if (duration <= 0)
+        {
+            Debug.LogWarning("Duration must be greater than 0.");
+            return;
+        }
+        if (effectValue < 1)
+        {
+            Debug.LogWarning("Effect value must be greater than or equal to 1.");
+            return;
+        }
+
         if (!targets.ContainsKey(target))
         {
             targets[target] = new TargetEntity(target.name);
@@ -147,6 +168,13 @@ public class BuffDebuffManager : MonoBehaviour
         if (buffable == null)
         {
             Debug.LogWarning($"No IBuffable component found on {target.name}");
+            return;
+        }
+
+        // Check that effect factor is greater or equal to 1
+        if (effect.effectValue < 1)
+        {
+            Debug.LogWarning($"Effect value must be greater or equal 1. Effect: {effect.type}");
             return;
         }
 

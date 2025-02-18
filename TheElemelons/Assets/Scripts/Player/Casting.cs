@@ -182,6 +182,11 @@ public class Casting : MonoBehaviour
         return currentCharges.Count();
     }
 
+    /// <summary>
+    /// Adds a spell to the charge-to-spell dictionary.
+    /// </summary>
+    /// <param name="newSpell">The spell GameObject to add.</param>
+    /// <param name="chargeTuple">The charge tuple associated with the spell.</param>
     public void AddSpellToDict(GameObject newSpell, ChargeTuple chargeTuple)
     {
         chargeToSpell.Add(chargeTuple, newSpell.GetComponent<SpellEffect>());

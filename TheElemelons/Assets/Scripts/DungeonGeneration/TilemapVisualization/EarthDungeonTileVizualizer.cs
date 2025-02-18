@@ -25,7 +25,9 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     };
     protected Tilemap atlasTilemap;
 
-    // Method to initialize the atlas tilemap from TilemapData
+    /// <summary>
+    /// Initializes the atlas tilemap from TilemapData.
+    /// </summary>
     private void InitializeAtlasTilemap()
     {
         if (atlasTilemap == null)
@@ -46,6 +48,12 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         }
     }
 
+    /// <summary>
+    /// Selects the appropriate rim tile based on the room type and rim position.
+    /// </summary>
+    /// <param name="roomType">The type of the room.</param>
+    /// <param name="rimPosition">The position of the rim.</param>
+    /// <returns>The selected rim tile.</returns>
     private TileBase SelectRimTile(Room.RoomType roomType, RimPosition rimPosition)
     {
         RimTileSet rimTileSet;
@@ -91,6 +99,10 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         return null;
     }
 
+    /// <summary>
+    /// Paints the tiles on the map.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public override void PaintTiles(MapData mapData)
     {
         PaintFloor(mapData);                               // Paint the floor tiles
@@ -99,6 +111,9 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         DecorateDungeon(mapData);                          // Optionally add decorations
     }
 
+    /// <summary>
+    /// Clears all tiles from the tilemaps.
+    /// </summary>
     public override void Clear()
     {
         floorTilemap.ClearAllTiles();
@@ -236,8 +251,9 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     /// <summary>
     /// Paints the upper walls two tiles high with the upper being passable,
-    /// the side is one wide and the bottom wall being one block high 
+    /// the side is one wide and the bottom wall being one block high.
     /// </summary>
+    /// <param name="mapData">The map data containing the wall positions and rooms.</param>
     public void PaintWalls(MapData mapData)
     {
         // Calculate the center of each room
@@ -332,7 +348,11 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         }
     }
 
-    // Leave the dungeon undecorated for now
+    /// <summary>
+    /// Decorates the dungeon with additional elements.
+    /// Is left empty for now.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void DecorateDungeon(MapData mapData)
     {
         // TODO Add decorations
@@ -380,6 +400,11 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         }
     }
 
+    /// <summary>
+    /// Calculates the center of a room based on its floor positions.
+    /// </summary>
+    /// <param name="floorPositions">The floor positions of the room.</param>
+    /// <returns>The center position of the room.</returns>
     private Vector2Int CalculateRoomCenter(HashSet<Vector2Int> floorPositions)
     {
         int xSum = 0, ySum = 0;
@@ -391,6 +416,12 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         return new Vector2Int(xSum / floorPositions.Count, ySum / floorPositions.Count);
     }
 
+    /// <summary>
+    /// Finds the closest room center to a given position.
+    /// </summary>
+    /// <param name="position">The position to find the closest room center to.</param>
+    /// <param name="roomCenters">The room centers to compare to.</param>
+    /// <returns>The closest room center to the given position.</returns>
     private Vector2Int FindClosestRoomCenter(Vector2Int position, IEnumerable<Vector2Int> roomCenters)
     {
         Vector2Int closestCenter = Vector2Int.zero;
@@ -409,6 +440,13 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         return closestCenter;
     }
 
+    /// <summary>
+    /// Paints the door at the specified position in the given room.
+    /// This method paints the door based on the door direction and the room type.
+    /// </summary>
+    /// <param name="position">The position of the door.</param>
+    /// <param name="doorDirection">The direction of the door. up, down, left or right.</param>
+    /// <param name="room">The room the door is in.</param>
     private void PaintDoor(Vector2Int position, Vector2Int doorDirection, Room room)
     {
         // Paint the door based on the door direction, initial position is in the middle of the door

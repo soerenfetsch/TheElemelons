@@ -15,7 +15,12 @@ public enum ElementType
 public class CombatHelper : MonoBehaviour
 {
     private static CombatHelper _instance;
+    private CombatHelper() { } // Prevent instantiation
 
+    /// <summary>
+    /// Gets the singleton instance of the CombatHelper.
+    /// If the instance does not exist, it creates a new GameObject and attaches the CombatHelper component to it.
+    /// </summary>
     public static CombatHelper Instance
     {
         get
@@ -40,6 +45,12 @@ public class CombatHelper : MonoBehaviour
         StartCoroutine(InvincibilityRoutine(target, duration));
     }
 
+    /// <summary>
+    /// Coroutine to handle temporary invincibility.
+    /// Sets the target's invincibility status to true, waits for the specified duration, and then sets it to false.
+    /// </summary>
+    /// <param name="target">The target to make invincible.</param>
+    /// <param name="duration">The duration of invincibility.</param>
     private IEnumerator InvincibilityRoutine(ICombatant target, float duration)
     {
         target.isInvincible = true;
