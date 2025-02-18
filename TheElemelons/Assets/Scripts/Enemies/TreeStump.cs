@@ -9,8 +9,8 @@ public class TreeLog : Enemy
     private Transform transformComponent;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb2d;
-    private BoxCollider2D hitbox;
-    private BoxCollider2D collisionBox;
+    private BoxCollider2D colliderBox;
+    private BoxCollider2D attackColliderBox;
     private Animator animator;
 
     [Header("Pathfinding")]
@@ -24,7 +24,12 @@ public class TreeLog : Enemy
     public float chaseRadius = 5f;
     public float attackRadius = 0.2f;
 
-    // TODO: Add more attack behavior variables for combat
+    [Header("Combat")]
+    public float baseDamage = 1f;
+    public float thrust = 1f;
+    public float knockTime = 0.2f;
+    private float lastAttackTime = 0f;
+    public float attackCooldown = 2f; // Adjust attack cooldown as needed
 
     [Header("Effects")]
     public GameObject deathEffect;
@@ -44,8 +49,8 @@ public class TreeLog : Enemy
         transformComponent = GetComponent<Transform>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
-        hitbox = GetComponent<BoxCollider2D>();
-        collisionBox = GetComponents<BoxCollider2D>()[1]; // Assuming second collider is for collision.
+        colliderBox = GetComponent<BoxCollider2D>();
+        attackColliderBox = GetComponents<BoxCollider2D>()[1]; // Assuming second collider is for attack collisions
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
@@ -67,6 +72,7 @@ public class TreeLog : Enemy
     {
         InitializeComponents();
         InitializeCombatComponents();
+        colliderBox.enabled = false;
     }
 
     // Fixed update to handle physics and movements correctly
@@ -117,9 +123,12 @@ public class TreeLog : Enemy
                 }
                 break;
             case EnemyStatus.Attacking:
-                // TODO: Add attack behavior with combat system
+                // Attempt to attack player by allowing the attack collider to hit the player
+                EnableAttackCollider();
+                MoveTowardPlayer();
                 if (CheckPlayerOutsideRadius(attackRadius))
                 {
+                    DisableAttackCollider();
                     ChangeState(EnemyStatus.Approaching);
                 }
                 break;
@@ -282,15 +291,43 @@ public class TreeLog : Enemy
 
     private Vector2 GetFeetPosition()
     {
-        return new Vector2(transformComponent.position.x, collisionBox.bounds.min.y);
+        return new Vector2(transformComponent.position.x, colliderBox.bounds.min.y);
     }
 
     private IEnumerator HandleStagger(float staggerTime)
     {
+        ChangeState(EnemyStatus.Staggered);
         animator.SetTrigger("TrStagger");
         yield return new WaitForSeconds(staggerTime);
         animator.SetTrigger("TrStopStagger");
         ChangeState(EnemyStatus.Idle);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Only attack player when last attack was more than attackCooldown seconds ago
+        if (Time.time - lastAttackTime < attackCooldown) return;
+
+        if (currentState == EnemyStatus.Attacking && other.CompareTag("Player")) // Check if currently attacking
+        {
+            Rigidbody2D playerRb = other.GetComponent<Rigidbody2D>();
+            if (playerRb != null)
+            {
+                Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
+                CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
+                lastAttackTime = Time.time;
+            }
+        }
+    }
+
+    private void EnableAttackCollider()
+    {
+        colliderBox.enabled = true; // Enable attack detection
+    }
+
+    private void DisableAttackCollider()
+    {
+        colliderBox.enabled = false; // Disable attack detection
     }
 
     public override void ModifySpeed(float factor)

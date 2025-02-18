@@ -1,0 +1,6596 @@
+fileFormatVersion: 2
+guid: 94b005535d935b24fbdcae4b249b17b5
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b0713b285bf6ee4f81c7215f3a44569
+      internalID: -1783353628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a4669f039e2be243b514647d124c450
+      internalID: -24435272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8d437c5f15b8bf4dbaa435e76cf48e4
+      internalID: -682533394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7aa6a26df5328f408ce285b85eaa84a
+      internalID: 1564237642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28f2048d8b047e1429b2388e6a8b19ca
+      internalID: 1125426606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff55f728a01643e44870e3ef8fee5453
+      internalID: -469498667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea9f26f7c8c582b4a820c8b6b6d7cba2
+      internalID: 1926893907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd9721630aafb8e4ca52375caa9594f2
+      internalID: -343035975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_8
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18d6f74fd099f9a43829c2697d314c28
+      internalID: 780709616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_9
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee8bc5d918cfdab48ba774b5441b9853
+      internalID: -1471815245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_10
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52b8ffbe06930ef42a9d519cdc4eef42
+      internalID: -1287330002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_11
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72933ef7b51e6814c99a13318be7e704
+      internalID: -1498797132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_12
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfd63027e1cec484ba4cf38a81277a61
+      internalID: 2066171368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_13
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ece89f88279add42af0db84d3dbe466
+      internalID: -1157166982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_14
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 521
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 094658af69855b548943cb6e464d2a6f
+      internalID: -2102422790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_15
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 521
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9f2de1a332ac834b9fcd9a51c963122
+      internalID: 1139294051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_16
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 521
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9151b5263953ce3478807079e26f37f7
+      internalID: 1191251371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_17
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 521
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64449a650625c6f469ceb19522bb5707
+      internalID: -1140110686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_18
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7034c2207e56fb84eaacc19cbb82e18f
+      internalID: 1722974849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_19
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68b587bf990d84c4c978698857489089
+      internalID: -717233154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_20
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8de23b052fafd6549b4de6c0192f4440
+      internalID: 397810414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_21
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4899d64e085782c469513036de7df4a5
+      internalID: 1475829095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_22
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 553
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbb2a5b3c1bd32e4db7f17b567cb6e21
+      internalID: 947260159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_23
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82350f9f749e25843b389730ebc98b84
+      internalID: 628127694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_24
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad6e41002e5276d4994e4dfed4ca0176
+      internalID: 17346392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_25
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0250cce5144b4264a81dbdba3144bdbf
+      internalID: 1304976040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_26
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d6dc129d5f2c044f92113bcce631afd
+      internalID: -1342478017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_27
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 477398b01d374d44dac426ebfeae58bd
+      internalID: 1404261891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_28
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8465ee81835177144ad3727c6ffb9996
+      internalID: -1317936238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_29
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bac44e9fc5bbb34479804c7e276d4aca
+      internalID: 341381042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_30
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 791ed50de4c52ca45bd8593f1a86b10a
+      internalID: 1114498469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_31
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c391f06f5a7e994b95f0333a8724709
+      internalID: -1749076311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_32
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16a37ecfc66c96c40a165dbe1e62550b
+      internalID: -1617902296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_33
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e4500eb3a130484d9bb2e8828ffecb4
+      internalID: 1253045064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_34
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2efbeaa94bb86be4f8c22e519f1b3326
+      internalID: 746662620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_35
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 625934271be3d8f479b218af069ea73e
+      internalID: -909313132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_36
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c04fef20b162648408718b55cbf6c16a
+      internalID: -2110472669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_37
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd886406e4bfdf649a251d5ba19cd924
+      internalID: -105452512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_44
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 980b11a82f2ad8241a56339baaa406f0
+      internalID: 1693327128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_45
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46f36f6c78ac1b34dbefd2d7ae8f47dc
+      internalID: -1060454616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_46
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73a8b0410ef23c94cba004e0ae66ff1a
+      internalID: 526906397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_47
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94449d198ded08c4ab25183da686917b
+      internalID: 274969469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_48
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e42f904354c471948a8c18d3b25a86cf
+      internalID: -173265512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_49
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfa53bc3f020e9847b59adec3294f07c
+      internalID: -1959959624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_50
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 537
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9dafc79d6e9853445be8b4e1a1116674
+      internalID: 1880795792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_51
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31f6a17aeaa0acb41bf231a0a40f6c4d
+      internalID: -592766482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_52
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d6eb4119bb53e043aeea98cd0c658e6
+      internalID: 2003979163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_53
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28797aaf7cfa75c48a1854bacb66d112
+      internalID: -1896918943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_54
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fa48125211cb1f428500810b29ae141
+      internalID: 142735275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_55
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e0df3d32d569bc41a928d89fea9b546
+      internalID: 251595110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_56
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5336e38ec98021f4ea245de50e6149bf
+      internalID: -799915045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_57
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d3eb10246a3acb4a82fc211a12e4aff
+      internalID: -248764167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_58
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e44461757fe57154792de407e8a2ebde
+      internalID: 936151004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_59
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85966a6cd78189849906475f8fe012f2
+      internalID: -469442944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_60
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67dd9de0cf80e904db2250590dbf7d28
+      internalID: 157881643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_61
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24272201f2d9b7748aac7dfcc70578c8
+      internalID: 300393721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_62
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39169d8f61903c34c8f97cf20caaedc3
+      internalID: 420599469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_63
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b421b0f46a257434890ac4e4a2b3a9ba
+      internalID: -1447615037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_64
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34486ad957452534f990a4060a9e8350
+      internalID: 46276177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_65
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 553792b687b334045809e71b5e645d7e
+      internalID: 904405173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_67
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 521
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f6808af4df36d54e9b1bd6f722f4b98
+      internalID: -817262526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_71
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 521
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd5f944536e7bac4f973569377ee4894
+      internalID: -2097615424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_72
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aee6be5d731b77740b7d252fa0338b69
+      internalID: -1620369433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_73
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa8b35821f55d3e46b6e3a6264c3eb4d
+      internalID: 1084139979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_74
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45b4b68417a76cb49a4abfc53447a77a
+      internalID: 887961851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_75
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ee206567d7e9484eb1b01a1b49630d3
+      internalID: 667850257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_76
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2d707775d8ea6646b1a5d74f6f4c4c6
+      internalID: -1431605753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_77
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab96f62753d153f4dbf96eabb2f30997
+      internalID: -1961088699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_78
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 521
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a3c6f0d331a5ed49b59c5116337f499
+      internalID: -75898875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_79
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4005fe38e93f57345a7169d6b96649b4
+      internalID: -588915904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_80
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 489
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 181e8421c0458bc4a940b15afc4f2565
+      internalID: -967577244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_81
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88040fc6ee16ca44a8bbbc6891003992
+      internalID: -1766666515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_82
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b4274f5b261fcb4f8b313c167313657
+      internalID: -1508284053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_83
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 489
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05c0065223ee26a4ebbc5063ff65ac46
+      internalID: -1077609013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_84
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fbd491c385130b4e86a374ac5b8b42a
+      internalID: 1345663602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_85
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a57b04e4feec6c3419f413b52c59b1fc
+      internalID: 1309456490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_86
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bec57ff2483661f4f83e95986185103d
+      internalID: -945366154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_87
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9be5b476065c36d408471ddc0c47ceb4
+      internalID: -1448699251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_88
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13a46ef8fb8fb954493e85a8ce7326d0
+      internalID: 909399194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_89
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d07563ac4df618a4b85d4962de6e4fed
+      internalID: 1257408583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_90
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 232ed446eb8c00c4688a56bf2b6626eb
+      internalID: 782554376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_91
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73bf00be7818a59488c8df734fb91af4
+      internalID: -855994832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_92
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92e63c6323df7b749928c8f754f1a68c
+      internalID: -1469423425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_93
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 583edfc66bab6bf4b93412b450acbf63
+      internalID: -1719597483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_94
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af06b89fad5fc1244b96050df86fb958
+      internalID: 1586958915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_95
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5df25e2bfa601f548ab03679fca11b01
+      internalID: -2056153799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_96
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94897fd689e8b2041893f73c99050a20
+      internalID: -1857811279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_97
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d48382bd14c93c47995ea0b2647b5fc
+      internalID: 1236463149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_98
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdd6b9f8eb2343c4cb76258b7901812c
+      internalID: 812404262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_99
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5461ef72dd70f3346913012048764c13
+      internalID: 876475894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_100
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cb835c7f5669ad4f8d6999706d37f7a
+      internalID: 960223593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_101
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53f60573a4ef8964c896ffd5e45c7d8c
+      internalID: 1882777177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_102
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c1b8717e8d04954c8f22c450764b788
+      internalID: 109361267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_103
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56a874b641c1458488a40bbfc6412047
+      internalID: -111287287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_104
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 505
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7464c98e7bb28cf43b5b13f4b3f6c34b
+      internalID: -1565476744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_105
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f46509f23e39b734bb1057c143d5de9e
+      internalID: -671131093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_106
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 594d8c70151c62c4d9035d9cfb60012b
+      internalID: -216055546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_107
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8c8adbbb2ad4c941bba4eb39d963002
+      internalID: -605219460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_108
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0ef7055d127e8040a49fb84ddf902b4
+      internalID: -918699533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_110
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffe74eda2edb29d448613a012db8a925
+      internalID: 1736288215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_111
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c1694bf656c1ba4d970976cef65a726
+      internalID: 2044358956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_112
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b7b4b9e6e155a143929701539baefd1
+      internalID: 931478690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_113
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cb43e4922fbb224db964cea74f7e863
+      internalID: -867265718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_114
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24b20adcb274c06489acb64bb4bc6b53
+      internalID: -1687831126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_115
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 695e084ffbcc816488f61c5fe3a285df
+      internalID: 37270751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_116
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02e6445fcff981542a9f51c816b05a0f
+      internalID: 633373655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_117
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 771acc8ab46faef489f516b813142dc8
+      internalID: -297321911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_118
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8eedf924d31a7174aa96cff19bc55b44
+      internalID: -661409882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_119
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 619612e55add9ec4ba923f5cd453aa9c
+      internalID: 228708617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_121
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69586417d582b1047a5127efb4d6e591
+      internalID: 1456902795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_122
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ef92da857385be41a050cb1f09fd0f1
+      internalID: -1515269330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_123
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 626b0a22f202cd641aaa9895a87880da
+      internalID: -994187914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_124
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d896a6d203e1d21468d395a36bb9127f
+      internalID: 1774420689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_125
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75d8eabc78c0b8e4b88c8be485afdae8
+      internalID: 2082576211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_126
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 081231ab1c6a27a40bc25d2c02864971
+      internalID: -408359175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_127
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d4958ad9ef997344b56a5a2bf31dc52
+      internalID: 1849576109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_128
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1abac1acde04f76459b43a5b19899090
+      internalID: 327430848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_129
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ebc65ba70d40ab498a3f4c84853f4ad
+      internalID: 1761679374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_130
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2802c58ee69633e459c53b0342d3f5cd
+      internalID: 1610505881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_131
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4193d131e77e9bc439315c3bd5d840e6
+      internalID: 1149659632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_132
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 489
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4e3d1a3b9746ad4eb5c10fef71ee68a
+      internalID: -366593920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_133
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2109e527e23fa9b4dbf520175789a07e
+      internalID: -1482927808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_134
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e99f1b99811308d42990117dd62fba3c
+      internalID: -2100031127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_135
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acbc06d42bb8a6f4484563d0ca14fc24
+      internalID: 1757502344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_136
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca3e8df38286d664781b4da26a001b30
+      internalID: 751731457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_137
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb777e3e1002e4442a9cf8778994f054
+      internalID: -415112803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_138
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f9e2d62f86b69b43af8754c49d82fb9
+      internalID: -1961551339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_139
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ed6c77688091814bb2317ac5190849a
+      internalID: 1874606532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_145
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 457
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07552127a8517574a8cd046941602ef8
+      internalID: 1255618572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_149
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b97cfcb3a1dfe34ca688ab9ac206ba0
+      internalID: 1814199134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_153
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da6e9bff814dd024e96a44c8677443ea
+      internalID: 193393361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_154
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4465f4dcf9ebccb49b54fa98d14a39c8
+      internalID: -1919276093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_155
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1067973723ddeef43ac236631f2e821a
+      internalID: -1196836959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_156
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e323c0d39b9abc349a524f025d9f966e
+      internalID: -533264345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_157
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9008b4f4c5a80594184f8401b706aff0
+      internalID: 242161407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_158
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91d2bea1b8112504cbf066a375b1f57a
+      internalID: 924521621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_159
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 473
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0194016b1bd20f5459559e8e893ee981
+      internalID: 250094592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_160
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d98612a2e32a0941be35051101ccb4a
+      internalID: -119513338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_161
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eda72a9e5a379014aa8b8e32e1aa3253
+      internalID: 985927511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_162
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72b11badecb3bd3459e8e74fcc93b0b5
+      internalID: -1739011048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_163
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bab1f9e986e8e7d4b817ec28fe245352
+      internalID: -1224070465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_164
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a17f1302c2995f5489ac219274899b30
+      internalID: -1836419935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_165
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5910faa2938ca7e4e9e3c9d245f17ab1
+      internalID: -440773686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_166
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80fa4d0e38855774382dc40522817633
+      internalID: -572451106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_167
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13ffda4f60ad4fc41b41f0b08af9d2af
+      internalID: -169928034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_168
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9dc4ea385cf33b4591b08265ce76a73
+      internalID: -549943977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_169
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3824f25bc17e3c844860bc8e6eb292af
+      internalID: 336377817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_170
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cb57e5cd4f183e43b2fefb2e7a3d729
+      internalID: -888535494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_173
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 457
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f288edb707af4b43958b6a1239f10e7
+      internalID: 1540938975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_174
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 457
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcb947d602547e44ca9ab393dfad0aef
+      internalID: -484414152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_175
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 368f1ca2c722378468cc86d455844b4b
+      internalID: 220907184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_176
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 457
+        width: 16
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fcf48e80f00a704a8fa40c42cef4ec9
+      internalID: -1444120961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_177
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c860204804910d64c8ac7c15c9430de8
+      internalID: -1111841988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_178
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 457
+        width: 16
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3aaa39c2571cb04291983a7212890f0
+      internalID: -209746452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_179
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 457
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c2b3f55b9a815945b8354d51756e5d2
+      internalID: -740727515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_180
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 457
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c462bd19eb32724198f3f98eaba3566
+      internalID: -1491572693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_181
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f85c1aad35e11f4e821908405502aa9
+      internalID: 1412533107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_182
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb2ac5ba847bc72489f04aa3bdb6a5eb
+      internalID: -371427091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_183
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bb0c3b937f0e9e41a5a3ae97ed84ead
+      internalID: -2100448940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_184
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4b66c44e567dc547b48eedf6c81bd8c
+      internalID: -1176270833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_185
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 088047f3a1c10fe42906cecbc69adc69
+      internalID: -1866649044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_186
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 701a87c4de1b1c64fa7f66ac155bcd06
+      internalID: -64697076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_187
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 457
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fb4d2567ac64e2489221d5768f7caa4
+      internalID: 203966225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_191
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e52bcbf6599b3de498c6845e728c07ec
+      internalID: 1141470721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_192
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ac0e8f90bf33f0439561fbd5db1570c
+      internalID: 1635064045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_193
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 425
+        width: 48
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cc1e8da294a00b42aaa607835e7eb56
+      internalID: -230872062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_195
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b41d412098a8394694f5b42e0211019
+      internalID: 583113082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_196
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e7fa179e980a63418d1db369ca7d29a
+      internalID: 186259907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_197
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e754cbeac3e5c24daae6b873cac6e52
+      internalID: -2008104198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_198
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0010dc4376f7524f806e0d6a5abfd83
+      internalID: 1660028835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_199
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f914607051370146836a4f8064804be
+      internalID: 1865372122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_200
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05ed4980e6b626744b4836023a039014
+      internalID: 211534089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_201
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b98b3914a1139b34c9da02def342c5b4
+      internalID: -1581111226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_202
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3aec1ab2ebd46049bcd257928256fc9
+      internalID: 1424532567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_203
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c0c4b2ed5f99564a9140e6546efa6eb
+      internalID: 2041246252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_204
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cb03c8f316ed8844a2a6a9b688bfa61
+      internalID: -1897131396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_205
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db33223f3cc41944cbe79592f4100571
+      internalID: 1627150489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_206
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 441
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40e58998d6e64e84dbd94268e4390f9c
+      internalID: -1600409322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_207
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 425
+        width: 48
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 791eb9b1ac106ee46ba1f0e7e7547b54
+      internalID: 2071292001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_210
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 338948ff039bdca488ff28054e60e061
+      internalID: 1316583219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_211
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fbf28639c751a74b8827b8750335a12
+      internalID: -791425906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_212
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2ccb7aed1e2a1a4fbc962ed30af2aa3
+      internalID: 1690118505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_215
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 800f6de85d406e0488baad22a4034308
+      internalID: 637996695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_216
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1986108d896d4654caffdab1f0f85e15
+      internalID: 437742918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_217
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e0d14b6c00e1c0489411f13f321bafa
+      internalID: 1792788756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_218
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 967adfbc7fd65c64cbe551e172c4c349
+      internalID: -114706583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_219
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e2a3a67fcfcd1e44887693e7c5e364c
+      internalID: -1693250387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_220
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bb2f911882a0a9459d8bea8e5905db8
+      internalID: 1795559312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_221
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 425
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ba8ded221cb9644f847e1fc299b3829
+      internalID: 825557603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_222
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 7.8752737, y: 2.3560262}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a604b1f01bb79bb46adf9710d3928e0c
+      internalID: 724071136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_223
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11e772054a88ec54ba628c982e954bcf
+      internalID: -1298505260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_224
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a717e9d1f8d9cca4aaa52313e8ff3464
+      internalID: -1594918887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_225
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0a6aeb0b24f4be468d31997dacacdcc
+      internalID: 1880079681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_226
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f126073feafe4ac49a41b7f86a2b6681
+      internalID: -1417631658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_227
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3d5d5e554cfe674e9928064cd54617f
+      internalID: 783941363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_228
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9dcd62bce16aeba4997c22ece435bfbc
+      internalID: -497621184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_229
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc35de1276614cb4cb9677c783df93d5
+      internalID: -2019163728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_230
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e67b8f0e77e60a043a1c30bb76511969
+      internalID: 1179729809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_231
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f69a21b7aeffebc4abcb212c4b1c4b83
+      internalID: -1561672201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_232
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cad7cb42e6910b42bc49fffa3dba597
+      internalID: -2081377198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_233
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa306add852f07243a87ea0aa95a661b
+      internalID: 1906673078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_234
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddd23b53533445c46bf2bc356f16c616
+      internalID: -84490156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_235
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 011a87c143a871b429c4c9d3508eae9e
+      internalID: 893352267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_236
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30abcd584b947cd48830b58b53017e9c
+      internalID: 1854984774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_237
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c97d71e6e4d91c6489e64bc654d2bad1
+      internalID: -1535064961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_238
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ee18a531fb6f484585588737a5da7ab
+      internalID: -726628641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_239
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b92b8a9f15b66a418f7ceef2423061a
+      internalID: 1112858002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_240
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73d5f9bb10cc7a444a09bdf72c5f08f2
+      internalID: -1671643156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_241
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9c1a84e7b096d040b122dc8275e088c
+      internalID: 666554730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_242
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e47eb10522d57e43ba62101d649362b
+      internalID: -782451173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_243
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3eaeda3d860dab418a6c1b83efb0e56
+      internalID: -71306728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_244
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26e44586bb6fcbe46bcbc97909b4fc57
+      internalID: 88611375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_245
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b995f700e5f4be438fe2a501e3c90fa
+      internalID: -32141954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_246
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 409
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a9f734de54eeb04abc36f9480ee3b97
+      internalID: 1284698391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_247
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20e3806388544e5438f1df65a9abd9bc
+      internalID: 263621839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_248
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 711ae674c7832e94b97d5b0dd8556429
+      internalID: -594601027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_249
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84416f22062178542b0642bd0eb44262
+      internalID: -230941134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_250
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef51c07d01f924f4abaad726736205d8
+      internalID: 916329923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_251
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 371e3c970398d1042876276670bd1f5c
+      internalID: -1873628830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_252
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a00aa018d89e3d043b7ec84e54a7eee4
+      internalID: -875809675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_253
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fc612bc8a029d140a4201957b1ad3c7
+      internalID: 1045065381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_254
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee4de7e5abb5a3845996e85fc36cd564
+      internalID: 2116235945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_255
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5573e055caa88d54988a4c2c3edbac73
+      internalID: -1285666573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_256
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f15b0206a962044e915dbcd23867d14
+      internalID: 1890629702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_257
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cae98ee047d31043abe3288a8c5772f
+      internalID: 457870752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_258
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0b77d68864ed734ab182dd91a0e9fed
+      internalID: -430810259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_259
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91f4039c7558b244ba0b9006db3b4ea1
+      internalID: -1450528016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_260
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 490b47515bdccb040b1ffc52bd554d83
+      internalID: -1441393486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_261
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e58691b1b183e6345a498c99e4074027
+      internalID: 805824034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_262
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01b1a15d252996847bc75d8748f55a9c
+      internalID: 636042317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_263
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95af01d7d27303f4da9ca370a87cc613
+      internalID: -510888853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_264
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ce871838b9fb014a80fced6c5a5c158
+      internalID: -1613987786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_265
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21d3722e90a9edc45a6be1a19a4fb6a0
+      internalID: 1408372627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_266
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69280e7281edd854c9c90fabae3063ff
+      internalID: -693192256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_267
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edbef8315019e8546b5d26a0ccd2cb14
+      internalID: -1259184047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_268
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5fec9154fbf70647846c7ba91245767
+      internalID: -531250859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_269
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cabbce5db01bd64f9d8a71e0f81651f
+      internalID: 1306934654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_270
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a25e129816f37f458a7406f67d9613f
+      internalID: -982789431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_271
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a832e156715f8f94f9b24decc7bcec65
+      internalID: -562776118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_272
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25918b45de3cca5409c7714b8fff3c88
+      internalID: 1060968439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_273
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 393
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 449a6ae14e2403140a16cc445dc403f1
+      internalID: -1595917595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_274
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56629c90ae80c464c90e636f5e4f9594
+      internalID: 252422610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_275
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0827b1e6ee2a6ad409dee0f6c94a1416
+      internalID: 254487250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_276
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96e7d3aa0873b1a4cad1a5d76231b1e4
+      internalID: 1543398399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_277
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 607760f7457cc6244ade1a8d265ce45d
+      internalID: 2121843228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_278
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33586bc2dfe4d4c4cadcb0cbbda37c8c
+      internalID: -1555272915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_279
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 060eb8ffe09fae541993480ee4981d59
+      internalID: -1442115307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_280
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc052b261f366674e90489f0fba806cf
+      internalID: 2072394452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_281
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e37bcecf6d36e694e913d51316acf327
+      internalID: 1341070519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_282
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f287950024497d4480d0fc824780472
+      internalID: 898198791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_283
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80c5ca7d48e885e45b578aeb48b8e2d5
+      internalID: -241976143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_284
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7aeed763fda2074aa0a163f6760a742
+      internalID: -1047608695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_285
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8692fef73b35014ea31c601c32def58
+      internalID: -2130469762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_286
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e196f4ffc95adf745bd9827e250be03a
+      internalID: -1410022039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_287
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ac70d12babd7e7479b9ab659321e9ed
+      internalID: -1205076638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_288
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4c8ce58f72491948bbf857fc6bb5a9e
+      internalID: 74272258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_289
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf0d133edff3ac04fb40c456d224ecdb
+      internalID: -852117385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_290
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 788d0b937c4d74f44846c82d837d9d07
+      internalID: 138936432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_291
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c557a3f2c3a4bcf4ba341dd7d24e3ee3
+      internalID: -1822468078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_292
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d8a50a36a83f1041aa673b26d4a71ba
+      internalID: 1592954750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_293
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 320b4993db0b0dc42801053047fc4bb0
+      internalID: 687835140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_294
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d8500569ab9e6f4ab5e472275d913d0
+      internalID: -472275836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_295
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3921d5258c090ec4a81bcf93f6ff46fa
+      internalID: 1413019658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_296
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 377
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7db5223f1f3bdf44da5e74fb2e800caa
+      internalID: -439054319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_297
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 361
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c0a800c969f2db47a84a855b5ec9e3a
+      internalID: 332556556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_298
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 341
+        width: 40
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4687c5f7b9524424e8d516bb3233071b
+      internalID: -1838852534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_301
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 361
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5edfdb7be21215c4f81a08430c01a8f0
+      internalID: -293262948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_310
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 297
+        width: 48
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.8011898}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 201c593e5fdb4d245b86b6982c75633c
+      internalID: -1012052260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_311
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 345
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29a00b37cbf8ee046a6447aad25ab272
+      internalID: 934880053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_315
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 345
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6525206b294477640ad60886cf4d81a7
+      internalID: 482558000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_318
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 345
+        width: 48
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb36144e5b38463459f2005e8bd1e0f1
+      internalID: 2130059603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_335
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 329
+        width: 16
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1c8632a60c912543be2768757eada7f
+      internalID: 618675403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_351
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 297
+        width: 48
+        height: 80
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1ebfd2d652095c4d8571b53b1c61830
+      internalID: -265509378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_367
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 297
+        width: 48
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.16976699}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c0952b1a43dc5f4c9e8ca51d7bd907b
+      internalID: -57960621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_372
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 297
+        width: 48
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.18660697}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58f2a3b7f7b2f8047a7115d1a9a787c4
+      internalID: 720130967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_375
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 297
+        width: 48
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.7977085}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8059099b41bdef6408087a21a16a1696
+      internalID: -1969449914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_384
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 217
+        width: 48
+        height: 80
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8d6130c31ad36642831bc6f855862bf
+      internalID: 383087125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_391
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 265
+        width: 32
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1117721b1bbb5e645990f833ff844481
+      internalID: 967494186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_393
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 265
+        width: 32
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dda916109a09432499cc1a6770d08404
+      internalID: 1016262706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_395
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 265
+        width: 32
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d2d5952fd72d2e438b68bbca53ad84f
+      internalID: -1734248724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_397
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 265
+        width: 32
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00bdc4bcd54f28c4180ca9e827289c34
+      internalID: -179056086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_421
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 216
+        width: 27
+        height: 44
+      alignment: 9
+      pivot: {x: 0.5, y: 0.23131041}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff44007f7668c6d4abb068eaee239808
+      internalID: 495721288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_427
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 217
+        width: 48
+        height: 80
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f692fd1732886b45a450c4dad899209
+      internalID: -527130791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_429
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 185
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 684258bf0324e854f83310d71cb02cb5
+      internalID: 695314452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_430
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 185
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 601c748647db39e4b9df2c45fe8fda2d
+      internalID: 1273506618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_431
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 185
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a5d5586482a55543817dc5895588353
+      internalID: -1585695585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_432
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 185
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a9b2ac20308db2499e14ced03e383e8
+      internalID: -1085679377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Throne_bedroom_Furniture_433
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 185
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af2a754cd1a5a734bad93ae81df3e117
+      internalID: -1305764103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Throne_bedroom_Furniture_0: -1783353628
+      Throne_bedroom_Furniture_1: -24435272
+      Throne_bedroom_Furniture_10: -1287330002
+      Throne_bedroom_Furniture_100: 960223593
+      Throne_bedroom_Furniture_101: 1882777177
+      Throne_bedroom_Furniture_102: 109361267
+      Throne_bedroom_Furniture_103: -111287287
+      Throne_bedroom_Furniture_104: -1565476744
+      Throne_bedroom_Furniture_105: -671131093
+      Throne_bedroom_Furniture_106: -216055546
+      Throne_bedroom_Furniture_107: -605219460
+      Throne_bedroom_Furniture_108: -918699533
+      Throne_bedroom_Furniture_109: -2085454351
+      Throne_bedroom_Furniture_11: -1498797132
+      Throne_bedroom_Furniture_110: 1736288215
+      Throne_bedroom_Furniture_111: 2044358956
+      Throne_bedroom_Furniture_112: 931478690
+      Throne_bedroom_Furniture_113: -867265718
+      Throne_bedroom_Furniture_114: -1687831126
+      Throne_bedroom_Furniture_115: 37270751
+      Throne_bedroom_Furniture_116: 633373655
+      Throne_bedroom_Furniture_117: -297321911
+      Throne_bedroom_Furniture_118: -661409882
+      Throne_bedroom_Furniture_119: 228708617
+      Throne_bedroom_Furniture_12: 2066171368
+      Throne_bedroom_Furniture_120: -1684601976
+      Throne_bedroom_Furniture_121: 1456902795
+      Throne_bedroom_Furniture_122: -1515269330
+      Throne_bedroom_Furniture_123: -994187914
+      Throne_bedroom_Furniture_124: 1774420689
+      Throne_bedroom_Furniture_125: 2082576211
+      Throne_bedroom_Furniture_126: -408359175
+      Throne_bedroom_Furniture_127: 1849576109
+      Throne_bedroom_Furniture_128: 327430848
+      Throne_bedroom_Furniture_129: 1761679374
+      Throne_bedroom_Furniture_13: -1157166982
+      Throne_bedroom_Furniture_130: 1610505881
+      Throne_bedroom_Furniture_131: 1149659632
+      Throne_bedroom_Furniture_132: -366593920
+      Throne_bedroom_Furniture_133: -1482927808
+      Throne_bedroom_Furniture_134: -2100031127
+      Throne_bedroom_Furniture_135: 1757502344
+      Throne_bedroom_Furniture_136: 751731457
+      Throne_bedroom_Furniture_137: -415112803
+      Throne_bedroom_Furniture_138: -1961551339
+      Throne_bedroom_Furniture_139: 1874606532
+      Throne_bedroom_Furniture_14: -2102422790
+      Throne_bedroom_Furniture_140: 908501102
+      Throne_bedroom_Furniture_141: 412296658
+      Throne_bedroom_Furniture_142: 1721004757
+      Throne_bedroom_Furniture_143: -1754635405
+      Throne_bedroom_Furniture_144: 547669828
+      Throne_bedroom_Furniture_145: 1255618572
+      Throne_bedroom_Furniture_146: -633951680
+      Throne_bedroom_Furniture_147: -1639514552
+      Throne_bedroom_Furniture_148: -545558022
+      Throne_bedroom_Furniture_149: 1814199134
+      Throne_bedroom_Furniture_15: 1139294051
+      Throne_bedroom_Furniture_150: 1440678670
+      Throne_bedroom_Furniture_151: -418606567
+      Throne_bedroom_Furniture_152: -802327114
+      Throne_bedroom_Furniture_153: 193393361
+      Throne_bedroom_Furniture_154: -1919276093
+      Throne_bedroom_Furniture_155: -1196836959
+      Throne_bedroom_Furniture_156: -533264345
+      Throne_bedroom_Furniture_157: 242161407
+      Throne_bedroom_Furniture_158: 924521621
+      Throne_bedroom_Furniture_159: 250094592
+      Throne_bedroom_Furniture_16: 1191251371
+      Throne_bedroom_Furniture_160: -119513338
+      Throne_bedroom_Furniture_161: 985927511
+      Throne_bedroom_Furniture_162: -1739011048
+      Throne_bedroom_Furniture_163: -1224070465
+      Throne_bedroom_Furniture_164: -1836419935
+      Throne_bedroom_Furniture_165: -440773686
+      Throne_bedroom_Furniture_166: -572451106
+      Throne_bedroom_Furniture_167: -169928034
+      Throne_bedroom_Furniture_168: -549943977
+      Throne_bedroom_Furniture_169: 336377817
+      Throne_bedroom_Furniture_17: -1140110686
+      Throne_bedroom_Furniture_170: -888535494
+      Throne_bedroom_Furniture_171: 1965369957
+      Throne_bedroom_Furniture_172: 623934964
+      Throne_bedroom_Furniture_173: 1540938975
+      Throne_bedroom_Furniture_174: -484414152
+      Throne_bedroom_Furniture_175: 220907184
+      Throne_bedroom_Furniture_176: -1444120961
+      Throne_bedroom_Furniture_177: -1111841988
+      Throne_bedroom_Furniture_178: -209746452
+      Throne_bedroom_Furniture_179: -740727515
+      Throne_bedroom_Furniture_18: 1722974849
+      Throne_bedroom_Furniture_180: -1491572693
+      Throne_bedroom_Furniture_181: 1412533107
+      Throne_bedroom_Furniture_182: -371427091
+      Throne_bedroom_Furniture_183: -2100448940
+      Throne_bedroom_Furniture_184: -1176270833
+      Throne_bedroom_Furniture_185: -1866649044
+      Throne_bedroom_Furniture_186: -64697076
+      Throne_bedroom_Furniture_187: 203966225
+      Throne_bedroom_Furniture_188: 251962307
+      Throne_bedroom_Furniture_189: -207773249
+      Throne_bedroom_Furniture_19: -717233154
+      Throne_bedroom_Furniture_190: -1893153019
+      Throne_bedroom_Furniture_191: 1141470721
+      Throne_bedroom_Furniture_192: 1635064045
+      Throne_bedroom_Furniture_193: -230872062
+      Throne_bedroom_Furniture_194: -879139736
+      Throne_bedroom_Furniture_195: 583113082
+      Throne_bedroom_Furniture_196: 186259907
+      Throne_bedroom_Furniture_197: -2008104198
+      Throne_bedroom_Furniture_198: 1660028835
+      Throne_bedroom_Furniture_199: 1865372122
+      Throne_bedroom_Furniture_2: -682533394
+      Throne_bedroom_Furniture_20: 397810414
+      Throne_bedroom_Furniture_200: 211534089
+      Throne_bedroom_Furniture_201: -1581111226
+      Throne_bedroom_Furniture_202: 1424532567
+      Throne_bedroom_Furniture_203: 2041246252
+      Throne_bedroom_Furniture_204: -1897131396
+      Throne_bedroom_Furniture_205: 1627150489
+      Throne_bedroom_Furniture_206: -1600409322
+      Throne_bedroom_Furniture_207: 2071292001
+      Throne_bedroom_Furniture_208: -321427987
+      Throne_bedroom_Furniture_209: -1180202600
+      Throne_bedroom_Furniture_21: 1475829095
+      Throne_bedroom_Furniture_210: 1316583219
+      Throne_bedroom_Furniture_211: -791425906
+      Throne_bedroom_Furniture_212: 1690118505
+      Throne_bedroom_Furniture_213: -1702736080
+      Throne_bedroom_Furniture_214: -681225062
+      Throne_bedroom_Furniture_215: 637996695
+      Throne_bedroom_Furniture_216: 437742918
+      Throne_bedroom_Furniture_217: 1792788756
+      Throne_bedroom_Furniture_218: -114706583
+      Throne_bedroom_Furniture_219: -1693250387
+      Throne_bedroom_Furniture_22: 947260159
+      Throne_bedroom_Furniture_220: 1795559312
+      Throne_bedroom_Furniture_221: 825557603
+      Throne_bedroom_Furniture_222: 724071136
+      Throne_bedroom_Furniture_223: -1298505260
+      Throne_bedroom_Furniture_224: -1594918887
+      Throne_bedroom_Furniture_225: 1880079681
+      Throne_bedroom_Furniture_226: -1417631658
+      Throne_bedroom_Furniture_227: 783941363
+      Throne_bedroom_Furniture_228: -497621184
+      Throne_bedroom_Furniture_229: -2019163728
+      Throne_bedroom_Furniture_23: 628127694
+      Throne_bedroom_Furniture_230: 1179729809
+      Throne_bedroom_Furniture_231: -1561672201
+      Throne_bedroom_Furniture_232: -2081377198
+      Throne_bedroom_Furniture_233: 1906673078
+      Throne_bedroom_Furniture_234: -84490156
+      Throne_bedroom_Furniture_235: 893352267
+      Throne_bedroom_Furniture_236: 1854984774
+      Throne_bedroom_Furniture_237: -1535064961
+      Throne_bedroom_Furniture_238: -726628641
+      Throne_bedroom_Furniture_239: 1112858002
+      Throne_bedroom_Furniture_24: 17346392
+      Throne_bedroom_Furniture_240: -1671643156
+      Throne_bedroom_Furniture_241: 666554730
+      Throne_bedroom_Furniture_242: -782451173
+      Throne_bedroom_Furniture_243: -71306728
+      Throne_bedroom_Furniture_244: 88611375
+      Throne_bedroom_Furniture_245: -32141954
+      Throne_bedroom_Furniture_246: 1284698391
+      Throne_bedroom_Furniture_247: 263621839
+      Throne_bedroom_Furniture_248: -594601027
+      Throne_bedroom_Furniture_249: -230941134
+      Throne_bedroom_Furniture_25: 1304976040
+      Throne_bedroom_Furniture_250: 916329923
+      Throne_bedroom_Furniture_251: -1873628830
+      Throne_bedroom_Furniture_252: -875809675
+      Throne_bedroom_Furniture_253: 1045065381
+      Throne_bedroom_Furniture_254: 2116235945
+      Throne_bedroom_Furniture_255: -1285666573
+      Throne_bedroom_Furniture_256: 1890629702
+      Throne_bedroom_Furniture_257: 457870752
+      Throne_bedroom_Furniture_258: -430810259
+      Throne_bedroom_Furniture_259: -1450528016
+      Throne_bedroom_Furniture_26: -1342478017
+      Throne_bedroom_Furniture_260: -1441393486
+      Throne_bedroom_Furniture_261: 805824034
+      Throne_bedroom_Furniture_262: 636042317
+      Throne_bedroom_Furniture_263: -510888853
+      Throne_bedroom_Furniture_264: -1613987786
+      Throne_bedroom_Furniture_265: 1408372627
+      Throne_bedroom_Furniture_266: -693192256
+      Throne_bedroom_Furniture_267: -1259184047
+      Throne_bedroom_Furniture_268: -531250859
+      Throne_bedroom_Furniture_269: 1306934654
+      Throne_bedroom_Furniture_27: 1404261891
+      Throne_bedroom_Furniture_270: -982789431
+      Throne_bedroom_Furniture_271: -562776118
+      Throne_bedroom_Furniture_272: 1060968439
+      Throne_bedroom_Furniture_273: -1595917595
+      Throne_bedroom_Furniture_274: 252422610
+      Throne_bedroom_Furniture_275: 254487250
+      Throne_bedroom_Furniture_276: 1543398399
+      Throne_bedroom_Furniture_277: 2121843228
+      Throne_bedroom_Furniture_278: -1555272915
+      Throne_bedroom_Furniture_279: -1442115307
+      Throne_bedroom_Furniture_28: -1317936238
+      Throne_bedroom_Furniture_280: 2072394452
+      Throne_bedroom_Furniture_281: 1341070519
+      Throne_bedroom_Furniture_282: 898198791
+      Throne_bedroom_Furniture_283: -241976143
+      Throne_bedroom_Furniture_284: -1047608695
+      Throne_bedroom_Furniture_285: -2130469762
+      Throne_bedroom_Furniture_286: -1410022039
+      Throne_bedroom_Furniture_287: -1205076638
+      Throne_bedroom_Furniture_288: 74272258
+      Throne_bedroom_Furniture_289: -852117385
+      Throne_bedroom_Furniture_29: 341381042
+      Throne_bedroom_Furniture_290: 138936432
+      Throne_bedroom_Furniture_291: -1822468078
+      Throne_bedroom_Furniture_292: 1592954750
+      Throne_bedroom_Furniture_293: 687835140
+      Throne_bedroom_Furniture_294: -472275836
+      Throne_bedroom_Furniture_295: 1413019658
+      Throne_bedroom_Furniture_296: -439054319
+      Throne_bedroom_Furniture_297: 332556556
+      Throne_bedroom_Furniture_298: -1838852534
+      Throne_bedroom_Furniture_299: 768376112
+      Throne_bedroom_Furniture_3: 1564237642
+      Throne_bedroom_Furniture_30: 1114498469
+      Throne_bedroom_Furniture_300: -1786044014
+      Throne_bedroom_Furniture_301: -293262948
+      Throne_bedroom_Furniture_302: -1400446473
+      Throne_bedroom_Furniture_303: -1628397383
+      Throne_bedroom_Furniture_304: -1547148929
+      Throne_bedroom_Furniture_305: -2142505870
+      Throne_bedroom_Furniture_306: -528691165
+      Throne_bedroom_Furniture_307: -1625108899
+      Throne_bedroom_Furniture_308: -991309063
+      Throne_bedroom_Furniture_309: -1269188606
+      Throne_bedroom_Furniture_31: -1749076311
+      Throne_bedroom_Furniture_310: -1012052260
+      Throne_bedroom_Furniture_311: 934880053
+      Throne_bedroom_Furniture_312: 778286208
+      Throne_bedroom_Furniture_313: -1934907881
+      Throne_bedroom_Furniture_314: 1933638998
+      Throne_bedroom_Furniture_315: 482558000
+      Throne_bedroom_Furniture_316: -477818518
+      Throne_bedroom_Furniture_317: 793150891
+      Throne_bedroom_Furniture_318: 2130059603
+      Throne_bedroom_Furniture_319: -2039191577
+      Throne_bedroom_Furniture_32: -1617902296
+      Throne_bedroom_Furniture_320: -1445145899
+      Throne_bedroom_Furniture_321: -246856536
+      Throne_bedroom_Furniture_322: -1583224341
+      Throne_bedroom_Furniture_323: -740867209
+      Throne_bedroom_Furniture_324: -1902634746
+      Throne_bedroom_Furniture_325: -1053830848
+      Throne_bedroom_Furniture_326: -1076253180
+      Throne_bedroom_Furniture_327: 2097845810
+      Throne_bedroom_Furniture_328: 1487197138
+      Throne_bedroom_Furniture_329: -1360304726
+      Throne_bedroom_Furniture_33: 1253045064
+      Throne_bedroom_Furniture_330: 442805165
+      Throne_bedroom_Furniture_331: 498923268
+      Throne_bedroom_Furniture_332: -1398446844
+      Throne_bedroom_Furniture_333: 2071724012
+      Throne_bedroom_Furniture_334: 1363666070
+      Throne_bedroom_Furniture_335: 618675403
+      Throne_bedroom_Furniture_336: -1023352400
+      Throne_bedroom_Furniture_337: 1874305181
+      Throne_bedroom_Furniture_338: 922506933
+      Throne_bedroom_Furniture_339: -1235234829
+      Throne_bedroom_Furniture_34: 746662620
+      Throne_bedroom_Furniture_340: 1980125954
+      Throne_bedroom_Furniture_341: 634984177
+      Throne_bedroom_Furniture_342: -1675694545
+      Throne_bedroom_Furniture_343: 1995551364
+      Throne_bedroom_Furniture_344: -1129495858
+      Throne_bedroom_Furniture_345: -829327311
+      Throne_bedroom_Furniture_346: 926038130
+      Throne_bedroom_Furniture_347: -850349486
+      Throne_bedroom_Furniture_348: -51364918
+      Throne_bedroom_Furniture_349: 1734562382
+      Throne_bedroom_Furniture_35: -909313132
+      Throne_bedroom_Furniture_350: 318669101
+      Throne_bedroom_Furniture_351: -265509378
+      Throne_bedroom_Furniture_352: 910696837
+      Throne_bedroom_Furniture_353: -1672261116
+      Throne_bedroom_Furniture_354: 70710546
+      Throne_bedroom_Furniture_355: -1544358074
+      Throne_bedroom_Furniture_356: 313954676
+      Throne_bedroom_Furniture_357: -1245723454
+      Throne_bedroom_Furniture_358: -25226186
+      Throne_bedroom_Furniture_359: 462055104
+      Throne_bedroom_Furniture_36: -2110472669
+      Throne_bedroom_Furniture_360: -1568162069
+      Throne_bedroom_Furniture_361: -239744388
+      Throne_bedroom_Furniture_362: -1134368838
+      Throne_bedroom_Furniture_363: 18079387
+      Throne_bedroom_Furniture_364: -1923653536
+      Throne_bedroom_Furniture_365: 203226312
+      Throne_bedroom_Furniture_366: 1992869230
+      Throne_bedroom_Furniture_367: -57960621
+      Throne_bedroom_Furniture_368: -263039741
+      Throne_bedroom_Furniture_369: 204074040
+      Throne_bedroom_Furniture_37: -105452512
+      Throne_bedroom_Furniture_370: -1276932881
+      Throne_bedroom_Furniture_371: -520753234
+      Throne_bedroom_Furniture_372: 720130967
+      Throne_bedroom_Furniture_373: 530817891
+      Throne_bedroom_Furniture_374: 495969774
+      Throne_bedroom_Furniture_375: -1969449914
+      Throne_bedroom_Furniture_376: 685215294
+      Throne_bedroom_Furniture_377: 146475135
+      Throne_bedroom_Furniture_378: -13678348
+      Throne_bedroom_Furniture_379: -667150809
+      Throne_bedroom_Furniture_38: 988356932
+      Throne_bedroom_Furniture_380: -1112017724
+      Throne_bedroom_Furniture_381: 1627310115
+      Throne_bedroom_Furniture_382: -1013646995
+      Throne_bedroom_Furniture_383: -1235747567
+      Throne_bedroom_Furniture_384: 383087125
+      Throne_bedroom_Furniture_385: 1174552510
+      Throne_bedroom_Furniture_386: -495393865
+      Throne_bedroom_Furniture_387: 1968638728
+      Throne_bedroom_Furniture_388: 398199932
+      Throne_bedroom_Furniture_389: 138326730
+      Throne_bedroom_Furniture_39: 1602297197
+      Throne_bedroom_Furniture_390: -44844979
+      Throne_bedroom_Furniture_391: 967494186
+      Throne_bedroom_Furniture_392: 574639264
+      Throne_bedroom_Furniture_393: 1016262706
+      Throne_bedroom_Furniture_394: 319089586
+      Throne_bedroom_Furniture_395: -1734248724
+      Throne_bedroom_Furniture_396: 767619741
+      Throne_bedroom_Furniture_397: -179056086
+      Throne_bedroom_Furniture_398: -1697575446
+      Throne_bedroom_Furniture_399: -1348435387
+      Throne_bedroom_Furniture_4: 1125426606
+      Throne_bedroom_Furniture_40: -223097144
+      Throne_bedroom_Furniture_400: -664569037
+      Throne_bedroom_Furniture_401: -2111619476
+      Throne_bedroom_Furniture_402: 1485835984
+      Throne_bedroom_Furniture_403: -1554928430
+      Throne_bedroom_Furniture_404: 240925956
+      Throne_bedroom_Furniture_405: -1399238730
+      Throne_bedroom_Furniture_406: -1313385317
+      Throne_bedroom_Furniture_407: 1416284641
+      Throne_bedroom_Furniture_408: -695515483
+      Throne_bedroom_Furniture_409: -1885946194
+      Throne_bedroom_Furniture_41: -710529784
+      Throne_bedroom_Furniture_410: 2105060908
+      Throne_bedroom_Furniture_411: -664472742
+      Throne_bedroom_Furniture_412: -1271594197
+      Throne_bedroom_Furniture_413: 1426027155
+      Throne_bedroom_Furniture_414: 525954708
+      Throne_bedroom_Furniture_415: 631634214
+      Throne_bedroom_Furniture_416: 55213333
+      Throne_bedroom_Furniture_417: -705649578
+      Throne_bedroom_Furniture_418: 121135643
+      Throne_bedroom_Furniture_419: 1077507744
+      Throne_bedroom_Furniture_42: 1479863848
+      Throne_bedroom_Furniture_420: 224343594
+      Throne_bedroom_Furniture_421: 495721288
+      Throne_bedroom_Furniture_422: 2071181079
+      Throne_bedroom_Furniture_423: -647147778
+      Throne_bedroom_Furniture_424: -279289585
+      Throne_bedroom_Furniture_425: -683644185
+      Throne_bedroom_Furniture_426: 358653654
+      Throne_bedroom_Furniture_427: -527130791
+      Throne_bedroom_Furniture_428: -1187860329
+      Throne_bedroom_Furniture_429: 695314452
+      Throne_bedroom_Furniture_43: -574326574
+      Throne_bedroom_Furniture_430: 1273506618
+      Throne_bedroom_Furniture_431: -1585695585
+      Throne_bedroom_Furniture_432: -1085679377
+      Throne_bedroom_Furniture_433: -1305764103
+      Throne_bedroom_Furniture_44: 1693327128
+      Throne_bedroom_Furniture_45: -1060454616
+      Throne_bedroom_Furniture_46: 526906397
+      Throne_bedroom_Furniture_47: 274969469
+      Throne_bedroom_Furniture_48: -173265512
+      Throne_bedroom_Furniture_49: -1959959624
+      Throne_bedroom_Furniture_5: -469498667
+      Throne_bedroom_Furniture_50: 1880795792
+      Throne_bedroom_Furniture_51: -592766482
+      Throne_bedroom_Furniture_52: 2003979163
+      Throne_bedroom_Furniture_53: -1896918943
+      Throne_bedroom_Furniture_54: 142735275
+      Throne_bedroom_Furniture_55: 251595110
+      Throne_bedroom_Furniture_56: -799915045
+      Throne_bedroom_Furniture_57: -248764167
+      Throne_bedroom_Furniture_58: 936151004
+      Throne_bedroom_Furniture_59: -469442944
+      Throne_bedroom_Furniture_6: 1926893907
+      Throne_bedroom_Furniture_60: 157881643
+      Throne_bedroom_Furniture_61: 300393721
+      Throne_bedroom_Furniture_62: 420599469
+      Throne_bedroom_Furniture_63: -1447615037
+      Throne_bedroom_Furniture_64: 46276177
+      Throne_bedroom_Furniture_65: 904405173
+      Throne_bedroom_Furniture_66: -1191636055
+      Throne_bedroom_Furniture_67: -817262526
+      Throne_bedroom_Furniture_68: -896047598
+      Throne_bedroom_Furniture_69: 1424047099
+      Throne_bedroom_Furniture_7: -343035975
+      Throne_bedroom_Furniture_70: -1329616236
+      Throne_bedroom_Furniture_71: -2097615424
+      Throne_bedroom_Furniture_72: -1620369433
+      Throne_bedroom_Furniture_73: 1084139979
+      Throne_bedroom_Furniture_74: 887961851
+      Throne_bedroom_Furniture_75: 667850257
+      Throne_bedroom_Furniture_76: -1431605753
+      Throne_bedroom_Furniture_77: -1961088699
+      Throne_bedroom_Furniture_78: -75898875
+      Throne_bedroom_Furniture_79: -588915904
+      Throne_bedroom_Furniture_8: 780709616
+      Throne_bedroom_Furniture_80: -967577244
+      Throne_bedroom_Furniture_81: -1766666515
+      Throne_bedroom_Furniture_82: -1508284053
+      Throne_bedroom_Furniture_83: -1077609013
+      Throne_bedroom_Furniture_84: 1345663602
+      Throne_bedroom_Furniture_85: 1309456490
+      Throne_bedroom_Furniture_86: -945366154
+      Throne_bedroom_Furniture_87: -1448699251
+      Throne_bedroom_Furniture_88: 909399194
+      Throne_bedroom_Furniture_89: 1257408583
+      Throne_bedroom_Furniture_9: -1471815245
+      Throne_bedroom_Furniture_90: 782554376
+      Throne_bedroom_Furniture_91: -855994832
+      Throne_bedroom_Furniture_92: -1469423425
+      Throne_bedroom_Furniture_93: -1719597483
+      Throne_bedroom_Furniture_94: 1586958915
+      Throne_bedroom_Furniture_95: -2056153799
+      Throne_bedroom_Furniture_96: -1857811279
+      Throne_bedroom_Furniture_97: 1236463149
+      Throne_bedroom_Furniture_98: 812404262
+      Throne_bedroom_Furniture_99: 876475894
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

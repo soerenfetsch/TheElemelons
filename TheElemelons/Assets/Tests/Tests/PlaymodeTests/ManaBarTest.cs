@@ -22,7 +22,7 @@ public class ManaBarTest
 
         // Load prefab AnimatorController
 #if UNITY_EDITOR
-        var canvasPrefab = AssetDatabase.LoadAssetAtPath<Canvas>("Assets/UI_Canvas.prefab");
+        var canvasPrefab = AssetDatabase.LoadAssetAtPath<Canvas>("Assets/Prefabs/UIPrefabs/UI_Canvas.prefab");
         Assert.NotNull(canvasPrefab, "UI_Canvas prefab not found at specified path.");
 #endif
         Animator prefabHeartAnimator = canvasPrefab.transform.GetChild(0).GetComponent<Animator>();

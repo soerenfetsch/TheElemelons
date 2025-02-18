@@ -12,9 +12,15 @@ public class DeathEffect : MonoBehaviour
     /// </summary>
     /// <param name="prefab">The death effect prefab to instantiate.</param>
     /// <param name="position">The position to spawn the death effect.</param>
-    /// <param name="delay">The delay before the death effect is destroyed.</param>
+    /// <param name="delay">The delay before the death effect is destroyed. Must be >= 0.</param>
     public static void SpawnDeathEffect(GameObject prefab, Vector3 position, float delay)
     {
+        // Assert that delay is >= 0
+        if (delay < 0)
+        {
+            Debug.LogError("Delay must be greater than or equal to 0.");
+            return;
+        }
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         DeathEffect script = instance.GetComponent<DeathEffect>();
         if (script != null)

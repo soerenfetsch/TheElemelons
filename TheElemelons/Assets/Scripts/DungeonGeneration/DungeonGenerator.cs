@@ -24,7 +24,9 @@ public class DungeonGenerator : MonoBehaviour
         RunProceduralGeneration();
     }
 
-    // Procedural generation of the map and then painting the tiles
+    /// <summary>
+    /// Procedural generation of the map and then painting the tiles
+    /// </summary>
     private void RunProceduralGeneration()
     {
         MapData mapData = mapGenerator.GenerateMap();

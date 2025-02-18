@@ -87,18 +87,28 @@ public class Mana : MonoBehaviour
     /// <summary>
     /// Reduces the entity's mana by a specified amount, ensuring it does not drop below 0.
     /// </summary>
-    /// <param name="manaCost">The amount of mana to subtract.</param>
+    /// <param name="manaCost">The amount of mana to subtract. Must be >= 0</param>
     public void SubtractMana(float manaCost)
     {
+        if (manaCost < 0)
+        {
+            Debug.LogError("Mana cost must be greater than or equal to 0.");
+            return;
+        }
         mana = Mathf.Clamp(mana - manaCost, 0f, maxMana);
     }
 
     /// <summary>
     /// Increases the entity's mana by a specified amount, ensuring it does not exceed the maximum mana.
     /// </summary>
-    /// <param name="plus">The amount of mana to add.</param>
+    /// <param name="plus">The amount of mana to add. Must be >= 0</param>
     public void AddMana(float plus)
     {
+        if (plus < 0)
+        {
+            Debug.LogError("Plus must be greater than or equal to 0.");
+            return;
+        }
         mana = Mathf.Clamp(mana + plus, 0f, maxMana);
     }
 
@@ -132,27 +142,42 @@ public class Mana : MonoBehaviour
     /// <summary>
     /// Sets the current mana value of the entity.
     /// </summary>
-    /// <param name="newMana">The new mana value to set.</param>
+    /// <param name="newMana">The new mana value to set. Must be >= 0</param>
     public void SetMana(float newMana)
     {
+        if (newMana < 0)
+        {
+            Debug.LogError("Mana must be greater than or equal to 0.");
+            return;
+        }
         mana = newMana;
     }
 
     /// <summary>
     /// Sets the maximum mana value of the entity.
     /// </summary>
-    /// <param name="newMaxMana">The new maximum mana value to set.</param>
+    /// <param name="newMaxMana">The new maximum mana value to set. Must be >= 0</param>
     public void SetMaxMana(float newMaxMana)
     {
+        if (newMaxMana < 0)
+        {
+            Debug.LogError("Max mana must be greater than or equal to 0.");
+            return;
+        }
         maxMana = newMaxMana;
     }
 
     /// <summary>
     /// Sets the amount of mana regenerated per cycle.
     /// </summary>
-    /// <param name="newManaPerRegen">The new mana regeneration amount.</param>
+    /// <param name="newManaPerRegen">The new mana regeneration amount. Must be >= 0</param>
     public void SetManaPerRegen(float newManaPerRegen)
     {
+        if (newManaPerRegen < 0)
+        {
+            Debug.LogError("Mana per regen must be greater than or equal to 0.");
+            return;
+        }
         manaPerRegen = newManaPerRegen;
     }
 }
