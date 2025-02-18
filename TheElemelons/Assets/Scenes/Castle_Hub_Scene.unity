@@ -15567,6 +15567,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Feet
       objectReference: {fileID: 0}
+    - target: {fileID: 1754105673490953705, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754105673490953705, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1862140185845796261, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.06
