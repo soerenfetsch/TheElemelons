@@ -1,18 +1,21 @@
 using UnityEngine;
+using GameSystem;
+using Castle.Components.DictionaryAdapter;
+using System.Collections.Generic;
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    public Dialogue dialogueUI; // Reference to the DialogueUI component
-    private DialogueData currentDialogueData;
-    private int currentLineIndex;
+    [SerializeField] private Dialogue dialogueUI; // Reference to the Dialogue UI system
+    private Dictionary<string, DialogueData> dialogueDictionary; // Fast lookup
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -20,47 +23,20 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(DialogueData dialogueData)
+    public void StartDialogue(string dialogueName) // ✅ Accepts Dialogue Name
     {
-        currentDialogueData = dialogueData;
-        currentLineIndex = 0;
-        dialogueUI.gameObject.SetActive(true);
-        dialogueUI.StartDialogue(dialogueData.sentences);
+        if (dialogueUI == null)
+        {
+            Debug.LogError("Dialogue UI is not assigned in the inspector!");
+            return;
+        }
 
-        // Notify GameManager that a dialogue has started
         GameManager.Instance.SetGameState(GameState.InDialogue);
+        dialogueUI.StartDialogue(dialogueDictionary[dialogueName]); // ✅ UI Handles Displaying
     }
 
-    public void NextLine()
+    public void EndDialogue() // ✅ Only needed to restore game state
     {
-        currentLineIndex++;
-        if (currentLineIndex < currentDialogueData.sentences.Length)
-        {
-            dialogueUI.NextLine();
-        }
-        else
-        {
-            EndDialogue();
-        }
-    }
-
-    public void EndDialogue()
-    {
-        dialogueUI.gameObject.SetActive(false);
-        currentDialogueData = null;
-
-        // Notify GameManager that the dialogue has ended
-        GameManager.Instance.SetGameState(GameState.Playing);
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) // Example: Progress dialogue on mouse click
-        {
-            if (currentDialogueData != null)
-            {
-                NextLine();
-            }
-        }
+        GameManager.Instance.SetGameState(GameState.InGame);
     }
 }
