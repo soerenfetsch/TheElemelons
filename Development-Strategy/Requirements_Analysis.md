@@ -277,6 +277,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 - **Interact Method**: Abstract interaction method which can be implemented by the concrete classes
 - **Interaction Radius**: Has a float value between 0 and 10 (default 2f), in which radius the player can interact with the object
+- **Collider and Layer Mask**: All interactable objects have to be places in the "Interactable" Layer Mask and should have a collider2D for detection
 - **Is Able to Interact Check**: Check method that returns True, if the player is able to interact with the object; The default implementation should take a transform (player) as input and return true if the transform is within the interaction radius distance.
 - **Interactable Layer**: All interactable objects should have a layer mask "Interactable Layer" with which the Interaction System can determine interchangeable objects
 
