@@ -82,6 +82,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - **Update charge selection**: Uses the internal charge selection keys to call the **Select charge** of Spell Casting with the given charge if an appropriate key is pressed
   - **Update cast**: If the cast button is pressed, instruct the SpellCasting object of the player to trigger the **Cast spell** functionality
   - **Update clear charges**: If the clear button is pressed, instruct the SpellCasting object of the player to trigger the **Clear charges** functionality
+  - **Update interaction**: Uses the internal interact key to call the **Interact with closest interactable** method of the Interaction System of the player
 
 ### 2.2 Dungeon Generation
 
@@ -275,7 +276,9 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 #### 2.7.2 Interactable Object (abstract)
 
 - **Interact Method**: Abstract interaction method which can be implemented by the concrete classes
-- **Manage internal enum**: Interactable object can be destructable, interactable, moveable (acts on player stepping on it), one should be able to change this internal state
+- **Interaction Radius**: Has a float value between 0 and 10 (default 2f), in which radius the player can interact with the object
+- **Is Able to Interact Check**: Check method that returns True, if the player is able to interact with the object; The default implementation should take a transform (player) as input and return true if the transform is within the interaction radius distance.
+- **Interactable Layer**: All interactable objects should have a layer mask "Interactable Layer" with which the Interaction System can determine interchangeable objects
 
 #### 2.7.3 NPC (abstract)
 
@@ -288,6 +291,12 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **On walk status**: Given a number of positions (at least 1) King should find a somewhat straight path to the positions and walk to each one in order, dialog should not be allowed
 - **On idle status**: King should remain in place and should allow interaction to start a dialogue
 - **Interact method**: On interact execute the currently viable dialogue in the current game progression
+
+#### 2.7.5 Interaction System
+
+- **Interaction Radius**: Has a float value between 0 and 10 (default 2f), in which radius the player can attempt interaction with interactable objects
+- **Player Component**: The interaction system is a component of the player and should have an internal reference to the player's transform object to check all interactable objects within the interaction radius
+- **Interact with closest interactable**: Method that first finds all interactable objects within the interaction radius where the **Is Able to Interact Check** is True and then executes the **Interaction Method** of the closest of those to the player transform
 
 ## 3. Non-Functional Requirements
 
