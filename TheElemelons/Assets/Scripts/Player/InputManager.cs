@@ -232,6 +232,11 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(keyBindings["Interact"]))
         {
+            if (playerInteraction == null)
+            {
+                Debug.LogWarning("PlayerInteraction component not found.");
+                return;
+            }
             playerInteraction?.InteractWithClosestInteractable();
         }
     }
