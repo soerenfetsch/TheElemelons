@@ -36,6 +36,10 @@ public class InputManager : MonoBehaviour
     /// Reference to the Casting component for spell casting functionality.
     /// </summary>
     public Casting casting;
+    /// <summary>
+    /// Reference to the PlayerInteraction component for interacting with objects.
+    /// </summary>
+    public PlayerInteraction playerInteraction;
 
     private Camera mainCamera;
     private CameraMovement cameraMovement;
@@ -49,6 +53,7 @@ public class InputManager : MonoBehaviour
         InitializeKeyBindings();
         playerMovement = GetComponent<PlayerMovement>();
         casting = GetComponent<Casting>();
+        playerInteraction = GetComponent<PlayerInteraction>();
         // Find the CameraMovement script in the scene
         cameraMovement = FindObjectOfType<CameraMovement>();
         mainCamera = Camera.main;
@@ -104,14 +109,16 @@ public class InputManager : MonoBehaviour
             "MoveLeft", "MoveRight", "MoveUp", "MoveDown",
             "CastSpell", "ClearCharges",
             "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
-            "ZoomIn", "ZoomOut"
+            "ZoomIn", "ZoomOut",
+            "Interact"
         };
 
         KeyCode[] defaultKeys = {
             KeyCode.A, KeyCode.D, KeyCode.W, KeyCode.S,
             KeyCode.Mouse0, KeyCode.Mouse1,
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
-            KeyCode.Z, KeyCode.X
+            KeyCode.Z, KeyCode.X,
+            KeyCode.E
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
@@ -149,6 +156,7 @@ public class InputManager : MonoBehaviour
         HandleMovementInputs();
         HandleSpellCastingInputs();
         HandleCameraInputs();
+        HandleInteractionInputs();
     }
 
     /// <summary>
@@ -211,6 +219,25 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(keyBindings["ZoomOut"]))
         {
             cameraMovement?.SetCameraSize(8f); // Zoom out
+        }
+    }
+
+    /// <summary>
+    /// Processes interaction inputs.
+    /// If the player presses the interaction button, the player will use
+    /// its PlayerInteraction script to interact with the closest interactable object
+    /// within the interaction range.
+    /// </summary>
+    private void HandleInteractionInputs()
+    {
+        if (Input.GetKeyDown(keyBindings["Interact"]))
+        {
+            if (playerInteraction == null)
+            {
+                Debug.LogWarning("PlayerInteraction component not found.");
+                return;
+            }
+            playerInteraction?.InteractWithClosestInteractable();
         }
     }
 
