@@ -42,6 +42,7 @@ public class Casting : MonoBehaviour
     [Header("Spell Selection")]
     public GameObject noTypeSpell;
     public GameObject speedBuffSpell;
+    public GameObject firefireSpell;
     public float manaCost = 1f;
 
     /// <summary>
@@ -61,6 +62,8 @@ public class Casting : MonoBehaviour
         manaScript = gameObject.GetComponent<Mana>();
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype), noTypeSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.notype), speedBuffSpell.GetComponent<SpellEffect>());
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire, ChargeTypes.fire), firefireSpell.GetComponent<SpellEffect>());
+    
     }
 
     /// <summary>

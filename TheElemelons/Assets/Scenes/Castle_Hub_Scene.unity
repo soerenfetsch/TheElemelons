@@ -10976,7 +10976,7 @@ GameObject:
   - component: {fileID: 1827894720}
   m_Layer: 6
   m_Name: Walls_2
-  m_TagString: Untagged
+  m_TagString: Collidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11889,7 +11889,7 @@ GameObject:
   - component: {fileID: 1841686562}
   m_Layer: 6
   m_Name: Walls
-  m_TagString: Untagged
+  m_TagString: Collidable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15415,6 +15415,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 725526180943535245, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2408450711948132370, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
       propertyPath: pathfinder
       value: 
@@ -15462,6 +15466,10 @@ PrefabInstance:
     - target: {fileID: 3477623094848535787, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5216794482498336315, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15655,6 +15663,10 @@ PrefabInstance:
       propertyPath: uiManager
       value: 
       objectReference: {fileID: 969396629}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: firefireSpell
+      value: 
+      objectReference: {fileID: 2254822626139848905, guid: c420d969f0d835049baff441a1e96a37, type: 3}
     - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: buffIcons.Array.data[0]
       value: 
