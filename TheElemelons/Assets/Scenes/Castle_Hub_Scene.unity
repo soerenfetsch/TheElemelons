@@ -15668,6 +15668,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2254822626139848905, guid: c420d969f0d835049baff441a1e96a37, type: 3}
     - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: firewindSpell
+      value: 
+      objectReference: {fileID: 4882459669602414618, guid: 04987bfe3caed134d8184b5df6e10b1e, type: 3}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: earthwindSpell
       value: 
       objectReference: {fileID: 2693233800697013054, guid: c15e7ae06b5014b4aae8d026e1d28ab3, type: 3}
