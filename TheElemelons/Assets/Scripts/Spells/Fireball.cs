@@ -7,7 +7,8 @@ using UnityEngine;
 /// propagating: propagates in casting direction
 /// exploding: fireball has collided and now explodes and deals damage to enemies in collider
 /// </summary>
-public enum FireballState{
+public enum FireballState
+{
     creating,
     propagating,
     exploding
@@ -56,20 +57,21 @@ public class Fireball : SpellEffect
     /// </summary>
     void Start()
     {
-        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire);
+        spellType = new ChargeTuple(ChargeTypes.fire, ChargeTypes.fire);
         currentState = FireballState.creating;
         castPoint = GameObject.Find("Player/Aim/Casting_Point").transform;
         transform.rotation = castPoint.rotation;
         GetComponent<SpriteRenderer>().flipX = true;
         GetComponent<SpriteRenderer>().flipY = true;
-        
+
         StartCoroutine(Expire());
         StartCoroutine(StartFocus());
     }
     /// <summary>
     /// explosion triggered after flytime at latest
     /// </summary>
-    private IEnumerator Expire(){
+    private IEnumerator Expire()
+    {
         yield return new WaitForSeconds(flyTime);
         if (currentState != FireballState.exploding)
         {
@@ -79,7 +81,8 @@ public class Fireball : SpellEffect
     /// <summary>
     /// switch to propagating state after focustime
     /// </summary>
-    public IEnumerator StartFocus(){
+    public IEnumerator StartFocus()
+    {
         yield return new WaitForSeconds(focusTime);
         currentState = FireballState.propagating;
         animator.SetTrigger("fly");
@@ -88,7 +91,8 @@ public class Fireball : SpellEffect
     /// explosion: update state to exploding, set rigidbody to kinematic, 
     // velocity 0, adapt collider scale to explosion sprite and destrox gameobject after explosion time
     /// </summary>
-    private IEnumerator Explode(){
+    private IEnumerator Explode()
+    {
         currentState = FireballState.exploding;
         myRigidbody.isKinematic = true;
         myRigidbody.velocity = new Vector3(0, 0, 0);
@@ -102,8 +106,9 @@ public class Fireball : SpellEffect
     /// </summary>
     void FixedUpdate()
     {
-        if(currentState == FireballState.propagating){
-            myRigidbody.AddForce(transform.up*moveSpeed,ForceMode2D.Impulse);
+        if (currentState == FireballState.propagating)
+        {
+            myRigidbody.AddForce(transform.up * moveSpeed, ForceMode2D.Impulse);
         }
     }
     /// <summary>
@@ -115,11 +120,11 @@ public class Fireball : SpellEffect
         if (((other.gameObject.CompareTag("Enemy") && other.isTrigger) || !other.gameObject.CompareTag("Enemy")) && currentState == FireballState.propagating)
         {
             StartCoroutine(Explode());
-        } 
-        if (currentState == FireballState.exploding && other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
+        }
+        if (currentState == FireballState.exploding && other.gameObject.CompareTag("Enemy") && other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
-            if(hit != null)
+            if (hit != null)
             {
                 Vector2 difference = hit.transform.position - transform.position;
                 difference = difference.normalized * thrust;

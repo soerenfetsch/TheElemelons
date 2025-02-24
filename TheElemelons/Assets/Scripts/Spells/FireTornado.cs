@@ -45,7 +45,7 @@ public class FireTornado : SpellEffect
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.wind);
+        spellType = new ChargeTuple(ChargeTypes.fire, ChargeTypes.wind);
         myRigidbody = gameObject.GetComponent<Rigidbody2D>();
         castPoint = GameObject.Find("Player/Aim/Casting_Point").transform;
         direction = castPoint.transform.up;
@@ -56,19 +56,22 @@ public class FireTornado : SpellEffect
     /// <summary>
     /// random direction switching coroutine
     /// </summary>
-    IEnumerator SwitchDirection(){
-        while(true){
+    IEnumerator SwitchDirection()
+    {
+        while (true)
+        {
             yield return new WaitForSeconds(switchTime);
-            switchTime = Random.Range(switchTimeConstraints.x,switchTimeConstraints.y);
-            direction.x = Random.Range(-1,1);
-            direction.y = Random.Range(-1,1);
+            switchTime = Random.Range(switchTimeConstraints.x, switchTimeConstraints.y);
+            direction.x = Random.Range(-1, 1);
+            direction.y = Random.Range(-1, 1);
             direction.Normalize();
         }
     }
     /// <summary>
     /// start expiration timer and self destruct at the end
     /// </summary>
-    private IEnumerator Expire(){
+    private IEnumerator Expire()
+    {
         yield return new WaitForSeconds(spellLifeTime);
         StartCoroutine(SelfDestroy());
     }
@@ -76,9 +79,9 @@ public class FireTornado : SpellEffect
     /// add force in current direction 
     /// </summary>
     void FixedUpdate()
-    {   
-        direction.x = myRigidbody.velocity.x*correction+direction.x*(1-correction);
-        direction.y = myRigidbody.velocity.y*correction+direction.y*(1-correction);
+    {
+        direction.x = myRigidbody.velocity.x * correction + direction.x * (1 - correction);
+        direction.y = myRigidbody.velocity.y * correction + direction.y * (1 - correction);
         direction.Normalize();
         direction.x *= moveSpeed;
         direction.y *= moveSpeed;
@@ -87,9 +90,10 @@ public class FireTornado : SpellEffect
     /// <summary>
     /// expire animation and then self destruct
     /// </summary>
-    public IEnumerator SelfDestroy(){
+    public IEnumerator SelfDestroy()
+    {
         animator.SetTrigger("Disappear");
-        Destroy(gameObject,spellDeathTime);
+        Destroy(gameObject, spellDeathTime);
         yield return null;
     }
     /// <summary>
@@ -97,10 +101,10 @@ public class FireTornado : SpellEffect
     /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
+        if (other.gameObject.CompareTag("Enemy") && other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
-            if(hit != null)
+            if (hit != null)
             {
                 Vector2 difference = hit.transform.position - transform.position;
                 difference = difference.normalized * thrust;

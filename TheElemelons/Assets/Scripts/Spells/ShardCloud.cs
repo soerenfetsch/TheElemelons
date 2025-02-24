@@ -30,8 +30,8 @@ public class ShardCloud : SpellEffect
     /// </summary>
     void Start()
     {
-        spellType = new ChargeTuple(ChargeTypes.wind,ChargeTypes.earth);
-        shardDelay = 1/(frequency*((float)shardCount));
+        spellType = new ChargeTuple(ChargeTypes.wind, ChargeTypes.earth);
+        shardDelay = 1 / (frequency * ((float)shardCount));
         playerTransform = GameObject.Find("Player").transform;
         castPoint = GameObject.Find("Player/Aim/Casting_Point").transform;
         pivot = GameObject.Find("Player/Aim/Aiming_Pivot").transform;
@@ -44,7 +44,8 @@ public class ShardCloud : SpellEffect
     /// create set number of shards
     /// wait between each shard instantiating to that they all are equally spaced out due to their rotation around player
     /// </summary>
-    private IEnumerator shardCreation(){
+    private IEnumerator shardCreation()
+    {
         yield return new WaitForSeconds(0.1f);
         Vector3 spawnPos;
         spawnPos = castPoint.position - pivot.position;
@@ -52,7 +53,7 @@ public class ShardCloud : SpellEffect
         spawnPos *= radius;
         for (int i = 0; i < shardCount; i++)
         {
-            Shards[i] = Instantiate(shardEffect, spawnPos ,Quaternion.Euler(0,0,0));
+            Shards[i] = Instantiate(shardEffect, spawnPos, Quaternion.Euler(0, 0, 0));
             Shards[i].GetComponent<Shard>().spellType = spellType;
             Shards[i].GetComponent<Shard>().shardCloud = gameObject.GetComponent<ShardCloud>();
             yield return new WaitForSeconds(shardDelay);
@@ -61,7 +62,7 @@ public class ShardCloud : SpellEffect
     /// <summary>
     /// destroy shard cloud after spelllifetime runs out
     /// </summary>
-    private IEnumerator shardDestruction() 
+    private IEnumerator shardDestruction()
     {
         yield return new WaitForSeconds(spellLifeTime);
         Destroy(gameObject);

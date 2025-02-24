@@ -55,7 +55,7 @@ public class SimpleSpell : SpellEffect
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (hasTriggered) return; // Prevent further execution if already triggered.
-        
+
         //if enemy hit, use combat manager to execute attack
         if (other.gameObject.CompareTag("Enemy"))
         {

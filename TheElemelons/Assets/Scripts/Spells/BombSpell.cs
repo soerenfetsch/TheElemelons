@@ -29,19 +29,20 @@ public class Bomb_Spell : SpellEffect
     /// scale of gameobject during explosion
     /// </summary>
     public Vector2 explosionScale;
-    
+
     /// <summary>
     /// Set Spelltype (fire earth) and start Bomb timer for explosion
     /// </summary>
     void Start()
     {
-        spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.earth);
+        spellType = new ChargeTuple(ChargeTypes.fire, ChargeTypes.earth);
         StartCoroutine(BlinkTime());
     }
     /// <summary>
     /// make bomb blink for set time, then trigger explosion
     /// </summary>
-    public IEnumerator BlinkTime(){
+    public IEnumerator BlinkTime()
+    {
         for (int blinked = 0; blinked < 4; blinked++)
         {
             blinkingAnimator.SetTrigger("blink");
@@ -53,7 +54,8 @@ public class Bomb_Spell : SpellEffect
     /// <summary>
     /// Trigger explosion: Update animator and activate collisions, destroy gameobject after explosiontime
     /// </summary>
-    private IEnumerator Explode(){
+    private IEnumerator Explode()
+    {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
         blinkingAnimator.SetTrigger("explode");
         boxCollider2D.enabled = true;
@@ -67,11 +69,11 @@ public class Bomb_Spell : SpellEffect
     /// /// <param name="other">The collider of the object that the spell collides with.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        
-        if (other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
+
+        if (other.gameObject.CompareTag("Enemy") && other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
-            if(hit != null)
+            if (hit != null)
             {
                 Vector2 difference = hit.transform.position - transform.position;
                 difference = difference.normalized * thrust;
