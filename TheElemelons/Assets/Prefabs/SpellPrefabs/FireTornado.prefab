@@ -153,12 +153,12 @@ MonoBehaviour:
   spellObject: {fileID: 4882459669602414618}
   spellLifeTime: 3
   spellDeathTime: 0.3
-  moveSpeed: 1
-  switchTime: 3
-  correction: 0.1
-  switchTimeConstraints: {x: 1, y: 3}
-  thrust: 7
-  knockTime: 0.4
+  moveSpeed: 20
+  correction: 0.8
+  switchTime: 1
+  switchTimeConstraints: {x: 0.5, y: 2}
+  thrust: 20
+  knockTime: 0.5
   damage: 0.5
   myRigidbody: {fileID: 6894271094712347501}
 --- !u!61 &-2172532435036667880

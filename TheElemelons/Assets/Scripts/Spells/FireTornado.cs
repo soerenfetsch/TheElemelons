@@ -80,7 +80,9 @@ public class FireTornado : SpellEffect
         direction.x = myRigidbody.velocity.x*correction+direction.x*(1-correction);
         direction.y = myRigidbody.velocity.y*correction+direction.y*(1-correction);
         direction.Normalize();
-        myRigidbody.AddForce(direction*moveSpeed,ForceMode2D.Impulse);
+        direction.x *= moveSpeed;
+        direction.y *= moveSpeed;
+        myRigidbody.velocity = direction;
     }
     /// <summary>
     /// expire animation and then self destruct
