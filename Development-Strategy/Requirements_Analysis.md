@@ -70,6 +70,9 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - With no charges selected: cast a basic attack spell that is stationary at the casting point. It lingers at the point for a small time (variable to be changed ~ 1 sec) and if it collides with an enemy, deals a small amount of damage (variable to be changed ~ 0.5 hearts)
   - With fire, fire selected: casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime (variable to be changed ~ 3 sec), explodes on impact (wall, enemy) and deals large amount of damage (variable to be changed ~ 2 hearts) in an AOE where the radius of effect is an edittable variable ~ 1.5 tiles
   - With wind, none selected: casts a speed buff spell that boosts the movement speed of the player by a factor (variable between 1 and 2) for a variable amount of time (3-30 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the speed buff animation as long as the buff is applied (see Buff/Debuff Manager for details)
+  - With fire, earth: cast stationary bomb that triggers an AOE explosion after ~3 seconds, damaging all non-staggered enemies in its range
+  - With fire, wind: cast a fast tornado that deals small damage when it collides with enemies. Bounces off walls and can also randomly change its propagation direction. Expires after medium time ~5s
+  - With earth, wind: cast a circle of 6 shards that rotate around the player and individually break at impact with enemy and deal minor damage (~0.5hearts). If any shards are left at end of spell lifetime (~10s), they break
  
 #### 2.1.4 Input Manager
 
