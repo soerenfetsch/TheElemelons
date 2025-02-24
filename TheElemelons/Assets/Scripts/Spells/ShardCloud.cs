@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-
+/// <summary>
+/// Shard class inherits from Spell Effect
+/// Shard cloud spawns and manages set number of Shard Spell Effects
+/// </summary>
 public class ShardCloud : SpellEffect
 {
     [Header("Stats")]
@@ -22,6 +25,9 @@ public class ShardCloud : SpellEffect
     public GameObject shardEffect;
     Transform castPoint;
     Transform pivot;
+    /// <summary>
+    /// initialize spelltype (wind earth), start coroutine to spawn shards and self destruct timer
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.wind,ChargeTypes.earth);
@@ -34,6 +40,10 @@ public class ShardCloud : SpellEffect
         StartCoroutine(shardDestruction());
 
     }
+    /// <summary>
+    /// create set number of shards
+    /// wait between each shard instantiating to that they all are equally spaced out due to their rotation around player
+    /// </summary>
     private IEnumerator shardCreation(){
         yield return new WaitForSeconds(0.1f);
         Vector3 spawnPos;
@@ -48,13 +58,18 @@ public class ShardCloud : SpellEffect
             yield return new WaitForSeconds(shardDelay);
         }
     }
+    /// <summary>
+    /// destroy shard cloud after spelllifetime runs out
+    /// </summary>
     private IEnumerator shardDestruction() 
     {
         yield return new WaitForSeconds(spellLifeTime);
         Destroy(gameObject);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// selfdestruct if no shards are left
+    /// </summary>
     void Update()
     {
         if (Shards.Count() == 0)
@@ -62,6 +77,9 @@ public class ShardCloud : SpellEffect
             Destroy(gameObject);
         }
     }
+    /// <summary>
+    /// adapt transform position to player position
+    /// </summary>
     void FixedUpdate()
     {
         transform.position = playerTransform.position;

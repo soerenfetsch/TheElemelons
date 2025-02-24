@@ -10976,7 +10976,7 @@ GameObject:
   - component: {fileID: 1827894720}
   m_Layer: 6
   m_Name: Walls_2
-  m_TagString: Collidable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11889,7 +11889,7 @@ GameObject:
   - component: {fileID: 1841686562}
   m_Layer: 6
   m_Name: Walls
-  m_TagString: Collidable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

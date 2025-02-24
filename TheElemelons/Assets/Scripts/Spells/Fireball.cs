@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Fireball has 3 states:
+/// creating: no movement
+/// propagating: propagates in casting direction
+/// exploding: fireball has collided and now explodes and deals damage to enemies in collider
+/// </summary>
 public enum FireballState{
     creating,
     propagating,
     exploding
 }
+/// <summary>
+/// Fireball class inherits from Spell Effect
+/// Fireball explodes after given time or collision and deals damage to enemies in collider
+/// </summary>
 public class Fireball : SpellEffect
 {
     [Header("Hit")]
@@ -14,9 +23,21 @@ public class Fireball : SpellEffect
     public float knockTime = 0.4f;
     public float damage = 2f;
     [Header("Movement")]
+    /// <summary>
+    /// time fireball spends in creating state
+    /// </summary>
     public float focusTime = 0.6f;
+    /// <summary>
+    /// time fireball spends in propagating state
+    /// </summary>
     public float flyTime = 3f;
+    /// <summary>
+    /// time fireball spends in exploding state
+    /// </summary>
     public float explodeTime = 0.5f;
+    /// <summary>
+    /// propagation speed
+    /// </summary>
     public float moveSpeed = 1f;
     [Header("Linked Components")]
     public Rigidbody2D myRigidbody;
@@ -24,8 +45,15 @@ public class Fireball : SpellEffect
     public Transform castPoint;
     public BoxCollider2D boxCollider2D;
     [Header("Internal Infos")]
+    /// <summary>
+    /// current fireball state
+    /// </summary>
     public FireballState currentState;
-    // Start is called before the first frame update
+    /// <summary>
+    /// spellstype (fire fire), currentstate and orientation of fireball are set
+    /// expiration timer of fireball is set (explodes after flytime at latest)
+    /// focus timer is started to get to propagating state
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.fire);
@@ -38,6 +66,9 @@ public class Fireball : SpellEffect
         StartCoroutine(Expire());
         StartCoroutine(StartFocus());
     }
+    /// <summary>
+    /// explosion triggered after flytime at latest
+    /// </summary>
     private IEnumerator Expire(){
         yield return new WaitForSeconds(flyTime);
         if (currentState != FireballState.exploding)
@@ -45,11 +76,18 @@ public class Fireball : SpellEffect
             StartCoroutine(Explode());
         }
     }
+    /// <summary>
+    /// switch to propagating state after focustime
+    /// </summary>
     public IEnumerator StartFocus(){
         yield return new WaitForSeconds(focusTime);
         currentState = FireballState.propagating;
         animator.SetTrigger("fly");
     }
+    /// <summary>
+    /// explosion: update state to exploding, set rigidbody to kinematic, 
+    // velocity 0, adapt collider scale to explosion sprite and destrox gameobject after explosion time
+    /// </summary>
     private IEnumerator Explode(){
         currentState = FireballState.exploding;
         myRigidbody.isKinematic = true;
@@ -59,16 +97,22 @@ public class Fireball : SpellEffect
         yield return new WaitForSeconds(explodeTime);
         Destroy(gameObject);
     }
-     // Update is called once per frame
+    /// <summary>
+    /// add force to fireball in casting direction while in propagating state
+    /// </summary>
     void FixedUpdate()
     {
         if(currentState == FireballState.propagating){
             myRigidbody.AddForce(transform.up*moveSpeed,ForceMode2D.Impulse);
         }
     }
+    /// <summary>
+    /// if fireball currently propagating, collision with enemy or anything else will trigger explosion
+    /// if fireball is exploding, collision with enemy deals damage to enemy
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (((other.gameObject.CompareTag("Enemy") && other.isTrigger) || other.gameObject.CompareTag("Collidable")) && currentState == FireballState.propagating)
+        if (((other.gameObject.CompareTag("Enemy") && other.isTrigger) || !other.gameObject.CompareTag("Enemy")) && currentState == FireballState.propagating)
         {
             StartCoroutine(Explode());
         } 

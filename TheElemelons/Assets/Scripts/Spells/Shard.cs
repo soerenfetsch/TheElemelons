@@ -4,7 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.GameCenter;
 using UnityEngine.UIElements;
-
+/// <summary>
+/// Shard class inherits from Spell Effect
+/// Shard rotates around player and itself
+/// Is spawned by a ShardCloud Spell Effect
+/// breaks at impact with enemy or when lifetime exhausted
+/// </summary>
 public class Shard : SpellEffect
 {
     [Header("Movement")]
@@ -18,6 +23,9 @@ public class Shard : SpellEffect
     [Header("Internal Stuff")]
     public ShardCloud shardCloud;
     Animator animator;
+    /// <summary>
+    /// spelltype (wind earth) initialized, selfdestruct timer started
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.wind,ChargeTypes.earth);
@@ -30,7 +38,9 @@ public class Shard : SpellEffect
         caster = shardCloud.caster;
         StartCoroutine(TimedDestruction());
     }
-    
+    /// <summary>
+    /// rotate around player at set distance
+    /// </summary>
     void Update()
     {
         if (!animator.GetBool("Hit"))
@@ -41,6 +51,9 @@ public class Shard : SpellEffect
         }
         
     }
+    /// <summary>
+    /// deal damage to enemy if collides and self destructed
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy")&& other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
@@ -55,6 +68,9 @@ public class Shard : SpellEffect
             }
         }
     }
+    /// <summary>
+    /// self destruct after spelllifetime exhausted
+    /// </summary>
     private IEnumerator TimedDestruction(){
         while (!(shardCloud.spellLifeTime > 0))
         {
@@ -63,6 +79,9 @@ public class Shard : SpellEffect
         yield return new WaitForSeconds(shardCloud.spellLifeTime);
         DieAnimation();
     }
+    /// <summary>
+    /// trigger break animation and self destruct
+    /// </summary>
     public void DieAnimation() 
     {
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
@@ -70,6 +89,9 @@ public class Shard : SpellEffect
         Debug.Log(animator.GetBool("Hit"));
         StartCoroutine(SelfDestruct());
     }
+    /// <summary>
+    /// self destruct after break animation finished
+    /// </summary>
     private IEnumerator SelfDestruct(){
         yield return new WaitForSeconds(deathTime);
         Destroy(gameObject);

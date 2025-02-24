@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using Codice.Client.BaseCommands;
 using UnityEngine;
 
+/// <summary>
+/// Bomb Spell class inherits from Spell Effect
+/// Bomb explodes after given time and deals damage to enemies in collider
+/// </summary>
 public class Bomb_Spell : SpellEffect
 {
     [Header("Hit")]
@@ -10,19 +14,33 @@ public class Bomb_Spell : SpellEffect
     public float knockTime = 0.4f;
     public float damage = 2f;
     [Header("Animation")]
+    /// <summary>
+    /// time between each blinking animation
+    /// </summary>
     public float blinkTime = 0.1f;
     public Animator blinkingAnimator;
     [Header("Explosion")]
     public BoxCollider2D boxCollider2D;
+    /// <summary>
+    /// duration of explosion
+    /// </summary>
     public float explodeTime = 0.5f;
+    /// <summary>
+    /// scale of gameobject during explosion
+    /// </summary>
     public Vector2 explosionScale;
     
-    // Start is called before the first frame update
+    /// <summary>
+    /// Set Spelltype (fire earth) and start Bomb timer for explosion
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.fire,ChargeTypes.earth);
         StartCoroutine(BlinkTime());
     }
+    /// <summary>
+    /// make bomb blink for set time, then trigger explosion
+    /// </summary>
     public IEnumerator BlinkTime(){
         for (int blinked = 0; blinked < 4; blinked++)
         {
@@ -32,6 +50,9 @@ public class Bomb_Spell : SpellEffect
         }
         StartCoroutine(Explode());
     }
+    /// <summary>
+    /// Trigger explosion: Update animator and activate collisions, destroy gameobject after explosiontime
+    /// </summary>
     private IEnumerator Explode(){
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
         blinkingAnimator.SetTrigger("explode");
@@ -40,6 +61,10 @@ public class Bomb_Spell : SpellEffect
         yield return new WaitForSeconds(explodeTime);
         Destroy(gameObject);
     }
+    /// <summary>
+    /// Registers collisions during explosion and deals damage to enemies that collide
+    /// </summary>
+    /// /// <param name="other">The collider of the object that the spell collides with.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         
