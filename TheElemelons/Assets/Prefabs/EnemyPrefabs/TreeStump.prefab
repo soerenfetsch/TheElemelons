@@ -57,8 +57,8 @@ MonoBehaviour:
   chaseRadius: 10
   attackRadius: 0.9
   baseDamage: 1
-  thrust: 1
-  knockTime: 0.2
+  thrust: 15
+  knockTime: 0.4
   attackCooldown: 1
   deathEffect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
   deathEffectDelay: 1
