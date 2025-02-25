@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "TheElemelons.sln"
+    "dotnet.defaultSolution": "TheElemelons.sln",
+    "dotnet.preferCSharpExtension": true
 }

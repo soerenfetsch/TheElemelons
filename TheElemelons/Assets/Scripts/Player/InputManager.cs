@@ -1,22 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
-
-/// <summary>
-/// Enum representing the different game states.
-/// </summary>
-public enum GameState
-{
-    InGame,
-    MainMenu,
-    SettingsMenu,
-    PauseMenu
-}
+using GameSystem;
 
 /// <summary>
 /// Manages player input and key bindings across different game states.
 /// </summary>
 public class InputManager : MonoBehaviour
 {
+
+    public delegate void OnDialogueAdvance();
+    public static event OnDialogueAdvance AdvanceDialogue;
+
     /// <summary>
     /// The current state of the game.
     /// </summary>
@@ -80,6 +74,12 @@ public class InputManager : MonoBehaviour
 
             case GameState.PauseMenu:
                 HandlePauseMenuInputs();
+                break;
+            case GameState.InDialogue: // HandleInDialogue function needed!!!!
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    AdvanceDialogue?.Invoke();
+                }
                 break;
         }
 
@@ -293,4 +293,5 @@ public class InputManager : MonoBehaviour
             return keyBindings[action];
         throw new KeyNotFoundException($"No key binding found for action: {action}");
     }
+
 }
