@@ -7,11 +7,32 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI textComponent;
     public float typingSpeed;
     private int index;
-    private string[] sentences;
+    public string[] sentences;
 
-    public void StartDialogue(string[] dialogueSentences)
+    void Start()
     {
-        sentences = dialogueSentences;
+        textComponent.text = string.Empty;
+        StartDialogue();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (textComponent.text == sentences[index])
+            {
+                NextLine();
+            }
+            else
+            {
+                StopAllCoroutines();
+                textComponent.text = sentences[index];
+            }
+        }
+    }
+
+    public void StartDialogue()
+    {
         index = 0;
         textComponent.text = string.Empty;
         gameObject.SetActive(true);

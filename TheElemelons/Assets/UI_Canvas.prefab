@@ -2357,7 +2357,7 @@ GameObject:
   - component: {fileID: 5499228402504156709}
   - component: {fileID: 6866799697588522182}
   - component: {fileID: 3164561458844918359}
-  - component: {fileID: 6808835151110804088}
+  - component: {fileID: 3538948026819433389}
   m_Layer: 0
   m_Name: DialogueBox
   m_TagString: Untagged
@@ -2423,7 +2423,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6808835151110804088
+--- !u!114 &3538948026819433389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2436,9 +2436,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textComponent: {fileID: 5595565969569852560}
-  sentences:
-  - does this work?
   typingSpeed: 0
+  sentences:
+  - Dialogue
+  - Next Dialogue
 --- !u!1 &7357406114829886185
 GameObject:
   m_ObjectHideFlags: 0
