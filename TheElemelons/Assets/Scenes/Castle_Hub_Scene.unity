@@ -15679,6 +15679,10 @@ PrefabInstance:
       propertyPath: fireearthSpell
       value: 
       objectReference: {fileID: 8461188281739757032, guid: 98b5c3773d01625498226b45450330f8, type: 3}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: earthwaterSpell
+      value: 
+      objectReference: {fileID: 5623999138696623272, guid: 88df807dac838c54fa0168a6073d0b65, type: 3}
     - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: buffIcons.Array.data[0]
       value: 
