@@ -15664,6 +15664,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 969396629}
     - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: earthSpell
+      value: 
+      objectReference: {fileID: 909741432932913071, guid: fee8c13b5d90bb847a1fc3b9c07aa6d2, type: 3}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: firefireSpell
       value: 
       objectReference: {fileID: 2254822626139848905, guid: c420d969f0d835049baff441a1e96a37, type: 3}
@@ -15680,9 +15684,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8461188281739757032, guid: 98b5c3773d01625498226b45450330f8, type: 3}
     - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: earthearthSpell
+      value: 
+      objectReference: {fileID: 898128783897314616, guid: 793d49ed943fd5844973750dbb12b07e, type: 3}
+    - target: {fileID: 8520900134945701756, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: earthwaterSpell
       value: 
-      objectReference: {fileID: 5623999138696623272, guid: 88df807dac838c54fa0168a6073d0b65, type: 3}
+      objectReference: {fileID: 4614930756479306301, guid: 7eef321e6b2bec6478a04c6ab12a5c5a, type: 3}
     - target: {fileID: 8561548983273805335, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: buffIcons.Array.data[0]
       value: 
