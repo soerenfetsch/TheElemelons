@@ -117,7 +117,7 @@ public class Fireball : SpellEffect
     /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (((other.gameObject.CompareTag("Enemy") && other.isTrigger) || !other.gameObject.CompareTag("Enemy")) && currentState == FireballState.propagating)
+        if (!other.gameObject.CompareTag("Spell") && ((other.gameObject.CompareTag("Enemy") && other.isTrigger) || !other.gameObject.CompareTag("Enemy")) && currentState == FireballState.propagating)
         {
             StartCoroutine(Explode());
         }

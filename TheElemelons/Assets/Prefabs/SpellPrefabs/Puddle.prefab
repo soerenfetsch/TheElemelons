@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4058788699712313087}
   m_Layer: 0
   m_Name: Puddle
-  m_TagString: Untagged
+  m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,8 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaCost: 2
   spellObject: {fileID: 5623999138696623272}
+  spellLifeTime: 5
   slownessTime: 1
-  slownessfactor: 0.3
+  slownessfactor: 3
+  clockIntervalLength: 0.2
+  boxCollider2D: {fileID: 4709568257471059679}
+  bigPuddleScale: 1.5
+  bigPuddleProbability: 0.7
 --- !u!1 &8360022552703800838
 GameObject:
   m_ObjectHideFlags: 0

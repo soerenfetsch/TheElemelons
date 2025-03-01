@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 7462602604781741071}
   m_Layer: 0
   m_Name: BombSpell
-  m_TagString: Untagged
+  m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
