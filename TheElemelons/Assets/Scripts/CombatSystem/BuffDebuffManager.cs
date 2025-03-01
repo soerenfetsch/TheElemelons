@@ -130,7 +130,11 @@ public class BuffDebuffManager : MonoBehaviour
             OnApply = effect =>
             {
                 // Add buff/debuff icon to UI
-                _uiManager?.AddBuffDebuffIcon(effect.type);
+                if (target.CompareTag("Player"))
+                {
+                    _uiManager?.AddBuffDebuffIcon(effect.type);
+                }
+                    
                 // Start the speed buff animation if buff is speed buff
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
                 {
@@ -140,7 +144,11 @@ public class BuffDebuffManager : MonoBehaviour
             OnExpire = effect =>
             {
                 // Remove buff/debuff icon from UI
-                _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                if (target.CompareTag("Player"))
+                {
+                    _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                }
+
                 // Only stop the speed buff animation if there is no other speed buff active
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff
                     && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
