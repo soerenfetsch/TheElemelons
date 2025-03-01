@@ -47,6 +47,7 @@ public class Casting : MonoBehaviour
     public GameObject earthwindSpell;
     public GameObject firewindSpell;
     public GameObject earthwaterSpell;
+    public GameObject earthSpell;
     public float manaCost = 1f;
 
     /// <summary>
@@ -71,6 +72,7 @@ public class Casting : MonoBehaviour
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.earth), earthwindSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.fire), firewindSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.water, ChargeTypes.earth), earthwaterSpell.GetComponent<SpellEffect>());
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.earth), earthSpell.GetComponent<SpellEffect>());
 
     }
 

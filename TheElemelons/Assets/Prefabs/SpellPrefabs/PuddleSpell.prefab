@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6695984e612a4cc478c128924ee935f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manaCost: 0
+  manaCost: 2
   spellObject: {fileID: 4614930756479306301}
   spellLifeTime: 10
   puddleSpawningTime: 0.3

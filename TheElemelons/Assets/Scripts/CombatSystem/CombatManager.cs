@@ -146,7 +146,7 @@ public static class CombatManager
         ElementType secondElement = attackTypes.Item2;
 
         float damageMultiplier = damageTable[firstElement][defenseType] * damageTable[secondElement][defenseType];
-        return baseDamage * damageMultiplier * attackFactor * defenseFactor;
+        return baseDamage * damageMultiplier * attackFactor / defenseFactor;
     }
 
     /// <summary>
@@ -164,7 +164,7 @@ public static class CombatManager
         ElementType secondElement = ConvertChargeTypeToElement(attackTypes.second());
 
         float damageMultiplier = damageTable[firstElement][defenseType] * damageTable[secondElement][defenseType];
-        return baseDamage * damageMultiplier * attackFactor * defenseFactor;
+        return baseDamage * damageMultiplier * attackFactor / defenseFactor;
     }
 
     /// <summary>
@@ -179,7 +179,7 @@ public static class CombatManager
     public static float CalculateDamage(ElementType attackType, ElementType defenseType, float baseDamage, float attackFactor, float defenseFactor)
     {
         float damageMultiplier = damageTable[attackType][defenseType];
-        return baseDamage * damageMultiplier * attackFactor * defenseFactor;
+        return baseDamage * damageMultiplier * attackFactor / defenseFactor;
     }
 
     /// <summary>
