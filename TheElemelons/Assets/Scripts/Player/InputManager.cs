@@ -1,22 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystem;
 
 /// <summary>
-/// Manages player input and key bindings across different game states.
+/// Manages player input and key bindings (without referencing any external GameSystem).
 /// </summary>
 public class InputManager : MonoBehaviour
 {
-
-    public delegate void OnDialogueAdvance();
-    public static event OnDialogueAdvance AdvanceDialogue;
-
-    /// <summary>
-    /// The current state of the game.
-    /// </summary>
-    [Header("Game State")]
-    public GameState currentState = GameState.InGame;
-
     /// <summary>
     /// Dictionary of actions mapped to their key bindings.
     /// </summary>
@@ -48,55 +37,18 @@ public class InputManager : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         casting = GetComponent<Casting>();
         playerInteraction = GetComponent<PlayerInteraction>();
+
         // Find the CameraMovement script in the scene
         cameraMovement = FindObjectOfType<CameraMovement>();
         mainCamera = Camera.main;
     }
 
     /// <summary>
-    /// Handles updates for different game states and global inputs.
+    /// Handles updates for player inputs (movement, camera, interaction, etc.).
     /// </summary>
     private void Update()
     {
-        switch (currentState)
-        {
-            case GameState.InGame:
-                HandleGameplayInputs();
-                break;
-
-            case GameState.MainMenu:
-                HandleMenuInputs();
-                break;
-
-            case GameState.SettingsMenu:
-                HandleSettingsInputs();
-                break;
-
-            case GameState.PauseMenu:
-                HandlePauseMenuInputs();
-                break;
-            case GameState.InDialogue: // HandleInDialogue function needed!!!!
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    AdvanceDialogue?.Invoke();
-                }
-                break;
-        }
-
-        // Global input: Toggle Pause Menu
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (currentState == GameState.InGame)
-            {
-                currentState = GameState.PauseMenu;
-                Debug.Log("Game Paused.");
-            }
-            else if (currentState == GameState.PauseMenu)
-            {
-                currentState = GameState.InGame;
-                Debug.Log("Game Resumed.");
-            }
-        }
+        HandleGameplayInputs();
     }
 
     /// <summary>
@@ -149,7 +101,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles gameplay-related inputs.
+    /// Central method to handle all gameplay-related inputs.
     /// </summary>
     private void HandleGameplayInputs()
     {
@@ -165,10 +117,10 @@ public class InputManager : MonoBehaviour
     private void HandleMovementInputs()
     {
         Vector2 direction = Vector2.zero;
-        if (Input.GetKey(keyBindings["MoveLeft"])) direction.x -= 1;
+        if (Input.GetKey(keyBindings["MoveLeft"]))  direction.x -= 1;
         if (Input.GetKey(keyBindings["MoveRight"])) direction.x += 1;
-        if (Input.GetKey(keyBindings["MoveUp"])) direction.y += 1;
-        if (Input.GetKey(keyBindings["MoveDown"])) direction.y -= 1;
+        if (Input.GetKey(keyBindings["MoveUp"]))    direction.y += 1;
+        if (Input.GetKey(keyBindings["MoveDown"]))  direction.y -= 1;
 
         playerMovement?.SetMovement(direction.normalized);
     }
@@ -188,10 +140,10 @@ public class InputManager : MonoBehaviour
             casting?.ClearCharges();
         }
 
-        if (Input.GetKeyDown(keyBindings["SelectFire"])) casting?.OnSelectCharge(ChargeTypes.fire);
-        if (Input.GetKeyDown(keyBindings["SelectWater"])) casting?.OnSelectCharge(ChargeTypes.water);
-        if (Input.GetKeyDown(keyBindings["SelectEarth"])) casting?.OnSelectCharge(ChargeTypes.earth);
-        if (Input.GetKeyDown(keyBindings["SelectAir"])) casting?.OnSelectCharge(ChargeTypes.wind);
+        if (Input.GetKeyDown(keyBindings["SelectFire"]))   casting?.OnSelectCharge(ChargeTypes.fire);
+        if (Input.GetKeyDown(keyBindings["SelectWater"]))  casting?.OnSelectCharge(ChargeTypes.water);
+        if (Input.GetKeyDown(keyBindings["SelectEarth"]))  casting?.OnSelectCharge(ChargeTypes.earth);
+        if (Input.GetKeyDown(keyBindings["SelectAir"]))    casting?.OnSelectCharge(ChargeTypes.wind);
     }
 
     /// <summary>
@@ -242,40 +194,20 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles main menu inputs.
-    /// </summary>
-    private void HandleMenuInputs()
-    {
-        Debug.Log("Main Menu Input Handling");
-    }
-
-    /// <summary>
-    /// Handles settings menu inputs.
-    /// </summary>
-    private void HandleSettingsInputs()
-    {
-        Debug.Log("Settings Menu Input Handling");
-    }
-
-    /// <summary>
-    /// Handles pause menu inputs.
-    /// </summary>
-    private void HandlePauseMenuInputs()
-    {
-        Debug.Log("Pause Menu Input Handling");
-    }
-
-    /// <summary>
     /// Gets the aiming direction based on the mouse position relative to the player.
     /// </summary>
     /// <returns>The angle in degrees.</returns>
     public float GetAimDirection()
     {
         Vector2 mousePos = GetMousePosition();
-        Vector2 aim_dir = mousePos - new Vector2(pivot.position.x, pivot.position.y);
-        return Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg + 90f;
+        Vector2 aimDir = mousePos - new Vector2(pivot.position.x, pivot.position.y);
+        return Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg + 90f;
     }
 
+    /// <summary>
+    /// Gets the current mouse position in world space.
+    /// </summary>
+    /// <returns>Vector2 representing mouse position in the world.</returns>
     public Vector2 GetMousePosition()
     {
         return mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -291,7 +223,7 @@ public class InputManager : MonoBehaviour
     {
         if (keyBindings.ContainsKey(action))
             return keyBindings[action];
+
         throw new KeyNotFoundException($"No key binding found for action: {action}");
     }
-
 }
