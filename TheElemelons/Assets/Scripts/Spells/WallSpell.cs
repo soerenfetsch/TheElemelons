@@ -17,31 +17,29 @@ public class WallSpell : SpellEffect
         playerTransform = GameObject.Find("Player").transform;
         boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
         animator = gameObject.GetComponent<Animator>();
-        StartCoroutine(Orientate());
+        Orientate();
         StartCoroutine(Expire());
     }
-    IEnumerator Orientate()
+    void Orientate()
     {
         Vector2 direction = transform.position - playerTransform.position;
         direction.Normalize();
-        animator.SetFloat("Horizontal", direction.x);
-        animator.SetFloat("Vertical", direction.y);
-        yield return null;
-        string animationName = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-        foreach (var item in animator.GetCurrentAnimatorClipInfo(0))
+        
+        if (direction.x < -0.707 && direction.y > -0.707 && direction.y < 0.707)
         {
-            Debug.Log(item.clip.name);
-        }
-        Debug.Log("animationname: "+animationName);
-        if (animationName.Contains("Left"))
-        {
+            //Left
+            animator.SetInteger("Direction",-1);
             boxCollider2D.offset = new Vector2(0.01683933f,0.9102298f);
             boxCollider2D.size = new Vector2(0.5423633f,1.82007f);
-        } else if (animationName.Contains("Right"))
+        } else if (direction.x > 0.707 && direction.y > -0.707 && direction.y < 0.707)
         {
+            //Right
+            animator.SetInteger("Direction",1);
             boxCollider2D.offset = new Vector2(-0.09968555f,0.9684917f);
             boxCollider2D.size = new Vector2(0.513232f,1.878331f);
         }
+        boxCollider2D.enabled = true;
+        
     }
     IEnumerator Expire()
     {
