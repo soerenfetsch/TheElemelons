@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7384243921514260065}
   - component: {fileID: 3872386005063604112}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Charge1UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 158301070312169665}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: -0.01, z: 0}
+  m_LocalPosition: {x: -0.66, y: 2.21, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96,9 +96,9 @@ GameObject:
   - component: {fileID: 6567992373981671026}
   - component: {fileID: 98727817585081023}
   - component: {fileID: 5732891204451770183}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Feet
-  m_TagString: Untagged
+  m_TagString: Feet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 1589180229325968192}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.05, y: -1.8, z: 0}
+  m_LocalPosition: {x: -0.09, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -245,7 +245,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4112205898563254887}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Aim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ Transform:
   m_GameObject: {fileID: 2255965913880058543}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.07, y: -1.13, z: 0}
+  m_LocalPosition: {x: -0.07, y: 0.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 1092184968914849935}
   - component: {fileID: 8148180010026948428}
   - component: {fileID: 1854645761170606446}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wand_Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 8967277064185722604}
   - component: {fileID: 8561548983273805335}
   - component: {fileID: 6168585797730868514}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -513,7 +513,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -695,6 +695,10 @@ MonoBehaviour:
   maxCharges: 2
   noTypeSpell: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
   speedBuffSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
+  firefireSpell: {fileID: 2254822626139848905, guid: c420d969f0d835049baff441a1e96a37, type: 3}
+  fireearthSpell: {fileID: 8461188281739757032, guid: 98b5c3773d01625498226b45450330f8, type: 3}
+  earthwindSpell: {fileID: 2693233800697013054, guid: c15e7ae06b5014b4aae8d026e1d28ab3, type: 3}
+  firewindSpell: {fileID: 4882459669602414618, guid: 04987bfe3caed134d8184b5df6e10b1e, type: 3}
   manaCost: 1
   playerMovement: {fileID: 1581666591548288514}
   uiManager: {fileID: 0}
@@ -797,6 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   casting: {fileID: 8520900134945701756}
+  playerInteraction: {fileID: 0}
   pivot: {fileID: 524286683018158904}
 --- !u!1 &4547487574929871031
 GameObject:
@@ -808,7 +813,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5369963894010167650}
   - component: {fileID: 3964062048412017681}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Charge2UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +829,7 @@ Transform:
   m_GameObject: {fileID: 4547487574929871031}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.28, y: 0, z: 0}
+  m_LocalPosition: {x: 0.47, y: 2.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -891,7 +896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1862140185845796261}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: tracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -907,7 +912,7 @@ Transform:
   m_GameObject: {fileID: 5970070079269868915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.06, y: 0.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -923,7 +928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 910667034170521318}
   - component: {fileID: 1754105673490953705}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Aiming Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -983,9 +988,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1819832235
+  m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Sprite: {fileID: 473408722, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1006,7 +1011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 524286683018158904}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Aiming_Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1022,7 +1027,7 @@ Transform:
   m_GameObject: {fileID: 6689332375386628329}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.26, z: 0}
+  m_LocalPosition: {x: 0, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1037,7 +1042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6194766439084384170}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Casting_Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
