@@ -7,10 +7,9 @@ public class TreeLog : Enemy
 {
     [Header("Components")]
     private Transform transformComponent;
-    private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
-    private BoxCollider2D attackColliderBox;
+    private AttackCollider attackCollider;
     private Animator animator;
 
     [Header("Pathfinding")]
@@ -28,8 +27,6 @@ public class TreeLog : Enemy
     public float baseDamage = 1f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
-    private float lastAttackTime = 0f;
-    public float attackCooldown = 2f; // Adjust attack cooldown as needed
 
     [Header("Effects")]
     public GameObject deathEffect;
@@ -47,10 +44,9 @@ public class TreeLog : Enemy
     public void InitializeComponents()
     {
         transformComponent = GetComponent<Transform>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
         colliderBox = GetComponent<BoxCollider2D>();
-        attackColliderBox = GetComponents<BoxCollider2D>()[1]; // Assuming second collider is for attack collisions
+        attackCollider = GetComponentInChildren<AttackCollider>();
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
@@ -65,6 +61,15 @@ public class TreeLog : Enemy
         defenseFactor = 1f;
         isInvincible = false;
         elementType = ElementType.Earth;
+
+        if (attackCollider != null)
+        {
+            attackCollider.OnAttackTriggered += HandleAttack;
+        }
+        else
+        {
+            Debug.LogWarning("TreeStump: No AttackCollider found on the GameObject.");
+        }
     }
 
     // Start is called before the first frame update
@@ -72,7 +77,6 @@ public class TreeLog : Enemy
     {
         InitializeComponents();
         InitializeCombatComponents();
-        colliderBox.enabled = false;
     }
 
     // Fixed update to handle physics and movements correctly
@@ -181,7 +185,7 @@ public class TreeLog : Enemy
     public override void GetKnocked(float knockTime)
     {
         StartCoroutine(HandleStagger(knockTime));
-    } 
+    }
 
     private void ChangeWalkAnimation(Vector2 direction)
     {
@@ -243,7 +247,7 @@ public class TreeLog : Enemy
     private bool CheckPlayerReachableWithinRadius(float radius)
     {
         bool reachable = pathfinder.CheckPlayerInSight(GetFeetPosition(), radius) != Vector2.zero
-                      || pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) != Vector2.zero;  
+                      || pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) != Vector2.zero;
         return reachable;
     }
 
@@ -270,7 +274,7 @@ public class TreeLog : Enemy
             direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);
         }
         if (direction == Vector2.zero) return;
-    
+
         direction = direction.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
@@ -303,31 +307,22 @@ public class TreeLog : Enemy
         ChangeState(EnemyStatus.Idle);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void HandleAttack(Rigidbody2D playerRb)
     {
-        // Only attack player when last attack was more than attackCooldown seconds ago
-        if (Time.time - lastAttackTime < attackCooldown) return;
+        if (playerRb == null) return;
 
-        if (currentState == EnemyStatus.Attacking && other.CompareTag("Player")) // Check if currently attacking
-        {
-            Rigidbody2D playerRb = other.GetComponent<Rigidbody2D>();
-            if (playerRb != null)
-            {
-                Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
-                CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
-                lastAttackTime = Time.time;
-            }
-        }
+        Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
+        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
     }
 
     private void EnableAttackCollider()
     {
-        colliderBox.enabled = true; // Enable attack detection
+        attackCollider.EnableAttack();
     }
 
     private void DisableAttackCollider()
     {
-        colliderBox.enabled = false; // Disable attack detection
+        attackCollider.DisableAttack();
     }
 
     public override void ModifySpeed(float factor)
