@@ -50,6 +50,8 @@ MonoBehaviour:
   spellObject: {fileID: 909741432932913071}
   defenseTime: 10
   defenseFactor: 2
+  earthPlayerAnimator: {fileID: 9100000, guid: e87c78aff40d75c489dd06a99f0542fd, type: 2}
+  playerRuntimeAnimator: {fileID: 9100000, guid: ff994dae76ad1384db3c534379901aea, type: 2}
 --- !u!95 &-5852758943557723479
 Animator:
   serializedVersion: 5
