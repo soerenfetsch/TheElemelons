@@ -305,7 +305,7 @@ MonoBehaviour:
   thrust: 7
   knockTime: 0.4
   damage: 4
-  blinkTime: 0.15
+  blinkTime: 0.3
   blinkingAnimator: {fileID: 8441500415249421220}
   boxCollider2D: {fileID: 3766400554032578748}
   explodeTime: 0.5
