@@ -44,7 +44,7 @@ public class InputManager : MonoBehaviour
     private Camera mainCamera;
     private CameraMovement cameraMovement;
     public Transform pivot;
-
+    public bool canInput = true;
     /// <summary>
     /// Initializes the InputManager and references required components.
     /// </summary>
@@ -153,10 +153,12 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleGameplayInputs()
     {
+        if (canInput){
         HandleMovementInputs();
         HandleSpellCastingInputs();
         HandleCameraInputs();
         HandleInteractionInputs();
+        }
     }
 
     /// <summary>
