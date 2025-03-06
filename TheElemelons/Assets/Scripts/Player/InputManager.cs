@@ -48,7 +48,32 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        HandleGameplayInputs();
+        // if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameState.InGame)
+        // {
+            // HandleGameplayInputs();
+        // }
+
+        if (GameManager.Instance == null)
+        return;
+    
+        switch (GameManager.Instance.CurrentState)
+        {
+            case GameState.InGame:
+                HandleGameplayInputs();
+                break;
+            case GameState.Dialogue:
+                HandleDialogueInputs();
+                break;
+            case GameState.Paused:
+                HandlePauseInputs();
+                break;
+            case GameState.SettingsMenu:
+                HandleSettingsInputs();
+                break;
+            // Add cases as needed.
+            default:
+                break;
+        }
     }
 
     /// <summary>
@@ -109,6 +134,34 @@ public class InputManager : MonoBehaviour
         HandleSpellCastingInputs();
         HandleCameraInputs();
         HandleInteractionInputs();
+    }
+
+    /// <summary>
+    /// Processes inputs relevant during dialogue (e.g., skip text).
+    /// </summary>
+    private void HandleDialogueInputs()
+    {
+        // Example: if the player presses a designated skip key, call DialogueUI.SkipTyping();
+        if (Input.GetKeyDown(KeyCode.Space)) // assuming Space is for skipping dialogue
+        {
+            DialogueManager.Instance.SkipTyping();
+        }
+    }
+
+    /// <summary>
+    /// Processes inputs for the pause menu (e.g., navigating the menu).
+    /// </summary>
+    private void HandlePauseInputs()
+    {
+        // Example: handle pause menu navigation if necessary.
+    }
+
+    /// <summary>
+    /// Processes inputs for the settings menu.
+    /// </summary>
+    private void HandleSettingsInputs()
+    {
+        // Example: handle key inputs for adjusting settings.
     }
 
     /// <summary>

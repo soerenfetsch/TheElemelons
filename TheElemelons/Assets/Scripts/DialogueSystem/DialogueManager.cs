@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Manages dialogue interactions in a centralized way.
@@ -22,6 +23,9 @@ public class DialogueManager : MonoBehaviour
 
     // Internal dictionary for quick dialogue lookup.
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
+
+    // Event that signals dialogue completion.
+    public event Action OnDialogueComplete;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -76,9 +80,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Notify GameManager to pause the game (if needed)
-        // GameManager.Instance.PauseGame();  // Uncomment if you have this method
-
         dialogueUI.StartDialogue(dialogueDictionary[dialogueKey]);
     }
 
@@ -93,10 +94,16 @@ public class DialogueManager : MonoBehaviour
             Debug.LogError("DialogueUI is not assigned!");
             return;
         }
-
         dialogueUI.EndDialogue();
-
-        // Notify GameManager to resume game (if needed)
-        // GameManager.Instance.ResumeGame();  // Uncomment if you have this method
+        OnDialogueComplete?.Invoke();
     }
+
+    public void SkipTyping()
+    {
+        if (dialogueUI != null)
+        {
+            dialogueUI.SkipTyping();
+        }
+    }
+
 }
