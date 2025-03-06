@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-
+/// <summary>
+/// DefenseBuffSpell inherits SpellEffect
+/// Gives Player a defense buff
+/// </summary>
 public class DefenseBuffSpell : SpellEffect
 {
     public float defenseTime = 15f;
@@ -17,7 +20,9 @@ public class DefenseBuffSpell : SpellEffect
     PlayerMovement playerMovement;
     Animator playerAnimator;
     Rigidbody2D playerRigidBody;
-    // Start is called before the first frame update
+    /// <summary>
+    /// Initializes spelltype (Earth Notype), starts coroutine to expire, applies defense buff
+    /// </summary>
     void Start()
     {
         player = GameObject.Find("Player");
@@ -29,10 +34,19 @@ public class DefenseBuffSpell : SpellEffect
         BuffDebuffManager.Instance.ApplyBuffDebuff(player, BuffDebuffManager.BuffDebuffType.DefenseBuff, defenseTime, defenseFactor);
         StartCoroutine(Expire());
     }
+    /// <summary>
+    /// synchs position with player to that animations appear at right place
+    /// </summary>
     void FixedUpdate()
     {
         gameObject.transform.position = playerTransform.position;
     }
+    /// <summary>
+    /// First locks player inputs for animation where earthskin appears
+    /// unlock inputs, wait till spelllifetime expires
+    /// if no other defensspell active, restore original animator, trigger shatter animation
+    /// destroy gameobject
+    /// </summary>
     IEnumerator Expire()
     {
         // Lock movement for animation
@@ -62,6 +76,9 @@ public class DefenseBuffSpell : SpellEffect
         
         Destroy(gameObject);
     }
+    /// <summary>
+    /// Switch player animator to earthy, triggered by animation event
+    /// </summary>
     public void Switch_to_Earthy_Animator()
     {
         RuntimeAnimatorController animatorController = playerAnimator.GetComponent<RuntimeAnimatorController>();

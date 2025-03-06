@@ -144,7 +144,7 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.AddBuffDebuffIcon(effect.type);
                 }
-                    
+
                 // Start the speed buff animation if buff is speed buff
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
                 {
@@ -167,7 +167,7 @@ public class BuffDebuffManager : MonoBehaviour
                 }
             }
         };
-        
+
         // TODO: Add more OnApply and OnExpire delegates for other effects
 
         // Apply effect to target stats
@@ -185,16 +185,17 @@ public class BuffDebuffManager : MonoBehaviour
         if (!stackable)
         {
             List<BuffDebuff> buffList = Instance.GetActiveEffects(target);
-            List<int> doubles_indexes = new List<int> {};
+            List<int> doubles_indexes = new List<int> { };
             for (int i = 0; i < buffList.Count; i++)
             {
-                if (buffList[i]!=null && buffName != "none" && buffList[i].name == buffName){
+                if (buffList[i] != null && buffName != "none" && buffList[i].name == buffName)
+                {
                     doubles_indexes.Add(i);
                 }
             }
             foreach (int i in doubles_indexes)
             {
-                Debug.Log("Removing "+i.ToString());
+                Debug.Log("Removing " + i.ToString());
                 if (targets.ContainsKey(target))
                 {
                     BuffDebuff doubleBuffDebuff = buffList[i];
@@ -230,7 +231,7 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.AddBuffDebuffIcon(effect.type);
                 }
-                    
+
                 // Start the speed buff animation if buff is speed buff
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
                 {
@@ -253,7 +254,7 @@ public class BuffDebuffManager : MonoBehaviour
                 }
             }
         };
-        
+
         // TODO: Add more OnApply and OnExpire delegates for other effects
 
         // Apply effect to target stats
@@ -367,5 +368,5 @@ public class BuffDebuffManager : MonoBehaviour
 
         return new List<BuffDebuff>();
     }
-    
+
 }

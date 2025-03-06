@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// PuddleSpell class inherits from Spell Effect
+/// spawns given number of buddles
+/// </summary>
 public class PuddleSpell : SpellEffect
 {
     public float spellLifeTime = 10f;
@@ -9,7 +12,9 @@ public class PuddleSpell : SpellEffect
     public int maxPuddleCount = 6;
     Transform playerTransform;
     public GameObject puddle;
-    // Start is called before the first frame update
+    /// <summary>
+    /// initialize spelltype (water earth), start puddle spawning and expiration coroutine
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.water, ChargeTypes.earth);
@@ -17,6 +22,9 @@ public class PuddleSpell : SpellEffect
         StartCoroutine(Expire());
         StartCoroutine(SpawnPuddles());
     }
+    /// <summary>
+    /// spawn given number of puddles with given time interval
+    /// </summary>
     IEnumerator SpawnPuddles()
     {
         for (int puddleCount = 0; puddleCount < maxPuddleCount; puddleCount++)
@@ -25,14 +33,12 @@ public class PuddleSpell : SpellEffect
             yield return new WaitForSeconds(puddleSpawningTime);
         }
     }
+    /// <summary>
+    /// Expire after spellLifeTime
+    /// </summary>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
         Destroy(gameObject);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
