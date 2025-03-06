@@ -18,7 +18,7 @@ public class SpeedBuffSpell : SpellEffect
     /// </summary>
     void Start()
     {
-        spellType = new ChargeTuple(ChargeTypes.wind, ChargeTypes.notype);
+        spellType = new ChargeTuple(ChargeTypes.wind, ChargeTypes.wind);
         GameObject player = GameObject.Find("Player");
         BuffDebuffManager.Instance.ApplyBuffDebuff(player, BuffDebuffManager.BuffDebuffType.SpeedBuff, spellLifeTime, moveSpeedFactor);
         // Destroy the object directly
