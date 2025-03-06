@@ -146,13 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaCost: 2
   spellObject: {fileID: 5623999138696623272}
-  spellLifeTime: 5
+  spellLifeTime: 8
   slownessTime: 1
   slownessfactor: 3
   clockIntervalLength: 0.2
   boxCollider2D: {fileID: 4709568257471059679}
   bigPuddleScale: 1.5
-  bigPuddleProbability: 0.7
+  bigPuddleProbability: 0.5
 --- !u!1 &8360022552703800838
 GameObject:
   m_ObjectHideFlags: 0

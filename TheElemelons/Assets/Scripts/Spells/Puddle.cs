@@ -41,14 +41,9 @@ public class Puddle : SpellEffect
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
             GameObject target = hit.gameObject;
-            List<BuffDebuffManager.BuffDebuff> buffList = BuffDebuffManager.Instance.GetActiveEffects(target);
-            int count=0;
-            foreach (BuffDebuffManager.BuffDebuff buff in buffList) {
-            if (buff!=null && buff.type == BuffDebuffManager.BuffDebuffType.SlownessDebuff) count++;
-            }
-            if (hit != null && count == 0)
+            if (hit != null)
             {
-                BuffDebuffManager.Instance.ApplyBuffDebuff(target, BuffDebuffManager.BuffDebuffType.SlownessDebuff, slownessTime, slownessfactor);
+                BuffDebuffManager.Instance.ApplyBuffDebuff(target,"PuddleSpell", BuffDebuffManager.BuffDebuffType.SlownessDebuff, slownessTime, slownessfactor, false);
             }
         }
     }
