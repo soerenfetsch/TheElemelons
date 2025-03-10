@@ -23,7 +23,7 @@ public class CombatManagerTests
         // Setup target
         target = new GameObject("Target");
         targetScript = target.AddComponent<TestCombatant>();
-        targetScript.defenseFactor = 0.8f;
+        targetScript.defenseFactor = 1.25f;
         targetScript.elementType = ElementType.Fire;
 
         // Add Rigidbody2D for knockback
@@ -51,7 +51,7 @@ public class CombatManagerTests
         ElementType attackType = ElementType.Water;
 
         // Water is 1.25x effective against Fire
-        float expectedDamage = baseDamage * 1.25f * attackerScript.attackFactor * targetScript.defenseFactor;
+        float expectedDamage = baseDamage * 1.25f * attackerScript.attackFactor / targetScript.defenseFactor;
 
         float actualDamage = CombatManager.CalculateDamage(attackType, ElementType.Fire, baseDamage, attackerScript.attackFactor, targetScript.defenseFactor);
 

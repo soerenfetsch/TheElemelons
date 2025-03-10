@@ -142,11 +142,16 @@ public static class CombatManager
     /// <returns>The calculated damage value.</returns>
     public static float CalculateDamage(Tuple<ElementType, ElementType> attackTypes, ElementType defenseType, float baseDamage, float attackFactor, float defenseFactor)
     {
+        if (defenseFactor <= 0)
+        {
+            throw new ArgumentException("Defense factor cannot be less than or equal to 0.");
+        }
+
         ElementType firstElement = attackTypes.Item1;
         ElementType secondElement = attackTypes.Item2;
 
         float damageMultiplier = damageTable[firstElement][defenseType] * damageTable[secondElement][defenseType];
-        return baseDamage * damageMultiplier * attackFactor * defenseFactor;
+        return baseDamage * damageMultiplier * attackFactor / defenseFactor;
     }
 
     /// <summary>
@@ -160,11 +165,15 @@ public static class CombatManager
     /// <returns>The calculated damage value.</returns>
     public static float CalculateDamage(ChargeTuple attackTypes, ElementType defenseType, float baseDamage, float attackFactor, float defenseFactor)
     {
+        if (defenseFactor <= 0)
+        {
+            throw new ArgumentException("Defense factor cannot be less than or equal to 0.");
+        }
         ElementType firstElement = ConvertChargeTypeToElement(attackTypes.first());
         ElementType secondElement = ConvertChargeTypeToElement(attackTypes.second());
 
         float damageMultiplier = damageTable[firstElement][defenseType] * damageTable[secondElement][defenseType];
-        return baseDamage * damageMultiplier * attackFactor * defenseFactor;
+        return baseDamage * damageMultiplier * attackFactor / defenseFactor;
     }
 
     /// <summary>
@@ -178,8 +187,12 @@ public static class CombatManager
     /// <returns>The calculated damage value.</returns>
     public static float CalculateDamage(ElementType attackType, ElementType defenseType, float baseDamage, float attackFactor, float defenseFactor)
     {
+        if (defenseFactor <= 0)
+        {
+            throw new ArgumentException("Defense factor cannot be less than or equal to 0.");
+        }
         float damageMultiplier = damageTable[attackType][defenseType];
-        return baseDamage * damageMultiplier * attackFactor * defenseFactor;
+        return baseDamage * damageMultiplier * attackFactor / defenseFactor;
     }
 
     /// <summary>
@@ -252,19 +265,26 @@ public static class CombatManager
             float attackFactor = attackerScript.attackFactor;
             float defenseFactor = targetScript.defenseFactor;
 
-            float damage = CalculateDamage(attackTypes, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
-            Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
+            try
+            {
+                float damage = CalculateDamage(attackTypes, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
+                Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
 
-            // Apply knockback
-            KnockBack(target, attackDirection, thrust, knockTime);
+                // Apply knockback
+                KnockBack(target, attackDirection, thrust, knockTime);
 
-            // Apply damage
-            var health = target.GetComponent<Health>();
-            health.SubtractHealth(damage);
+                // Apply damage
+                var health = target.GetComponent<Health>();
+                health.SubtractHealth(damage);
 
-            // Mark target as invincible for a short duration
-            CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
-            // TODO: If target is dead, game manager might need to act
+                // Mark target as invincible for a short duration
+                CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
+                // TODO: If target is dead, game manager might need to act
+            }
+            catch (ArgumentException e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
         else
         {
@@ -303,6 +323,8 @@ public static class CombatManager
             float attackFactor = attackerScript.attackFactor;
             float defenseFactor = targetScript.defenseFactor;
 
+            try
+            {
             float damage = CalculateDamage(attackType, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
             Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
 
@@ -316,6 +338,11 @@ public static class CombatManager
             // Mark target as invincible for a short duration
             CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
             // TODO: If target is dead, game manager might need to act
+            }
+            catch (ArgumentException e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
         else
         {
@@ -354,19 +381,26 @@ public static class CombatManager
             float attackFactor = attackerScript.attackFactor;
             float defenseFactor = targetScript.defenseFactor;
 
-            float damage = CalculateDamage(attackTypes, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
-            Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
+            try
+            {
+                float damage = CalculateDamage(attackTypes, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
+                Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
 
-            // Apply knockback
-            KnockBack(target, attackDirection, thrust, knockTime);
+                // Apply knockback
+                KnockBack(target, attackDirection, thrust, knockTime);
 
-            // Apply damage
-            var health = target.GetComponent<Health>();
-            health.SubtractHealth(damage);
+                // Apply damage
+                var health = target.GetComponent<Health>();
+                health.SubtractHealth(damage);
 
-            // Mark target as invincible for a short duration
-            CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
-            // TODO: If target is dead, game manager might need to act
+                // Mark target as invincible for a short duration
+                CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
+                // TODO: If target is dead, game manager might need to act
+            }
+            catch (ArgumentException e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
         else
         {
