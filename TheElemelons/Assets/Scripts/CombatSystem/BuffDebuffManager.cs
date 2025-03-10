@@ -53,12 +53,22 @@ public class BuffDebuffManager : MonoBehaviour
 
         public Action<BuffDebuff> OnApply;
         public Action<BuffDebuff> OnExpire;
+        public string name = "none";
+        public bool stackable = true;
 
         public BuffDebuff(BuffDebuffType type, float duration, float effectValue)
         {
             this.type = type;
             this.duration = duration;
             this.effectValue = effectValue;
+        }
+        public BuffDebuff(string name, BuffDebuffType type, float duration, float effectValue, bool stackable)
+        {
+            this.type = type;
+            this.duration = duration;
+            this.effectValue = effectValue;
+            this.name = name;
+            this.stackable = stackable;
         }
     }
 
@@ -130,7 +140,11 @@ public class BuffDebuffManager : MonoBehaviour
             OnApply = effect =>
             {
                 // Add buff/debuff icon to UI
-                _uiManager?.AddBuffDebuffIcon(effect.type);
+                if (target.CompareTag("Player"))
+                {
+                    _uiManager?.AddBuffDebuffIcon(effect.type);
+                }
+
                 // Start the speed buff animation if buff is speed buff
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
                 {
@@ -140,7 +154,11 @@ public class BuffDebuffManager : MonoBehaviour
             OnExpire = effect =>
             {
                 // Remove buff/debuff icon from UI
-                _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                if (target.CompareTag("Player"))
+                {
+                    _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                }
+
                 // Only stop the speed buff animation if there is no other speed buff active
                 if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff
                     && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
@@ -160,7 +178,93 @@ public class BuffDebuffManager : MonoBehaviour
         // Start the timer to remove the buff/debuff after its duration
         StartCoroutine(EffectTimer(target, effect));
     }
+    public void ApplyBuffDebuff(GameObject target, string buffName, BuffDebuffType effectType, float duration, float effectValue, bool stackable)
+    {
+        // If not stackable and effect already active, stop old effect before starting new
+        // Essentially resets timer
+        if (!stackable)
+        {
+            List<BuffDebuff> buffList = Instance.GetActiveEffects(target);
+            List<int> doubles_indexes = new List<int> { };
+            for (int i = 0; i < buffList.Count; i++)
+            {
+                if (buffList[i] != null && buffName != "none" && buffList[i].name == buffName)
+                {
+                    doubles_indexes.Add(i);
+                }
+            }
+            foreach (int i in doubles_indexes)
+            {
+                Debug.Log("Removing " + i.ToString());
+                if (targets.ContainsKey(target))
+                {
+                    BuffDebuff doubleBuffDebuff = buffList[i];
+                    targets[target].RemoveEffect(doubleBuffDebuff);
+                    ApplyEffectToStats(target, doubleBuffDebuff, false);
+                }
+            }
+        }
+        // Assert that duration is greater than 0 and effect value is greater than or equal to 1
+        if (duration <= 0)
+        {
+            Debug.LogWarning("Duration must be greater than 0.");
+            return;
+        }
+        if (effectValue < 1)
+        {
+            Debug.LogWarning("Effect value must be greater than or equal to 1.");
+            return;
+        }
 
+        if (!targets.ContainsKey(target))
+        {
+            targets[target] = new TargetEntity(target.name);
+        }
+
+        TargetEntity entity = targets[target];
+        BuffDebuff effect = new BuffDebuff(buffName, effectType, duration, effectValue, stackable)
+        {
+            OnApply = effect =>
+            {
+                // Add buff/debuff icon to UI
+                if (target.CompareTag("Player"))
+                {
+                    _uiManager?.AddBuffDebuffIcon(effect.type);
+                }
+
+                // Start the speed buff animation if buff is speed buff
+                if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff)
+                {
+                    _uiManager?.SetSpeedBuffAnimation(true);
+                }
+            },
+            OnExpire = effect =>
+            {
+                // Remove buff/debuff icon from UI
+                if (target.CompareTag("Player"))
+                {
+                    _uiManager?.RemoveBuffDebuffIcon(effect.type);
+                }
+
+                // Only stop the speed buff animation if there is no other speed buff active
+                if (target.CompareTag("Player") && effectType == BuffDebuffType.SpeedBuff
+                    && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
+                {
+                    _uiManager?.SetSpeedBuffAnimation(false);
+                }
+            }
+        };
+
+        // TODO: Add more OnApply and OnExpire delegates for other effects
+
+        // Apply effect to target stats
+        ApplyEffectToStats(target, effect, true);
+
+        entity.ApplyEffect(effect);
+
+        // Start the timer to remove the buff/debuff after its duration
+        StartCoroutine(EffectTimer(target, effect));
+    }
     private void ApplyEffectToStats(GameObject target, BuffDebuff effect, bool isApplying)
     {
         var buffable = target.GetComponent<IBuffable>();
@@ -177,7 +281,6 @@ public class BuffDebuffManager : MonoBehaviour
             Debug.LogWarning($"Effect value must be greater or equal 1. Effect: {effect.type}");
             return;
         }
-
         // Determine effect direction
         float factor = isApplying ? effect.effectValue : 1 / effect.effectValue;
 
@@ -228,7 +331,7 @@ public class BuffDebuffManager : MonoBehaviour
     {
         yield return new WaitForSeconds(effect.duration);
 
-        if (targets.ContainsKey(target))
+        if (targets.ContainsKey(target) && Instance.GetActiveEffects(target).Contains(effect))
         {
             targets[target].RemoveEffect(effect);
             ApplyEffectToStats(target, effect, false);
@@ -265,4 +368,5 @@ public class BuffDebuffManager : MonoBehaviour
 
         return new List<BuffDebuff>();
     }
+
 }

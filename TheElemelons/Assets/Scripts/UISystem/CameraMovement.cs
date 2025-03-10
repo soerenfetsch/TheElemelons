@@ -101,7 +101,7 @@ public class CameraMovement : MonoBehaviour
             // Clamp the camera size to the allowed range
             newSize = Mathf.Clamp(newSize, minCameraSize, maxCameraSize);
             mainCamera.orthographicSize = newSize;
-            Debug.Log($"Camera size set to {newSize}.");
+            //Debug.Log($"Camera size set to {newSize}.");
         }
         else
         {

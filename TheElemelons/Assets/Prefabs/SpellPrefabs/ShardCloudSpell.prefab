@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3912938921074237395}
   m_Layer: 0
   m_Name: ShardCloudSpell
-  m_TagString: Untagged
+  m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,12 +49,8 @@ MonoBehaviour:
   shardCount: 6
   frequency: 0.25
   spellLifeTime: 10
-  spellDamage: 0.5
   radius: 4
   thrust: 5
   damage: 0.25
   knockTime: 0.5
-  playerTransform: {fileID: 0}
   shardEffect: {fileID: 837454844232809113, guid: db3e01aedffaea743aa49ba6024a9d05, type: 3}
-  castPoint: {fileID: 0}
-  pivot: {fileID: 0}

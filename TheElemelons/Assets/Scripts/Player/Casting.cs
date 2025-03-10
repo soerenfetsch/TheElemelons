@@ -41,11 +41,15 @@ public class Casting : MonoBehaviour
     public ChargeTuple currentCharges = new ChargeTuple();
     [Header("Spell Selection")]
     public GameObject noTypeSpell;
-    public GameObject speedBuffSpell;
+    public GameObject windSpell;
     public GameObject firefireSpell;
     public GameObject fireearthSpell;
     public GameObject earthwindSpell;
     public GameObject firewindSpell;
+    public GameObject earthwaterSpell;
+    public GameObject earthSpell;
+    public GameObject earthearthSpell;
+    public GameObject windwindSpell;
     public float manaCost = 1f;
 
     /// <summary>
@@ -64,12 +68,15 @@ public class Casting : MonoBehaviour
         player = gameObject.GetComponent<Player>();
         manaScript = gameObject.GetComponent<Mana>();
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype), noTypeSpell.GetComponent<SpellEffect>());
-        chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.notype), speedBuffSpell.GetComponent<SpellEffect>());
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.notype), windSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire, ChargeTypes.fire), firefireSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire, ChargeTypes.earth), fireearthSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.earth), earthwindSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.fire), firewindSpell.GetComponent<SpellEffect>());
-
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.water, ChargeTypes.earth), earthwaterSpell.GetComponent<SpellEffect>());
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.notype, ChargeTypes.earth), earthSpell.GetComponent<SpellEffect>());
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.earth, ChargeTypes.earth), earthearthSpell.GetComponent<SpellEffect>());
+        chargeToSpell.Add(new ChargeTuple(ChargeTypes.wind, ChargeTypes.wind), windwindSpell.GetComponent<SpellEffect>());
     }
 
     /// <summary>
