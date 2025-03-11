@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 /// <summary>
 /// Dash inherits from SpellEffect
@@ -38,14 +39,16 @@ public class Dash : SpellEffect
     /// then destroy gameobject
     /// </summary>
     IEnumerator DoDash()
-    {
+    {   
         //playerMovement.SetMovement(new Vector2(0,0));
         inputManager.canMove = false;
         move = new Vector2(player.GetComponent<Animator>().GetFloat("Horizontal"), player.GetComponent<Animator>().GetFloat("Vertical"));
         animator.SetFloat("Horizontal", move.x);
         animator.SetFloat("Vertical", move.y);
         move.Normalize();
+        Physics2D.IgnoreLayerCollision(3,8);
         yield return new WaitForSeconds(dashTime);
+        Physics2D.IgnoreLayerCollision(3,8,false);
         inputManager.canMove = true;
         Destroy(gameObject);
     }
