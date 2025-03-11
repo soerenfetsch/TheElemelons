@@ -32,6 +32,12 @@ public class UIManager : MonoBehaviour
     [Header("BuffDebuff Animation Management")]
     public Animator speedBuffAnimator;
 
+    [Header("UI Panels")]
+    public GameObject mainMenuPanel;
+    public GameObject inGameHUDPanel;
+    public GameObject pauseMenuPanel;
+    public GameObject settingsMenuPanel;
+
     /// <summary>
     /// Start is called before the first frame update.
     /// Initializes the UIManager by getting references to various components on the player object.
@@ -274,5 +280,64 @@ public class UIManager : MonoBehaviour
     public void RemoveBuffDebuffIcon(BuffDebuffManager.BuffDebuffType type)
     {
         buffDebuffIconBar.RemoveBuff(type);
+    }
+
+    /// <summary>
+    /// Subscribes to the GameManager's OnGameStateChanged event when the UIManager is enabled.
+    /// </summary>
+    private void OnEnable() 
+    {
+        if (GameManager.Instance != null) 
+        {
+            GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+        }
+    }
+
+    /// <summary>
+    /// Unsubscribes from the GameManager's OnGameStateChanged event when the UIManager is disabled.
+    /// </summary>
+    private void OnDisable() 
+    {
+        if (GameManager.Instance != null) 
+        {
+            GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
+        }
+    }
+
+     /// <summary>
+    /// Called when the game state changes. Updates UI panels accordingly.
+    /// </summary>
+    private void HandleGameStateChanged(GameState newState)
+    {
+        // First disable all panels.
+        mainMenuPanel.SetActive(false);
+        // inGameHUDPanel.SetActive(false);
+        pauseMenuPanel.SetActive(false);
+        settingsMenuPanel.SetActive(false);
+
+        // Activate panels based on the current state.
+        switch (newState)
+        {
+            case GameState.MainMenu:
+                mainMenuPanel.SetActive(true);
+                break;
+            case GameState.InGame:
+                // inGameHUDPanel.SetActive(true);
+                break;
+            case GameState.Paused:
+                pauseMenuPanel.SetActive(true);
+                break;
+            case GameState.SettingsMenu:
+                settingsMenuPanel.SetActive(true);
+                break;
+            case GameState.Dialogue:
+                // For Dialogue state, re-enable the InGameHUDPanel so the DialogueBox becomes visible.
+                // inGameHUDPanel.SetActive(true);
+                // If you want to hide some HUD elements during dialogue,
+                // you can add additional logic here.
+                break;
+            default:
+                break;
+        }
     }
 }
