@@ -9,7 +9,8 @@ public enum GameState
     InGame,
     MainMenu,
     SettingsMenu,
-    PauseMenu
+    PauseMenu,
+    Dialogue
 }
 
 /// <summary>
@@ -81,6 +82,9 @@ public class InputManager : MonoBehaviour
 
             case GameState.PauseMenu:
                 HandlePauseMenuInputs();
+                break;
+            case GameState.Dialogue:
+                HandleDialogueInput();
                 break;
         }
 
@@ -243,6 +247,21 @@ public class InputManager : MonoBehaviour
                 return;
             }
             playerInteraction?.InteractWithClosestInteractable();
+        }
+    }
+
+    /// <summary>
+    /// Checks for dialogue progression input.
+    /// The interaction button is now the E key.
+    /// </summary>
+    private void HandleDialogueInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (DialogueManager.Instance != null)
+            {
+                DialogueManager.Instance.ShowNextLine();
+            }
         }
     }
 
