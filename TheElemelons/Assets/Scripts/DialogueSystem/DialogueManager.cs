@@ -1,43 +1,38 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
-/// Manages dialogue interactions in a centralized way.
-/// Stores multiple DialogueData assets in a dictionary for fast lookup and communicates
-/// with the DialogueUI to display dialogue. Also interacts with the GameManager to pause gameplay during dialogue.
+/// Centralized manager for handling dialogue logic.
+/// Loads dialogue data from ScriptableObjects and triggers events for UI updates,
+/// allowing the dialogue system to be modular and decoupled from direct UI control.
 /// </summary>
 public class DialogueManager : MonoBehaviour
 {
-    /// <summary>
-    /// Singleton instance of the DialogueManager.
-    /// </summary>
+    // Singleton instance.
     public static DialogueManager Instance { get; private set; }
 
-    [Header("UI Reference")]
-    [SerializeField] private DialogueUI dialogueUI;
-
     [Header("Dialogue Assets")]
-    [SerializeField] private DialogueData[] dialogueAssets; 
-    // Drag your DialogueData assets (e.g., "Dialogue_King-Introduction") here in the Inspector.
+    [SerializeField] private DialogueData[] dialogueAssets; // Assign DialogueData assets via Inspector.
 
-    // Internal dictionary for quick dialogue lookup.
+    // Dictionary for fast dialogue lookup.
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
 
-    // Event that signals dialogue completion.
-    public event Action OnDialogueComplete;
+    private DialogueData currentDialogue;
+    private int currentLineIndex = 0;
 
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// Sets up the singleton instance and builds the dialogue dictionary.
-    /// </summary>
+    // Events for dialogue flow.
+    public static event Action<string, Sprite> OnDialogueStarted;    // Fires when dialogue begins (speaker name, initial portrait)
+    public static event Action<string> OnDialogueProgressed;           // Fires for each new line of dialogue
+    public static event Action OnDialogueEnded;                        // Fires when dialogue completes
+
     private void Awake()
     {
-        // Singleton pattern implementation.
+        // Ensure a single instance exists.
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: keep it across scenes.
+            // Optionally: DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -48,8 +43,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Builds the dialogue dictionary from the serialized array of DialogueData assets.
-    /// Each asset's name is used as the key.
+    /// Builds a dictionary of dialogue assets for fast lookup using the asset's name as the key.
     /// </summary>
     private void BuildDialogueDictionary()
     {
@@ -63,47 +57,68 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts a dialogue sequence by looking up the DialogueData using its key (the asset's name)
-    /// and instructing the DialogueUI to display it. Also notifies the GameManager to pause the game.
+    /// Initiates a dialogue sequence by looking up the DialogueData using its key.
+    /// Triggers the OnDialogueStarted event with the speaker’s name and initial portrait, then displays the first line.
     /// </summary>
-    /// <param name="dialogueKey">The unique key (name) of the DialogueData asset to display.</param>
+    /// <param name="dialogueKey">The unique key (name) of the DialogueData asset.</param>
     public void StartDialogue(string dialogueKey)
     {
-        if (!dialogueDictionary.ContainsKey(dialogueKey))
+        if (!dialogueDictionary.TryGetValue(dialogueKey, out currentDialogue))
         {
-            Debug.LogError($"Dialogue '{dialogueKey}' not found in the dictionary!");
-            return;
-        }
-        if (dialogueUI == null)
-        {
-            Debug.LogError("DialogueUI is not assigned!");
+            Debug.LogError($"Dialogue '{dialogueKey}' not found!");
             return;
         }
 
-        dialogueUI.StartDialogue(dialogueDictionary[dialogueKey]);
+        currentLineIndex = 0;
+        Sprite initialPortrait = GetPortrait(currentLineIndex);
+        OnDialogueStarted?.Invoke(currentDialogue.speakerName, initialPortrait);
+        ShowNextLine();
     }
 
     /// <summary>
-    /// Ends the active dialogue sequence by instructing the DialogueUI to hide the dialogue UI.
-    /// Also notifies the GameManager to resume gameplay.
+    /// Displays the next line of dialogue. If all lines have been shown, ends the dialogue.
     /// </summary>
-    public void EndDialogue()
+    public void ShowNextLine()
     {
-        if (dialogueUI == null)
+        if (currentDialogue == null)
         {
-            Debug.LogError("DialogueUI is not assigned!");
+            Debug.LogWarning("No active dialogue to progress.");
             return;
         }
-        dialogueUI.EndDialogue();
-        OnDialogueComplete?.Invoke();
-    }
 
-    public void SkipTyping()
-    {
-        if (dialogueUI != null)
+        if (currentLineIndex < currentDialogue.sentences.Length)
         {
-            dialogueUI.SkipTyping();
+            string line = currentDialogue.sentences[currentLineIndex];
+            OnDialogueProgressed?.Invoke(line);
+            currentLineIndex++;
+        }
+        else
+        {
+            EndDialogue();
         }
     }
 
+    /// <summary>
+    /// Ends the current dialogue sequence and triggers the OnDialogueEnded event.
+    /// </summary>
+    private void EndDialogue()
+    {
+        OnDialogueEnded?.Invoke();
+        currentDialogue = null;
+    }
+
+    /// <summary>
+    /// Returns the appropriate portrait for the current dialogue line.
+    /// If there are fewer portraits than lines, the last portrait is used.
+    /// </summary>
+    /// <param name="index">The current line index.</param>
+    /// <returns>The portrait sprite for the given index.</returns>
+    private Sprite GetPortrait(int index)
+    {
+        if (currentDialogue != null && currentDialogue.portraits != null && currentDialogue.portraits.Count > 0)
+        {
+            return index < currentDialogue.portraits.Count ? currentDialogue.portraits[index] : currentDialogue.portraits[currentDialogue.portraits.Count - 1];
+        }
+        return null;
+    }
 }
