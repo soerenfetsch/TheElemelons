@@ -3,10 +3,6 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
-/// <summary>
-/// Handles the UI for displaying dialogue including speaker name, portrait, and typewriter effect for dialogue text.
-/// This class listens to events from DialogueManager to update the dialogue content.
-/// </summary>
 public class DialogueUI : MonoBehaviour
 {
     [Header("UI References")]
@@ -16,11 +12,8 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private Image dialogueBoxImage;
 
     [Header("Typing Settings")]
-    [Tooltip("Base delay between letters (in seconds).")]
     [SerializeField] private float baseTypingSpeed = 0.03f;
-    [Tooltip("Random offset to add variation to typing speed (in seconds).")]
     [SerializeField] private float randomTypingOffset = 0.01f;
-    [Tooltip("Pause after each line is typed (in seconds).")]
     [SerializeField] private float linePause = 0.5f;
 
     [Header("Sound Settings")]
@@ -29,71 +22,74 @@ public class DialogueUI : MonoBehaviour
     private bool isTyping;
     private bool isSkipping;
 
-    private void OnEnable()
+    private void Awake()
     {
-        // Subscribe to dialogue events from DialogueManager.
+        // Subscribe to dialogue events (using Awake so subscriptions occur even if inactive).
         DialogueManager.OnDialogueStarted += ShowDialogue;
-        DialogueManager.OnDialogueProgressed += ShowNextLine;
+        DialogueManager.OnDialogueLineChanged += ShowNextLine;
         DialogueManager.OnDialogueEnded += HideDialogue;
+
+        // Ensure the UI is disabled by default.
+        gameObject.SetActive(false);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        // Unsubscribe from dialogue events.
         DialogueManager.OnDialogueStarted -= ShowDialogue;
-        DialogueManager.OnDialogueProgressed -= ShowNextLine;
+        DialogueManager.OnDialogueLineChanged -= ShowNextLine;
         DialogueManager.OnDialogueEnded -= HideDialogue;
     }
 
     /// <summary>
-    /// Called when a dialogue starts. Sets the speaker name and portrait, then shows the dialogue UI.
+    /// Called when dialogue starts. Activates the UI and sets speaker name, initial portrait, and dialogue box image.
     /// </summary>
-    /// <param name="speakerName">The name of the dialogue speaker.</param>
-    /// <param name="speakerPortrait">The portrait image for the speaker.</param>
-    private void ShowDialogue(string speakerName, Sprite speakerPortrait)
+    private void ShowDialogue(string speakerName, Sprite initialPortrait, Sprite boxImage)
     {
         gameObject.SetActive(true);
         nameText.text = speakerName;
-        if (speakerPortrait != null)
+        
+        if (initialPortrait != null)
         {
-            portrait.sprite = speakerPortrait;
+            portrait.sprite = initialPortrait;
             portrait.gameObject.SetActive(true);
         }
         else
         {
             portrait.gameObject.SetActive(false);
         }
+        
+        if (boxImage != null)
+        {
+            dialogueBoxImage.sprite = boxImage;
+            dialogueBoxImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            dialogueBoxImage.gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
-    /// Called when a new line should be displayed. Stops any previous typewriter coroutine and starts a new one.
+    /// Called when a new dialogue line is ready. Stops previous typing and starts the typewriter effect.
     /// </summary>
-    /// <param name="line">The dialogue line to display.</param>
-    private void ShowNextLine(string line)
+    private void ShowNextLine(string line, Sprite currentPortrait)
     {
         StopAllCoroutines();
-        StartCoroutine(TypeLine(line));
+        StartCoroutine(TypeLine(line, currentPortrait));
     }
 
-    /// <summary>
-    /// Hides the dialogue UI.
-    /// </summary>
-    private void HideDialogue()
-    {
-        dialogueText.text = string.Empty;
-        gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// Types out the provided line letter by letter with a typewriter effect.
-    /// Allows the player to skip the effect.
-    /// </summary>
-    /// <param name="line">The dialogue line to type out.</param>
-    private IEnumerator TypeLine(string line)
+    private IEnumerator TypeLine(string line, Sprite currentPortrait)
     {
         isTyping = true;
         isSkipping = false;
         dialogueText.text = "";
+
+        // Update portrait for this line.
+        if (currentPortrait != null)
+        {
+            portrait.sprite = currentPortrait;
+            portrait.gameObject.SetActive(true);
+        }
 
         foreach (char letter in line)
         {
@@ -104,25 +100,30 @@ public class DialogueUI : MonoBehaviour
             }
 
             dialogueText.text += letter;
-
-            // Play typing sound if available.
             if (typingSound != null && !typingSound.isPlaying)
             {
                 typingSound.Play();
             }
-
             float delay = baseTypingSpeed + Random.Range(-randomTypingOffset, randomTypingOffset);
             yield return new WaitForSecondsRealtime(Mathf.Max(0f, delay));
         }
 
         isTyping = false;
-        // Optional: wait after the line is fully displayed before the next action.
         yield return new WaitForSecondsRealtime(linePause);
     }
 
     /// <summary>
-    /// Allows external calls (e.g., from an input manager) to skip the current typewriter effect.
-    /// If typing is in progress, it immediately shows the full line; otherwise, it signals to show the next line.
+    /// Hides the dialogue UI when dialogue ends.
+    /// </summary>
+    private void HideDialogue()
+    {
+        dialogueText.text = "";
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Called externally (via input) to skip the current line's typewriter effect,
+    /// or if the line is fully displayed, to request the DialogueManager to advance.
     /// </summary>
     public void SkipTyping()
     {
@@ -132,7 +133,7 @@ public class DialogueUI : MonoBehaviour
         }
         else
         {
-            DialogueManager.Instance.ShowNextLine();
+            DialogueManager.Instance.AdvanceDialogue();
         }
     }
 }
