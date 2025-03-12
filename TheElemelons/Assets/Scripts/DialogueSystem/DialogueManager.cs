@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,13 +9,17 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue Assets")]
     [SerializeField] private DialogueData[] dialogueAssets;
+    [SerializeField] private bool autoPlay = true;
+    [SerializeField] private float autoPlayDelay = 3f; // Delay (in seconds) before auto-advancing a line
+
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
 
     private DialogueData currentDialogue;
     private int currentLineIndex = 0;
+    private Coroutine autoPlayCoroutine;
 
     // Events for dialogue flow.
-    // OnDialogueStarted: speaker name, first portrait, dialogue box image.
+    // OnDialogueStarted: speaker name, initial portrait, dialogue box image.
     public static event Action<string, Sprite, Sprite> OnDialogueStarted;
     // OnDialogueLineChanged: current line text, current portrait.
     public static event Action<string, Sprite> OnDialogueLineChanged;
@@ -49,7 +54,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts the dialogue sequence using the dialogue key.
+    /// Starts the dialogue sequence using the provided dialogue key.
     /// </summary>
     public void StartDialogue(string dialogueKey)
     {
@@ -60,19 +65,29 @@ public class DialogueManager : MonoBehaviour
         }
 
         currentLineIndex = 0;
+
         // Get initial portrait (if available)
         Sprite initialPortrait = GetPortrait(currentLineIndex);
+
         // Fire event to start dialogue
         OnDialogueStarted?.Invoke(currentDialogue.speakerName, initialPortrait, currentDialogue.dialogueBoxImage);
+
         // Immediately show first line
         AdvanceDialogue();
     }
 
     /// <summary>
-    /// Advances the dialogue to the next line. If no more lines, ends the dialogue.
+    /// Advances the dialogue to the next line. If no more lines remain, ends the dialogue.
     /// </summary>
     public void AdvanceDialogue()
     {
+        // Cancel any existing auto-play coroutine.
+        if (autoPlayCoroutine != null)
+        {
+            StopCoroutine(autoPlayCoroutine);
+            autoPlayCoroutine = null;
+        }
+
         if (currentDialogue == null)
         {
             Debug.LogWarning("No active dialogue to advance.");
@@ -85,6 +100,12 @@ public class DialogueManager : MonoBehaviour
             Sprite currentPortrait = GetPortrait(currentLineIndex);
             OnDialogueLineChanged?.Invoke(line, currentPortrait);
             currentLineIndex++;
+
+            // Schedule auto-advance if enabled.
+            if (autoPlay)
+            {
+                autoPlayCoroutine = StartCoroutine(AutoAdvanceAfterDelay(autoPlayDelay));
+            }
         }
         else
         {
@@ -97,6 +118,11 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     private void EndDialogue()
     {
+        if (autoPlayCoroutine != null)
+        {
+            StopCoroutine(autoPlayCoroutine);
+            autoPlayCoroutine = null;
+        }
         OnDialogueEnded?.Invoke();
         currentDialogue = null;
     }
@@ -108,5 +134,15 @@ public class DialogueManager : MonoBehaviour
             return index < currentDialogue.portraits.Count ? currentDialogue.portraits[index] : currentDialogue.portraits[currentDialogue.portraits.Count - 1];
         }
         return null;
+    }
+
+    private IEnumerator AutoAdvanceAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        // Advance dialogue automatically if still in progress.
+        if (currentDialogue != null && currentLineIndex < currentDialogue.sentences.Length)
+        {
+            AdvanceDialogue();
+        }
     }
 }
