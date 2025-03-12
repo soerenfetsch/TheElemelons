@@ -2,37 +2,31 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Centralized manager for handling dialogue logic.
-/// Loads dialogue data from ScriptableObjects and triggers events for UI updates,
-/// allowing the dialogue system to be modular and decoupled from direct UI control.
-/// </summary>
 public class DialogueManager : MonoBehaviour
 {
-    // Singleton instance.
     public static DialogueManager Instance { get; private set; }
 
     [Header("Dialogue Assets")]
-    [SerializeField] private DialogueData[] dialogueAssets; // Assign DialogueData assets via Inspector.
-
-    // Dictionary for fast dialogue lookup.
+    [SerializeField] private DialogueData[] dialogueAssets;
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
 
     private DialogueData currentDialogue;
     private int currentLineIndex = 0;
 
     // Events for dialogue flow.
-    public static event Action<string, Sprite> OnDialogueStarted;    // Fires when dialogue begins (speaker name, initial portrait)
-    public static event Action<string> OnDialogueProgressed;           // Fires for each new line of dialogue
-    public static event Action OnDialogueEnded;                        // Fires when dialogue completes
+    // OnDialogueStarted: speaker name, first portrait, dialogue box image.
+    public static event Action<string, Sprite, Sprite> OnDialogueStarted;
+    // OnDialogueLineChanged: current line text, current portrait.
+    public static event Action<string, Sprite> OnDialogueLineChanged;
+    // OnDialogueEnded: dialogue finished.
+    public static event Action OnDialogueEnded;
 
     private void Awake()
     {
-        // Ensure a single instance exists.
         if (Instance == null)
         {
             Instance = this;
-            // Optionally: DontDestroyOnLoad(gameObject);
+            // Optionally, use DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -42,9 +36,6 @@ public class DialogueManager : MonoBehaviour
         BuildDialogueDictionary();
     }
 
-    /// <summary>
-    /// Builds a dictionary of dialogue assets for fast lookup using the asset's name as the key.
-    /// </summary>
     private void BuildDialogueDictionary()
     {
         foreach (var data in dialogueAssets)
@@ -52,15 +43,14 @@ public class DialogueManager : MonoBehaviour
             if (data != null && !dialogueDictionary.ContainsKey(data.name))
             {
                 dialogueDictionary.Add(data.name, data);
+                Debug.Log($"Added DialogueData with key: {data.name}");
             }
         }
     }
 
     /// <summary>
-    /// Initiates a dialogue sequence by looking up the DialogueData using its key.
-    /// Triggers the OnDialogueStarted event with the speaker’s name and initial portrait, then displays the first line.
+    /// Starts the dialogue sequence using the dialogue key.
     /// </summary>
-    /// <param name="dialogueKey">The unique key (name) of the DialogueData asset.</param>
     public void StartDialogue(string dialogueKey)
     {
         if (!dialogueDictionary.TryGetValue(dialogueKey, out currentDialogue))
@@ -70,26 +60,30 @@ public class DialogueManager : MonoBehaviour
         }
 
         currentLineIndex = 0;
+        // Get initial portrait (if available)
         Sprite initialPortrait = GetPortrait(currentLineIndex);
-        OnDialogueStarted?.Invoke(currentDialogue.speakerName, initialPortrait);
-        ShowNextLine();
+        // Fire event to start dialogue
+        OnDialogueStarted?.Invoke(currentDialogue.speakerName, initialPortrait, currentDialogue.dialogueBoxImage);
+        // Immediately show first line
+        AdvanceDialogue();
     }
 
     /// <summary>
-    /// Displays the next line of dialogue. If all lines have been shown, ends the dialogue.
+    /// Advances the dialogue to the next line. If no more lines, ends the dialogue.
     /// </summary>
-    public void ShowNextLine()
+    public void AdvanceDialogue()
     {
         if (currentDialogue == null)
         {
-            Debug.LogWarning("No active dialogue to progress.");
+            Debug.LogWarning("No active dialogue to advance.");
             return;
         }
 
         if (currentLineIndex < currentDialogue.sentences.Length)
         {
             string line = currentDialogue.sentences[currentLineIndex];
-            OnDialogueProgressed?.Invoke(line);
+            Sprite currentPortrait = GetPortrait(currentLineIndex);
+            OnDialogueLineChanged?.Invoke(line, currentPortrait);
             currentLineIndex++;
         }
         else
@@ -99,7 +93,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ends the current dialogue sequence and triggers the OnDialogueEnded event.
+    /// Ends the dialogue sequence.
     /// </summary>
     private void EndDialogue()
     {
@@ -107,12 +101,6 @@ public class DialogueManager : MonoBehaviour
         currentDialogue = null;
     }
 
-    /// <summary>
-    /// Returns the appropriate portrait for the current dialogue line.
-    /// If there are fewer portraits than lines, the last portrait is used.
-    /// </summary>
-    /// <param name="index">The current line index.</param>
-    /// <returns>The portrait sprite for the given index.</returns>
     private Sprite GetPortrait(int index)
     {
         if (currentDialogue != null && currentDialogue.portraits != null && currentDialogue.portraits.Count > 0)
