@@ -115,7 +115,7 @@ public class InputManager : MonoBehaviour
             "CastSpell", "ClearCharges",
             "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
             "ZoomIn", "ZoomOut",
-            "Interact"
+            "Interact", "DialogueKey"
         };
 
         KeyCode[] defaultKeys = {
@@ -123,7 +123,7 @@ public class InputManager : MonoBehaviour
             KeyCode.Mouse0, KeyCode.Mouse1,
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
             KeyCode.Z, KeyCode.X,
-            KeyCode.E
+            KeyCode.E, KeyCode.Space
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
@@ -165,6 +165,7 @@ public class InputManager : MonoBehaviour
         HandleSpellCastingInputs();
         HandleCameraInputs();
         HandleInteractionInputs();
+        HandleDialogueInput();
         }
     }
 
@@ -256,11 +257,12 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleDialogueInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(keyBindings["DialogueKey"]))
         {
-            if (DialogueManager.Instance != null)
+            DialogueUI ui = FindObjectOfType<DialogueUI>();
+            if (ui != null && ui.gameObject.activeSelf)
             {
-                DialogueManager.Instance.ShowNextLine();
+                ui.SkipTyping();
             }
         }
     }
