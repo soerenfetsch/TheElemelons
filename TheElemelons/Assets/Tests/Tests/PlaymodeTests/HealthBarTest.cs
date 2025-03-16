@@ -22,11 +22,11 @@ public class HealthBarTests
 
         // Load prefab AnimatorController
 #if UNITY_EDITOR
-        var canvasPrefab = AssetDatabase.LoadAssetAtPath<Canvas>("Assets/Prefabs/UIPrefabs/UI_Canvas.prefab");
-        Assert.NotNull(canvasPrefab, "UI_Canvas prefab not found at specified path.");
+        var ingamePanelPrefab = AssetDatabase.LoadAssetAtPath<Transform>("Assets/Prefabs/UIPrefabs/InGamePanel.prefab");
+        Assert.NotNull(ingamePanelPrefab, "Ingame Panel prefab not found at specified path.");
 #endif
-        Animator prefabHeartAnimator = canvasPrefab.transform.GetChild(0).GetComponent<Animator>();
-        Assert.NotNull(prefabHeartAnimator, "Animator not found in the first child of UI_Canvas prefab.");
+        Animator prefabHeartAnimator = ingamePanelPrefab.transform.GetChild(0).GetComponent<Animator>();
+        Assert.NotNull(prefabHeartAnimator, "Animator not found in the first child of Ingame Panel prefab.");
 
         // Add the Health script
         health = healthBarGameObject.AddComponent<Health>();
