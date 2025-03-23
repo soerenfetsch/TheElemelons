@@ -399,6 +399,7 @@ GameObject:
   - component: {fileID: 8967277064185722604}
   - component: {fileID: 8561548983273805335}
   - component: {fileID: 6168585797730868514}
+  - component: {fileID: 2704578572486526621}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -691,14 +692,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   castpoint: {fileID: 6194766439084384170}
   wandAnimator: {fileID: 1854645761170606446}
-  manaScript: {fileID: 0}
+  manaScript: {fileID: 2823182672651674699}
   maxCharges: 2
   noTypeSpell: {fileID: 1011104708221749430, guid: 73f725f1cc4a0de43847a3d8e0fc9635, type: 3}
-  speedBuffSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
+  windSpell: {fileID: 5971504136378397497, guid: 6626876919b86b4458c01cfe7140e0a6, type: 3}
   firefireSpell: {fileID: 2254822626139848905, guid: c420d969f0d835049baff441a1e96a37, type: 3}
   fireearthSpell: {fileID: 8461188281739757032, guid: 98b5c3773d01625498226b45450330f8, type: 3}
   earthwindSpell: {fileID: 2693233800697013054, guid: c15e7ae06b5014b4aae8d026e1d28ab3, type: 3}
   firewindSpell: {fileID: 4882459669602414618, guid: 04987bfe3caed134d8184b5df6e10b1e, type: 3}
+  earthwaterSpell: {fileID: 4614930756479306301, guid: 7eef321e6b2bec6478a04c6ab12a5c5a, type: 3}
+  earthSpell: {fileID: 909741432932913071, guid: fee8c13b5d90bb847a1fc3b9c07aa6d2, type: 3}
+  earthearthSpell: {fileID: 898128783897314616, guid: 793d49ed943fd5844973750dbb12b07e, type: 3}
+  windwindSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
   manaCost: 1
   playerMovement: {fileID: 1581666591548288514}
   uiManager: {fileID: 0}
@@ -801,8 +806,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   casting: {fileID: 8520900134945701756}
-  playerInteraction: {fileID: 0}
+  playerInteraction: {fileID: 2704578572486526621}
   pivot: {fileID: 524286683018158904}
+  canInput: 1
+  canMove: 1
+--- !u!114 &2704578572486526621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3849979733952565575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5257bb8b2d31754cab286ba018d60c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 2
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &4547487574929871031
 GameObject:
   m_ObjectHideFlags: 0
