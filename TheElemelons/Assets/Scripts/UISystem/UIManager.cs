@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +32,12 @@ public class UIManager : MonoBehaviour
     float lastHealth;
     [Header("BuffDebuff Animation Management")]
     public Animator speedBuffAnimator;
+
+    [Header("UI Canvas Panels")]
+    public GameObject pauseMenuPanel;
+    public GameObject startMenuPanel;
+    public GameObject settingsMenuPanel;
+    public GameObject ingamePanel;
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -274,5 +281,73 @@ public class UIManager : MonoBehaviour
     public void RemoveBuffDebuffIcon(BuffDebuffManager.BuffDebuffType type)
     {
         buffDebuffIconBar.RemoveBuff(type);
+    }
+
+    /// <summary>
+    /// Enables the pause menu panel. Disables all other panels.
+    /// </summary>
+    [ContextMenu("Enable Pause Menu")]
+    public void EnablePauseMenu() => EnablePanel("PauseMenu");
+
+    /// <summary>
+    /// Enables the start menu panel. Disables all other panels.
+    /// </summary>
+    [ContextMenu("Enable Start Menu")]
+    public void EnableStartMenu() => EnablePanel("StartMenu");
+
+    /// <summary>
+    /// Enables the settings menu panel. Disables all other panels.
+    /// </summary> 
+    [ContextMenu("Enable Settings Menu")]
+    public void EnableSettingsMenu() => EnablePanel("SettingsMenu");
+
+    /// <summary>
+    /// Enables the ingame panel. Disables all other panels.
+    /// </summary> 
+    [ContextMenu("Enable Ingame Panel")]
+    public void EnableIngamePanel() => EnablePanel("Ingame");
+
+    /// <summary>
+    /// Enables the specified panel and disables all other panels.
+    /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu", and "Ingame".
+    /// </summary>
+    /// <param name="panelName"></param>
+    private void EnablePanel(string panelName)
+    {
+        GameObject panel = null;
+        if (panelName == "PauseMenu")
+        {
+            panel = pauseMenuPanel;
+        }
+        else if (panelName == "StartMenu")
+        {
+            panel = startMenuPanel;
+        }
+        else if (panelName == "SettingsMenu")
+        {
+            panel = settingsMenuPanel;
+        }
+        else if (panelName == "Ingame")
+        {
+            panel = ingamePanel;
+        }
+
+        if (panel != null)
+        {
+            DisableAllPanels();
+            panel?.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Panel not found: " + panelName);
+        }
+    }
+
+    private void DisableAllPanels()
+    {
+        pauseMenuPanel?.SetActive(false);
+        startMenuPanel?.SetActive(false);
+        settingsMenuPanel?.SetActive(false);
+        ingamePanel?.SetActive(false);
     }
 }
