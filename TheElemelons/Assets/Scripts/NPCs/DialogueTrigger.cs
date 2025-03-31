@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DialogueTrigger : InteractableNPC
 {
-    [SerializeField] private string dialogueKey;
+    [SerializeField] protected string dialogueKey;
 
     public override void Interact()
     {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6473291576087073463}
   - component: {fileID: 2508010323229492181}
   - component: {fileID: 3367125107329971832}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Throne
   m_TagString: Untagged
   m_Icon: {fileID: 0}

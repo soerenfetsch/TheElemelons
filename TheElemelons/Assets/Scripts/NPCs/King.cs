@@ -18,53 +18,48 @@ public class King : DialogueTrigger
     public float walkDist = 3f;
     float currentWalkProgress = 0f;
     public float walkSpeed = 1.5f;
-    private float walkTime;
     public WalkPattern currentWalkPattern = WalkPattern.Circle;
     public Vector2 destination = Vector2.zero;
     public Vector2 walkMaxLimit;
     public Vector2 walkMinLimit;
     public Vector2 homePosition;
-    int turnCount = 0;
     [Header("Movement")]
     private Rigidbody2D rb;
     private Animator animator;
     public Vector2 movement;
-    [Header("Interact")]
-    private Transform playerTransform;
+    [Header("Dialogue")]
+    int nextDialogue = 0;
+    public string[] basic_dialogues;
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
-        playerTransform = GameObject.Find("Player").transform;
-        UpdateWalkTime();
         ChangeState(NPCStatus.Walking);
-        StartCoroutine(UpdateTurnCount());
     }
-
     void Update()
     {
         ActOnStatus();
     }
-
     public override void ActOnStatus()
     {
         float rayLength = 1.5f;
-        if (movement.y < 0)
+        if (movement.y < 0 && movement.x == 0)
         {
             rayLength = 0.6f;
         }
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement, rayLength);
+        LayerMask mask = LayerMask.GetMask("Player", "Walls");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement, rayLength, mask);
         Debug.DrawRay(transform.position, movement * rayLength, Color.yellow);
         if (currentState == NPCStatus.Walking && hit && hit.collider.gameObject.CompareTag("Player"))
         {
             animator.SetBool("Blocked", true);
             return;
         }
-        else if (!hit || (hit && !hit.collider.CompareTag("Player")))
+        else if (!hit || (hit && !hit.collider.gameObject.CompareTag("Player")))
         {
             animator.SetBool("Blocked", false);
         }
-        if (currentState == NPCStatus.Walking && hit && hit.rigidbody != null &&
+        if (currentState == NPCStatus.Walking && hit &&
         hit.transform.gameObject.layer == LayerMask.NameToLayer("Walls"))
         {
             currentWalkProgress += walkDist;
@@ -81,7 +76,6 @@ public class King : DialogueTrigger
             DoMovement();
         }
     }
-
     public void OnWalkStatus()
     {
         if (movement.sqrMagnitude < 0.1f)
@@ -155,7 +149,8 @@ public class King : DialogueTrigger
         {
             currentWalkProgress = 0;
             movement = Quaternion.Euler(0f, 0f, 90f) * movement;
-            Debug.Log("next move: " + movement.ToString());
+            movement.x = Mathf.Round(movement.x);
+            movement.y = Mathf.Round(movement.y);
         }
     }
     public void OnWalkDestination()
@@ -207,8 +202,8 @@ public class King : DialogueTrigger
         movement.Normalize();
 
         // Moves the Rigidbody2D based on the current movement vector and speed.
-        Vector2 moving_by = rb.position + GetMovement() * GetWalkSpeed() * Time.deltaTime;
-        rb.MovePosition(moving_by);
+        Vector2 moving_by = GetMovement() * GetWalkSpeed() * Time.deltaTime;
+        rb.MovePosition(rb.position + moving_by);
         currentWalkProgress += moving_by.magnitude;
 
     }
@@ -216,8 +211,11 @@ public class King : DialogueTrigger
     {
         animator.SetBool("Walking", false);
     }
-    public void InteractMethod()
-    { }
+    public override void Interact()
+    {
+        // This method is called by PlayerInteraction when the player presses E near this NPC
+        DialogueManager.Instance.StartDialogue(dialogueKey);
+    }
     public Vector2 GetMovement()
     {
         return movement;
@@ -226,40 +224,19 @@ public class King : DialogueTrigger
     {
         currentWalkProgress = 0f;
         currentWalkPattern = newpattern;
-        turnCount = 0;
     }
     public void SetDestination(Vector2 newDestination)
     {
         destination = newDestination;
         ChangeState(NPCStatus.Walking);
     }
-    IEnumerator UpdateTurnCount()
-    {
-        float waitChunk = 0.1f;
-        while (true)
-        {
-            float timer = 0;
-            while (timer < walkTime)
-            {
-                yield return new WaitForSeconds(waitChunk);
-                timer += waitChunk;
-            }
-            turnCount++;
-        }
-    }
-    public void UpdateWalkTime()
-    {
-        walkTime = walkDist / walkSpeed;
-    }
     public void SetWalkSpeed(float newSpeed)
     {
         walkSpeed = newSpeed;
-        UpdateWalkTime();
     }
     public void SetWalkDist(float newDist)
     {
         walkDist = newDist;
-        UpdateWalkTime();
     }
     public float GetWalkSpeed()
     {
@@ -268,10 +245,6 @@ public class King : DialogueTrigger
     public float GetWalkDist()
     {
         return walkDist;
-    }
-    public float GetWalkTime()
-    {
-        return walkTime;
     }
 
 
