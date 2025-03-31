@@ -16,6 +16,7 @@ public class King : DialogueTrigger
 {
     [Header("Walk Patterns")]
     public float walkDist = 3f;
+    float currentWalkProgress = 0f;
     public float walkSpeed = 1.5f;
     private float walkTime;
     public WalkPattern currentWalkPattern = WalkPattern.Circle;
@@ -23,13 +24,11 @@ public class King : DialogueTrigger
     public Vector2 walkMaxLimit;
     public Vector2 walkMinLimit;
     public Vector2 homePosition;
-    bool switchBackToPrevPattern = false;
-    WalkPattern prevPattern;
     int turnCount = 0;
     [Header("Movement")]
     private Rigidbody2D rb;
     private Animator animator;
-    private Vector2 movement;
+    public Vector2 movement;
     [Header("Interact")]
     private Transform playerTransform;
     void Start()
@@ -49,13 +48,29 @@ public class King : DialogueTrigger
 
     public override void ActOnStatus()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement);
-        if ( currentState == NPCStatus.Walking && hit && hit.transform.CompareTag("Player") && (hit.transform.position - transform.position).sqrMagnitude <1f)
+        float rayLength = 1.5f;
+        if (movement.y < 0)
         {
-            SaveToPrev();
-            currentState = NPCStatus.Idle;
-            Debug.Log("detected player");
-        } 
+            rayLength = 0.6f;
+        }
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, movement, rayLength);
+        Debug.DrawRay(transform.position, movement * rayLength, Color.yellow);
+        if (currentState == NPCStatus.Walking && hit && hit.collider.gameObject.CompareTag("Player"))
+        {
+            animator.SetBool("Blocked", true);
+            return;
+        }
+        else if (!hit || (hit && !hit.collider.CompareTag("Player")))
+        {
+            animator.SetBool("Blocked", false);
+        }
+        if (currentState == NPCStatus.Walking && hit && hit.rigidbody != null &&
+        hit.transform.gameObject.layer == LayerMask.NameToLayer("Walls"))
+        {
+            currentWalkProgress += walkDist;
+            Debug.Log("wall");
+        }
+
         if (currentState == NPCStatus.Idle)
         {
             OnIdleStatus();
@@ -73,14 +88,7 @@ public class King : DialogueTrigger
         {
             SetWalkPattern(currentWalkPattern);
         }
-        //Check if goes out of bounds
-        if (currentWalkPattern != WalkPattern.Destination && (transform.position.x > walkMaxLimit.x || transform.position.y > walkMaxLimit.y || transform.position.x < walkMinLimit.x || transform.position.y < walkMinLimit.y))
-        {
-            Debug.Log("out of bounds");
-            destination = homePosition;
-            SaveToPrev();
-            SetWalkPattern(WalkPattern.Destination);
-        }
+
         //Walk patterns Behaviour
         if (currentWalkPattern == WalkPattern.VLine)
         {
@@ -92,7 +100,7 @@ public class King : DialogueTrigger
         }
         else if (currentWalkPattern == WalkPattern.Circle)
         {
-            OnWalkCirlce();
+            OnWalkCircle();
         }
         else if (currentWalkPattern == WalkPattern.Destination)
         {
@@ -113,9 +121,9 @@ public class King : DialogueTrigger
         {
             movement.y = 0;
         }
-        if (turnCount == 1)
+        if (currentWalkProgress >= walkDist)
         {
-            turnCount = 0;
+            currentWalkProgress = 0;
             movement.x *= -1;
         }
     }
@@ -130,41 +138,24 @@ public class King : DialogueTrigger
         {
             movement.x = 0;
         }
-        if (turnCount != 0)
+        if (currentWalkProgress >= walkDist)
         {
-            turnCount = 0;
+            currentWalkProgress = 0;
             movement.y *= -1;
         }
     }
-    public void OnWalkCirlce()
+    public void OnWalkCircle()
     {
         if ((movement.x == 0f && movement.y == 0f) || (Mathf.Abs(movement.x) > 0.1f && Mathf.Abs(movement.y) > 0.1f))
         {
-            turnCount = 0;
             movement.y = 1f;
             movement.x = 0f;
         }
-        if (turnCount != 0f)
+        if (currentWalkProgress >= walkDist)
         {
-            turnCount = 0;
-            if (movement.x > 0f)
-            {
-                movement.y = -1f;
-                movement.x = 0f;
-            }
-            else if (movement.y < 0f)
-            {
-                movement.y = 0f;
-                movement.x = -1f;
-            } else if (movement.x < 0f)
-            {
-                movement.y = 1f;
-                movement.x = 0f;
-            } else if (movement.y > 0f)
-            {
-                movement.y = 0f;
-                movement.x = 1f;
-            }
+            currentWalkProgress = 0;
+            movement = Quaternion.Euler(0f, 0f, 90f) * movement;
+            Debug.Log("next move: " + movement.ToString());
         }
     }
     public void OnWalkDestination()
@@ -172,22 +163,23 @@ public class King : DialogueTrigger
         movement = destination - new Vector2(transform.position.x, transform.position.y);
         if (movement.sqrMagnitude < 0.1f)
         {
-            if (switchBackToPrevPattern)
-            {
-                SwitchBackToPrevPattern();
-            }
-            else
-            {
-                ChangeState(NPCStatus.Idle);
-            }
-
+            ChangeState(NPCStatus.Idle);
+            currentWalkProgress = 0f;
         }
     }
     public void OnWalkRandom()
     {
-        if (turnCount == 1)
+        //Check if goes out of bounds
+        if (currentWalkPattern != WalkPattern.Destination && (transform.position.x > walkMaxLimit.x || transform.position.y > walkMaxLimit.y || transform.position.x < walkMinLimit.x || transform.position.y < walkMinLimit.y))
         {
-            turnCount = 0;
+            Debug.Log("out of bounds");
+            movement.x = homePosition.x - transform.position.x;
+            movement.y = homePosition.y - transform.position.y;
+            return;
+        }
+        if (currentWalkProgress >= walkDist)
+        {
+            currentWalkProgress = 0f;
             if (Random.Range(0, 2) == 0)
             {
                 movement = new Vector2(1, 0);
@@ -215,7 +207,9 @@ public class King : DialogueTrigger
         movement.Normalize();
 
         // Moves the Rigidbody2D based on the current movement vector and speed.
-        rb.MovePosition(rb.position + GetMovement() * GetWalkSpeed() * Time.fixedDeltaTime);
+        Vector2 moving_by = rb.position + GetMovement() * GetWalkSpeed() * Time.deltaTime;
+        rb.MovePosition(moving_by);
+        currentWalkProgress += moving_by.magnitude;
 
     }
     public void OnIdleStatus()
@@ -224,23 +218,13 @@ public class King : DialogueTrigger
     }
     public void InteractMethod()
     { }
-    public bool isInfront(Transform obstacle)
-    {
-        if (movement.x == 1 && obstacle.position.x >= transform.position.x
-        || movement.x == -1 && obstacle.position.x <= transform.position.x
-        || movement.y == 1 && obstacle.position.y <= transform.position.y
-        || movement.y == -1 && obstacle.position.y <= transform.position.y)
-        {
-            return true;
-        }
-        return false;
-    }
     public Vector2 GetMovement()
     {
         return movement;
     }
     public void SetWalkPattern(WalkPattern newpattern)
     {
+        currentWalkProgress = 0f;
         currentWalkPattern = newpattern;
         turnCount = 0;
     }
@@ -289,24 +273,7 @@ public class King : DialogueTrigger
     {
         return walkTime;
     }
-    public void SaveToPrev()
-    {
-        if (!switchBackToPrevPattern)
-        {
-            switchBackToPrevPattern = true;
-            prevPattern = currentWalkPattern;
-        }
-    }
-    public void SwitchBackToPrevPattern()
-    {
-        if (switchBackToPrevPattern)
-        {
-            currentState = NPCStatus.Walking;
-            currentWalkPattern = prevPattern;
-            switchBackToPrevPattern = false;
-        }
 
-    }
 
 
     [ContextMenu("Currentstate Walk")]
