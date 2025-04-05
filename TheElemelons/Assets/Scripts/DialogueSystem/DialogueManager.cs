@@ -9,11 +9,9 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue Assets")]
     [SerializeField] private DialogueData[] dialogueAssets;
-    [SerializeField] private bool autoPlay = true;
+    [SerializeField] private bool autoPlay = false;
     [SerializeField] private float autoPlayDelay = 3f; // Delay (in seconds) before auto-advancing a line
-
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
-
     private DialogueData currentDialogue;
     private int currentLineIndex = 0;
     private Coroutine autoPlayCoroutine;
@@ -74,6 +72,13 @@ public class DialogueManager : MonoBehaviour
 
         // Immediately show first line
         AdvanceDialogue();
+    }
+
+    public Boolean HasDialogue()
+    {
+        if (currentDialogue == null)
+        { return false; }
+        return true;
     }
 
     /// <summary>

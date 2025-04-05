@@ -12,7 +12,7 @@ public class DialogueData : ScriptableObject
     public string speakerName;
 
     [Tooltip("List of portrait images of the speaker.")]
-    public List<Sprite> portraits; 
+    public List<Sprite> portraits;
 
     [Tooltip("Dialogue Box image.")]
     public Sprite dialogueBoxImage;

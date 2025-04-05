@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Castle.Components.DictionaryAdapter.Xml;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,8 @@ public enum WalkPattern
     HLine,
     VLine,
     Random,
-    Destination
+    Destination,
+    MultipleDestinations
 }
 public class King : DialogueTrigger
 {
@@ -20,6 +22,8 @@ public class King : DialogueTrigger
     public float walkSpeed = 1.5f;
     public WalkPattern currentWalkPattern = WalkPattern.Circle;
     public Vector2 destination = Vector2.zero;
+    public List<Vector2> destinations;
+    int destinationsIndex = 0;
     public Vector2 walkMaxLimit;
     public Vector2 walkMinLimit;
     public Vector2 homePosition;
@@ -27,9 +31,6 @@ public class King : DialogueTrigger
     private Rigidbody2D rb;
     private Animator animator;
     public Vector2 movement;
-    [Header("Dialogue")]
-    int nextDialogue = 0;
-    public string[] basic_dialogues;
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -49,7 +50,7 @@ public class King : DialogueTrigger
         }
         LayerMask mask = LayerMask.GetMask("Player", "Walls");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, movement, rayLength, mask);
-        Debug.DrawRay(transform.position, movement * rayLength, Color.yellow);
+        UnityEngine.Debug.DrawRay(transform.position, movement * rayLength, Color.yellow);
         if (currentState == NPCStatus.Walking && hit && hit.collider.gameObject.CompareTag("Player"))
         {
             animator.SetBool("Blocked", true);
@@ -63,7 +64,7 @@ public class King : DialogueTrigger
         hit.transform.gameObject.layer == LayerMask.NameToLayer("Walls"))
         {
             currentWalkProgress += walkDist;
-            Debug.Log("wall");
+            UnityEngine.Debug.Log("wall");
         }
 
         if (currentState == NPCStatus.Idle)
@@ -103,6 +104,22 @@ public class King : DialogueTrigger
         else if (currentWalkPattern == WalkPattern.Random)
         {
             OnWalkRandom();
+        }
+        else if (currentWalkPattern == WalkPattern.MultipleDestinations)
+        {
+            OnWalkMultipleDestinations();
+        }
+    }
+    public void OnWalkMultipleDestinations()
+    {
+        MovementToDestination(destinations[destinationsIndex]);
+        if (movement.sqrMagnitude < 0.1f)
+        {
+            destinationsIndex += 1;
+            if (destinationsIndex >= destinations.Count)
+            {
+                destinationsIndex = 0;
+            }
         }
     }
     public void OnWalkHline()
@@ -155,7 +172,7 @@ public class King : DialogueTrigger
     }
     public void OnWalkDestination()
     {
-        movement = destination - new Vector2(transform.position.x, transform.position.y);
+        MovementToDestination(destination);
         if (movement.sqrMagnitude < 0.1f)
         {
             ChangeState(NPCStatus.Idle);
@@ -167,7 +184,7 @@ public class King : DialogueTrigger
         //Check if goes out of bounds
         if (currentWalkPattern != WalkPattern.Destination && (transform.position.x > walkMaxLimit.x || transform.position.y > walkMaxLimit.y || transform.position.x < walkMinLimit.x || transform.position.y < walkMinLimit.y))
         {
-            Debug.Log("out of bounds");
+            UnityEngine.Debug.Log("out of bounds");
             movement.x = homePosition.x - transform.position.x;
             movement.y = homePosition.y - transform.position.y;
             return;
@@ -211,10 +228,9 @@ public class King : DialogueTrigger
     {
         animator.SetBool("Walking", false);
     }
-    public override void Interact()
+    public void MovementToDestination(Vector2 goal)
     {
-        // This method is called by PlayerInteraction when the player presses E near this NPC
-        DialogueManager.Instance.StartDialogue(dialogueKey);
+        movement = goal - new Vector2(transform.position.x, transform.position.y);
     }
     public Vector2 GetMovement()
     {

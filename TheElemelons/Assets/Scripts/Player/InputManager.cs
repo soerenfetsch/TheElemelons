@@ -158,14 +158,16 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleGameplayInputs()
     {
-        if (canInput){
-            if (canMove){
+        if (canInput)
+        {
+            if (canMove)
+            {
                 HandleMovementInputs();
             }
-        HandleSpellCastingInputs();
-        HandleCameraInputs();
-        HandleInteractionInputs();
-        HandleDialogueInput();
+            HandleSpellCastingInputs();
+            HandleCameraInputs();
+            HandleInteractionInputs();
+            HandleDialogueInput();
         }
     }
 
