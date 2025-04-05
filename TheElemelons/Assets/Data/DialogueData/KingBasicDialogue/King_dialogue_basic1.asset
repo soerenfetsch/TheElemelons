@@ -19,3 +19,4 @@ MonoBehaviour:
   dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
   sentences:
   - Greetings, Merveille!
+  - I am King Joseh.

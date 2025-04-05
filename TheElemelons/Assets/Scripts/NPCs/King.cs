@@ -37,7 +37,7 @@ public class King : DialogueTrigger
         animator = gameObject.GetComponent<Animator>();
         ChangeState(NPCStatus.Walking);
     }
-    void Update()
+    void FixedUpdate()
     {
         ActOnStatus();
     }
@@ -219,10 +219,9 @@ public class King : DialogueTrigger
         movement.Normalize();
 
         // Moves the Rigidbody2D based on the current movement vector and speed.
-        Vector2 moving_by = GetMovement() * GetWalkSpeed() * Time.deltaTime;
+        Vector2 moving_by = GetMovement() * GetWalkSpeed() * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + moving_by);
         currentWalkProgress += moving_by.magnitude;
-
     }
     public void OnIdleStatus()
     {
