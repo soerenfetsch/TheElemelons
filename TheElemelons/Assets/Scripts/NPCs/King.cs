@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Castle.Components.DictionaryAdapter.Xml;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public enum WalkPattern
 {
@@ -40,6 +41,7 @@ public class King : DialogueTrigger
     void FixedUpdate()
     {
         ActOnStatus();
+
     }
     public override void ActOnStatus()
     {
@@ -261,7 +263,10 @@ public class King : DialogueTrigger
     {
         return walkDist;
     }
-
+    public void SetMovement(Vector2 newMovement)
+    {
+        movement = newMovement;
+    }
 
 
     [ContextMenu("Currentstate Walk")]
@@ -276,6 +281,13 @@ public class King : DialogueTrigger
     }
 
 
-
+    public void TestCallStart()
+    {
+        Start();
+    }
+    public void TestCallFixedUpdate()
+    {
+        FixedUpdate();
+    }
 
 }

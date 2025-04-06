@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class DialogueManager : MonoBehaviour
     public static event Action<string, Sprite> OnDialogueLineChanged;
     // OnDialogueEnded: dialogue finished.
     public static event Action OnDialogueEnded;
+
+    public GameObject imageObject;
 
     private void Awake()
     {
@@ -117,7 +120,6 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
         }
     }
-
     /// <summary>
     /// Ends the dialogue sequence.
     /// </summary>
@@ -129,7 +131,18 @@ public class DialogueManager : MonoBehaviour
             autoPlayCoroutine = null;
         }
         OnDialogueEnded?.Invoke();
-        currentDialogue = null;
+
+        if (currentDialogue.imageSprite != null && !imageObject.activeSelf)
+        {
+            imageObject.SetActive(true);
+            imageObject.GetComponent<Image>().sprite = currentDialogue.imageSprite;
+        }
+        else
+        {
+            imageObject.SetActive(false);
+            currentDialogue = null;
+        }
+
     }
 
     private Sprite GetPortrait(int index)

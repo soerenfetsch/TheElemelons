@@ -194,11 +194,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionRadius: 2
-  dialogueKey: TestDialogueDataAsset-king
-  walkDist: 3
+  basic_dialogues_list:
+  - {fileID: 11400000, guid: d4d662d4a1c6159408fe2d9964627e65, type: 2}
+  - {fileID: 11400000, guid: 0dd71fbecb8c87d408000340cbcff193, type: 2}
+  - {fileID: 11400000, guid: 03891b7c81bc45640bf4b346968dc1b5, type: 2}
+  walkDist: 5
   walkSpeed: 1.5
   currentWalkPattern: 0
   destination: {x: 0, y: 0}
+  destinations:
+  - {x: 0, y: 0}
+  - {x: 0, y: 3}
+  - {x: 3, y: 3}
+  - {x: 3, y: 7}
+  - {x: -7, y: 7}
+  - {x: -7, y: 0}
   walkMaxLimit: {x: 3, y: 7}
   walkMinLimit: {x: -7, y: -1}
   homePosition: {x: 0, y: 0}
+  movement: {x: 0, y: 0}

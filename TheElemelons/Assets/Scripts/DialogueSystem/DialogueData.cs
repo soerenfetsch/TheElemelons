@@ -20,4 +20,6 @@ public class DialogueData : ScriptableObject
     [Tooltip("Array of sentences in the dialogue.")]
     [TextArea(3, 10)]
     public string[] sentences;
+    [Tooltip("Image will be shown at the end.")]
+    public Sprite imageSprite;
 }
