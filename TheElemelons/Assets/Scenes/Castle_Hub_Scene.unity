@@ -1751,7 +1751,7 @@ PrefabInstance:
       objectReference: {fileID: 1333740054}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.data[0]
@@ -1773,6 +1773,10 @@ PrefabInstance:
       propertyPath: dialogueAssets.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: 0ddff1ffd628eb54aa38f86db5fa14a9, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 61bd5956f506fc54eb26d3ac2669c32c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10812,7 +10816,8 @@ GameObject:
   - component: {fileID: 1822068076}
   - component: {fileID: 1822068079}
   - component: {fileID: 1822068078}
-  m_Layer: 0
+  - component: {fileID: 1822068080}
+  m_Layer: 9
   m_Name: bonus_furniture_hub_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10958,6 +10963,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.875, y: 1.4375}
   m_EdgeRadius: 0
+--- !u!114 &1822068080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822068075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d0460743c2e3d4393c00512972a61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 2
+  basic_dialogues_list:
+  - {fileID: 11400000, guid: 61bd5956f506fc54eb26d3ac2669c32c, type: 2}
 --- !u!1 &1827894718
 GameObject:
   m_ObjectHideFlags: 0
