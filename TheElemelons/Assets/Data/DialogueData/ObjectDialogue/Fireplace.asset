@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakerName: 
   portraits: []
-  dialogueBoxImage: {fileID: 0}
-  sentences: []
+  dialogueBoxImage: {fileID: -253876386, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
+  sentences:
+  - You warm your hands by the crackling fire.
   imageSprite: {fileID: 0}
