@@ -83,9 +83,6 @@ public class InputManager : MonoBehaviour
             case GameState.PauseMenu:
                 HandlePauseMenuInputs();
                 break;
-            case GameState.Dialogue:
-                HandleDialogueInput();
-                break;
         }
 
         // Global input: Toggle Pause Menu
@@ -115,7 +112,7 @@ public class InputManager : MonoBehaviour
             "CastSpell", "ClearCharges",
             "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
             "ZoomIn", "ZoomOut",
-            "Interact", "DialogueKey"
+            "Interact"
         };
 
         KeyCode[] defaultKeys = {
@@ -123,7 +120,7 @@ public class InputManager : MonoBehaviour
             KeyCode.Mouse0, KeyCode.Mouse1,
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
             KeyCode.Z, KeyCode.X,
-            KeyCode.E, KeyCode.Space
+            KeyCode.E
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
@@ -158,14 +155,15 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleGameplayInputs()
     {
-        if (canInput){
-            if (canMove){
+        if (canInput)
+        {
+            if (canMove)
+            {
                 HandleMovementInputs();
             }
-        HandleSpellCastingInputs();
-        HandleCameraInputs();
-        HandleInteractionInputs();
-        HandleDialogueInput();
+            HandleSpellCastingInputs();
+            HandleCameraInputs();
+            HandleInteractionInputs();
         }
     }
 
@@ -248,22 +246,6 @@ public class InputManager : MonoBehaviour
                 return;
             }
             playerInteraction?.InteractWithClosestInteractable();
-        }
-    }
-
-    /// <summary>
-    /// Checks for dialogue progression input.
-    /// The interaction button is now the E key.
-    /// </summary>
-    private void HandleDialogueInput()
-    {
-        if (Input.GetKeyDown(keyBindings["DialogueKey"]))
-        {
-            DialogueUI ui = FindObjectOfType<DialogueUI>();
-            if (ui != null && ui.gameObject.activeSelf)
-            {
-                ui.SkipTyping();
-            }
         }
     }
 

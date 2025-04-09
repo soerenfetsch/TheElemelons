@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -9,11 +10,9 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue Assets")]
     [SerializeField] private DialogueData[] dialogueAssets;
-    [SerializeField] private bool autoPlay = true;
+    [SerializeField] private bool autoPlay = false;
     [SerializeField] private float autoPlayDelay = 3f; // Delay (in seconds) before auto-advancing a line
-
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
-
     private DialogueData currentDialogue;
     private int currentLineIndex = 0;
     private Coroutine autoPlayCoroutine;
@@ -25,6 +24,8 @@ public class DialogueManager : MonoBehaviour
     public static event Action<string, Sprite> OnDialogueLineChanged;
     // OnDialogueEnded: dialogue finished.
     public static event Action OnDialogueEnded;
+
+    public GameObject imageObject;
 
     private void Awake()
     {
@@ -76,6 +77,13 @@ public class DialogueManager : MonoBehaviour
         AdvanceDialogue();
     }
 
+    public Boolean HasDialogue()
+    {
+        if (currentDialogue == null)
+        { return false; }
+        return true;
+    }
+
     /// <summary>
     /// Advances the dialogue to the next line. If no more lines remain, ends the dialogue.
     /// </summary>
@@ -112,7 +120,6 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
         }
     }
-
     /// <summary>
     /// Ends the dialogue sequence.
     /// </summary>
@@ -124,7 +131,18 @@ public class DialogueManager : MonoBehaviour
             autoPlayCoroutine = null;
         }
         OnDialogueEnded?.Invoke();
-        currentDialogue = null;
+
+        if (currentDialogue.imageSprite != null && !imageObject.activeSelf)
+        {
+            imageObject.SetActive(true);
+            imageObject.GetComponent<Image>().sprite = currentDialogue.imageSprite;
+        }
+        else
+        {
+            imageObject.SetActive(false);
+            currentDialogue = null;
+        }
+
     }
 
     private Sprite GetPortrait(int index)

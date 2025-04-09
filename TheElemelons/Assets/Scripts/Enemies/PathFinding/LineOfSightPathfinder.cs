@@ -13,8 +13,7 @@ public class LineOfSightPathfinder : MonoBehaviour
     public TilePositionData tilePositionData; // Optional data to get floor positions.
     public HashSet<Vector2Int> floorPositions; // The possible map floor positions.
     public float playerSightRange = 10f; // Maximum range for reachable path for player.
-    public bool drawDebugGizmos = true; // Toggle for drawing debug gizmos.
-
+    public bool drawDebugGizmos = false; // Toggle for drawing debug gizmos.
     private Dictionary<Vector2Int, bool> visibilityGrid; // Grid to track reachable positions to the player.
     private bool isGridInitialized = false; // Tracks if the visibility grid has been initialized.
 

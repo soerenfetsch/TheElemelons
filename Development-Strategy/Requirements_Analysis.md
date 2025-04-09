@@ -152,7 +152,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Act on status**:
   - while status 'idle': If player moves into chase radius then status is updated to 'walking'
   - while status 'walk': If player inside attack radius then status is updated to 'attacking'; If player outside attack radius but inside chase radius then Tree Log pathfinds toward the player; If player outside chase radius and Tree Log not at home position, then Tree Log moves toward home position; If player outside chase raidius and Tree Log at home position, updates status to 'idle'
-  - while status 'attacking': Tree log stands still and attempts to engage combat with the player depending on the BoxCollider of both objects, if collision, combat is handles by the Combat Manager (TO BE DEFINED)
+  - while status 'attacking': Tree log stands still and attempts to engage combat with the player depending on the BoxCollider of both objects, if collision, combat is handles by the Combat Manager
   - Animations should reflect the status and if 'walking' also the direction in which the Tree Log is headed
 - **Change state**: Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
 - **Check health status**: If health is zero, the Tree Log Dies and triggers the death animation
@@ -162,6 +162,19 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - should be able to construct path to player by taking into consideration the collision objects (first walls)
 - implementation should be seemless so that immediate direction where the enemy should walk to approach player should be returned/noted down
 - should be reusable as module for all enemies
+
+#### 2.3.4 Mole (Enemy)
+
+- **Act on status**:
+  - while status 'idle': If player moves into chase radius then status is updated to 'walking', the mole is dug under the earth for most of the idle time but every x amount of time digs up to show its face and then digs down again (x is a variable between 3 and 20 seconds); While the mole is underground it is invincible and cannot be attacked
+  - while status 'walk': If player inside attack radius then status is updated to 'attacking'; If player outside attack radius but inside chase radius then the mole pathfinds toward the player while remaining under ground; If player outside chase radius, updates status to 'idle'
+  - while status 'attacking': The mole digs up and attempts to engage combat with the player depending on the BoxCollider of the arms of the mole and the player, if collision, combat is handles by the Combat Manager
+  - Animations should reflect the status and if 'walking' also the direction in which the Mole is digging
+- **Get Damage**: The Mole is invincible while it is dug under ground, once it is visible it can be hit and should have a hit animation when it receives damage
+- **Attack**: The mole attacks in status 'attacking' and uses its arms which should have an animation to attempt to hit the player at its sides, the damage should be variable between 0.5 and 2 hearts
+- **Change state**: Given the new state, check if state is possible (possibleStates in Mole) and then change the state to the new state if the new state is possible for Mole
+- **Check health status**: If health is zero, the Mole Dies and triggers the death animation
+- **Get Enemy Element Type**: Tree Mole should be of element type EARTH
 
 ### 2.4 Combat System
 
