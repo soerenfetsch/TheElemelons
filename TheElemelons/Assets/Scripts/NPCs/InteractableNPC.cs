@@ -28,5 +28,9 @@ public abstract class InteractableNPC : InteractableObject, INonPlayableCharacte
     /// Defines how the NPC behaves based on its current state.
     /// </summary>
     public abstract void ActOnStatus();
+    public void SetCurrentState(NPCStatus newState)
+    {
+        currentState = newState;
+    }
 }
 

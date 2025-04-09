@@ -12,7 +12,7 @@ public class DialogueData : ScriptableObject
     public string speakerName;
 
     [Tooltip("List of portrait images of the speaker.")]
-    public List<Sprite> portraits; 
+    public List<Sprite> portraits;
 
     [Tooltip("Dialogue Box image.")]
     public Sprite dialogueBoxImage;
@@ -20,4 +20,6 @@ public class DialogueData : ScriptableObject
     [Tooltip("Array of sentences in the dialogue.")]
     [TextArea(3, 10)]
     public string[] sentences;
+    [Tooltip("Image will be shown at the end.")]
+    public Sprite imageSprite;
 }
