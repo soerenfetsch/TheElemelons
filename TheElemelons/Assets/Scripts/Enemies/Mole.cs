@@ -8,35 +8,44 @@ public class Mole : Enemy
     [Header("Components")]
     public GameObject arm;
     public GameObject rippleEffectPrefab;
+
     private Transform transformComponent;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
     private Animator animator;
+    private FlashEffect flashEffect;
+    private FlashEffect armFlashEffect;
 
     [Header("Pathfinding")]
     public Transform playerTransform; // To store the player's transform for pathfinding.
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
-    private bool isDugIn = true;
-    private bool canDigOut = true;
-    private bool isAlive = true;
-    private float digOutInterval = 15f;
     public float moveSpeed = 1f;
     public float chaseRadius = 10f;
     public float attackRadius = 2f;
+    public float digOutInterval = 15f;
+
+    private bool isDugIn = true;
+    private bool canDigOut = true;
+    private bool isAlive = true;
+    private bool isDiggingUp = false;
 
     [Header("Combat")]
     public float baseDamage = 1f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
     public float rippleCooldown = 2f;
+    public float flashDuration = 0.2f;
     
     private float lastRippleTime = 0f;
 
     [Header("Effects")]
     public GameObject deathEffect;
     public float deathEffectDelay = 0.5f;
+
+    [Header("Animation")]
+    private string lastAnimationClip = null;
 
 
     public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
@@ -55,6 +64,8 @@ public class Mole : Enemy
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
+        flashEffect = GetComponent<FlashEffect>();
+        armFlashEffect = arm.GetComponent<FlashEffect>();
 
         if (arm == null)
         {
@@ -64,10 +75,29 @@ public class Mole : Enemy
         {
             arm.SetActive(false); // Disable the arm by default
         }
-
         if (rippleEffectPrefab == null)
         {
             Debug.LogWarning("Mole: No ripple effect prefab found on the GameObject.");
+        }
+        if (deathEffect == null)
+        {
+            Debug.LogWarning("Mole: No death effect prefab found on the GameObject.");
+        }
+        if (pathfinder == null)
+        {
+            Debug.LogWarning("Mole: No pathfinding system found on the GameObject.");
+        }
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("Mole: No player transform found on the GameObject.");
+        }
+        if (flashEffect == null)
+        {
+            Debug.LogWarning("Mole: No flash effect found on the GameObject.");
+        }
+        if (armFlashEffect == null)
+        {
+            Debug.LogWarning("Mole: No arm flash effect found on the GameObject.");
         }
 
         currentState = EnemyStatus.Idle;
@@ -99,6 +129,7 @@ public class Mole : Enemy
 
     public override void ChangeState(EnemyStatus newState)
     {
+        if (currentState == newState) return;
         Debug.Log($"Mole: Changing state from {currentState} to {newState}");
         currentState = newState;
     }
@@ -120,7 +151,8 @@ public class Mole : Enemy
                 if (CheckPlayerReachableWithinRadius(chaseRadius) && isDugIn)
                 {
                     ChangeState(EnemyStatus.Approaching);
-                    animator.SetBool("WakeUp", true);
+                    ChangeAnimationClip("Walking");
+                    break;
                 }
                 if (canDigOut)
                 {
@@ -132,22 +164,20 @@ public class Mole : Enemy
                 MoveTowardPlayer();
                 if (CheckPlayerWithinRadius(attackRadius))
                 {
-                    ChangeState(EnemyStatus.Attacking);
-                    lastRippleTime = Time.time; // Do not start attacking immediately
-                    animator.SetBool("Attacking", true);
+                    DigUp();
                 }
-                else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
+                else if (CheckPlayerUnreachableWithinRadius(chaseRadius) && !isDiggingUp)
                 {
                     ChangeState(EnemyStatus.Idle);
-                    animator.SetBool("WakeUp", false);
+                    ChangeAnimationClip("Idle");
                 }
                 break;
             case EnemyStatus.Attacking:
                 TryAttackWithRipples();
                 if (CheckPlayerOutsideRadius(attackRadius))
                 {
-                    ChangeState(EnemyStatus.Approaching);
-                    animator.SetBool("Attacking", false);
+                    ChangeState(EnemyStatus.Retreating);
+                    DigDown();
                 }
                 break;
             case EnemyStatus.Retreating:
@@ -157,9 +187,18 @@ public class Mole : Enemy
         }
     }
 
+    private void ChangeAnimationClip(string v)
+    {
+        if (lastAnimationClip != v)
+        {
+            animator.Play(v);
+            lastAnimationClip = v;
+        }
+    }
+
     private IEnumerator PopOutandDigIn()
     {
-        animator.SetTrigger("Check");
+        DigUp();
         yield return new WaitForSeconds(digOutInterval);
         canDigOut = true;
     }
@@ -301,12 +340,17 @@ public class Mole : Enemy
     {
         EnemyStatus previousState = currentState;
         ChangeState(EnemyStatus.Staggered);
-        bool previousArmState = arm.activeSelf;
-        arm.SetActive(false);
-        animator.SetTrigger("Stagger");
+        string lastAnimation = lastAnimationClip;
+
+        ChangeAnimationClip("Stagger");
+        flashEffect?.Flash(flashDuration);
+        // Flash the arm only if arm is active
+        if (arm.activeSelf)
+            armFlashEffect?.Flash(flashDuration);
+
         yield return new WaitForSeconds(staggerTime);
         ChangeState(previousState);
-        arm.SetActive(previousArmState);
+        ChangeAnimationClip(lastAnimation);
     }
 
     private void MakeInvincible()
@@ -355,33 +399,58 @@ public class Mole : Enemy
         CombatManager.ExecuteAttack(gameObject, playerRb, elementType, hitDirection, baseDamage, thrust, knockTime);
     }
 
+    private void DigUp()
+    {
+        lastRippleTime = Time.time; // So attacking is started shortly after digging up
+        isDiggingUp = true; // Set digging up state to true
+        ChangeAnimationClip("Dig Up");
+    }
+
     /// <summary>
-    /// Called when the mole digs up. This method is triggered by the animation event.
+    /// Called when the mole digs up. This method is triggered at
+    /// the end of the animation event.
     /// It enables the arm and allows the attack to be triggered.
     /// The mole becomes vulnerable when digging up.
     /// </summary>
     /// <returns></returns>
     public void OnDigUp()
     {
-        if (currentState == EnemyStatus.Attacking)
-        {
-            arm.SetActive(true); // Enable the arm when digging up
-        }
         MakeVulnerable(); // Make the mole vulnerable when digging up
         isDugIn = false; // Set dug in state to false
+        isDiggingUp = false; // Reset digging up state
+
+        if (currentState == EnemyStatus.Approaching)
+        {
+            arm.SetActive(true); // Enable the arm when digging up
+            ChangeState(EnemyStatus.Attacking);
+            ChangeAnimationClip("Up");
+        }
+        else
+        {
+            DigDown();
+        }
+    }
+
+    private void DigDown()
+    {
+        arm.SetActive(false); // Disable the arm when digging down
+        ChangeAnimationClip("Dig Down");
     }
 
     /// <summary>
-    /// Called when the mole digs down. This method is triggered by the animation event.
+    /// Called when the mole digs down. This method is triggered at the
+    /// end of the animation by an event.
     /// It disables the arm and prevents the attack from being triggered.
-    /// The mole becomes invincible when digging down.
+    /// The mole becomes invincible when digging down and the dug in state
+    /// is set to true. The state and animation are changed to idle.
     /// </summary>
     /// <returns></returns>
     public void OnDigDown()
     {
-        arm.SetActive(false); // Disable the arm when digging down
-        MakeInvincible(); // Make the mole invincible when digging down
-        isDugIn = true; // Set dug in state to true
+        MakeInvincible();
+        isDugIn = true;
+        ChangeAnimationClip("Idle");
+        ChangeState(EnemyStatus.Idle);
     }
 
     public override void ModifySpeed(float factor)
