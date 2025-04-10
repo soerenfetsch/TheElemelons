@@ -7,13 +7,11 @@ public class Mole : Enemy
 {
     [Header("Components")]
     public GameObject arm;
-    public GameObject rippleEffect;
+    public GameObject rippleEffectPrefab;
     private Transform transformComponent;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
-    private AttackCollider attackCollider;
     private Animator animator;
-    private Animator rippleAnimator;
 
     [Header("Pathfinding")]
     public Transform playerTransform; // To store the player's transform for pathfinding.
@@ -32,6 +30,9 @@ public class Mole : Enemy
     public float baseDamage = 1f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
+    public float rippleCooldown = 2f;
+    
+    private float lastRippleTime = 0f;
 
     [Header("Effects")]
     public GameObject deathEffect;
@@ -51,7 +52,6 @@ public class Mole : Enemy
         transformComponent = GetComponent<Transform>();
         rb2d = GetComponent<Rigidbody2D>();
         colliderBox = GetComponent<BoxCollider2D>();
-        attackCollider = GetComponentInChildren<AttackCollider>();
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
@@ -65,13 +65,9 @@ public class Mole : Enemy
             arm.SetActive(false); // Disable the arm by default
         }
 
-        if (rippleEffect == null)
+        if (rippleEffectPrefab == null)
         {
-            Debug.LogWarning("Mole: No ripple effect found on the GameObject.");
-        }
-        else
-        {
-            rippleAnimator = rippleEffect.GetComponent<Animator>();
+            Debug.LogWarning("Mole: No ripple effect prefab found on the GameObject.");
         }
 
         currentState = EnemyStatus.Idle;
@@ -83,14 +79,6 @@ public class Mole : Enemy
         defenseFactor = 1f;
         elementType = ElementType.Earth;
 
-        if (attackCollider != null)
-        {
-            attackCollider.OnAttackTriggered += HandleAttack;
-        }
-        else
-        {
-            Debug.LogWarning("Mole: No AttackCollider found on the GameObject.");
-        }
         MakeInvincible(); // Start as invincible
     }
 
@@ -145,7 +133,7 @@ public class Mole : Enemy
                 if (CheckPlayerWithinRadius(attackRadius))
                 {
                     ChangeState(EnemyStatus.Attacking);
-                    StartAttacking();
+                    lastRippleTime = Time.time; // Do not start attacking immediately
                     animator.SetBool("Attacking", true);
                 }
                 else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
@@ -155,9 +143,9 @@ public class Mole : Enemy
                 }
                 break;
             case EnemyStatus.Attacking:
+                TryAttackWithRipples();
                 if (CheckPlayerOutsideRadius(attackRadius))
                 {
-                    StopAttacking();
                     ChangeState(EnemyStatus.Approaching);
                     animator.SetBool("Attacking", false);
                 }
@@ -321,14 +309,6 @@ public class Mole : Enemy
         arm.SetActive(previousArmState);
     }
 
-    private void HandleAttack(Rigidbody2D playerRb)
-    {
-        if (playerRb == null) return;
-
-        Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
-        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
-    }
-
     private void MakeInvincible()
     {
         isInvincible = true;
@@ -339,26 +319,40 @@ public class Mole : Enemy
         isInvincible = false;
     }
 
-    private void StartAttacking()
+    [ContextMenu("RippleAttack")]
+    private void TryAttackWithRipples()
     {
-        rippleAnimator.SetBool("Attacking", true);
-        EnableAttackCollider();
+        if (Time.time - lastRippleTime >= rippleCooldown)
+        {
+            lastRippleTime = Time.time;
+
+            SpawnRipple(180f); // Up
+            SpawnRipple(-90f); // Left
+            SpawnRipple(0f); // Down
+            SpawnRipple(90f); // Right
+        }
     }
 
-    private void StopAttacking()
+    private void SpawnRipple(float zRotation)
     {
-        rippleAnimator.SetBool("Attacking", false);
-        DisableAttackCollider();
+        Vector2 travelDirection = new Vector2(Mathf.Sin(zRotation * Mathf.Deg2Rad), -Mathf.Cos(zRotation * Mathf.Deg2Rad));
+        Vector3 offset = travelDirection * 1.8f;
+        Vector3 pivot = transform.position + (Vector3) Vector2.up * 0.5f;
+        GameObject ripple = Instantiate(rippleEffectPrefab, pivot - offset, Quaternion.Euler(0f, 0f, zRotation));
+        
+        RippleEffect rippleScript = ripple.GetComponent<RippleEffect>();
+
+        // Optional: subscribe to player hit event
+        rippleScript.OnPlayerHit += HandleRipplePlayerHit;
     }
 
-    private void EnableAttackCollider()
+    private void HandleRipplePlayerHit(Rigidbody2D playerRb, RippleEffect ripple)
     {
-        attackCollider.EnableAttack();
-    }
-
-    private void DisableAttackCollider()
-    {
-        attackCollider.DisableAttack();
+        // Get the hit direction from the z rotation of the ripple
+        float zRotation = ripple.transform.rotation.eulerAngles.z;
+        Vector2 hitDirection = new Vector2(Mathf.Sin(zRotation * Mathf.Deg2Rad), -Mathf.Cos(zRotation * Mathf.Deg2Rad));
+        
+        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, hitDirection, baseDamage, thrust, knockTime);
     }
 
     /// <summary>
@@ -369,7 +363,6 @@ public class Mole : Enemy
     /// <returns></returns>
     public void OnDigUp()
     {
-        Debug.Log("Mole: Digging up!");
         if (currentState == EnemyStatus.Attacking)
         {
             arm.SetActive(true); // Enable the arm when digging up
@@ -386,7 +379,6 @@ public class Mole : Enemy
     /// <returns></returns>
     public void OnDigDown()
     {
-        Debug.Log("Mole: Digging down!");
         arm.SetActive(false); // Disable the arm when digging down
         MakeInvincible(); // Make the mole invincible when digging down
         isDugIn = true; // Set dug in state to true
