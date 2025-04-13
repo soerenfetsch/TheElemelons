@@ -5,6 +5,7 @@ public class AttackCollider : MonoBehaviour
 {
     public event Action<Rigidbody2D> OnAttackTriggered; // Event for handling attacks
     public float attackCooldown = 2f; // Adjust attack cooldown as needed
+    public bool adjustsColliderRotation = true; // Whether to adjust collider rotation based on movement direction
 
     private PolygonCollider2D attackCollider; 
     private Animator animator; 
@@ -31,7 +32,7 @@ public class AttackCollider : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         // Only attack player when last attack was more than attackCooldown seconds ago
         if (Time.time - lastAttackTime < attackCooldown) return;
@@ -69,6 +70,7 @@ public class AttackCollider : MonoBehaviour
     {
         if (animator == null) return;
 
+        if (!adjustsColliderRotation) return; // Skip if rotation adjustment is disabled
         float horizontal = animator.GetFloat("Horizontal");
         float vertical = animator.GetFloat("Vertical");
 
