@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Codice.CM.Client.Differences;
 using Ionic.BZip2;
 using UnityEngine;
 
@@ -28,9 +29,14 @@ public class Tiki : Enemy
     public Vector2 headMovement;
     bool headAttached = true;
     bool headSpinning = false;
+    public float headSpinSpeed = 3f;
     Rigidbody2D rbHead;
     Transform headTransform;
+    public GameObject headCenter;
+    [Header("Pathfinding")]
+    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
     [Header("BodyMovement")]
+
     RaycastHit2D hit;
     Transform bodyTransform;
     float clockwiseFactor = 1f;
@@ -38,10 +44,10 @@ public class Tiki : Enemy
     public float moveSpeed = 1f;
     Rigidbody2D rbBody;
     int directionChangeCounter = 0;
-    public int directionChangeStop = 2;
+    public int directionChangeStop = 10;
     [Header("CombatRangeHandling")]
-    float range;
-    public float OutOfRange = 30f;
+    public float range;
+    public float AggroRange = 30f;
     public float minimalRange = 6f;
     public float maximalRange = 20f;
     public float rangeTolerance = 1f;
@@ -64,11 +70,15 @@ public class Tiki : Enemy
         mana = GetComponent<Mana>();
         health = GetComponent<Health>();
         rbBody = transform.GetChild(0).GetComponent<Rigidbody2D>();
-        rbHead = transform.GetChild(1).GetComponent<Rigidbody2D>();
+
         skirtAnimator.SetBool("Flowers", flowerSkirt);
         currentState = EnemyStatus.Approaching;
         range = minimalRange;
-        headTransform = rbHead.transform;
+        GameObject head = transform.GetChild(1).gameObject;
+        rbHead = head.GetComponent<Rigidbody2D>();
+        headTransform = head.transform;
+        //headCenter = headTransform.GetChild(1);
+        headSpinning = true;
     }
     // Update is called once per frame
     void Update()
@@ -76,12 +86,17 @@ public class Tiki : Enemy
         ActOnStatus();
         if (headAttached)
         {
-            headTransform.position = bodyTransform.position + new Vector3(0, 1f, 0);
+            headTransform.position = bodyTransform.position + new Vector3(0, 1.75f, 0);
         }
+
     }
     void FixedUpdate()
     {
         DoMovement();
+        if (headSpinning)
+        {
+            headTransform.RotateAround(headCenter.transform.position, Vector3.forward, headSpinSpeed * Time.deltaTime);
+        }
     }
     /// <summary>
     /// Abstract method to define behavior based on the current state.
@@ -132,23 +147,24 @@ public class Tiki : Enemy
         if (hit)
         {
             SwitchClockWise();
-            range += Mathf.Clamp(Random.Range(-1, 1), minimalRange, maximalRange);
+            range = Mathf.Clamp(range + Random.Range(-1, 1), minimalRange, maximalRange);
         }
     }
     public void OnComeBack()
     {
         if (currentRangeState == RangeState.Far)
         {
-            bodyMovement = playerTransform.position - bodyTransform.position;
+            NavigateToPlayer();
+            //bodyMovement = playerTransform.position - bodyTransform.position;
         }
         else if (currentRangeState == RangeState.Close)
         {
-            bodyMovement = -playerTransform.position + bodyTransform.position;
-        }
-        else if (currentRangeState == RangeState.InRange)
-        {
             ChangeTikiState(TikiState.Circle);
         }
+    }
+    public void NavigateToPlayer()
+    {
+        bodyMovement = pathfinder.CheckPlayerReachable(bodyTransform.position, AggroRange);
     }
     public void DoMovement()
     {
@@ -159,12 +175,11 @@ public class Tiki : Enemy
         {
             comeBackFactor = 1.5f;
         }
-        Vector2 moving_by = GetMovement() * GetWalkSpeed() * Time.fixedDeltaTime * comeBackFactor;
+        Vector2 moving_by = bodyMovement * GetWalkSpeed() * Time.fixedDeltaTime * comeBackFactor;
         rbBody.MovePosition(rbBody.position + moving_by);
         float rayLength = 0.5f;
         LayerMask mask = LayerMask.GetMask("Player", "Walls");
         hit = Physics2D.Raycast(bodyTransform.position, bodyMovement, rayLength, mask);
-        UnityEngine.Debug.DrawRay(bodyTransform.position, bodyMovement * rayLength, Color.yellow);
 
         if (moving_by.magnitude > 0.01)
         {
@@ -195,6 +210,14 @@ public class Tiki : Enemy
             }
         }
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Walls"))
+        {
+
+        }
+    }
+
     public void OnIdleStatus()
     {
 
@@ -206,7 +229,7 @@ public class Tiki : Enemy
     {
         if (health.IsZero())
         {
-            DeathEffect.SpawnDeathEffect(deathEffect, transform.position, deathEffectDelay);
+            DeathEffect.SpawnDeathEffect(deathEffect, bodyTransform.position, deathEffectDelay);
             Destroy(gameObject, 0);
         }
         else if (!speedBuffGiven && health.GetHealth() < health.GetMaxHealth() / 2)
@@ -263,9 +286,11 @@ public class Tiki : Enemy
     {
         clockwiseFactor *= -1;
         directionChangeCounter++;
-        if (currentTikiState == TikiState.Circle && directionChangeCounter > directionChangeStop && Random.RandomRange(0f, 1f) > 0.3)
+        Debug.Log(directionChangeCounter);
+        if (currentTikiState == TikiState.Circle && directionChangeCounter > directionChangeStop && Random.Range(0f, 1f) > 0.3)
         {
             ChangeTikiState(TikiState.ComeBack);
         }
     }
+
 }
