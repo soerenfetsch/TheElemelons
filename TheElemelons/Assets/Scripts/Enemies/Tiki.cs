@@ -75,9 +75,8 @@ public class Tiki : Enemy
         currentState = EnemyStatus.Approaching;
         range = minimalRange;
         GameObject head = transform.GetChild(1).gameObject;
-        rbHead = head.GetComponent<Rigidbody2D>();
+        rbHead = head.transform.GetChild(0).GetComponent<Rigidbody2D>();
         headTransform = head.transform;
-        //headCenter = headTransform.GetChild(1);
         headSpinning = true;
     }
     // Update is called once per frame
@@ -95,7 +94,11 @@ public class Tiki : Enemy
         DoMovement();
         if (headSpinning)
         {
-            headTransform.RotateAround(headCenter.transform.position, Vector3.forward, headSpinSpeed * Time.deltaTime);
+            headTransform.Rotate(Vector3.forward, headSpinSpeed * Time.deltaTime);
+        }
+        else
+        {
+            headTransform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
     /// <summary>
