@@ -11,6 +11,7 @@ public class TreeLog : Enemy
     private BoxCollider2D colliderBox;
     private AttackCollider attackCollider;
     private Animator animator;
+    private FlashEffect flashEffect;
 
     [Header("Pathfinding")]
     public Transform playerTransform; // To store the player's transform for pathfinding.
@@ -27,6 +28,7 @@ public class TreeLog : Enemy
     public float baseDamage = 1f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
+    public float flashDuration = 0.2f;
 
     [Header("Effects")]
     public GameObject deathEffect;
@@ -50,6 +52,7 @@ public class TreeLog : Enemy
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
+        flashEffect = GetComponent<FlashEffect>();
 
         currentState = EnemyStatus.Idle;
         homePosition = transformComponent.position;
@@ -302,6 +305,7 @@ public class TreeLog : Enemy
     {
         ChangeState(EnemyStatus.Staggered);
         animator.SetTrigger("TrStagger");
+        flashEffect?.Flash(flashDuration);
         yield return new WaitForSeconds(staggerTime);
         animator.SetTrigger("TrStopStagger");
         ChangeState(EnemyStatus.Idle);

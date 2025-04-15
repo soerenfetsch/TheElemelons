@@ -111,7 +111,7 @@ public class LineOfSightPathfinder : MonoBehaviour
     /// </summary>
     /// <param name="startPosition">The starting position to check from.</param>
     /// <returns>A normalized vector toward the reachable tile, or Vector2.zero if no tile is reachable.</returns>
-    public Vector2 CheckPlayerReachable(Vector2 startPosition, float sightRange)
+    public Vector2 CheckPlayerReachable(Vector2 startPosition, float pathRange)
     {
         if (!isGridInitialized)
         {
@@ -119,18 +119,20 @@ public class LineOfSightPathfinder : MonoBehaviour
             return Vector2.zero;
         }
 
-        // Get visible tile positions sorted by distance to the startPosition.
+        // Get visible tile positions sorted by distance to the player.
         var visibleTiles = visibilityGrid
             .Where(pair => pair.Value) // Only consider visible tiles.
             .Select(pair => pair.Key)
-            .OrderBy(pos => Vector2.Distance(startPosition, pos));
+            .OrderBy(pos => Vector2.Distance(player.position, pos)); // Sort by distance to the player.
 
-        foreach (Vector2Int tile in visibleTiles)
+        foreach (Vector2Int tilePos in visibleTiles)
         {
+            // The remaining path range is pathRange minus the distance of player to the tile.
+            float remainingPathRange = pathRange - Vector2.Distance(player.position, tilePos);
             // Check if the path to the tile is clear using raycasting.
-            if (IsPositionInSight(startPosition, tile, sightRange))
+            if (remainingPathRange >= 0 && IsPositionInSight(startPosition, tilePos, remainingPathRange))
             {
-                return ((Vector2)tile - startPosition).normalized; // Return the direction to the tile.
+                return ((Vector2)tilePos - startPosition).normalized; // Return the direction to the tile.
             }
         }
 

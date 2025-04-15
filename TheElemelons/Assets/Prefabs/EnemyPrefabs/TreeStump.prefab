@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6077210218321974497}
   - component: {fileID: 5067115790096037957}
   - component: {fileID: 69778666745280560}
+  - component: {fileID: 4592151245755443983}
   m_Layer: 8
   m_Name: TreeStump
   m_TagString: Enemy
@@ -285,6 +286,20 @@ MonoBehaviour:
   gameRunning: 1
   current_regenTime: 0
   justCasted: 0
+--- !u!114 &4592151245755443983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429357523056024730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574b4cb4d62c1364d83ee7e342ce934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: f27bf4d18f9c8f1449a0b46cb7dc8f88, type: 2}
+  spriteRenderer: {fileID: 6894997854453123198}
 --- !u!1 &9189232082192883736
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,3 +403,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 2
+  adjustsColliderRotation: 1
