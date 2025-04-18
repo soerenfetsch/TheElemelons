@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Castle.Components.DictionaryAdapter.Xml;
 using Codice.CM.Client.Differences;
 using Ionic.BZip2;
 using UnityEngine;
@@ -22,10 +23,24 @@ public class Tiki : Enemy
 {
     public Transform playerTransform;
     public TikiState currentTikiState;
-    public bool flowerSkirt = false;
     Animator bodyAnimator;
+    [Header("Skirt")]
+    bool flowerSkirt = false;
+    float flowerProb = 0.5f;
     Animator skirtAnimator;
+    [Header("Ellipse flight")]
+    Vector2 headTarget;
+    public float steepness;
+    public float headSpeed;
+    Vector2 startPosition;
+    int clockDir;
+    bool targetReached = false;
+    float currentDistanceTraveled = 0f;
+    public float correctionFactor = 0.5f;
+    Vector2 directionInitial;
+    Vector2 perpendicularDirection;
     [Header("Head")]
+    public float spinningHeadCooldown = 2.5f;
     public Vector2 headMovement;
     bool headAttached = true;
     bool headSpinning = false;
@@ -36,10 +51,10 @@ public class Tiki : Enemy
     [Header("Pathfinding")]
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
     [Header("BodyMovement")]
-
+    Collider2D bodyCollider2D;
     RaycastHit2D hit;
     Transform bodyTransform;
-    float clockwiseFactor = 1f;
+    int clockwiseFactor = 1;
     Vector2 bodyMovement;
     public float moveSpeed = 1f;
     Rigidbody2D rbBody;
@@ -70,36 +85,54 @@ public class Tiki : Enemy
         mana = GetComponent<Mana>();
         health = GetComponent<Health>();
         rbBody = transform.GetChild(0).GetComponent<Rigidbody2D>();
-
+        flowerSkirt = Random.Range(0, 2) < flowerProb * 2;
         skirtAnimator.SetBool("Flowers", flowerSkirt);
         currentState = EnemyStatus.Approaching;
         range = minimalRange;
         GameObject head = transform.GetChild(1).gameObject;
         rbHead = head.transform.GetChild(0).GetComponent<Rigidbody2D>();
         headTransform = head.transform;
-        headSpinning = true;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        ActOnStatus();
-        if (headAttached)
+        clockwiseFactor = (int)Mathf.Sign(Random.Range(-1, 1));
+        if (currentTikiState == TikiState.Circle)
         {
-            headTransform.position = bodyTransform.position + new Vector3(0, 1.75f, 0);
+            StartCoroutine(SpinningHeadCooldown());
         }
-
     }
     void FixedUpdate()
     {
+        ActOnStatus();
+        HandleHead();
         DoMovement();
+    }
+    public void HandleHead()
+    {
+        if (headAttached)
+        {
+            headTransform.position = HeadOnShouldersPosition();
+        }
         if (headSpinning)
         {
-            headTransform.Rotate(Vector3.forward, headSpinSpeed * Time.deltaTime);
+            headTransform.Rotate(Vector3.forward, headSpinSpeed * Time.fixedDeltaTime);
         }
         else
         {
             headTransform.rotation = Quaternion.Euler(0, 0, 0);
         }
+        if (!headAttached)
+        {
+            if (!targetReached)
+            {
+                headTransform.position = CalcParabolePosition();
+            }
+            else
+            {
+                headTransform.position = CalcReturnToBodyPosition();
+            }
+        }
+    }
+    Vector3 HeadOnShouldersPosition()
+    {
+        return bodyTransform.position + new Vector3(0, 1.75f, 0);
     }
     /// <summary>
     /// Abstract method to define behavior based on the current state.
@@ -133,9 +166,85 @@ public class Tiki : Enemy
     public void ChangeTikiState(TikiState newState)
     {
         currentTikiState = newState;
+        if (newState == TikiState.Circle)
+        {
+            StartCoroutine(SpinningHeadCooldown());
+        }
+    }
+    IEnumerator SpinningHeadCooldown()
+    {
+        yield return new WaitForSeconds(spinningHeadCooldown);
+        if (currentTikiState == TikiState.Circle)
+        {
+            StartCoroutine(StartSpinningAttack());
+        }
+    }
+    IEnumerator StartSpinningAttack(bool linger = true)
+    {
+        headSpinning = true;
+        if (linger)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        headTarget = playerTransform.position;
+        headAttached = false;
+        startPosition = headTransform.position;
+        clockDir = clockwiseFactor;
+        targetReached = false;
+        currentDistanceTraveled = 0f;
+        targetReached = false;
+        directionInitial = headTarget - startPosition;
+        directionInitial.Normalize();
+        perpendicularDirection = new Vector2(-directionInitial.y, directionInitial.x) * clockDir;
+
+    }
+    Vector2 CalcParabolePosition()
+    {
+        Vector2 pos;
+        float distanceToTarget = Vector2.Distance(headTarget, startPosition);
+        // Calculate the current position on the parabola
+        pos = startPosition + (directionInitial * currentDistanceTraveled);
+        pos += perpendicularDirection * steepness * currentDistanceTraveled * (distanceToTarget - currentDistanceTraveled);
+
+        // Update the distance traveled
+        currentDistanceTraveled += headSpeed * Time.fixedDeltaTime;
+        if (currentDistanceTraveled > distanceToTarget)
+        {
+            targetReached = true;
+            currentDistanceTraveled = 0f;
+        }
+        headMovement = pos - (Vector2)headTransform.position;
+        return pos;
+    }
+
+    Vector2 CalcReturnToBodyPosition()
+    {
+        Vector2 pos;
+        if (Vector3.Distance(headTransform.position, HeadOnShouldersPosition()) < 0.1)
+        {
+            headAttached = true;
+            headSpinning = false;
+            targetReached = false;
+            if (currentTikiState == TikiState.Circle)
+            {
+                StartCoroutine(SpinningHeadCooldown());
+            }
+            return (Vector2)headTransform.position;
+        }
+        headMovement.Normalize();
+        headMovement += (Vector2)(HeadOnShouldersPosition() - headTransform.position).normalized * correctionFactor;
+        headMovement.Normalize();
+        headMovement *= headSpeed * Time.fixedDeltaTime;
+        pos = (Vector2)headTransform.position + headMovement;
+        return pos;
     }
     public void OnCircleTiki()
     {
+        if (hit)
+        {
+            SwitchClockWise();
+            //range = Mathf.Clamp(range + Random.Range(-1, 1), minimalRange, maximalRange);
+        }
         bodyMovement = Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - bodyTransform.position);
         if (currentRangeState == RangeState.Far)
         {
@@ -147,11 +256,7 @@ public class Tiki : Enemy
             bodyMovement.x += -playerTransform.position.x + bodyTransform.position.x;
             bodyMovement.y += -playerTransform.position.y + bodyTransform.position.y;
         }
-        if (hit)
-        {
-            SwitchClockWise();
-            range = Mathf.Clamp(range + Random.Range(-1, 1), minimalRange, maximalRange);
-        }
+
     }
     public void OnComeBack()
     {
@@ -160,14 +265,29 @@ public class Tiki : Enemy
             NavigateToPlayer();
             //bodyMovement = playerTransform.position - bodyTransform.position;
         }
-        else if (currentRangeState == RangeState.Close)
+        else if (currentRangeState == RangeState.Close || currentRangeState == RangeState.InRange)
         {
             ChangeTikiState(TikiState.Circle);
         }
     }
     public void NavigateToPlayer()
     {
-        bodyMovement = pathfinder.CheckPlayerReachable(bodyTransform.position, AggroRange);
+        Vector2 sight = pathfinder.CheckPlayerInSight(GetFeet(), AggroRange);
+        if (sight != Vector2.zero)
+        {
+            bodyMovement = sight;
+            return;
+        }
+
+        Vector2 reachable = pathfinder.CheckPlayerReachable(bodyTransform.position, AggroRange);
+        if (reachable != Vector2.zero)
+        {
+            bodyMovement = reachable;
+        }
+    }
+    Vector2 GetFeet()
+    {
+        return new Vector2(bodyTransform.position.x, bodyCollider2D.bounds.min.y);
     }
     public void DoMovement()
     {
@@ -180,9 +300,12 @@ public class Tiki : Enemy
         }
         Vector2 moving_by = bodyMovement * GetWalkSpeed() * Time.fixedDeltaTime * comeBackFactor;
         rbBody.MovePosition(rbBody.position + moving_by);
+
+        // check hit
         float rayLength = 0.5f;
         LayerMask mask = LayerMask.GetMask("Player", "Walls");
         hit = Physics2D.Raycast(bodyTransform.position, bodyMovement, rayLength, mask);
+        Debug.DrawRay(bodyTransform.position, bodyMovement, Color.cyan, 1);
 
         if (moving_by.magnitude > 0.01)
         {
@@ -193,6 +316,7 @@ public class Tiki : Enemy
             bodyAnimator.SetBool("Walk", false);
         }
     }
+
     public void CalcRangeState()
     {
         if (playerTransform != null)
@@ -211,13 +335,6 @@ public class Tiki : Enemy
             {
                 currentRangeState = RangeState.InRange;
             }
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Walls"))
-        {
-
         }
     }
 
@@ -289,11 +406,11 @@ public class Tiki : Enemy
     {
         clockwiseFactor *= -1;
         directionChangeCounter++;
-        Debug.Log(directionChangeCounter);
+        /*
         if (currentTikiState == TikiState.Circle && directionChangeCounter > directionChangeStop && Random.Range(0f, 1f) > 0.3)
         {
             ChangeTikiState(TikiState.ComeBack);
         }
+        */
     }
-
 }

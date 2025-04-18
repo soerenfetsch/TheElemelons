@@ -565,7 +565,7 @@ MonoBehaviour:
   currentTikiState: 2
   flowerSkirt: 1
   headMovement: {x: 0, y: 0}
-  headSpinSpeed: 50
+  headSpinSpeed: 300
   headCenter: {fileID: 1821264775118944951}
   pathfinder: {fileID: 0}
   moveSpeed: 2

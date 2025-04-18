@@ -15472,12 +15472,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1219349464}
     - target: {fileID: 4800550777431888857, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+      propertyPath: headSpinSpeed
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800550777431888857, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 2076084353}
     - target: {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
       propertyPath: m_Name
       value: Tiki
+      objectReference: {fileID: 0}
+    - target: {fileID: 7703659779678800835, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+      propertyPath: m_Size.x
+      value: 0.06452629
+      objectReference: {fileID: 0}
+    - target: {fileID: 7703659779678800835, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+      propertyPath: m_Size.y
+      value: 0.063539386
+      objectReference: {fileID: 0}
+    - target: {fileID: 7703659779678800835, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.00495857
+      objectReference: {fileID: 0}
+    - target: {fileID: 7703659779678800835, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.09801197
       objectReference: {fileID: 0}
     - target: {fileID: 8139298679996411820, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
       propertyPath: m_LocalPosition.y
