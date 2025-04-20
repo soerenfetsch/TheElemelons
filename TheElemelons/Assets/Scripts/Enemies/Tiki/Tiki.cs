@@ -24,6 +24,8 @@ public class Tiki : Enemy
     public Transform playerTransform;
     public TikiState currentTikiState;
     Animator bodyAnimator;
+    [Header("Spells")]
+    public GameObject greenAttackGameobject;
     [Header("Skirt")]
     bool flowerSkirt = false;
     float flowerProb = 0.5f;
@@ -40,7 +42,6 @@ public class Tiki : Enemy
     Vector2 directionInitial;
     Vector2 perpendicularDirection;
     [Header("Head")]
-    public float spinningHeadCooldown = 2.5f;
     public Vector2 headMovement;
     bool headAttached = true;
     bool headSpinning = false;
@@ -71,11 +72,19 @@ public class Tiki : Enemy
     public float baseDamage = 1f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
+
     [Header("Effects")]
     public GameObject deathEffect;
     public float deathEffectDelay = 0.5f;
     [Header("Bools")]
     bool speedBuffGiven = false;
+    [Header("Cooldowns")]
+    bool canThrowHead = false;
+    public float spinningHeadCooldown = 2.5f;
+    bool canCastGreenAttack = true;
+    public float greenAttackCooldown = 0.8f;
+    bool canCastHeal = true;
+    public float healCooldown = 7f;
     // Start is called before the first frame update
     void Start()
     {
@@ -97,6 +106,10 @@ public class Tiki : Enemy
         {
             StartCoroutine(SpinningHeadCooldown());
         }
+        elementType = ElementType.Earth;
+        attackFactor = 1f;
+        defenseFactor = 1f;
+
     }
     void FixedUpdate()
     {
@@ -174,13 +187,11 @@ public class Tiki : Enemy
     IEnumerator SpinningHeadCooldown()
     {
         yield return new WaitForSeconds(spinningHeadCooldown);
-        if (currentTikiState == TikiState.Circle)
-        {
-            StartCoroutine(StartSpinningAttack());
-        }
+        canThrowHead = true;
     }
     IEnumerator StartSpinningAttack(bool linger = true)
     {
+        canThrowHead = false;
         headSpinning = true;
         if (linger)
         {
@@ -216,7 +227,12 @@ public class Tiki : Enemy
         headMovement = pos - (Vector2)headTransform.position;
         return pos;
     }
-
+    IEnumerator GreenAttackCooldown()
+    {
+        canCastGreenAttack = false;
+        yield return new WaitForSeconds(greenAttackCooldown);
+        canCastGreenAttack = true;
+    }
     Vector2 CalcReturnToBodyPosition()
     {
         Vector2 pos;
@@ -240,11 +256,26 @@ public class Tiki : Enemy
     }
     public void OnCircleTiki()
     {
+        // handle attacks
+        if (canThrowHead && currentRangeState != RangeState.Close)
+        {
+            StartCoroutine(StartSpinningAttack());
+        }
+        else if (canCastGreenAttack && currentRangeState == RangeState.Close)
+        {
+            StartCoroutine(GreenAttackCooldown());
+            Vector3 castpoint = bodyTransform.position;
+            castpoint.y += 0.5f;
+            //castpoint += (playerTransform.position - transform.position).normalized * 1.5f;
+            CombatManager.InstantiateSpell(greenAttackGameobject, gameObject, castpoint, Quaternion.Euler(0, 0, 0));
+        }
+        // handle collision
         if (hit)
         {
             SwitchClockWise();
             //range = Mathf.Clamp(range + Random.Range(-1, 1), minimalRange, maximalRange);
         }
+        // handle movement
         bodyMovement = Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - bodyTransform.position);
         if (currentRangeState == RangeState.Far)
         {
@@ -258,6 +289,7 @@ public class Tiki : Enemy
         }
 
     }
+
     public void OnComeBack()
     {
         if (currentRangeState == RangeState.Far)
@@ -413,4 +445,17 @@ public class Tiki : Enemy
         }
         */
     }
+    public bool IsHeadSpinning()
+    {
+        return headSpinning;
+    }
+    public bool IsHeadAttached()
+    {
+        return headAttached;
+    }
+    public bool IsTargetReached()
+    {
+        return targetReached;
+    }
+
 }

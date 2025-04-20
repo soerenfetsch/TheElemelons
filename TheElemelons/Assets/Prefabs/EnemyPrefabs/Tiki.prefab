@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 2053256891144425138}
   - component: {fileID: 6422637421200137907}
   - component: {fileID: 5964489056464004870}
+  - component: {fileID: 523518499993567280}
   m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
@@ -180,6 +181,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.8000002}
   serializedVersion: 2
   m_Radius: 0.49177694
+--- !u!114 &523518499993567280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2334622306475434407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633828e2811fff042a1bb35efe524e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 0.5
+  spinningDamage: 2
+  thrust: 2
+  knockTime: 0.3
 --- !u!1 &2361483158562279998
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,6 +211,7 @@ GameObject:
   - component: {fileID: 3998330092139489632}
   - component: {fileID: 7703659779678800835}
   - component: {fileID: 3383510227687373239}
+  - component: {fileID: 442506376988909103}
   m_Layer: 8
   m_Name: Body
   m_TagString: Enemy
@@ -407,6 +425,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7865166, y: 1.0290086}
   m_EdgeRadius: 0
+--- !u!114 &442506376988909103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361483158562279998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0d302ece64643469d04b92148871f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3629858919272659695
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,7 +593,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
   currentTikiState: 2
-  flowerSkirt: 1
+  greenAttackGameobject: {fileID: 6055731966431226266, guid: 9b9cb2368b399a54da870b4e64b3b2a5, type: 3}
+  steepness: 0
+  headSpeed: 0
+  correctionFactor: 0.5
   headMovement: {x: 0, y: 0}
   headSpinSpeed: 300
   headCenter: {fileID: 1821264775118944951}
@@ -581,6 +614,9 @@ MonoBehaviour:
   knockTime: 0.2
   deathEffect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
   deathEffectDelay: 0.5
+  spinningHeadCooldown: 2.5
+  greenAttackCooldown: 0.8
+  healCooldown: 7
 --- !u!114 &8878978057840966650
 MonoBehaviour:
   m_ObjectHideFlags: 0
