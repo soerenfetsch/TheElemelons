@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 7703659779678800835}
   - component: {fileID: 3383510227687373239}
   - component: {fileID: 442506376988909103}
+  - component: {fileID: 8742758328883166333}
   m_Layer: 8
   m_Name: Body
   m_TagString: Enemy
@@ -437,6 +438,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0d302ece64643469d04b92148871f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8742758328883166333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361483158562279998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc7205fb501bda4786c2a614533e545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxhealth: 12
+  health: 12
 --- !u!1 &3629858919272659695
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +568,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4702944430803684124}
   - component: {fileID: 4800550777431888857}
-  - component: {fileID: 8878978057840966650}
   - component: {fileID: 8994205213805807193}
   m_Layer: 8
   m_Name: Tiki
@@ -617,20 +631,6 @@ MonoBehaviour:
   spinningHeadCooldown: 2.5
   greenAttackCooldown: 0.8
   healCooldown: 7
---- !u!114 &8878978057840966650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7441202466962739815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc7205fb501bda4786c2a614533e545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxhealth: 12
-  health: 12
 --- !u!114 &8994205213805807193
 MonoBehaviour:
   m_ObjectHideFlags: 0

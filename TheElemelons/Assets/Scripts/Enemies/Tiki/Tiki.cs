@@ -92,7 +92,7 @@ public class Tiki : Enemy
         bodyTransform = transform.GetChild(0).transform;
         skirtAnimator = transform.GetChild(0).transform.GetChild(0).GetComponent<Animator>();
         mana = GetComponent<Mana>();
-        health = GetComponent<Health>();
+        health = transform.GetChild(0).GetComponent<Health>();
         rbBody = transform.GetChild(0).GetComponent<Rigidbody2D>();
         flowerSkirt = Random.Range(0, 2) < flowerProb * 2;
         skirtAnimator.SetBool("Flowers", flowerSkirt);
