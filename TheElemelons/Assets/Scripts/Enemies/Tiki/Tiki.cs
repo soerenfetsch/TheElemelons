@@ -96,7 +96,6 @@ public class Tiki : Enemy
     // Start is called before the first frame update
     void Start()
     {
-
         playerTransform = GameObject.Find("Player").transform;
         bodyAnimator = transform.GetChild(0).GetComponent<Animator>();
         bodyTransform = transform.GetChild(0).transform;
@@ -119,6 +118,7 @@ public class Tiki : Enemy
         elementType = ElementType.Earth;
         attackFactor = 1f;
         defenseFactor = 1f;
+        bodyCollider2D = transform.GetChild(0).GetComponent<BoxCollider2D>();
 
     }
     void FixedUpdate()
