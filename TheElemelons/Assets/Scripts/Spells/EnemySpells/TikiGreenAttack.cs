@@ -58,7 +58,7 @@ public class TikiGreenAttack : SpellEffect
         {
             transform.position = transform.position + (Vector3)direction * moveSpeed * Time.fixedDeltaTime;
         }
-        else
+        else if (caster != null)
         {
             Vector2 newpos;
             newpos = (Vector2)caster.transform.position + offset;

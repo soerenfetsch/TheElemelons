@@ -96,6 +96,8 @@ public class Tiki : Enemy
     // Start is called before the first frame update
     void Start()
     {
+
+        playerTransform = GameObject.Find("Player").transform;
         bodyAnimator = transform.GetChild(0).GetComponent<Animator>();
         bodyTransform = transform.GetChild(0).transform;
         skirtAnimator = transform.GetChild(0).transform.GetChild(0).GetComponent<Animator>();
@@ -313,8 +315,9 @@ public class Tiki : Enemy
         else if (canCastGreenAttack && currentRangeState == RangeState.Close && !doingLastStand)
         {
             StartCoroutine(GreenAttackCooldown());
-            Vector3 castpoint = headTransform.position;
-            castpoint += (playerTransform.position - headTransform.position).normalized * 0.75f;
+            Vector3 castpoint = bodyTransform.position;
+            castpoint.y += 1f;
+            castpoint += (playerTransform.position - castpoint).normalized * 0.75f;
             CombatManager.InstantiateSpell(greenAttackGameobject, gameObject, castpoint, Quaternion.Euler(0, 0, 0));
         }
         // handle collision

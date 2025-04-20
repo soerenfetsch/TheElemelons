@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4763695310730521813}
   - component: {fileID: 7339882948856284390}
   - component: {fileID: 1659158376228679026}
-  - component: {fileID: 5490110958249779895}
+  - component: {fileID: -5115019474748566744}
   m_Layer: 0
   m_Name: TikiGreenAttack
   m_TagString: Spell
@@ -181,7 +181,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8427229, y: 0.3837942}
   m_EdgeRadius: 0
---- !u!114 &5490110958249779895
+--- !u!114 &-5115019474748566744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d621c6c650309fc42bc22cdbc1bfff8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manaCost: 0
+  manaCost: 1
   spellObject: {fileID: 6055731966431226266}
   baseDamage: 0.5
   thrust: 1
