@@ -9,6 +9,9 @@ public class TikiGreenAttack : SpellEffect
     public float baseDamage = 0.5f;
     public float thrust = 1f;
     public float knockTime = 0.2f;
+    [Header("pre-propagation movement")]
+    Transform casterTransform;
+    Vector2 offset;
     [Header("movement")]
     bool chargedUp = false;
     public float chargeUpTime = 0.3f;
@@ -30,8 +33,16 @@ public class TikiGreenAttack : SpellEffect
         rb = transform.GetComponent<Rigidbody2D>();
         spriteRenderer = transform.GetComponent<SpriteRenderer>();
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
+        casterTransform = caster.transform;
         //parameters
-        direction = (Vector2)GameObject.Find("Player/Aim").transform.position - (Vector2)transform.position;
+        Vector2 castpoint = caster.transform.position;
+        if (caster.GetComponent<Tiki>() != null)
+        {
+            castpoint = caster.transform.GetChild(0).transform.position;
+            castpoint.y += 1f;
+        }
+        offset = (Vector2)transform.position - castpoint;
+        direction = (Vector2)transform.position - castpoint;
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
@@ -46,6 +57,17 @@ public class TikiGreenAttack : SpellEffect
         if (chargedUp)
         {
             transform.position = transform.position + (Vector3)direction * moveSpeed * Time.fixedDeltaTime;
+        }
+        else
+        {
+            Vector2 newpos;
+            newpos = (Vector2)caster.transform.position + offset;
+            if (caster.GetComponent<Tiki>() != null)
+            {
+                newpos = (Vector2)caster.transform.GetChild(0).transform.position + offset;
+                newpos.y += 1f;
+            }
+            transform.position = newpos;
         }
     }
     IEnumerator ChargeUp()

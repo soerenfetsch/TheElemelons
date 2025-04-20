@@ -197,7 +197,7 @@ MonoBehaviour:
   spellObject: {fileID: 6055731966431226266}
   baseDamage: 0.5
   thrust: 1
-  knockTime: 0.4
+  knockTime: 0.3
   chargeUpTime: 0.3
   spellLifeTime: 2
   moveSpeed: 4

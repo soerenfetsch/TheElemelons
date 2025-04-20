@@ -8,7 +8,6 @@ using UnityEngine;
 public enum TikiState
 {
     HealFriends,
-    Panic,
     Circle,
     ComeBack,
 }
@@ -60,12 +59,13 @@ public class Tiki : Enemy
     public float moveSpeed = 1f;
     Rigidbody2D rbBody;
     int directionChangeCounter = 0;
-    public int directionChangeStop = 10;
+    public int directionChangeStop = 5;
+    public float panicWalkSpeedFactor = 1.5f;
     [Header("CombatRangeHandling")]
-    public float range;
+    public float range = 10f;
     public float AggroRange = 30f;
     public float minimalRange = 6f;
-    public float maximalRange = 20f;
+    public float maximalRange = 18f;
     public float rangeTolerance = 1f;
     public RangeState currentRangeState;
     [Header("Combat")]
@@ -76,8 +76,14 @@ public class Tiki : Enemy
     [Header("Effects")]
     public GameObject deathEffect;
     public float deathEffectDelay = 0.5f;
+    [Header("LastStand Attack stats")]
+    public int rounds = 4;
+    public float timeBeforeStarts = 1f;
+    public float timeBetweenShoot = 2f;
     [Header("Bools")]
     bool speedBuffGiven = false;
+    bool panic = false;
+    bool doingLastStand = false;
     [Header("Cooldowns")]
     bool canThrowHead = false;
     public float spinningHeadCooldown = 2.5f;
@@ -85,6 +91,8 @@ public class Tiki : Enemy
     public float greenAttackCooldown = 0.8f;
     bool canCastHeal = true;
     public float healCooldown = 7f;
+    bool canCastTikiLastStand = true;
+    public float tikiLastStandCooldown = 4f;
     // Start is called before the first frame update
     void Start()
     {
@@ -152,7 +160,12 @@ public class Tiki : Enemy
     /// </summary>
     public override void ActOnStatus()
     {
+        ActOnHealth();
         CalcRangeState();
+        if (currentState != EnemyStatus.Idle && currentRangeState == RangeState.OutOfRange)
+        {
+            ChangeState(EnemyStatus.Idle);
+        }
         if (currentState == EnemyStatus.Idle)
         {
             OnIdleStatus();
@@ -165,7 +178,6 @@ public class Tiki : Enemy
         {
             OnComeBack();
         }
-        ActOnHealth();
     }
     /// <summary>
     /// Abstract method to enforce state transitions in derived classes.
@@ -254,26 +266,62 @@ public class Tiki : Enemy
         pos = (Vector2)headTransform.position + headMovement;
         return pos;
     }
+    IEnumerator TikiLastStandCooldown()
+    {
+        yield return new WaitForSeconds(tikiLastStandCooldown);
+        canCastTikiLastStand = true;
+    }
+    IEnumerator DoTikiLastStand()
+    {
+        //prepare
+        canCastTikiLastStand = false;
+        doingLastStand = true;
+        headSpinning = true;
+        headSpinSpeed *= 2;
+        yield return new WaitForSeconds(timeBeforeStarts);
+        //shoot
+        Vector3 castDir = new Vector3(0.75f, 0, 0);
+        for (int j = 0; j < rounds; j++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 castpoint = bodyTransform.position + castDir;
+                castpoint.y += 1f;
+                CombatManager.InstantiateSpell(greenAttackGameobject, gameObject, castpoint, Quaternion.Euler(castDir.x, 0, 0));
+                castDir = Quaternion.Euler(0, 0, 90) * castDir;
+            }
+            castDir = Quaternion.Euler(0, 0, 45) * castDir;
+            yield return new WaitForSeconds(timeBetweenShoot);
+        }
+        //end
+        headSpinSpeed /= 2;
+        doingLastStand = false;
+        StartCoroutine(TikiLastStandCooldown());
+
+    }
     public void OnCircleTiki()
     {
         // handle attacks
-        if (canThrowHead && currentRangeState != RangeState.Close)
+        if (panic && canCastTikiLastStand && headAttached)
+        {
+            StartCoroutine(DoTikiLastStand());
+        }
+        else if (canThrowHead && currentRangeState != RangeState.Close && !doingLastStand)
         {
             StartCoroutine(StartSpinningAttack());
         }
-        else if (canCastGreenAttack && currentRangeState == RangeState.Close)
+        else if (canCastGreenAttack && currentRangeState == RangeState.Close && !doingLastStand)
         {
             StartCoroutine(GreenAttackCooldown());
-            Vector3 castpoint = bodyTransform.position;
-            castpoint.y += 0.5f;
-            //castpoint += (playerTransform.position - transform.position).normalized * 1.5f;
+            Vector3 castpoint = headTransform.position;
+            castpoint += (playerTransform.position - headTransform.position).normalized * 0.75f;
             CombatManager.InstantiateSpell(greenAttackGameobject, gameObject, castpoint, Quaternion.Euler(0, 0, 0));
         }
         // handle collision
         if (hit)
         {
             SwitchClockWise();
-            //range = Mathf.Clamp(range + Random.Range(-1, 1), minimalRange, maximalRange);
+            range = Mathf.Clamp(range + Mathf.Sign(Random.Range(-1, 1)), minimalRange, maximalRange);
         }
         // handle movement
         bodyMovement = Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - bodyTransform.position);
@@ -372,7 +420,10 @@ public class Tiki : Enemy
 
     public void OnIdleStatus()
     {
-
+        if (currentRangeState != RangeState.OutOfRange)
+        {
+            ChangeState(EnemyStatus.Approaching);
+        }
     }
     /// <summary>
     /// Abstract method to define behavior based on the enemy's health.
@@ -386,11 +437,12 @@ public class Tiki : Enemy
         }
         else if (!speedBuffGiven && health.GetHealth() < health.GetMaxHealth() / 2)
         {
-            BuffDebuffManager.Instance.ApplyBuffDebuff(gameObject, "TikiPanicSpeed", BuffDebuffManager.BuffDebuffType.SpeedBuff, 120f, 2, false);
+            BuffDebuffManager.Instance.ApplyBuffDebuff(gameObject, "TikiPanicSpeed", BuffDebuffManager.BuffDebuffType.SpeedBuff, 120f, panicWalkSpeedFactor, false);
+            speedBuffGiven = true;
         }
         else if (health.GetHealth() < health.GetMaxHealth() / 5)
         {
-            ChangeTikiState(TikiState.Panic);
+            panic = true;
         }
     }
 
@@ -438,12 +490,11 @@ public class Tiki : Enemy
     {
         clockwiseFactor *= -1;
         directionChangeCounter++;
-        /*
-        if (currentTikiState == TikiState.Circle && directionChangeCounter > directionChangeStop && Random.Range(0f, 1f) > 0.3)
+        if (currentTikiState == TikiState.Circle && directionChangeCounter > directionChangeStop && Random.Range(0f, 1f) < 0.2)
         {
             ChangeTikiState(TikiState.ComeBack);
+            directionChangeCounter = 0;
         }
-        */
     }
     public bool IsHeadSpinning()
     {
