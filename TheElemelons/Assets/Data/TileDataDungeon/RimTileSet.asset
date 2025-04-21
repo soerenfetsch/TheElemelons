@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5287b8b105f9c374e8894d9a8a475a57, type: 3}
+  m_Name: RimTileSet
+  m_EditorClassIdentifier: 
+  rimLeft: {fileID: 11400000, guid: bb49c4b27c470e9408f2dc206267b753, type: 2}
+  rimTop: {fileID: 11400000, guid: c689842c59940a54db9f052113e424eb, type: 2}
+  rimRight: {fileID: 11400000, guid: c9a36aef3c59f0d47b303b632e5fa39c, type: 2}
+  rimBottom: {fileID: 11400000, guid: 213c7be096ea10947a9a02c65ce2a0ed, type: 2}
+  rimTopLeft: {fileID: 11400000, guid: f23a55a342f2ea04d9233d588b8db2e9, type: 2}
+  rimTopRight: {fileID: 11400000, guid: 3fe48b7d71d69ed499428c6bad6fd2c5, type: 2}
+  rimBottomLeft: {fileID: 11400000, guid: 48eaa983df21bbc4a9843cc358b3e15a, type: 2}
+  rimBottomRight: {fileID: 11400000, guid: 7d0a68edb17ee8a4f9ee478599568813, type: 2}
+  rimTopLeftOther: {fileID: 11400000, guid: cb58f308d4a72ec4ba30a15f1815b8de, type: 2}
+  rimTopRightOther: {fileID: 11400000, guid: 428bb542f127fb645a24de661ded1a63, type: 2}
+  rimBottomLeftOther: {fileID: 11400000, guid: 954b6fa75be314244bd3ddcb2bc8fa28, type: 2}
+  rimBottomRightOther: {fileID: 11400000, guid: 325149a1afddfa14b8c83d50f947332e, type: 2}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 144214d38a999e24a87b2c2b172d44c8, type: 3}
+  m_Name: WallTileSet
+  m_EditorClassIdentifier: 
+  leftWall: {fileID: 11400000, guid: a1bbdf76651746048937366960f2d32d, type: 2}
+  leftCorner: {fileID: 11400000, guid: 11f5a76ecba143c48a219693d6411e7d, type: 2}
+  rightWall: {fileID: 11400000, guid: cca1a9364bc6a5b40ba1fa938971f8d3, type: 2}
+  rightCorner: {fileID: 11400000, guid: 944b6a87f1bdc49419db1412e1db79cc, type: 2}
+  topWallBottom: {fileID: 11400000, guid: fae0768a1bed60043818f4e21f607b66, type: 2}
+  topWallUpper: {fileID: 11400000, guid: ce3fea59ff72fc44aa1e04c50756ac6d, type: 2}
+  bottomWall: {fileID: 11400000, guid: 836fda50df2de6f44a05b0374f4af447, type: 2}

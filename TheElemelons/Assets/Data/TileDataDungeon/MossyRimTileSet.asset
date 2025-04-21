@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5287b8b105f9c374e8894d9a8a475a57, type: 3}
+  m_Name: MossyRimTileSet
+  m_EditorClassIdentifier: 
+  rimLeft: {fileID: 11400000, guid: 83714450807791f488c4f700a9b92e1a, type: 2}
+  rimTop: {fileID: 11400000, guid: ec3b1fdbc3fe81d42a6e3be0233364f8, type: 2}
+  rimRight: {fileID: 11400000, guid: 08f00c8a85f2b184ea38b91f904a7ab4, type: 2}
+  rimBottom: {fileID: 11400000, guid: 8ff6092920080704a8ccc5fea1d09e66, type: 2}
+  rimTopLeft: {fileID: 11400000, guid: 42770468433a34f48b28ad01da95cecf, type: 2}
+  rimTopRight: {fileID: 11400000, guid: d9162d8e711f9ca42a7cd9f95267f277, type: 2}
+  rimBottomLeft: {fileID: 11400000, guid: 2e0c3cf466552a84bae78db3e0c6f5bc, type: 2}
+  rimBottomRight: {fileID: 11400000, guid: ccaa1a055b8a80047aaa1b9812d0b5d5, type: 2}
+  rimTopLeftOther: {fileID: 11400000, guid: 12f465c6021ff9f4590fb70721c609f0, type: 2}
+  rimTopRightOther: {fileID: 11400000, guid: ede220902a4b95d479602f3ddb80c32c, type: 2}
+  rimBottomLeftOther: {fileID: 11400000, guid: 7708eae094035234d95617faa07fecdf, type: 2}
+  rimBottomRightOther: {fileID: 11400000, guid: 4008f33172b9bda4487ec2d8346c035e, type: 2}
