@@ -147,7 +147,12 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Check mana status**: abstract method to act given the current mana
 - **Get Enemy Element Type**: each enemy is associated with a elemental type, which should be returned here
 
-#### 2.3.2 Tree Log (Enemy)
+#### 2.3.2 Enemy Path Finding
+- should be able to construct path to player by taking into consideration the collision objects (first walls)
+- implementation should be seemless so that immediate direction where the enemy should walk to approach player should be returned/noted down
+- should be reusable as module for all enemies
+  
+#### 2.3.3 Tree Log (Enemy)
 
 - **Act on status**:
   - while status 'idle': If player moves into chase radius then status is updated to 'walking'
@@ -157,11 +162,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Change state**: Given the new state, check if state is possible (possibleStates in Tree Log) and then change the state to the new state if the new state is possible for Tree Log
 - **Check health status**: If health is zero, the Tree Log Dies and triggers the death animation
 - **Get Enemy Element Type**: Tree Log should be of element type EARTH
-
-#### 2.3.3 Enemy Path Finding
-- should be able to construct path to player by taking into consideration the collision objects (first walls)
-- implementation should be seemless so that immediate direction where the enemy should walk to approach player should be returned/noted down
-- should be reusable as module for all enemies
 
 #### 2.3.4 Mole (Enemy)
 
@@ -175,6 +175,22 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Change state**: Given the new state, check if state is possible (possibleStates in Mole) and then change the state to the new state if the new state is possible for Mole
 - **Check health status**: If health is zero, the Mole Dies and triggers the death animation
 - **Get Enemy Element Type**: Tree Mole should be of element type EARTH
+
+#### 2.3.5 Tiki (Enemy)
+
+- Act on status:
+  - while status 'idle': If player moves into chase radius then status is updated to 'walk',
+  - while status ‘walk': tiki pathfinds to player until he reaches his attack range and status is updated to 'circle’
+  - while status ‘circle': the tiki circles around the player at a given radius. If the tiki hits a wall, he changes direction. In order to avoid getting stuck, the circling range is varied randomly at each collision. after a given number of wall collisions, he switches back into ‘walk’.  If there is an enemy nearby that is low on health, tiki will update status to 'heal’. This is not possible if the head is detached.
+  - while status ‘heal’ tiki pathfinds to wounded enemies and heals them by a set number of healthpoints.
+- Animations should reflect whether tiki is walking or idle.
+- if the tikis health is below 50%, its movespeed increases by x1.5
+- Get Damage: The tikis head is invincible. The body is vulnerable. Killing the body will make the head disappear. The body is much more resistant when attached to the head.
+- Attack: After circling the player for a certain time, the tikis head will start spinning and detach from the body to attack the player, then reattach to the body. The head cannot receive damage. If the distance and the tiki is shorter than the tikis range and the head is attached, the tiki will shoot the player with a weak spell.
+- Act on health: If the tiki’s health is below 25% health  and the player is out of range for a flying head attack, tiki will shoot its spell in all directions.
+- Change state: Given the new state, check if state is possible (possibleStates in Mole) and then change the state to the new state if the new state is possible for Tiki
+- Check health status: If health is zero, the Tiki Dies and triggers the death animation
+- Get Enemy Element Type: Tiki should be of element type EARTH
 
 ### 2.4 Combat System
 
