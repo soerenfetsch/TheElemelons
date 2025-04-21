@@ -37,7 +37,7 @@ public class Mole : Enemy
     public float knockTime = 0.2f;
     public float rippleCooldown = 2f;
     public float flashDuration = 0.2f;
-    
+
     private float lastRippleTime = 0f;
 
     [Header("Effects")]
@@ -381,9 +381,9 @@ public class Mole : Enemy
     {
         Vector2 travelDirection = new Vector2(Mathf.Sin(zRotation * Mathf.Deg2Rad), -Mathf.Cos(zRotation * Mathf.Deg2Rad));
         Vector3 offset = travelDirection * 1.8f;
-        Vector3 pivot = transform.position + (Vector3) Vector2.up * 0.5f;
+        Vector3 pivot = transform.position + (Vector3)Vector2.up * 0.5f;
         GameObject ripple = Instantiate(rippleEffectPrefab, pivot - offset, Quaternion.Euler(0f, 0f, zRotation));
-        
+
         RippleEffect rippleScript = ripple.GetComponent<RippleEffect>();
 
         // Optional: subscribe to player hit event
@@ -395,7 +395,7 @@ public class Mole : Enemy
         // Get the hit direction from the z rotation of the ripple
         float zRotation = ripple.transform.rotation.eulerAngles.z;
         Vector2 hitDirection = new Vector2(Mathf.Sin(zRotation * Mathf.Deg2Rad), -Mathf.Cos(zRotation * Mathf.Deg2Rad));
-        
+
         CombatManager.ExecuteAttack(gameObject, playerRb, elementType, hitDirection, baseDamage, thrust, knockTime);
     }
 

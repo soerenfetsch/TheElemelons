@@ -74,7 +74,10 @@ public class Tiki : Enemy
     [Header("Combat")]
     public float baseDamage = 1f;
     public float thrust = 1f;
-    public float knockTime = 0.2f;
+    public float knockTime = 0.3f;
+    FlashEffect flashEffectBody;
+    FlashEffect flashEffectSkirt;
+    public float flashDuration = 0.2f;
 
     [Header("Effects")]
     public GameObject deathEffect;
@@ -130,7 +133,8 @@ public class Tiki : Enemy
         attackFactor = 1f;
         defenseFactor = 1f;
         bodyCollider2D = transform.GetChild(0).GetComponent<BoxCollider2D>();
-
+        flashEffectBody = bodyTransform.GetComponent<FlashEffect>();
+        flashEffectSkirt = bodyTransform.GetChild(0).GetComponent<FlashEffect>();
     }
     void FixedUpdate()
     {
@@ -539,6 +543,8 @@ public class Tiki : Enemy
     {
         ChangeState(EnemyStatus.Staggered);
         skirtAnimator.SetTrigger("Stagger");
+        flashEffectBody?.Flash(flashDuration);
+        flashEffectSkirt?.Flash(flashDuration);
         yield return new WaitForSeconds(staggerTime);
         ChangeState(EnemyStatus.Idle);
     }
