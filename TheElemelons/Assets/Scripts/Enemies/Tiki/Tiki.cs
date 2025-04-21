@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Castle.Components.DictionaryAdapter.Xml;
 using Codice.CM.Client.Differences;
 using Ionic.BZip2;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public enum TikiState
@@ -20,6 +21,7 @@ public enum RangeState
 }
 public class Tiki : Enemy
 {
+    public float noHeadVulnerabilityFactor = 2f;
     public Transform playerTransform;
     public TikiState currentTikiState;
     Animator bodyAnimator;
@@ -256,7 +258,7 @@ public class Tiki : Enemy
             yield return new WaitForSeconds(0.5f);
         }
         headTarget = playerTransform.position;
-        headAttached = false;
+        DetachHead();
         startPosition = headTransform.position;
         clockDir = clockwiseFactor;
         targetReached = false;
@@ -296,7 +298,7 @@ public class Tiki : Enemy
         Vector2 pos;
         if (Vector3.Distance(headTransform.position, HeadOnShouldersPosition()) < 0.1)
         {
-            headAttached = true;
+            AttachHead();
             headSpinning = false;
             targetReached = false;
             if (currentTikiState == TikiState.Circle)
@@ -583,4 +585,12 @@ public class Tiki : Enemy
         return targetReached;
     }
 
+    public void AttachHead()
+    {
+        headAttached = true;
+    }
+    public void DetachHead()
+    {
+        headAttached = false;
+    }
 }

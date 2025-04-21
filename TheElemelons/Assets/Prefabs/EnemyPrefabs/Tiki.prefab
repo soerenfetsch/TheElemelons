@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 7703659779678800835}
   - component: {fileID: 3383510227687373239}
   - component: {fileID: 442506376988909103}
-  - component: {fileID: 8742758328883166333}
+  - component: {fileID: 4010134388611709963}
   m_Layer: 8
   m_Name: Body
   m_TagString: Enemy
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0d302ece64643469d04b92148871f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8742758328883166333
+--- !u!114 &4010134388611709963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,7 +447,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2361483158562279998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc7205fb501bda4786c2a614533e545, type: 3}
+  m_Script: {fileID: 11500000, guid: 3dce28cc48db7e44fa3c7da28c4eda2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxhealth: 12
@@ -605,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ace68d3644f854f924c3fb5afd7e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noHeadVulnerabilityFactor: 2
   playerTransform: {fileID: 0}
   currentTikiState: 2
   greenAttackGameobject: {fileID: 6055731966431226266, guid: 9b9cb2368b399a54da870b4e64b3b2a5, type: 3}
