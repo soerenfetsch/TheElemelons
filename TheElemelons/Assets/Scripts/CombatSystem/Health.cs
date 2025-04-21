@@ -21,7 +21,7 @@ public class Health : MonoBehaviour
     /// <summary>
     /// Initializes the health to the maximum value.
     /// </summary>
-    void Start()
+    protected void Start()
     {
         health = maxhealth;
     }

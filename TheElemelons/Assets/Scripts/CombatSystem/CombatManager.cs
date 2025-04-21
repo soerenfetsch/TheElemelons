@@ -207,7 +207,6 @@ public static class CombatManager
     {
         // Instantiate the spell object
         GameObject spell = GameObject.Instantiate(spellObject, position, rotation);
-
         // Set the caster on the instantiated object's SpellEffect component.
         SpellEffect spellEffect = spell.GetComponent<SpellEffect>();
         if (spellEffect != null)
@@ -233,7 +232,7 @@ public static class CombatManager
 
         hit.GetComponent<ICombatant>()?.GetKnocked(knockTime);
     }
-    
+
 
     /// <summary>
     /// Executes an attack with elemental attributes (ChargeTuple attack types).
@@ -325,19 +324,19 @@ public static class CombatManager
 
             try
             {
-            float damage = CalculateDamage(attackType, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
-            Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
+                float damage = CalculateDamage(attackType, targetScript.elementType, baseDamage, attackFactor, defenseFactor);
+                Debug.Log($"{attacker.name} attacked {target.name} for {damage} damage!");
 
-            // Apply knockback
-            KnockBack(target, attackDirection, thrust, knockTime);
+                // Apply knockback
+                KnockBack(target, attackDirection, thrust, knockTime);
 
-            // Apply damage
-            var health = target.GetComponent<Health>();
-            health.SubtractHealth(damage);
+                // Apply damage
+                var health = target.GetComponent<Health>();
+                health.SubtractHealth(damage);
 
-            // Mark target as invincible for a short duration
-            CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
-            // TODO: If target is dead, game manager might need to act
+                // Mark target as invincible for a short duration
+                CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
+                // TODO: If target is dead, game manager might need to act
             }
             catch (ArgumentException e)
             {
