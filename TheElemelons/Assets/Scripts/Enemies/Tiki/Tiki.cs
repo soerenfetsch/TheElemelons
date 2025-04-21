@@ -378,6 +378,10 @@ public class Tiki : Enemy
         {
             bodyMovement.x += playerTransform.position.x - bodyTransform.position.x;
             bodyMovement.y += playerTransform.position.y - bodyTransform.position.y;
+            if (Mathf.Abs((bodyTransform.position - playerTransform.position).magnitude) > range * 1.5)
+            {
+                ChangeTikiState(TikiState.ComeBack);
+            }
         }
         else if (currentRangeState == RangeState.Close)
         {
