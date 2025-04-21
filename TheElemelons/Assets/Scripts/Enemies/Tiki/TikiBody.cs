@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// it is the body that can receive damage
+/// </summary>
 public class TikiBody : Enemy
 {
     Tiki tikiScript;

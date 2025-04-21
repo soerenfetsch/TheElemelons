@@ -19,7 +19,11 @@ public class TikiHead : MonoBehaviour
         centerTransform = transform.parent.transform;
         elementType = tikiScript.elementType;
     }
-
+    /// <summary>
+    /// deal damage to player if collides and player isnt staggered already
+    /// damage increased if head was executing the boomerang attack
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&

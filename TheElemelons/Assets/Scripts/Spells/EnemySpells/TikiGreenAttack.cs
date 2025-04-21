@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+/// <summary>
+/// spell that first charges up for short time, then propagates in casting direction
+/// deals damage to player if hits player
+/// </summary>
 public class TikiGreenAttack : SpellEffect
 {
     [Header("hit")]
@@ -51,7 +54,10 @@ public class TikiGreenAttack : SpellEffect
         //begin charging
         StartCoroutine(ChargeUp());
     }
-
+    /// <summary>
+    /// if not charged up yet, follow caster position
+    /// if charged up, propate in casting direction
+    /// </summary>
     void FixedUpdate()
     {
         if (chargedUp)
@@ -70,6 +76,10 @@ public class TikiGreenAttack : SpellEffect
             transform.position = newpos;
         }
     }
+    /// <summary>
+    /// sets charged up bool to true after given time and updates animator
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ChargeUp()
     {
         yield return new WaitForSeconds(chargeUpTime);
@@ -78,6 +88,11 @@ public class TikiGreenAttack : SpellEffect
         boxCollider2D.enabled = true;
         StartCoroutine(Expire());
     }
+    /// <summary>
+    /// waits until spelllifetime expired
+    /// after spelllifetime expired, fades sprite gradually until transparent and selfdestructs
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
@@ -93,6 +108,10 @@ public class TikiGreenAttack : SpellEffect
         }
         Destroy(gameObject);
     }
+    /// <summary>
+    /// if collides with player and already charged up and player isnt already staggered, execute attack and selfdestruct
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (chargedUp &&

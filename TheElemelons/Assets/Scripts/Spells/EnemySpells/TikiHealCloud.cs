@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// spell that heals 1 nearest enemy that isnt tiki
+/// healing occurs gradually over time
+/// </summary>
 public class TikiHealCloud : SpellEffect
 {
     public float spellLifeTime = 3f;
     public float totalHeal = 2f;
     Transform target;
     Health targetHealth;
-    // Start is called before the first frame update
+    /// <summary>
+    /// at start, select closest enemy that isnt tiki as target
+    /// </summary>
     void Start()
     {
         StartCoroutine(SelfDestruct());
@@ -38,17 +43,26 @@ public class TikiHealCloud : SpellEffect
         targetHealth = target.GetComponent<Health>();
         StartCoroutine(DoHeal());
     }
+    /// <summary>
+    /// selfdestruct after spelllifetime runs out
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(spellLifeTime);
         Destroy(gameObject);
     }
-    // Update is called once per frame
+    /// <summary>
+    /// follow target postion each update
+    /// </summary>
     void Update()
     {
         transform.position = target.position;
     }
-
+    /// <summary>
+    /// heals target gradually over time by set amount of health
+    /// </summary>
+    /// <returns></returns>
     IEnumerator DoHeal()
     {
         float elapsed = 0f;
