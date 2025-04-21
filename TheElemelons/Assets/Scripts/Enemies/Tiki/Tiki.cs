@@ -104,6 +104,10 @@ public class Tiki : Enemy
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        if (playerTransform == null)
+        {
+            Debug.Log("Tiki couldn't find the player at Start(), please fix");
+        }
         bodyAnimator = transform.GetChild(0).GetComponent<Animator>();
         bodyTransform = transform.GetChild(0).transform;
         skirtAnimator = transform.GetChild(0).transform.GetChild(0).GetComponent<Animator>();
@@ -211,15 +215,11 @@ public class Tiki : Enemy
         foreach (Collider2D collider in colliders)
         {
             Health friendsHealth = collider.gameObject.GetComponent<Health>();
-            Debug.Log("found collider");
             if (friendsHealth != null && friendsHealth.transform.GetComponent<TikiBody>() == null)
             {
-                Debug.Log("found valid collider");
-                Debug.Log("instantiated heal for " + friendsHealth.gameObject.name);
                 CombatManager.InstantiateSpell(healGameobject, gameObject, friendsHealth.transform.position, Quaternion.Euler(0, 0, 0));
             }
         }
-        Debug.Log("break");
         StartCoroutine(HealCooldown());
     }
     IEnumerator HealCooldown()

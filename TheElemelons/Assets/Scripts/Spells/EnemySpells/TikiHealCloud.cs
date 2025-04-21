@@ -35,7 +35,6 @@ public class TikiHealCloud : SpellEffect
         {
             Destroy(gameObject);
         }
-        Debug.Log("attaching to " + target.gameObject.name);
         targetHealth = target.GetComponent<Health>();
         StartCoroutine(DoHeal());
     }
@@ -58,7 +57,6 @@ public class TikiHealCloud : SpellEffect
             elapsed += Time.deltaTime;
             targetHealth.AddHealth(totalHeal / spellLifeTime * Time.deltaTime);
             yield return Time.deltaTime;
-            Debug.Log(targetHealth.GetHealth());
         }
     }
 }

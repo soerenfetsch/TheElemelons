@@ -66,7 +66,6 @@ public class King : DialogueTrigger
         hit.transform.gameObject.layer == LayerMask.NameToLayer("Walls"))
         {
             currentWalkProgress += walkDist;
-            UnityEngine.Debug.Log("wall");
         }
 
         if (currentState == NPCStatus.Idle)
@@ -186,7 +185,6 @@ public class King : DialogueTrigger
         //Check if goes out of bounds
         if (currentWalkPattern != WalkPattern.Destination && (transform.position.x > walkMaxLimit.x || transform.position.y > walkMaxLimit.y || transform.position.x < walkMinLimit.x || transform.position.y < walkMinLimit.y))
         {
-            UnityEngine.Debug.Log("out of bounds");
             movement.x = homePosition.x - transform.position.x;
             movement.y = homePosition.y - transform.position.y;
             return;
