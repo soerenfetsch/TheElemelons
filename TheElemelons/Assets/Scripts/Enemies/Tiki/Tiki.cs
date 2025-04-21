@@ -25,6 +25,7 @@ public class Tiki : Enemy
     Animator bodyAnimator;
     [Header("Spells")]
     public GameObject greenAttackGameobject;
+    public GameObject healGameobject;
     [Header("Skirt")]
     bool flowerSkirt = false;
     float flowerProb = 0.5f;
@@ -93,6 +94,10 @@ public class Tiki : Enemy
     public float healCooldown = 7f;
     bool canCastTikiLastStand = true;
     public float tikiLastStandCooldown = 4f;
+    [Header("HealFriendsStats")]
+    public float healDetectRange = 15f;
+    public float healingRange = 30f;
+    Vector2 friendsCenter;
     // Start is called before the first frame update
     void Start()
     {
@@ -180,6 +185,45 @@ public class Tiki : Enemy
         {
             OnComeBack();
         }
+        else if (currentTikiState == TikiState.HealFriends)
+        {
+            OnHealFriends();
+        }
+    }
+    public void OnHealFriends()
+    {
+        bodyMovement = friendsCenter - (Vector2)bodyTransform.position;
+        if (Mathf.Abs(bodyMovement.magnitude) < 0.2f)
+        {
+            bodyMovement = Vector2.zero;
+            DoHeal();
+            ChangeTikiState(TikiState.Circle);
+        }
+    }
+    public void DoHeal()
+    {
+        canCastHeal = false;
+
+        LayerMask friendsMask = LayerMask.GetMask("Enemies");
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(bodyTransform.position, healingRange, friendsMask);
+        foreach (Collider2D collider in colliders)
+        {
+            Health friendsHealth = collider.gameObject.GetComponent<Health>();
+            Debug.Log("found collider");
+            if (friendsHealth != null && friendsHealth.transform.GetComponent<TikiBody>() == null)
+            {
+                Debug.Log("found valid collider");
+                Debug.Log("instantiated heal for " + friendsHealth.gameObject.name);
+                CombatManager.InstantiateSpell(healGameobject, gameObject, friendsHealth.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+        }
+        Debug.Log("break");
+        StartCoroutine(HealCooldown());
+    }
+    IEnumerator HealCooldown()
+    {
+        yield return new WaitForSeconds(healCooldown);
+        canCastHeal = true;
     }
     /// <summary>
     /// Abstract method to enforce state transitions in derived classes.
@@ -397,6 +441,33 @@ public class Tiki : Enemy
         else
         {
             bodyAnimator.SetBool("Walk", false);
+        }
+
+        // check friends
+        if (!panic && canCastHeal && (headTransform.position - bodyTransform.position).magnitude < 4f &&
+        currentState != EnemyStatus.Staggered && currentTikiState != TikiState.HealFriends)
+        {
+            LayerMask friendsMask = LayerMask.GetMask("Enemies");
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(bodyTransform.position, healDetectRange, friendsMask);
+            Vector3 goal = new Vector3(0, 0, 0);
+            int validColliderCounter = 0;
+            foreach (Collider2D collider in colliders)
+            {
+                Health friendsHealth = collider.gameObject.GetComponent<Health>();
+                if (friendsHealth != null && (friendsHealth.GetHealth() <= friendsHealth.GetMaxHealth() / 5 ||
+                (friendsHealth.GetMaxHealth() >= 3f && friendsHealth.GetHealth() <= friendsHealth.GetMaxHealth() / 2)) &&
+                friendsHealth.transform.GetComponent<TikiBody>() == null)
+                {
+                    goal += collider.transform.position;
+                    validColliderCounter++;
+                }
+            }
+            goal /= validColliderCounter;
+            if (validColliderCounter > 0)
+            {
+                friendsCenter = goal;
+                ChangeTikiState(TikiState.HealFriends);
+            }
         }
     }
 
