@@ -429,7 +429,7 @@ public class Tiki : Enemy
         float comeBackFactor = 1f;
         if (currentTikiState == TikiState.ComeBack)
         {
-            comeBackFactor = 1.5f;
+            comeBackFactor = 1.25f;
         }
         Vector2 moving_by = bodyMovement * GetWalkSpeed() * Time.fixedDeltaTime * comeBackFactor;
         rbBody.MovePosition(rbBody.position + moving_by);
