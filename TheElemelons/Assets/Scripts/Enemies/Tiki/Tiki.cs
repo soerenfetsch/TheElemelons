@@ -142,6 +142,11 @@ public class Tiki : Enemy
         HandleHead();
         DoMovement();
     }
+    /// <summary>
+    /// if head is attached, should follow movement of body
+    /// updates rotation if spinning
+    /// if not attached, navigate head to initial player position in a parabola or back to tiki afterwards
+    /// </summary>
     public void HandleHead()
     {
         if (headAttached)
@@ -168,12 +173,15 @@ public class Tiki : Enemy
             }
         }
     }
+    /// <summary>
+    /// Calculate where head should be if attached to body
+    /// </summary>
     Vector3 HeadOnShouldersPosition()
     {
         return bodyTransform.position + new Vector3(0, 1.75f, 0);
     }
     /// <summary>
-    /// Abstract method to define behavior based on the current state.
+    /// call methods that correspond to current state, tikistate, range and health
     /// </summary>
     public override void ActOnStatus()
     {
@@ -200,6 +208,10 @@ public class Tiki : Enemy
             OnHealFriends();
         }
     }
+    /// <summary>
+    /// tiki navigates to average location of fellow enemies to be healed. 
+    /// stops moving if destination is reached, casts healing spell and switches back into circle tikistate
+    /// </summary>
     public void OnHealFriends()
     {
         bodyMovement = friendsCenter - (Vector2)bodyTransform.position;
@@ -210,6 +222,10 @@ public class Tiki : Enemy
             ChangeTikiState(TikiState.Circle);
         }
     }
+    /// <summary>
+    /// cast heal to surrounding enemies by instantiating the spell at each enemy location. resets cooldown.
+    /// cant heal tikis
+    /// </summary>
     public void DoHeal()
     {
         canCastHeal = false;
@@ -226,13 +242,16 @@ public class Tiki : Enemy
         }
         StartCoroutine(HealCooldown());
     }
+    /// <summary>
+    /// cooldown for the heal friends spell
+    /// </summary>
     IEnumerator HealCooldown()
     {
         yield return new WaitForSeconds(healCooldown);
         canCastHeal = true;
     }
     /// <summary>
-    /// Abstract method to enforce state transitions in derived classes.
+    /// method to enforce state transitions 
     /// </summary>
     /// <param name="newState">The new state to transition to.</param>
     public override void ChangeState(EnemyStatus newState)
@@ -240,6 +259,10 @@ public class Tiki : Enemy
         directionChangeCounter = 0;
         currentState = newState;
     }
+    /// <summary>
+    /// method to enforce tiki state transitions 
+    /// </summary>
+    /// <param name="newState">The new tiki state to transition to.</param>
     public void ChangeTikiState(TikiState newState)
     {
         currentTikiState = newState;
@@ -248,11 +271,20 @@ public class Tiki : Enemy
             StartCoroutine(SpinningHeadCooldown());
         }
     }
+    /// <summary>
+    /// cooldown for the spinning head attack
+    /// </summary>
     IEnumerator SpinningHeadCooldown()
     {
         yield return new WaitForSeconds(spinningHeadCooldown);
         canThrowHead = true;
     }
+    /// <summary>
+    /// method to begin the spinning head attack
+    /// head begins spinning for short time, then detaches from body
+    /// the head sets the players position at the moment the head detaches as its target (so no seeking)
+    /// flies clockwise if tiki was circling clockwise at that moment, else anticlockwise
+    /// </summary>
     IEnumerator StartSpinningAttack(bool linger = true)
     {
         canThrowHead = false;
@@ -273,6 +305,10 @@ public class Tiki : Enemy
         perpendicularDirection = new Vector2(-directionInitial.y, directionInitial.x) * clockDir;
 
     }
+    /// <summary>
+    /// navigates flying head to target position in a parabole shape
+    /// only executed if target not reached yet
+    /// </summary>
     Vector2 CalcParabolePosition()
     {
         Vector2 pos;
@@ -291,12 +327,20 @@ public class Tiki : Enemy
         headMovement = pos - (Vector2)headTransform.position;
         return pos;
     }
+    /// <summary>
+    /// cooldown for green spell
+    /// </summary>
     IEnumerator GreenAttackCooldown()
     {
         canCastGreenAttack = false;
         yield return new WaitForSeconds(greenAttackCooldown);
         canCastGreenAttack = true;
     }
+    /// <summary>
+    /// called if flying head already reached its target
+    /// calculate next position of flying head to navigate back to tiki.
+    /// head reattaches to tiki when reached
+    /// </summary>
     Vector2 CalcReturnToBodyPosition()
     {
         Vector2 pos;
@@ -318,11 +362,18 @@ public class Tiki : Enemy
         pos = (Vector2)headTransform.position + headMovement;
         return pos;
     }
+    /// <summary>
+    /// cooldown for the last stand spell
+    /// </summary>
     IEnumerator TikiLastStandCooldown()
     {
         yield return new WaitForSeconds(tikiLastStandCooldown);
         canCastTikiLastStand = true;
     }
+    /// <summary>
+    /// executes last stand spell. head spins, spinspeed increases, repeatedly casts green spells in 4 equidistant directions.
+    /// cooldown is then reset.
+    /// </summary>
     IEnumerator DoTikiLastStand()
     {
         //prepare
@@ -351,6 +402,12 @@ public class Tiki : Enemy
         StartCoroutine(TikiLastStandCooldown());
 
     }
+    /// <summary>
+    /// decides on what to do when tiki is in the circle state
+    /// rotate around player
+    /// switch rotation direction if hits a wall and vary range randomly
+    /// if any attack/special move is available, execute it
+    /// </summary>
     public void OnCircleTiki()
     {
         // handle attacks
@@ -394,7 +451,10 @@ public class Tiki : Enemy
         }
 
     }
-
+    /// <summary>
+    /// handle tiki movement if in comeback state
+    /// navigate tiki to player via pathfinder
+    /// </summary>
     public void OnComeBack()
     {
         if (currentRangeState == RangeState.Far)
@@ -407,6 +467,9 @@ public class Tiki : Enemy
             ChangeTikiState(TikiState.Circle);
         }
     }
+    /// <summary>
+    /// update movement to navigate tiki to player via pathfinder
+    /// </summary>
     public void NavigateToPlayer()
     {
         Vector2 sight = pathfinder.CheckPlayerInSight(GetFeet(), AggroRange);
@@ -422,10 +485,17 @@ public class Tiki : Enemy
             bodyMovement = reachable;
         }
     }
+    /// <summary>
+    /// calculate location of tikis feet
+    /// </summary>
     Vector2 GetFeet()
     {
         return new Vector2(bodyTransform.position.x, bodyCollider2D.bounds.min.y);
     }
+    /// <summary>
+    /// execute movement by reading the bodyMovement vector. also send aout a raycast in the movement direction
+    /// checks if can switch into healfriends state and does so if possible
+    /// </summary>
     public void DoMovement()
     {
         bodyMovement.Normalize();
@@ -480,7 +550,9 @@ public class Tiki : Enemy
             }
         }
     }
-
+    /// <summary>
+    /// determines rangestate based on tiki body's distance from player
+    /// </summary>
     public void CalcRangeState()
     {
         if (playerTransform != null)
@@ -501,7 +573,10 @@ public class Tiki : Enemy
             }
         }
     }
-
+    /// <summary>
+    /// do nothing if idle
+    /// check if not out of range anymore and switch into enemystate approaching
+    /// </summary>
     public void OnIdleStatus()
     {
         if (currentRangeState != RangeState.OutOfRange)
@@ -510,7 +585,10 @@ public class Tiki : Enemy
         }
     }
     /// <summary>
-    /// Abstract method to define behavior based on the enemy's health.
+    /// define behavior based on the enemy's health.
+    /// health = 0 tiki dies
+    /// health below maxhealth/2 movespeed increases
+    /// health below maxhealth/5 tiki is in panic, meaning last stand can now also be cast
     /// </summary>
     public override void ActOnHealth()
     {
@@ -531,14 +609,26 @@ public class Tiki : Enemy
     }
 
     /// <summary>
-    /// Abstract method to define behavior based on the enemy's mana.
+    /// define behavior based on the enemy's mana.
+    /// does nothing
     /// </summary>
     public override void ActOnMana()
     { }
+    /// <summary>
+    /// When the Tiki gets knocked back, it enters the staggered state for a certain amount of time.
+    /// </summary>
+    /// <param name="knockTime"></param>
+    /// <returns></returns>
     public override void GetKnocked(float knockTime)
     {
         StartCoroutine(HandleStagger(knockTime));
     }
+    /// <summary>
+    /// changes state to stagger, updates animator and plays flash sequence
+    /// then changes state back to idle
+    /// </summary>
+    /// <param name="staggerTime"></param>
+    /// <returns></returns>
     private IEnumerator HandleStagger(float staggerTime)
     {
         ChangeState(EnemyStatus.Staggered);
@@ -572,6 +662,11 @@ public class Tiki : Enemy
     {
         return moveSpeed;
     }
+    /// <summary>
+    /// invert tikis circling direction
+    /// counts how often this has happened
+    /// after a set amount of time, tiki can randomly switch to comeback state and the counter is reset
+    /// </summary>
     public void SwitchClockWise()
     {
         clockwiseFactor *= -1;
@@ -594,7 +689,6 @@ public class Tiki : Enemy
     {
         return targetReached;
     }
-
     public void AttachHead()
     {
         headAttached = true;
