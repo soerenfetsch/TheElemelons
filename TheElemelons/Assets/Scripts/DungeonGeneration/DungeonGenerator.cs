@@ -24,6 +24,12 @@ public class DungeonGenerator : MonoBehaviour
         RunProceduralGeneration();
     }
 
+    public void GenerateDungeonFromData(MapData mapData)
+{
+    // Load the dungeon map from serialized MapData
+    mapGenerator.GenerateMap(mapData);
+}
+
     /// <summary>
     /// Procedural generation of the map and then painting the tiles
     /// </summary>

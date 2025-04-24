@@ -1,46 +1,41 @@
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement; // For accessing the active scene name
+using System;
+using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Controls the overall game flow via a modular state machine.
-/// Manages transitions between states (classes implementing IGameState) 
-/// and delegates persistence operations to the IGameSaveProvider.
-/// Exposes a global instance (singleton) for other systems to access the current game state.
+/// Central manager controlling game state transitions, save/load functionality, and initialization.
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    #region Definitions & Declarations
+
     /// <summary>
-    /// Singleton instance of the GameManager.
+    /// Singleton instance of GameManager.
     /// </summary>
     public static GameManager Instance { get; private set; }
 
     /// <summary>
-    /// Currently active state object.
+    /// Current active game state.
     /// </summary>
     public IGameState CurrentState { get; private set; }
 
-    /// <summary>
-    /// Event triggered when the game state changes.
-    /// Subscribers can react based on the new state.
-    /// </summary>
     public event Action<IGameState> OnStateChanged;
-
-    /// <summary>
-    /// Global transition hook fired before exiting the current state.
-    /// </summary>
     public event Action<IGameState> OnPreStateExit;
-
-    /// <summary>
-    /// Global transition hook fired after entering the new state.
-    /// </summary>
     public event Action<IGameState> OnPostStateEnter;
 
-    /// <summary>
-    /// Save provider for game persistence.
-    /// </summary>
     public IGameSaveProvider SaveProvider { get; private set; }
 
+    private UIManager uiManager;
+    private InputManager inputManager;
+
+    #endregion
+
+    #region Initialization
+
+    /// <summary>
+    /// Unity Awake method, sets up singleton instance, subsystems, and initial state.
+    /// </summary>
     private void Awake()
     {
         if (Instance == null)
@@ -48,17 +43,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Fallback: assign SaveProvider if not provided externally.
-            if (SaveProvider == null)
-            {
-                SaveProvider = FindObjectOfType<GameSaveProvider>();
-                if (SaveProvider == null)
-                {
-                    Logger.LogError("GameSaveProvider not found in scene.");
-                }
-            }
-
-            // Initialize with Main Menu state.
+            InitializeSubsystems();
             ChangeState(new MainMenuState());
         }
         else
@@ -67,110 +52,67 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes key subsystems required by GameManager.
+    /// </summary>
+    private void InitializeSubsystems()
+    {
+        SaveProvider = FindObjectOfType<GameSaveProvider>() as IGameSaveProvider
+                       ?? throw new Exception("GameSaveProvider not found.");
+
+        uiManager = FindObjectOfType<UIManager>()
+                    ?? throw new Exception("UIManager not found.");
+
+        inputManager = FindObjectOfType<InputManager>()
+                       ?? throw new Exception("InputManager not found.");
+    }
+
+    #endregion
+
+    #region Core State Logic
+
+    /// <summary>
+    /// Unity Update method, delegates update to current state.
+    /// </summary>
     private void Update()
     {
-        // Delegate per-frame state updates.
         CurrentState?.UpdateState();
     }
 
     /// <summary>
-    /// Changes the current game state to the new state.
-    /// Fires pre and post transition events for global transition effects.
+    /// Changes game state with proper entry and exit handling.
     /// </summary>
-    /// <param name="newState">The new state object to transition into.</param>
+    /// <param name="newState">New state to transition to.</param>
     public void ChangeState(IGameState newState)
     {
-        // Avoid redundant transitions if the new state is of the same type.
         if (CurrentState?.GetType() == newState.GetType())
             return;
 
-        // Fire pre-exit hook before leaving current state.
         OnPreStateExit?.Invoke(CurrentState);
-
-        // Exit the current state.
         CurrentState?.Exit();
-        
-        // Update the current state.
+
         CurrentState = newState;
-        Logger.Log($"GameManager changed state to: {newState.GetType().Name}");
-        
-        // Fire the state changed event.
         OnStateChanged?.Invoke(newState);
 
-        // Enter the new state.
         CurrentState.Enter();
-
-        // Fire post-enter hook after the new state is active.
-        OnPostStateEnter?.Invoke(CurrentState);
+        OnPostStateEnter?.Invoke(newState);
     }
 
-    /// <summary>
-    /// Gathers current runtime data from various subsystems and updates the GameSaveData instance.
-    /// Replace placeholders with actual subsystem calls as your game evolves.
-    /// </summary>
-    /// <returns>The updated GameSaveData representing current game state.</returns>
-    private GameSaveData GatherCurrentGameData()
-    {
-        // Retrieve the current GameSaveData from the provider.
-        GameSaveData currentData = SaveProvider?.CurrentSaveData;
-        if (currentData == null)
-        {
-            Logger.LogError("Current save data instance is null.");
-            return null;
-        }
+    #endregion
 
-        // Example placeholder values:
-        int currentDungeon = 1;             // Replace with: DungeonManager.Instance.CurrentDungeonIndex;
-        int collectedElemelons = 10;          // Replace with: PlayerManager.Instance.CollectedElemelons;
-        Vector2 playerPosition = Vector2.zero; // Replace with: PlayerController.Instance.CurrentPosition;
-        string currentScene = SceneManager.GetActiveScene().name;
-
-        // Update the save data with the gathered runtime values.
-        currentData.UpdateFromRuntimeData(currentDungeon, collectedElemelons, playerPosition, currentScene);
-
-        return currentData;
-    }
-
-    #region High-Level Game Flow Methods
+    #region Public API
 
     /// <summary>
-    /// Saves the current game data and transitions to the Main Menu state.
+    /// Returns to main menu, saving current progress.
     /// </summary>
     public void GoToMainMenu()
     {
-        GameSaveData currentData = GatherCurrentGameData();
-        SaveProvider?.SaveGame(currentData);
+        SaveGame();
         ChangeState(new MainMenuState());
     }
 
     /// <summary>
-    /// Saves the current game data and quits the application.
-    /// </summary>
-    public void QuitGame()
-    {
-        GameSaveData currentData = GatherCurrentGameData();
-        SaveProvider?.SaveGame(currentData);
-        Application.Quit();
-    }
-
-    /// <summary>
-    /// Transitions to the Settings state.
-    /// </summary>
-    public void ClickOptions()
-    {
-        ChangeState(new SettingsState());
-    }
-
-    /// <summary>
-    /// Pauses the game by transitioning to the Pause state.
-    /// </summary>
-    public void PauseGame()
-    {
-        ChangeState(new PauseState());
-    }
-
-    /// <summary>
-    /// Resumes gameplay by transitioning to the In-Game state.
+    /// Continues current gameplay session.
     /// </summary>
     public void ContinueGame()
     {
@@ -178,31 +120,129 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Resets the save data and starts a new game by transitioning to the In-Game state.
+    /// Pauses the game.
+    /// </summary>
+    public void PauseGame()
+    {
+        ChangeState(new PauseState());
+    }
+
+    /// <summary>
+    /// Loads game asynchronously from disk, then enters gameplay state.
+    /// </summary>
+    // public async void ContinueFromSaveAsync()
+    // {
+    //     uiManager.ShowLoadingScreen(true);
+    //     try
+    //     {
+    //         await ContinueFromSaveAsyncInternal();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Logger.LogError($"Error loading game: {e.Message}");
+    //         ChangeState(new MainMenuState());
+    //     }
+    //     finally
+    //     {
+    //         uiManager.ShowLoadingScreen(false);
+    //     }
+    // }
+
+    /// <summary>
+    /// Starts a fresh game session.
     /// </summary>
     public void NewGame()
     {
-        SaveProvider?.ResetSave();
+        SaveProvider.ResetSave();
+        ResetRuntimeData();
+
+        DungeonGenerator dungeonGenerator = FindObjectOfType<DungeonGenerator>();
+        if (dungeonGenerator == null)
+            throw new Exception("DungeonGenerator not found in scene.");
+
+        dungeonGenerator.GenerateDungeon();
         ChangeState(new InGameState());
     }
 
     /// <summary>
-    /// Loads saved game data and transitions to the In-Game state asynchronously.
+    /// Opens settings menu.
     /// </summary>
-    public async void ContinueFromSaveAsync()
+    public void ClickOptions()
     {
-        GameSaveData data = await SaveProvider.LoadGameAsync();
-        // TODO: Apply loaded data (update player position, restore map layout, etc.)
-        ChangeState(new InGameState());
+        ChangeState(new SettingsState());
     }
 
     /// <summary>
-    /// Triggers saving of the current game data.
+    /// Saves current progress and quits the application.
+    /// </summary>
+    public void QuitGame()
+    {
+        SaveGame();
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Saves current game progress to disk.
     /// </summary>
     public void SaveGame()
     {
-        GameSaveData currentData = GatherCurrentGameData();
-        SaveProvider?.SaveGame(currentData);
+        var data = GatherCurrentGameData();
+        SaveProvider.SaveGame(data);
+    }
+
+    #endregion
+
+    #region Helpers & Private
+
+    /// <summary>
+    /// Collects runtime data into a saveable format.
+    /// </summary>
+    /// <returns>Filled GameSaveData.</returns>
+    private GameSaveData GatherCurrentGameData()
+    {
+        var currentData = SaveProvider.CurrentSaveData
+                          ?? throw new Exception("CurrentSaveData is null");
+
+        // Get the current dungeon index from DungeonGenerator instead of MapManager
+        DungeonGenerator dungeonGenerator = FindObjectOfType<DungeonGenerator>();
+        int dungeonIndex = dungeonGenerator != null ? dungeonGenerator.CurrentDungeonIndex : 0;
+        
+        Vector2 playerPos = Player.Instance.transform.position;
+        
+        currentData.UpdateFromRuntimeData(dungeonIndex, playerPos);
+        return currentData;
+    }
+
+    private async Task ContinueFromSaveAsyncInternal()
+    {
+        var data = await SaveProvider.LoadGameAsync();
+        if (data == null)
+            throw new Exception("Loaded save data is null.");
+
+        DungeonGenerator dungeonGenerator = FindObjectOfType<DungeonGenerator>();
+        if (dungeonGenerator == null)
+            throw new Exception("DungeonGenerator not found in scene.");
+
+        dungeonGenerator.GenerateDungeonFromData(data.MapData);
+
+        Player player = FindObjectOfType<Player>();
+        player.RestoreFromSave(data.PlayerData);
+
+        BuffDebuffManager buffManager = FindObjectOfType<BuffDebuffManager>();
+        buffManager.RestoreBuffs(data.BuffsData);
+
+        ChangeState(new InGameState());
+    }
+
+
+    /// <summary>
+    /// Resets runtime data for new game initialization.
+    /// </summary>
+    private void ResetRuntimeData()
+    {
+        Player.Instance.ResetPlayer();
+        MapManager.Instance.ClearCurrentMap();
+        BuffDebuffManager.Instance.ClearEffects(Player.Instance.gameObject);
     }
 
     #endregion

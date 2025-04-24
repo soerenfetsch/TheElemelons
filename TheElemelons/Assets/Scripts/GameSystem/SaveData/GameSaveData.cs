@@ -7,6 +7,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewGameSaveData", menuName = "Game System/Game Save Data")]
 public class GameSaveData : ScriptableObject
 {
+    // Core game data
+    [SerializeField] private PlayerData playerData = new PlayerData();
+    [SerializeField] private BuffsData buffsData = new BuffsData();
+
     // Persistent Fields
     public SerializableMapData mapData;
     public int mapSeed;
@@ -42,8 +46,8 @@ public class GameSaveData : ScriptableObject
             dialogsCompleted = null;
             bossFightsCompleted = null;
             collectedElemelons = 0;
-            maxHealth = 0;
-            maxMana = 0;
+            maxHealth = 3;
+            maxMana = 3;
             playerPosition = Vector2.zero;
             currentScene = "";
         }
@@ -81,12 +85,13 @@ public class GameSaveData : ScriptableObject
     /// Updates current game data with new runtime values.
     /// This method can be invoked by the GameManager to keep the save data updated.
     /// </summary>
-    public void UpdateFromRuntimeData(int dungeon, int elemelons, Vector2 position, string scene)
+    public void UpdateFromRuntimeData(int dungeon, /* int elemelons, */ Vector2 position, /* string scene */)
     {
+        // TODO:
         currentDungeon = dungeon;
-        collectedElemelons = elemelons;
+        // collectedElemelons = elemelons;
         playerPosition = position;
-        currentScene = scene;
+        // currentScene = scene;
         // Add additional fields or validations if required.
     }
 

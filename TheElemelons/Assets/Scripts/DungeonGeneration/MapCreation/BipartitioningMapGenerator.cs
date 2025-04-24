@@ -28,6 +28,43 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return mapData;
     }
 
+    public override MapData GenerateMap(MapData existingMapData)
+{
+    MapData mapData = new MapData();
+    
+    // Recreate all rooms with their properties
+    foreach (Room room in existingMapData.rooms)
+    {
+        Room newRoom = new Room();
+        newRoom.AddFloorPositions(room.floorPositions);
+        newRoom.AddWallPositions(room.wallPositions);
+        newRoom.AddDoorPositions(room.doorPositions);
+        newRoom.AddMonsterSpawnPositions(room.monsterSpawnPositions);
+        newRoom.AddDestructableDecorationPositions(room.destructableDecorationPositions);
+        newRoom.AddIndestructableDecorationPositions(room.indestructableDecorationPositions);
+        newRoom.SetRoomType(room.roomType);
+        mapData.AddRoom(newRoom);
+    }
+
+    // Recreate corridor floor positions
+    mapData.AddFloorPositions(existingMapData.floorPositions);
+
+    // Recreate walls
+    mapData.AddWallPositions(existingMapData.wallPositions);
+
+    // Recreate decorations
+    mapData.AddDestructableDecorationPositions(existingMapData.destructableDecorationPositions);
+    mapData.AddIndestructableDecorationPositions(existingMapData.indestructableDecorationPositions);
+
+    // Recreate monster spawn points
+    mapData.AddMonsterSpawnPositions(existingMapData.monsterSpawnPositions);
+
+    // Recreate door positions
+    mapData.AddDoorPositions(existingMapData.doorPositions);
+
+    return mapData;
+}
+
     /// <summary>
     /// Generates the floor layout for the dungeon by creating rooms and corridors, 
     /// and updates the map data accordingly.

@@ -124,10 +124,24 @@ public class GameSaveProvider : MonoBehaviour, IGameSaveProvider
     }
 
     /// <summary>
+    /// Replace the in-memory save with a freshly loaded one.
+    /// </summary>
+    public void SetCurrentSaveData(GameSaveData data)
+    {
+        if (data == null)
+        {
+            Logger.LogError("Cannot set current save data: data is null.");
+            return;
+        }
+        CurrentSaveData = data;
+    }
+
+    /// <summary>
     /// Deletes the save file from disk.
     /// </summary>
     public void ResetSave()
     {
+        // --- delete on-disk
         try
         {
             if (File.Exists(SaveFilePath))
@@ -144,5 +158,17 @@ public class GameSaveProvider : MonoBehaviour, IGameSaveProvider
         {
             Logger.LogError("Failed to delete save file: " + ex.Message);
         }
+
+        // --- reset in-memory data to a fresh clone of our template
+        if (defaultData != null)
+        {
+            CurrentSaveData = Instantiate(defaultData);
+            Logger.Log("In-memory save data reset to defaults.");
+        }
+        else
+        {
+            Logger.LogError("No defaultData assigned! Cannot reset in-memory save.");
+        }
     }
 }
+

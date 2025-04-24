@@ -8,4 +8,5 @@ public abstract class AbstractMapGenerator : MonoBehaviour
     // Summary:
     //     Public method to create the entire map (floors, walls, decorations, spawn points)
     public abstract MapData GenerateMap();
+    public abstract MapData GenerateMap(MapData mapData);
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections; // For IEnumerator
 
 public class BuffDebuffManager : MonoBehaviour
 {
@@ -369,4 +369,43 @@ public class BuffDebuffManager : MonoBehaviour
         return new List<BuffDebuff>();
     }
 
+    /// <summary>
+    /// Restores buffs and debuffs from saved data.
+    /// </summary>
+    /// <param name="buffsData">The saved buff/debuff data.</param>
+    public void RestoreBuffs(BuffsData buffsData)
+    {
+        if (buffsData == null || buffsData.activeBuffs == null || buffsData.activeBuffs.Count == 0)
+        {
+            Debug.LogWarning("No buff data to restore.");
+            return;
+        }
+
+        // Clear existing buffs first to avoid duplicates
+        ClearEffects(Player.Instance.gameObject);
+
+        // Restore each buff from saved data
+        foreach (var buffData in buffsData.activeBuffs)
+        {
+            // Find the target GameObject by name
+            GameObject target = GameObject.Find(buffData.targetName);
+            if (target != null)
+            {
+                // Apply the buff with saved parameters
+                ApplyBuffDebuff(
+                    target, 
+                    (BuffDebuffType)buffData.type, 
+                    buffData.remainingDuration, 
+                    buffData.effectValue, 
+                    buffData.stackable
+                );
+            }
+            else
+            {
+                Debug.LogWarning($"Target '{buffData.targetName}' not found when restoring buffs.");
+            }
+        }
+        
+        Debug.Log($"Restored {buffsData.activeBuffs.Count} buffs/debuffs.");
+    }
 }
