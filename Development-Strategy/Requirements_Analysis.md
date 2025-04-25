@@ -24,7 +24,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Dungeons**: Procedurally generated environments where the player encounters enemies, solves puzzles, and collects items.
 - **NPC (Non-Player Character)**: Characters like the King who interact with the player but are not controlled by the player.
 - **Traps**:Environmental hazards that harm or hinder the player, such as spikes or fire pits.
-- **Altar**: An object found in dungeons that restores the player's health when interacted with.
+- **Shrine**: An object found in dungeons that restores the player's health when interacted with.
 - **Health**: A resource representing the player's life, displayed as hearts in the HUD.
 
 ## 2. Functional Requirements
@@ -108,13 +108,14 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Create Floor**: Use recursive bipartitioning to partition the given rectangular dungeon with its height and width into rectangular rooms with a minimum height and width as well as an offset between the rooms and then connect the rooms
   - The rooms are connected by choosing a random starting room and then connecting the middle point of that room to the middle point of the other room and the corridors have width with a given corridorWidth
   - The rooms are added to the map data in order of the connections
+  - The first room is denoted as room type START, the last as END, for the other rooms the first half is denoted as NORMAL and the other half as ADVANCED
 - **Create walls**: Creates the wall positions by adding the outline of the floor to the wall data
   - Given a hash map of floor positions, the wall positions are the positions adjacent to the floor positions but not contained in them
 - **Create doors**: Creates the door positions between rooms and corridors
   - Given room positions and corridor positions the door position is in the middle of the corridor adjacent to a room
-- TO BE DEFINED: **Create monster spawnpoints**: Randomly select positions on the floor on which monsters can spawn
-- TO BE DEFINED: **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
-- TO BE DEFINED: **Create shrine positions**: Randomly select positions on the floor to place shrines
+- **Create monster spawnpoints**: For each room have a different pool of possible monsters depending on whether the room is of type NORMAL or ADVANCED, the ADVANCED rooms should have harder monsters. In each room select a random number of 0-5 floor positions, where the specific monster that is supposed to spawn there is denoted.
+- **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
+-**Create shrine positions**: Per dungeon select on random NORMAL and one random ADVANCED room and in these rooms a random floor position where a shrine will be spawned.
 
 #### 2.2.4 Tilemap Visualization (abstract)
 
@@ -127,12 +128,21 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Paint floor**: Using an atlas tilemap with predefined floor patterns, place a rule tile for the rim tiles on the floor rims (adjacent to the walls) and map the atlas floor pattern to the rest of the floor
   - Starting point for the atlas should be seeded randomly in a way that the whole floor map fits into the selected atlas region
   - Rim of the floor should show the 12 possible rim tiles in the correct configuration (4 top corners, 4 bottom corners, 4 left, right, top, bottom straight rims)
+  - The rim is either painted in sand colors for a tile closer to a NORMAL room or in grass colors for a tile closer to an ADVANCED room.
 - **Paint walls**: Using the wall positions places different wall tiles depending on the position in the room
   - Walls on top of the room are two positions wide and contain the two tile high wall tiles
   - Walls on the left or right side of the room are one tile wide and contain the upper view of the wall
   - Walls on the bottom of the room are one black tile wide
-- TO BE DEFINED: **Decorate dungeon**: ...
+  - Walls either use the sand textures for a tile closer to a NORMAL room or grass textures for a tile closer to an ADVANCED room.
+- **Decorate dungeon**: Given the decoration positions, choose randomly one of the many possible decorations (distinguish between wall and floor decorations) and place the decorations, they should have the same collisions as the floor or wall before.
 - **Clear**: Clears the floor and wall tilemap
+
+#### 2.2.6 Monster Manager
+
+- **Manage monsters** Keep references of all monsters in the dungeon
+- **Spawn Monsters**: Given the monster spawn points with monster names of the map data, instantiate the respective monster prefabs with health = max health and mana = max mana, and initialize pathfinding and other dependencies on the player. Save references to the monsters, so the manager knows when all are defeated.
+- **Spawn Shrines**: Given the shrine spawn points, instantiate shrines at the given position.
+- **On all monsters defeated**: Emits an event once all the monsters of the dungeon are cleared/defeated, this can be used by the **Main Game** to progress the game.
 
 ### 2.3 Enemy System
 
@@ -188,9 +198,24 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - Get Damage: The tikis head is invincible. The body is vulnerable. Killing the body will make the head disappear. The body is much more resistant when attached to the head.
 - Attack: After circling the player for a certain time, the tikis head will start spinning and detach from the body to attack the player, then reattach to the body. The head cannot receive damage. If the distance and the tiki is shorter than the tikis range and the head is attached, the tiki will shoot the player with a weak spell.
 - Act on health: If the tiki’s health is below 25% health  and the player is out of range for a flying head attack, tiki will shoot its spell in all directions.
-- Change state: Given the new state, check if state is possible (possibleStates in Mole) and then change the state to the new state if the new state is possible for Tiki
+- Change state: Given the new state, check if state is possible (possibleStates in Tiki) and then change the state to the new state if the new state is possible for Tiki
 - Check health status: If health is zero, the Tiki Dies and triggers the death animation
 - Get Enemy Element Type: Tiki should be of element type EARTH
+
+#### 2.3.6 SpearShieldMan (Enemy)
+
+- Has spear, shield or both: Tiki is randomly spawned in either of these configurations, which determine his attack and defense
+- Act on status:
+  - while status 'idle': If player moves into chase radius then status is updated to 'walk',
+  - while status ‘walk': tiki pathfinds to player until he reaches his attack range and status is updated to 'attack’
+  - while status ‘attack': Attack with spear, shield or either (randomly if it is equipped with both).
+- Animations should reflect whether SpearShieldman is walking or idle.
+- Get Damage: If the SpearShieldMan is equipped with a shield the defenseFactor is higher (~2), else ~1.
+- Attack: Slashes forward and attempts to hit the player, if the attack was with a spear the damage is bigger (~1) but the knock time lower (~0.2 s), if the attack is with the shield, the attack is weaker (~0.5) but the knock time is longer (~1s).
+- Act on health: If the SpearShieldMan’s health is below 25% health and it is equipped with a spear, and the player is in spear range, attempts to throw the spear at the player, which has high attack damage (~1.5) but then the spear is lost.
+- Change state: Given the new state, check if state is possible (possibleStates in SpearShieldMan) and then change the state to the new state if the new state is possible for SpearShieldMan
+- Check health status: If health is zero, the SpearShieldMan Dies and triggers the death animation
+- Get Enemy Element Type: SpearShieldMan should be of element type EARTH
 
 ### 2.4 Combat System
 
@@ -233,20 +258,73 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.5.1 The **GameManager** must control the overall game state, including dungeon transitions, combat phases, and player progression
 
-- **Manage game progression**: save where the player is in the game progression (which dungeons/levels) and which dialogs and boss fights were successfully finished and allow the access to the current game progression level, saving should be handled by the GameSaveProvider
-- **Manage game status**: Game status should be saved as game status (enum for 'ingame', 'main menu', 'settings menu', etc..) and be able to switch between them through actions
-- **On go to main menu**: Save the game state and return to 'main menu' game status
-- **On quit game**: Save the game state and quit the game
-- **On click options**: Change state to 'settings menu' and open the settings view in UI Manager
-- **On continue game**: Change state to 'ingame' and continue the game
-- **On pause game**: Change state to 'pause menu' open the pause menu view in UI Manager and pause the game
+- **Manage game progression**: For each game save there should be six different progression stages:
+  1. (CASTLE_INTRODUCTION) Player is in the castle hub and has not yet retrieved the earth elemelon. The evil witch has stolen the elemelons. The king will tell the player that the elemelons have been stolen.
+  2. (CASTLE_EARLY) Player is in the castle hub and has not yet retrieved the earth elemelon. The king has his usual rambly dialogue.
+  3. (EARTH_EARLY) Player has first entered the earth dungeon (no earth elemelon has been retrieved yet). The player fights through the dungeon, defeating monsters and searching the boss room. After the Player has defeated all normal monsters in the earth dungeon and has then entered the door to the boss fight. The player stands now in the boss room.
+  4. (CASTLE_END) Player has defeated the witch boss and received the elemelon. He returns to the castle to give it back to the king.
+  5. (CASTLE_LATE) Player is in the castle hub and has retreived the earth elemelon.
+  6. (EARTH_LATE) Player enters the earth dungeon after they have already retrieved the earth elemelon. They can fight all monsters and the boss, but no elemelon can be retrieved anymore.
+- **Change Game Stage**: Enable the change of the game progression stage. Use the **GameSaveProvider** to save the updated stage of the player unless the stage is EARTH_EARLY or EARTH_LATE.
+- **Start Main Game Stage**: When the game progression stage is updated, then the GameManager uses the **Main Game** to execute the progression stage game content.
+- **Manage game status**: Game status should be saved as game status (enum for 'ingame', 'main menu', 'pause menu', 'dialogue', 'settings menu', 'death screen') and be able to switch between them through actions
+- **On player death**: Change state to 'death screen' and open the death screen view in the **UI Manager**.
+- **On go to main menu**: Use the **GameSaveProvider** to save the game progression stage and return to 'main menu' game status
+- **On quit game**: Use the **GameSaveProvider** to save the game progression stage and quit the game
+- **On pause menu**: Change state to 'pause game' open the pause menu view in **UI Manager** and pause the game (no monster movement, no attacking, no player movement)
+- **On start dialogue**: Change state to 'dialogue' and pause the game (no monster movement, no attacking, no player movement), should be used if a dialogue is engaged.
+- **On open options**: Change state to 'settings menu' and open the settings view in UI Manager.
+- **On continue game**: Change state to 'ingame' and continue the game.
 - **On new game**: Instruct the GameSaveProvider to reset the save file and start a new save and then start the game and set the status to 'ingame'
-- **On continue game**: Instruct the GameSaveProvider to load the current saved game status and then start the game and set the status to 'ingame'
+- **On continue saved game**: Instruct the GameSaveProvider to load the current saved game status and then start the game and set the status to 'ingame'
 
 #### 2.5.2 The **GameSaveProvider** must support saving and loading game states, allowing players to resume their adventure seamlessly.
-- **Manage save slot** Players should be able to save at specific checkpoints (collected elemelons = completed dungeons) and have one save slot for one playthrough
-- **Save Game**: Save the collected elemelons and stats (max health and max mana) in a scriptable object
-- **Load Game**: Load the current save using the saved scriptable object for stats and collected elemelons
+- **Manage one saved game**: The game should have the ability to save the progression for one single save game.
+- **Save Game**: Save the progression stage of the player, but if the player is in progression stage EARTH_EARLY or EARTH_LATE, save the stage CASTLE_EARLY or CASTLE_LATE instead. Save the player's stats (max health and max mana) and the current button settings.
+- **Load Game**: Load the current save using the saved scriptable object for stats, button settings, and progression stage. Set the respective stage in the **GameManager**.
+
+#### 2.5.3 The **Main Game** enables the progression stage specific content of the game
+
+- **In CASTLE_INTRODUCTION**:
+  - Scene: Castle Hub Scene
+  - Starts with a cut scene dialog of the witch where she laughs about having stolen the elemelons.
+  - Then, cuts to a cut scene dialog of the king where he finds that his four elemelons have been stolen.
+  - Then, the game is set to ingame and the player is spawned in the castle hub.
+  - The king has a special dialogue, telling the player who the evil witch is, that the player witch has to save him and retrieve the elemelons. The king also tells the player that for the first dungeon she will have to travel to an earth dungeon to get the first earth elemelon back.
+  - After that dialogue has concluded, the game progresses to stage CASTLE_EARLY.
+ 
+- **In CASTLE_EARLY**:
+  - Scene: Castle Hub Scene
+  - The king now has three repetitive dialogues where he greets the player, tells the player not to trust the evil witch, and that he counts on the player.
+  - When the player enters the earth door portal (door to the first dungeon), the game progresses to the stage EARTH_EARLY.
+ 
+- **In EARTH_EARLY**:
+  - Scene: Earth Dungeon Scene
+  - The earth dungeon is generated and populated with monsters (TreeStump, Mole, Tiki, SpearShieldsMan).
+  - In the last room of the dungeon (denoted by Room Type END), there is a door to the boss room, which is unlocked if the last normal monster is beaten (**Monster Manager** should have an event to trigger this).
+  - If the player enters the boss room door, they are teleported to the boss room where the evil witch is waiting with the earth elemelon sitting on a shrine.
+  - Once the player has beaten the evil witch in the boss fight, the game progresses to stage CASTLE_END.
+  - If the player dies during the dungeon playthrough, the game progression stage is reset to CASTLE_EARLY and the **Game Manager** is instructed to execute the player death screen.
+ 
+- **In CASTLE_END**:
+  - Scene: Castle Hub Scene
+  - The player is spawned in the Castle where the king is waiting for her.
+  - If the player engages dialogue with the king, the earth elemelon is retrieved to the king's room and the king is very thankful.
+  - After the dialogue is concluded, the game progresses to stage CASTLE_LATE.
+ 
+- **In CASTLE_LATE**:
+  - Scene: Castle Hub Scene
+  - The king now has three repetitive dialogues where he greets the player, tells the player not to trust the evil witch, and that he counts on the player.
+  - The earth elemelon remains in the king's room.
+  - When the player enters the earth door portal (door to the first dungeon), the game progresses to the stage EARTH_LATE.
+ 
+- **In EARTH_LATE**:
+  - Scene: Earth Dungeon Scene
+  - The earth dungeon is generated and populated with monsters (TreeStump, Mole, Tiki, SpearShieldsMan).
+  - In the last room of the dungeon (denoted by Room Type END), there is a door to the boss room, which is unlocked if the last normal monster is beaten (**Monster Manager** should have an event to trigger this).
+  - If the player enters the boss room door, they are teleported to the boss room where the evil witch is waiting without any earth elemelon.
+  - Once the player has beaten the evil witch in the boss fight, the game progresses to stage CASTLE_LATE.
+  - If the player dies during the dungeon playthrough, the game progression stage is reset to CASTLE_LATE and the **Game Manager** is instructed to execute the player death screen.
 
 ### 2.6 UI System
 
