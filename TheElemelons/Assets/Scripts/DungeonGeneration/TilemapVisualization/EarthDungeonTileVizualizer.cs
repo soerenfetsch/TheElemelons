@@ -11,12 +11,12 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 {
     public Tilemap floorTilemap, collisionTilemap, decorationTilemap; // Tilemaps for floors and walls
     public WallTileSet basicWalls, advancedWalls; // Tiles for the walls
-
     public TilemapData floorAtlasTilemapData;                         // Atlas tilemap for floor patterns
     public RimTileSet basicRims, advancedRims; // Rim tiles
     // For the top and bottom doors the tiles are named after their respective position
     public DoorTileSet doorTileSet; // Door tileset for all four doors
-
+    public MonsterManager monsterManager;
+    List<Room> rooms;
     protected enum RimPosition
     {
         UpperTopLeft, UpperTopRight, UpperBottomLeft, UpperBottomRight,
@@ -369,6 +369,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     {
         foreach (Room room in mapData.rooms)
         {
+            rooms.Add(room);
             foreach (Vector2Int door in room.doorPositions)
             {
                 // First find out whether door is top, bottom, left or right
@@ -533,5 +534,9 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 verticalDoor.doorFive
             );
         }
+    }
+    public List<Room> GetRooms()
+    {
+        return rooms;
     }
 }
