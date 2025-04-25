@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BipartitioningMapGenerator : AbstractMapGenerator
 {
+    MapData mapData;
     public MonsterManager monsterManager;
     public Vector2Int startPosition = new Vector2Int(0, 0);
     public int minRoomWidth = 10;
@@ -17,7 +18,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
 
     public override MapData GenerateMap()
     {
-        MapData mapData = new MapData();
+        mapData = new MapData();
         CreateFloor(mapData);
         CreateWalls(mapData);
         CreateDecorationPositions(mapData);
@@ -25,8 +26,8 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         CreateDoorPositions(mapData);
         createShrinePositions(mapData);
         createTrapPositions(mapData);
-        //monsterManager.mapData = mapData;
-        //monsterManager.SpawnMonsters();
+        monsterManager.mapData = mapData;
+        monsterManager.SpawnMonsters();
         return mapData;
     }
 

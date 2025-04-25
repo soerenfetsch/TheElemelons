@@ -107,6 +107,7 @@ public class Tiki : Enemy
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         if (playerTransform == null)
         {
             Debug.Log("Tiki couldn't find the player at Start(), please fix");

@@ -80,6 +80,8 @@ public class TreeLog : Enemy
     {
         InitializeComponents();
         InitializeCombatComponents();
+        playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
     }
 
     // Fixed update to handle physics and movements correctly

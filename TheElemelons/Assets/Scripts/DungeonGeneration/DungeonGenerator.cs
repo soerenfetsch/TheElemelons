@@ -20,7 +20,10 @@ public class DungeonGenerator : MonoBehaviour
     /// This method clears the previous dungeon visualization and then calls the procedural generation algorithm
     /// to create a new dungeon. It can be triggered from the Unity editor using the context menu.
     /// </summary>
-
+    void Start()
+    {
+        GenerateDungeon();
+    }
     public void GenerateDungeon()
     {
         Debug.Log("Called the Dungeon Generator");
