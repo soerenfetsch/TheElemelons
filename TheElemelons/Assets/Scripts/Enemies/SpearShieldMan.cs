@@ -6,9 +6,11 @@ using UnityEngine;
 public class SpearShieldMan : Enemy
 {
     [Header("Components")]
-    public GameObject shield;
-    public GameObject spear;
+    public GameObject shieldPrefab;
+    public GameObject spearPrefab;
 
+    private GameObject spearInstance;
+    private GameObject shieldInstance;
     private Transform transformComponent;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
@@ -31,6 +33,9 @@ public class SpearShieldMan : Enemy
     public float thrust = 1f;
     public float knockTime = 0.2f;
     public float flashDuration = 0.2f;
+    public float attackCooldown = 1f;
+
+    private float lastAttackTime = 0f;
 
     [Header("Effects")]
     public GameObject deathEffect;
@@ -58,6 +63,8 @@ public class SpearShieldMan : Enemy
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
 
+        RandomizeSpearShield();
+
         if (deathEffect == null)
         {
             Debug.LogWarning("SpearShieldMan: No death effect prefab found on the GameObject.");
@@ -76,6 +83,30 @@ public class SpearShieldMan : Enemy
         }
 
         currentState = EnemyStatus.Idle;
+    }
+
+    /// <summary>
+    /// Randomizes whether the SpearShieldMan has a spear, shield, or both.
+    /// </summary>
+    private void RandomizeSpearShield()
+    {
+        int randomValue = UnityEngine.Random.Range(0, 3); // 0: spear, 1: shield, 2: both
+        switch (randomValue)
+        {
+            case 0:
+                // Instantiate the spear prefab as a child of the SpearShieldMan
+                spearInstance = Instantiate(spearPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                break;
+            case 1:
+                // Instantiate the shield prefab as a child of the SpearShieldMan
+                shieldInstance = Instantiate(shieldPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                break;
+            case 2:
+                // Instantiate both spear and shield prefabs as children of the SpearShieldMan
+                spearInstance = Instantiate(spearPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                shieldInstance = Instantiate(shieldPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                break;
+        }
     }
 
     private void InitializeCombatComponents()
@@ -112,9 +143,8 @@ public class SpearShieldMan : Enemy
     /// This method handles the behavior of the enemy based on its current state. The enemy can be in one of the following states:
     /// Idle, Approaching, Attacking, Retreating, or Staggered. The behavior includes checking the player's distance, moving towards
     /// the player, attacking, retreating to the home position, and handling the stagger state.
-    /// While status idle, the mole remains dug in the ground. For every showInterval, it will pop out of the ground. If the player
-    /// is within the chase radius, it will start moving towards the player. When the player is within the attack radius, it will
-    /// dig up and attack the player.
+    /// If the player is within the chase radius, it will start moving towards the player.
+    /// When the player is within the attack radius, it will start attacking the player.
     /// </summary>
     public override void ActOnStatus()
     {
@@ -141,10 +171,10 @@ public class SpearShieldMan : Enemy
                 }
                 break;
             case EnemyStatus.Attacking:
-                AttackWithWeapon();
+                AttackWithRandomWeaponIfReady();
                 if (CheckPlayerOutsideRadius(attackRadius))
                 {
-                    ChangeState(EnemyStatus.Retreating);
+                    ChangeState(EnemyStatus.Approaching);
                 }
                 break;
             case EnemyStatus.Retreating:
@@ -154,10 +184,52 @@ public class SpearShieldMan : Enemy
         }
     }
 
-    // TODO: Implement the attack logic for the SpearShieldMan enemy.
-    private void AttackWithWeapon()
+    private void AttackWithRandomWeaponIfReady()
     {
-        throw new NotImplementedException();
+        if (lastAttackTime + attackCooldown < Time.time)
+        {
+            lastAttackTime = Time.time;
+            if (spearInstance != null && shieldInstance != null)
+            {
+                // Randomly choose between spear and shield attack
+                if (UnityEngine.Random.Range(0, 2) == 0)
+                {
+                    StartCoroutine(AttackWithSpear());
+                }
+                else
+                {
+                    StartCoroutine(AttackWithShield());
+                }
+            }
+            else if (spearInstance != null)
+            {
+                StartCoroutine(AttackWithSpear());
+            }
+            else if (shieldInstance != null)
+            {
+                StartCoroutine(AttackWithShield());
+            }
+            else
+            {
+                Debug.LogWarning("SpearShieldMan: No spear or shield instance found for attack.");
+            }
+        }
+    }
+
+    private IEnumerator AttackWithSpear()
+    {
+        spearInstance.GetComponent<Animator>()?.SetTrigger("Attack");
+        spearInstance.GetComponent<AttackCollider>()?.EnableAttack();
+        yield return new WaitForSeconds(1f); // Wait for the spear attack animation to finish
+        spearInstance.GetComponent<AttackCollider>()?.DisableAttack();
+    }
+
+    private IEnumerator AttackWithShield()
+    {
+        shieldInstance.GetComponent<Animator>()?.SetTrigger("Attack");
+        shieldInstance.GetComponent<AttackCollider>()?.EnableAttack();
+        yield return new WaitForSeconds(1f); // Wait for the shield attack animation to finish
+        shieldInstance.GetComponent<AttackCollider>()?.DisableAttack();
     }
 
     private void ChangeAnimationClip(string v)
@@ -211,27 +283,40 @@ public class SpearShieldMan : Enemy
         {
             if (direction.x > 0)
             {
-                animator.SetFloat("Vertical", 0f);
-                animator.SetFloat("Horizontal", 1f);
+                SetAnimationFloat("Vertical", 0f);
+                SetAnimationFloat("Horizontal", 1f);
             }
             else if (direction.x < 0)
             {
-                animator.SetFloat("Vertical", 0f);
-                animator.SetFloat("Horizontal", -1f);
+                SetAnimationFloat("Vertical", 0f);
+                SetAnimationFloat("Horizontal", -1f);
             }
         }
         else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
         {
             if (direction.y > 0)
             {
-                animator.SetFloat("Vertical", 1f);
-                animator.SetFloat("Horizontal", 0f);
+                SetAnimationFloat("Vertical", 1f);
+                SetAnimationFloat("Horizontal", 0f);
             }
             else if (direction.y < 0)
             {
-                animator.SetFloat("Vertical", -1f);
-                animator.SetFloat("Horizontal", 0f);
+                SetAnimationFloat("Vertical", -1f);
+                SetAnimationFloat("Horizontal", 0f);
             }
+        }
+    }
+
+    private void SetAnimationFloat(string parameter, float value)
+    {
+        animator.SetFloat(parameter, value);
+        if (spearInstance != null)
+        {
+            spearInstance.GetComponent<Animator>().SetFloat(parameter, value);
+        }
+        if (shieldInstance != null)
+        {
+            shieldInstance.GetComponent<Animator>().SetFloat(parameter, value);
         }
     }
 
@@ -318,14 +403,12 @@ public class SpearShieldMan : Enemy
         ChangeAnimationClip(lastAnimation);
     }
 
-    private void MakeInvincible()
+    private void HandleAttack(Rigidbody2D playerRb)
     {
-        isInvincible = true;
-    }
+        if (playerRb == null) return;
 
-    private void MakeVulnerable()
-    {
-        isInvincible = false;
+        Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
+        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
     }
 
     public override void ModifySpeed(float factor)
