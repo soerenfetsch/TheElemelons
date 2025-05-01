@@ -10,12 +10,21 @@ public class MonsterManager : MonoBehaviour
 {
     [Header("Enemy Selection")]
     public List<GameObject> startEnemySelection;
+    public List<GameObject> normalEnemySelection;
     public List<GameObject> advancedEnemySelection;
+    public List<GameObject> endEnemySelection;
+    public List<GameObject> bossEnemySelection;
     [Header("Difficulty Settings")]
-    public int startEnemyCount = 2;
-    public int startEnemyCountVariability = 2;
+    public int startEnemyCount = 1;
+    public int startEnemyCountVariability = 0;
+    public int normalEnemyCount = 2;
+    public int normalEnemyCountVariability = 1;
     public int advancedEnemyCount = 3;
-    public int advancedEnemyCountVariability = 2;
+    public int advancedEnemyCountVariability = 1;
+    public int endEnemyCount = 5;
+    public int endEnemyCountVariability = 0;
+    public int bossEnemyCount = 6;
+    public int bossEnemyCountVariability = 1;
     [Header("Bound Components")]
     public MapData mapData;
     public Transform playerTransform;
@@ -23,6 +32,11 @@ public class MonsterManager : MonoBehaviour
     Dictionary<Room.RoomType, List<GameObject>> roomTypeSelections;
     public List<GameObject> allMonsters;
     public EarthDungeonTileVizualizer earthDungeonTileVizualizer;
+    [Header("Optimize Performance")]
+    bool deactivateEnemiesOutOfReach = false;
+    float reachSetActive = 80f;
+    int intervalDeactivateEnemiesOutOfReach = 120;
+    int intervalOpenCloseDoors = 60;
 
     /// <summary>
     /// find player at start
@@ -47,24 +61,38 @@ public class MonsterManager : MonoBehaviour
         roomTypeStats = new Dictionary<Room.RoomType, List<int>>();
         roomTypeSelections = new Dictionary<Room.RoomType, List<GameObject>>();
         roomTypeStats.Add(Room.RoomType.START, new List<int>() { startEnemyCount, startEnemyCountVariability });
-        roomTypeStats.Add(Room.RoomType.NORMAL, new List<int>() { startEnemyCount, startEnemyCountVariability });
+        roomTypeStats.Add(Room.RoomType.NORMAL, new List<int>() { normalEnemyCount, normalEnemyCountVariability });
         roomTypeStats.Add(Room.RoomType.ADVANCED, new List<int>() { advancedEnemyCount, advancedEnemyCountVariability });
-        roomTypeStats.Add(Room.RoomType.END, new List<int>() { advancedEnemyCount, advancedEnemyCountVariability });
-        roomTypeStats.Add(Room.RoomType.BOSS, new List<int>() { advancedEnemyCount, advancedEnemyCountVariability });
+        roomTypeStats.Add(Room.RoomType.END, new List<int>() { endEnemyCount, endEnemyCountVariability });
+        roomTypeStats.Add(Room.RoomType.BOSS, new List<int>() { bossEnemyCount, bossEnemyCountVariability });
         roomTypeSelections.Add(Room.RoomType.START, startEnemySelection);
-        roomTypeSelections.Add(Room.RoomType.NORMAL, startEnemySelection);
+        roomTypeSelections.Add(Room.RoomType.NORMAL, normalEnemySelection);
         roomTypeSelections.Add(Room.RoomType.ADVANCED, advancedEnemySelection);
-        roomTypeSelections.Add(Room.RoomType.END, advancedEnemySelection);
-        roomTypeSelections.Add(Room.RoomType.BOSS, advancedEnemySelection);
+        roomTypeSelections.Add(Room.RoomType.END, endEnemySelection);
+        roomTypeSelections.Add(Room.RoomType.BOSS, bossEnemySelection);
     }
     // Update is called once per frame
     void Update()
     {
-        if (Time.frameCount % 60 == 0)
+        if (Time.frameCount % intervalOpenCloseDoors == 0)
         {
             foreach (Room room in mapData.rooms)
             {
                 openCloseDoor(room);
+            }
+        }
+        if (deactivateEnemiesOutOfReach && Time.frameCount % intervalDeactivateEnemiesOutOfReach == 0)
+        {
+            foreach (GameObject monster in allMonsters)
+            {
+                if (monster.activeSelf && Mathf.Abs((monster.transform.position - playerTransform.position).magnitude) > reachSetActive)
+                {
+                    monster.SetActive(false);
+                }
+                else if (!monster.activeSelf && Mathf.Abs((monster.transform.position - playerTransform.position).magnitude) <= reachSetActive)
+                {
+                    monster.SetActive(true);
+                }
             }
         }
     }

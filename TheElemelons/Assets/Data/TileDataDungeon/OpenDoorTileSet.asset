@@ -13,28 +13,28 @@ MonoBehaviour:
   m_Name: OpenDoorTileSet
   m_EditorClassIdentifier: 
   topDoor:
-    doorBottomLeft: {fileID: 0}
+    doorBottomLeft: {fileID: 11400000, guid: 627546611609c134d9c8d0f6308a443c, type: 2}
     doorBottomMiddle: {fileID: 0}
-    doorBottomRight: {fileID: 0}
-    doorUpperLeft: {fileID: 0}
+    doorBottomRight: {fileID: 11400000, guid: c47ef2019ed281243bbf27eeceaef441, type: 2}
+    doorUpperLeft: {fileID: 11400000, guid: c02fc86a6b30d2149b0af604c095a703, type: 2}
     doorUpperMiddle: {fileID: 0}
-    doorUpperRight: {fileID: 0}
+    doorUpperRight: {fileID: 11400000, guid: cbc1bed522f33b141ab32da77fef8a96, type: 2}
   bottomDoor:
-    doorBottomLeft: {fileID: 0}
+    doorBottomLeft: {fileID: 11400000, guid: 627546611609c134d9c8d0f6308a443c, type: 2}
     doorBottomMiddle: {fileID: 0}
-    doorBottomRight: {fileID: 0}
-    doorUpperLeft: {fileID: 0}
+    doorBottomRight: {fileID: 11400000, guid: c47ef2019ed281243bbf27eeceaef441, type: 2}
+    doorUpperLeft: {fileID: 11400000, guid: c02fc86a6b30d2149b0af604c095a703, type: 2}
     doorUpperMiddle: {fileID: 0}
-    doorUpperRight: {fileID: 0}
+    doorUpperRight: {fileID: 11400000, guid: cbc1bed522f33b141ab32da77fef8a96, type: 2}
   leftDoor:
-    doorOne: {fileID: 0}
-    doorTwo: {fileID: 0}
+    doorOne: {fileID: 11400000, guid: a31cc55543fc14b4c8c7746e547ea711, type: 2}
+    doorTwo: {fileID: 11400000, guid: 28b143c7882ef8244b5273b3abad8b19, type: 2}
     doorThree: {fileID: 0}
     doorFour: {fileID: 0}
-    doorFive: {fileID: 0}
+    doorFive: {fileID: 11400000, guid: b937e9a1a16af0d4c9e559dcbb527ee9, type: 2}
   rightDoor:
-    doorOne: {fileID: 0}
-    doorTwo: {fileID: 0}
+    doorOne: {fileID: 11400000, guid: 401d7f543300c6a4d96ed435d5091b36, type: 2}
+    doorTwo: {fileID: 11400000, guid: 40ff49722668c204bb4a4cc34eaa2357, type: 2}
     doorThree: {fileID: 0}
     doorFour: {fileID: 0}
-    doorFive: {fileID: 0}
+    doorFive: {fileID: 11400000, guid: 31160e1d3c0b6b6409ce548603c4d078, type: 2}
