@@ -21,8 +21,11 @@ public class MonsterManager : MonoBehaviour
     public Transform playerTransform;
     Dictionary<Room.RoomType, List<int>> roomTypeStats;
     Dictionary<Room.RoomType, List<GameObject>> roomTypeSelections;
+    List<GameObject> allMonsters;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// find player at start
+    /// </summary>
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
@@ -32,6 +35,9 @@ public class MonsterManager : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// initialize dictionary that contains all settings for each roomtype
+    /// </summary>
     public void InitializeRoomTypeSettings()
     {
         roomTypeStats = new Dictionary<Room.RoomType, List<int>>();
@@ -48,13 +54,17 @@ public class MonsterManager : MonoBehaviour
         roomTypeSelections.Add(Room.RoomType.BOSS, advancedEnemySelection);
     }
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         foreach (Room room in mapData.rooms)
         {
             //openCloseDoor(room);
         }
-    }
+    }*/
+    /// <summary>
+    /// yet unused method to open and close doors depending on whether the player is close to enemies
+    /// </summary>
+    /// <param name="room"></param>
     public void openCloseDoor(Room room)
     {
         bool playerIsInRoom = IsInRoom(playerTransform.position, room);
@@ -67,6 +77,9 @@ public class MonsterManager : MonoBehaviour
             room.areDoorsOpen = false;
         }
     }
+    /// <summary>
+    /// uses mapdata to spawn monsters in each room, amount depends on rng and settings
+    /// </summary>
     public void SpawnMonsters()
     {
         InitializeRoomTypeSettings();
@@ -77,11 +90,19 @@ public class MonsterManager : MonoBehaviour
             for (int i = 0; i < enemiesPositions.Count; i++)
             {
                 GameObject currentMonster = Instantiate(enemyGroup[i], new Vector3(enemiesPositions[i].x, enemiesPositions[i].y, 0), Quaternion.Euler(0, 0, 0));
+                allMonsters.Add(currentMonster);
                 room.AddMonsterSpawnPosition(enemiesPositions[i]);
                 room.AddMonsters(currentMonster);
             }
         }
     }
+    /// <summary>
+    /// returns a list of enemies containing a random batch of those in the selection choice. amount is random and regulated by params
+    /// </summary>
+    /// <param name="SelectionChoice"></param>
+    /// <param name="count"></param>
+    /// <param name="variance"></param>
+    /// <returns></returns>
     public List<GameObject> SelectRandomEnemies(List<GameObject> SelectionChoice, int count, int variance)
     {
         int amount = count + (int)UnityEngine.Random.Range(-variance, variance + 1);
@@ -93,6 +114,12 @@ public class MonsterManager : MonoBehaviour
         }
         return Selection;
     }
+    /// <summary>
+    ///  returns a list of random spawn positions inside the room bounds
+    /// </summary>
+    /// <param name="count"></param>
+    /// <param name="room"></param>
+    /// <returns></returns>
     public List<Vector2Int> SelectSpawnPositions(int count, Room room)
     {
         List<Vector2Int> positions = new();
@@ -105,6 +132,12 @@ public class MonsterManager : MonoBehaviour
         }
         return positions;
     }
+    /// <summary>
+    /// checks if certain position is within room bounds
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="room"></param>
+    /// <returns></returns>
     public bool IsInRoom(Vector2 position, Room room)
     {
         List<Vector2> bounds = GetRoomBounds(room);
@@ -138,14 +171,10 @@ public class MonsterManager : MonoBehaviour
     /// </summary>
     public void ClearAllEnemies()
     {
-        foreach (Room room in mapData.rooms)
+        int len = allMonsters.Count;
+        for (int i = len - 1; i >= 0; i--)
         {
-            List<GameObject> monsters = room.monsters.ToList();
-            room.monsters.Clear();
-            for (int i = monsters.Count - 1; i >= 0; i--)
-            {
-                DestroyImmediate(monsters[i]);
-            }
+            DestroyImmediate(allMonsters[i]);
         }
     }
 }

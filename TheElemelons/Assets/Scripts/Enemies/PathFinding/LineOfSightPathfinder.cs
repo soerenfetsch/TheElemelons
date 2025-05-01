@@ -30,7 +30,6 @@ public class LineOfSightPathfinder : MonoBehaviour
             return;
         }
         floorPositions = new HashSet<Vector2Int>(tilePositionData.tilePositions);
-        Debug.Log("floorpos length : " + floorPositions.Count);
     }
 
     /// <summary>
@@ -49,8 +48,6 @@ public class LineOfSightPathfinder : MonoBehaviour
         {
             visibilityGrid[position] = false; // Initialize all positions as not visible.
         }
-        Debug.Log("visibility grid length : " + visibilityGrid.Count);
-        Debug.Log(visibilityGrid);
         isGridInitialized = true;
     }
 
