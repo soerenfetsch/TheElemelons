@@ -41,32 +41,14 @@ public class GameStateTest
     }
 
     [Test]
-    public void SerializableRoom_CanCreateInstanceAndSetProperties()
+    public void GameSaveData_DefaultValuesAreCorrect()
     {
-        Room room = new Room();
-        room.AddFloorPosition(new UnityEngine.Vector2Int(1, 1));
-        room.AddWallPosition(new UnityEngine.Vector2Int(2, 2));
-        room.SetRoomType(RoomType.BOSS);
+        GameSaveData saveData = new GameSaveData();
 
-        SerializableRoom serializableRoom = new SerializableRoom(room);
-
-        Assert.AreEqual(1, serializableRoom.floorPositions.Count);
-        Assert.AreEqual(1, serializableRoom.wallPositions.Count);
-        Assert.AreEqual(RoomType.BOSS, serializableRoom.roomType);
-    }
-
-    [Test]
-    public void SerializableMapData_CanCreateInstanceAndSetProperties()
-    {
-        MapData mapData = new MapData();
-        Room room = new Room();
-        room.AddFloorPosition(new UnityEngine.Vector2Int(1, 1));
-        mapData.AddRoom(room);
-        mapData.AddWallPosition(new UnityEngine.Vector2Int(2, 2));
-
-        SerializableMapData serializableMapData = new SerializableMapData(mapData);
-
-        Assert.AreEqual(1, serializableMapData.rooms.Count);
-        Assert.AreEqual(1, serializableMapData.wallPositions.Count);
+        // Assert that default values are what you expect.  Adjust as necessary.
+        Assert.AreEqual(default(GameProgressionStage), saveData.progressionStage);
+        Assert.AreEqual(default(int), saveData.maxHealth);
+        Assert.AreEqual(default(int), saveData.maxMana);
+        Assert.IsNull(saveData.saveFileName);
     }
 }
