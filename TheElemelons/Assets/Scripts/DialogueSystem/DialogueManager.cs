@@ -9,12 +9,12 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance { get; private set; }
 
     [Header("Dialogue Assets")]
-    [SerializeField] private DialogueData[] dialogueAssets;
+    [SerializeField] public DialogueData[] dialogueAssets;
     [SerializeField] private bool autoPlay = false;
     [SerializeField] private float autoPlayDelay = 3f; // Delay (in seconds) before auto-advancing a line
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
-    private DialogueData currentDialogue;
-    private int currentLineIndex = 0;
+    public DialogueData currentDialogue;
+    public int currentLineIndex = 0;
     private Coroutine autoPlayCoroutine;
 
     // Events for dialogue flow.
@@ -42,7 +42,7 @@ public class DialogueManager : MonoBehaviour
         BuildDialogueDictionary();
     }
 
-    private void BuildDialogueDictionary()
+    public void BuildDialogueDictionary()
     {
         foreach (var data in dialogueAssets)
         {

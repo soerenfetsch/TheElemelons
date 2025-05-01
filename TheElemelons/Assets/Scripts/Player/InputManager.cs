@@ -2,28 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Enum representing the different game states.
-/// </summary>
-public enum GameState
-{
-    InGame,
-    MainMenu,
-    SettingsMenu,
-    PauseMenu,
-    Dialogue
-}
-
-/// <summary>
 /// Manages player input and key bindings across different game states.
 /// </summary>
 public class InputManager : MonoBehaviour
 {
-    /// <summary>
-    /// The current state of the game.
-    /// </summary>
-    [Header("Game State")]
-    public GameState currentState = GameState.InGame;
-
     /// <summary>
     /// Dictionary of actions mapped to their key bindings.
     /// </summary>
@@ -47,6 +29,7 @@ public class InputManager : MonoBehaviour
     public Transform pivot;
     public bool canInput = true;
     public bool canMove = true;
+    private GameStatus currentGameState;
     /// <summary>
     /// Initializes the InputManager and references required components.
     /// </summary>
@@ -61,43 +44,54 @@ public class InputManager : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    private void OnEnable()
+    {
+        GameManager.OnGameStatusChanged += HandleGameStatusChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStatusChanged -= HandleGameStatusChanged;
+    }
+
+    private void HandleGameStatusChanged(GameStatus newStatus)
+    {
+        currentGameState = newStatus;
+        canInput = newStatus == GameStatus.INGAME || newStatus == GameStatus.DIALOGUE;
+        canMove = newStatus == GameStatus.INGAME;
+    }
+
     /// <summary>
     /// Handles updates for different game states and global inputs.
     /// </summary>
     private void Update()
     {
-        switch (currentState)
+        HandleGlobalInputs(); // Seperate global inputs from state specific inputs
+        if (!canInput) return;
+
+        switch (currentGameState)
         {
-            case GameState.InGame:
+            case GameStatus.INGAME:
                 HandleGameplayInputs();
                 break;
 
-            case GameState.MainMenu:
+            case GameStatus.MAIN_MENU:
                 HandleMenuInputs();
                 break;
 
-            case GameState.SettingsMenu:
+            case GameStatus.SETTINGS_MENU:
                 HandleSettingsInputs();
                 break;
 
-            case GameState.PauseMenu:
+            case GameStatus.PAUSE_MENU:
                 HandlePauseMenuInputs();
                 break;
-        }
-
-        // Global input: Toggle Pause Menu
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (currentState == GameState.InGame)
-            {
-                currentState = GameState.PauseMenu;
-                Debug.Log("Game Paused.");
-            }
-            else if (currentState == GameState.PauseMenu)
-            {
-                currentState = GameState.InGame;
-                Debug.Log("Game Resumed.");
-            }
+            case GameStatus.DIALOGUE:
+                HandleDialogueInputs();
+                break;
+            case GameStatus.DEATH_SCREEN:
+                HandleDeathScreenInputs();
+                break;
         }
     }
 
@@ -112,7 +106,7 @@ public class InputManager : MonoBehaviour
             "CastSpell", "ClearCharges",
             "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
             "ZoomIn", "ZoomOut",
-            "Interact"
+            "Interact", "AdvanceDialogue"
         };
 
         KeyCode[] defaultKeys = {
@@ -120,7 +114,7 @@ public class InputManager : MonoBehaviour
             KeyCode.Mouse0, KeyCode.Mouse1,
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
             KeyCode.Z, KeyCode.X,
-            KeyCode.E
+            KeyCode.E, KeyCode.Space
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
@@ -155,16 +149,13 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleGameplayInputs()
     {
-        if (canInput)
+        if (canMove)
         {
-            if (canMove)
-            {
-                HandleMovementInputs();
-            }
-            HandleSpellCastingInputs();
-            HandleCameraInputs();
-            HandleInteractionInputs();
+            HandleMovementInputs();
         }
+        HandleSpellCastingInputs();
+        HandleCameraInputs();
+        HandleInteractionInputs();
     }
 
     /// <summary>
@@ -255,6 +246,8 @@ public class InputManager : MonoBehaviour
     private void HandleMenuInputs()
     {
         Debug.Log("Main Menu Input Handling");
+        canMove = false;
+        canInput = false;
     }
 
     /// <summary>
@@ -263,6 +256,8 @@ public class InputManager : MonoBehaviour
     private void HandleSettingsInputs()
     {
         Debug.Log("Settings Menu Input Handling");
+        canMove = false;
+        canInput = false;
     }
 
     /// <summary>
@@ -271,6 +266,30 @@ public class InputManager : MonoBehaviour
     private void HandlePauseMenuInputs()
     {
         Debug.Log("Pause Menu Input Handling");
+        canMove = false;
+        canInput = false;
+    }
+
+        /// <summary>
+    /// Handles dialogue inputs.
+    /// </summary>
+    private void HandleDialogueInputs()
+    {
+        if (Input.GetKeyDown(keyBindings["AdvanceDialogue"]))
+        {
+            DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
+            dialogueUI?.SkipTyping();
+        }
+    }
+
+    /// <summary>
+    /// Handles death screen inputs.
+    /// </summary>
+    private void HandleDeathScreenInputs()
+    {
+        Debug.Log("Death Screen Input Handling");
+        canMove = false;
+        canInput = false;
     }
 
     /// <summary>
@@ -300,5 +319,25 @@ public class InputManager : MonoBehaviour
         if (keyBindings.ContainsKey(action))
             return keyBindings[action];
         throw new KeyNotFoundException($"No key binding found for action: {action}");
+    }
+
+    /// <summary>
+    /// Handles global inputs, such as toggling the pause menu.
+    /// </summary>
+    private void HandleGlobalInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentGameState == GameStatus.INGAME)
+            {
+                GameManager.Instance.ChangeGameStatus(GameStatus.PAUSE_MENU);
+                Debug.Log("Game Paused.");
+            }
+            else if (currentGameState == GameStatus.PAUSE_MENU)
+            {
+                GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
+                Debug.Log("Game Resumed.");
+            }
+        }
     }
 }

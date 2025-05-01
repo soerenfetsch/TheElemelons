@@ -283,6 +283,41 @@ public class UIManager : MonoBehaviour
         buffDebuffIconBar.RemoveBuff(type);
     }
 
+    private void OnEnable()
+    {
+        GameManager.OnGameStatusChanged += HandleGameStatusChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStatusChanged -= HandleGameStatusChanged;
+    }
+
+    private void HandleGameStatusChanged(GameStatus newStatus)
+    {
+        switch (newStatus)
+        {
+            case GameStatus.DEATH_SCREEN:
+                EnablePanel("DeathScreen"); // Assuming you have a DeathScreen panel
+                break;
+            case GameStatus.PAUSE_MENU:
+                EnablePanel("PauseMenu");
+                break;
+            case GameStatus.SETTINGS_MENU:
+                EnablePanel("SettingsMenu");
+                break;
+            case GameStatus.INGAME:
+                EnablePanel("Ingame");
+                break;
+            case GameStatus.MAIN_MENU:
+                EnablePanel("StartMenu");
+                break;
+            case GameStatus.DIALOGUE:
+                // Handle dialogue UI (e.g., show dialogue panel)
+                break;
+        }
+    }
+
     /// <summary>
     /// Enables the pause menu panel. Disables all other panels.
     /// </summary>
