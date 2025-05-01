@@ -31,7 +31,6 @@ public class MonsterManager : MonoBehaviour
             Debug.Log("MonsterManager couldn't find the player at Start(), please fix");
         }
 
-        SpawnMonsters();
     }
     public void InitializeRoomTypeSettings()
     {
@@ -47,7 +46,6 @@ public class MonsterManager : MonoBehaviour
         roomTypeSelections.Add(Room.RoomType.ADVANCED, advancedEnemySelection);
         roomTypeSelections.Add(Room.RoomType.END, advancedEnemySelection);
         roomTypeSelections.Add(Room.RoomType.BOSS, advancedEnemySelection);
-        Debug.Log(roomTypeStats.Count + "/5   " + roomTypeSelections.Count + "/5");
     }
     // Update is called once per frame
     void Update()
@@ -72,15 +70,12 @@ public class MonsterManager : MonoBehaviour
     public void SpawnMonsters()
     {
         InitializeRoomTypeSettings();
-        Debug.Log("Hellooooo");
-        Debug.Log("MAPDATA rooms" + mapData.rooms.Count);
         foreach (Room room in mapData.rooms)
         {
             List<GameObject> enemyGroup = SelectRandomEnemies(roomTypeSelections[room.roomType], roomTypeStats[room.roomType][0], roomTypeStats[room.roomType][1]);
             List<Vector2Int> enemiesPositions = SelectSpawnPositions(enemyGroup.Count, room);
             for (int i = 0; i < enemiesPositions.Count; i++)
             {
-                Debug.Log("adding enemy no " + i);
                 GameObject currentMonster = Instantiate(enemyGroup[i], new Vector3(enemiesPositions[i].x, enemiesPositions[i].y, 0), Quaternion.Euler(0, 0, 0));
                 room.AddMonsterSpawnPosition(enemiesPositions[i]);
                 room.AddMonsters(currentMonster);
@@ -104,8 +99,8 @@ public class MonsterManager : MonoBehaviour
         List<Vector2> bounds = GetRoomBounds(room);
         for (int i = 0; i < count; i++)
         {
-            int x = (int)Random.Range(bounds[0].x + 1, bounds[1].x - 1);
-            int y = (int)Random.Range(bounds[0].y + 1, bounds[1].y - 1);
+            int x = (int)Random.Range(bounds[0].x + 2, bounds[1].x - 2);
+            int y = (int)Random.Range(bounds[0].y + 2, bounds[1].y - 2);
             positions.Add(new Vector2Int(x, y));
         }
         return positions;
@@ -143,14 +138,12 @@ public class MonsterManager : MonoBehaviour
     /// </summary>
     public void ClearAllEnemies()
     {
-        Debug.Log("MAPDATA rooms" + mapData.rooms.Count);
         foreach (Room room in mapData.rooms)
         {
             List<GameObject> monsters = room.monsters.ToList();
             room.monsters.Clear();
             for (int i = monsters.Count - 1; i >= 0; i--)
             {
-                Debug.Log("killing " + i);
                 DestroyImmediate(monsters[i]);
             }
         }

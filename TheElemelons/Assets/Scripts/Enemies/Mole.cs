@@ -55,7 +55,18 @@ public class Mole : Enemy
 
         InitializeCombatComponents();
     }
+    /*
+        IEnumerator FindPlayerPathfinder()
+        {
+            while (playerTransform == null || pathfinder == null)
+            {
+                playerTransform = GameObject.Find("Player").transform;
+                pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
+                yield return new WaitForSeconds(0.01f);
+            }
 
+        }
+    */
     public void InitializeComponents()
     {
         transformComponent = GetComponent<Transform>();
@@ -66,6 +77,8 @@ public class Mole : Enemy
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
         armFlashEffect = arm.GetComponent<FlashEffect>();
+        playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
 
         if (arm == null)
         {
@@ -117,8 +130,7 @@ public class Mole : Enemy
     {
         InitializeComponents();
         InitializeCombatComponents();
-        playerTransform = GameObject.Find("Player").transform;
-        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
+
     }
 
     // Fixed update to handle physics and movements correctly

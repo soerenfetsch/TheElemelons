@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class TreeLog : Enemy
@@ -53,7 +54,8 @@ public class TreeLog : Enemy
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
-
+        playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         currentState = EnemyStatus.Idle;
         homePosition = transformComponent.position;
     }
@@ -80,8 +82,6 @@ public class TreeLog : Enemy
     {
         InitializeComponents();
         InitializeCombatComponents();
-        playerTransform = GameObject.Find("Player").transform;
-        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
     }
 
     // Fixed update to handle physics and movements correctly
@@ -105,6 +105,10 @@ public class TreeLog : Enemy
     /// </summary>
     public override void ActOnStatus()
     {
+        if ((playerTransform.position - transform.position).sqrMagnitude < 15)
+        {
+            Debug.Log("current status: " + currentState);
+        }
         switch (currentState)
         {
             case EnemyStatus.Idle:
@@ -274,13 +278,17 @@ public class TreeLog : Enemy
 
         // Find the best direction to move toward the player using pathfinding (collision at feet level)
         Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
+        if ((playerTransform.position - transform.position).sqrMagnitude < 15)
+        {
+            Debug.Log(direction);
+        }
         if (direction == Vector2.zero)
         {
             direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);
         }
         if (direction == Vector2.zero) return;
 
-        direction = direction.normalized;
+        direction.Normalize();
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
     }
