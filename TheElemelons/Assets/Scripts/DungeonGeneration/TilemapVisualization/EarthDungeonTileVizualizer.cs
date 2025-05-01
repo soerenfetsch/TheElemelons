@@ -15,6 +15,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     public RimTileSet basicRims, advancedRims; // Rim tiles
     // For the top and bottom doors the tiles are named after their respective position
     public DoorTileSet doorTileSet; // Door tileset for all four doors
+    public DoorTileSet openDoorTileSet;
     protected enum RimPosition
     {
         UpperTopLeft, UpperTopRight, UpperBottomLeft, UpperBottomRight,
@@ -445,7 +446,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     /// <param name="position">The position of the door.</param>
     /// <param name="doorDirection">The direction of the door. up, down, left or right.</param>
     /// <param name="room">The room the door is in.</param>
-    private void PaintDoor(Vector2Int position, Vector2Int doorDirection, Room room)
+    public void PaintDoor(Vector2Int position, Vector2Int doorDirection, Room room)
     {
         // Paint the door based on the door direction, initial position is in the middle of the door
         if (doorDirection == Vector2Int.up || doorDirection == Vector2Int.down)
@@ -521,6 +522,93 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.down)),
                 verticalDoor.doorThree
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + 3 * Vector2Int.down)),
+                verticalDoor.doorFour
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + 4 * Vector2Int.down)),
+                verticalDoor.doorFive
+            );
+        }
+    }
+    public void PaintOpenDoor(Vector2Int position, Vector2Int doorDirection, Room room)
+    {
+        // Paint the door based on the door direction, initial position is in the middle of the door
+        if (doorDirection == Vector2Int.up || doorDirection == Vector2Int.down)
+        {
+            DoorTileSet.HorizontalDoor horizontalDoor = null;
+            if (doorDirection == Vector2Int.up)
+            {
+                // Top door
+                horizontalDoor = openDoorTileSet.topDoor;
+            }
+            else if (doorDirection == Vector2Int.down)
+            {
+                // Bottom door
+                horizontalDoor = openDoorTileSet.bottomDoor;
+            }
+            if (horizontalDoor == null)
+            {
+                return;
+            }
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.left)),
+                horizontalDoor.doorBottomLeft
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.left + Vector2Int.up)),
+                horizontalDoor.doorUpperLeft
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)position),
+                null
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.up)),
+                null
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right)),
+                horizontalDoor.doorBottomRight
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + Vector2Int.right + Vector2Int.up)),
+                horizontalDoor.doorUpperRight
+            );
+        }
+        else if (doorDirection == Vector2Int.left || doorDirection == Vector2Int.right)
+        {
+            DoorTileSet.VerticalDoor verticalDoor = null;
+            if (doorDirection == Vector2Int.left)
+            {
+                // Left door
+                verticalDoor = openDoorTileSet.leftDoor;
+            }
+            else if (doorDirection == Vector2Int.right)
+            {
+                // Right door
+                verticalDoor = openDoorTileSet.rightDoor;
+            }
+            if (verticalDoor == null)
+            {
+                return;
+            }
+            // Top starts two tiles up in the wall
+            position += 3 * Vector2Int.up;
+
+            decorationTilemap.SetTile(
+                decorationTilemap.WorldToCell((Vector3Int)position),
+                verticalDoor.doorOne
+            );
+            decorationTilemap.SetTile(
+                decorationTilemap.WorldToCell((Vector3Int)(position + Vector2Int.down)),
+                verticalDoor.doorTwo
+            );
+            collisionTilemap.SetTile(
+                collisionTilemap.WorldToCell((Vector3Int)(position + 2 * Vector2Int.down)),
+                null
             );
             collisionTilemap.SetTile(
                 collisionTilemap.WorldToCell((Vector3Int)(position + 3 * Vector2Int.down)),

@@ -40,7 +40,6 @@ public class DungeonGenerator : MonoBehaviour
         Debug.Log("Called the Dungeon Generator");
         // Clears the previous dungeon visualization
         tilemapVisualizer.Clear();
-
         // Calls the procedural generation algorithm to create a dungeon
         RunProceduralGeneration();
     }
@@ -51,6 +50,7 @@ public class DungeonGenerator : MonoBehaviour
     private void RunProceduralGeneration()
     {
         mapData = mapGenerator.GenerateMap();
+        Debug.Log(mapData == null);
         tilemapVisualizer.PaintTiles(mapData);
         tilePositionData.tilePositions = mapData.floorPositions.ToList();
     }

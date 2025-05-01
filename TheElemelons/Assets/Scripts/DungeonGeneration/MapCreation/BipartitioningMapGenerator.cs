@@ -27,6 +27,10 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         createShrinePositions(mapData);
         createTrapPositions(mapData);
         monsterManager.mapData = mapData;
+        if (monsterManager.allMonsters == null)
+        {
+            monsterManager.allMonsters = new List<GameObject>();
+        }
         monsterManager.SpawnMonsters();
         return mapData;
     }

@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public class Room
 {
-    public bool areDoorsOpen = true;
+    public bool areDoorsOpen = false;
     /// <summary>
     /// Floor positions within the room.
     /// </summary>
