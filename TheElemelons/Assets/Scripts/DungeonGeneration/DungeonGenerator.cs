@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,6 +13,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] protected MonsterManager monsterManager;
     [SerializeField] public MapData mapData;
     [SerializeField] public TilePositionData tilePositionData;
+    [SerializeField] public LineOfSightPathfinder pathfinder;
     /// <summary>
     /// Public method to generate the dungeon.
     /// This method clears the previous dungeon visualization and then calls the procedural generation algorithm
@@ -30,6 +32,8 @@ public class DungeonGenerator : MonoBehaviour
             monsterManager.ClearAllEnemies();
         }
         GenerateDungeon();
+        pathfinder.InitializeFloorPositions();
+        pathfinder.InitializeVisibilityGrid();
     }
     public void GenerateDungeon()
     {
@@ -49,15 +53,6 @@ public class DungeonGenerator : MonoBehaviour
         mapData = mapGenerator.GenerateMap();
         tilemapVisualizer.PaintTiles(mapData);
         tilePositionData.tilePositions = mapData.floorPositions.ToList();
-    }
-    private void PickPlayerSpawn()
-    {
-        /*
-        Room spawnRoom = new Room();
-        spawnRoom.roomType = Room.RoomType.ADVANCED;
-        while(spawnRoom.roomType != Room.RoomType.START)
-        mapData.rooms[(int)Random.Range(0,mapData.rooms.Count)]
-        */
     }
     void OnApplicationQuit()
     {
