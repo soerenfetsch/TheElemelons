@@ -157,7 +157,7 @@ public class MonsterManager : MonoBehaviour
             }
             else if (doorDirection == Vector2Int.left || doorDirection == Vector2Int.right)
             {
-                if (IsInBounds(playerTransform.position, door + +4 * Vector2Int.down, door))
+                if (IsInBounds(playerTransform.position, door + +4 * Vector2Int.down + Vector2Int.left, door + Vector2Int.right))
                 {
                     return true;
                 }
@@ -179,7 +179,7 @@ public class MonsterManager : MonoBehaviour
         List<Vector2> bounds = GetRoomBounds(room);
         Vector2 size = bounds[1] - bounds[0];
         Vector2 center = bounds[0] + size / 2;
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(center, size, 0f);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(center, size + new Vector2(1f, 1f), 0f);
         foreach (Collider2D collider in colliders)
         {
             if (collider.GetComponent<Enemy>() != null)
