@@ -484,7 +484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2305246718208910923, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2950929206308542952, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_Pivot.x
@@ -195698,11 +195698,11 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1267627531
+  m_SortingLayer: -1
+  m_SortingOrder: 3
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -252495,7 +252495,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -1148350,11 +1148350,11 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1670731742
@@ -1165250,7 +1165250,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64
-  tilePositionData: {fileID: 11400000, guid: cc552f33329906846b2c5374af51f202, type: 2}
+  tilePositionData: {fileID: 11400000, guid: 1c3deb36ab7b5c245a589e12fba0dca9, type: 2}
   playerSightRange: 10
   drawDebugGizmos: 1
 --- !u!4 &1790863734
@@ -1165299,11 +1165299,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b134ea9df71fe4fbee05e1259884cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterManager: {fileID: 0}
   startPosition: {x: 0, y: 0}
   minRoomWidth: 25
-  minRoomHeight: 25
-  dungeonWidth: 200
-  dungeonHeight: 150
+  minRoomHeight: 20
+  dungeonWidth: 250
+  dungeonHeight: 200
   offset: 8
   corridorWidth: 3
 --- !u!114 &1792289321
@@ -1165327,7 +1165328,7 @@ MonoBehaviour:
   basicRims: {fileID: 11400000, guid: a25436226a7fb5d40941153e21a49e9a, type: 2}
   advancedRims: {fileID: 11400000, guid: 42e42fffda69553458075ef321bb195d, type: 2}
   doorTileSet: {fileID: 11400000, guid: 8c26c0d38030cbf4dbf70bd65f79f2ac, type: 2}
-  monsterManager: {fileID: 0}
+  openDoorTileSet: {fileID: 11400000, guid: 76c2d35dfd30df547b536e43d4bd173b, type: 2}
 --- !u!114 &1792289322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1165343,7 +1165344,9 @@ MonoBehaviour:
   startPosition: {x: 0, y: 0}
   tilemapVisualizer: {fileID: 1792289321}
   mapGenerator: {fileID: 1792289320}
-  monsterManager: {fileID: 0}
+  monsterManager: {fileID: 1845944819}
+  tilePositionData: {fileID: 11400000, guid: 1c3deb36ab7b5c245a589e12fba0dca9, type: 2}
+  pathfinder: {fileID: 1790863733}
 --- !u!4 &1792289323
 Transform:
   m_ObjectHideFlags: 0
@@ -1165392,15 +1165395,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startEnemySelection:
   - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+  normalEnemySelection:
+  - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+  - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
   advancedEnemySelection:
   - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
   - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
   - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
-  startEnemyCount: 2
-  startEnemyCountVariability: 2
+  endEnemySelection:
+  - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
+  - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+  - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+  bossEnemySelection:
+  - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
+  - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
+  - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+  startEnemyCount: 1
+  startEnemyCountVariability: 0
+  normalEnemyCount: 2
+  normalEnemyCountVariability: 1
   advancedEnemyCount: 3
   advancedEnemyCountVariability: 2
+  endEnemyCount: 5
+  endEnemyCountVariability: 0
+  bossEnemyCount: 6
+  bossEnemyCountVariability: 1
   playerTransform: {fileID: 98220339}
+  allMonsters: []
+  earthDungeonTileVizualizer: {fileID: 1792289321}
 --- !u!4 &1845944820
 Transform:
   m_ObjectHideFlags: 0
@@ -1165495,7 +1165517,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1959643131
