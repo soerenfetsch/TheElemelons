@@ -78,7 +78,7 @@ public class MonsterManager : MonoBehaviour
         {
             foreach (Room room in mapData.rooms)
             {
-                openCloseDoor(room);
+                OpenCloseDoor(room);
             }
         }
         if (deactivateEnemiesOutOfReach && Time.frameCount % intervalDeactivateEnemiesOutOfReach == 0)
@@ -100,10 +100,10 @@ public class MonsterManager : MonoBehaviour
     /// yet unused method to open and close doors depending on whether the player is close to enemies
     /// </summary>
     /// <param name="room"></param>
-    public void openCloseDoor(Room room)
+    public void OpenCloseDoor(Room room)
     {
         bool playerIsInRoom = IsInRoom(playerTransform.position, room);
-        if (!AreMonstersInRoom(room) || !playerIsInRoom)
+        if (!playerIsInRoom || !AreMonstersInRoom(room))
         {
             if (!room.areDoorsOpen)
             {
