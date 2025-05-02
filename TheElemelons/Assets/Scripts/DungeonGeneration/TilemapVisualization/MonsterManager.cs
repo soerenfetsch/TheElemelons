@@ -43,6 +43,10 @@ public class MonsterManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        InitializeParams();
+    }
+    public void InitializeParams()
+    {
         playerTransform = GameObject.Find("Player").transform;
         if (playerTransform == null)
         {
@@ -52,6 +56,7 @@ public class MonsterManager : MonoBehaviour
         {
             allMonsters = new List<GameObject>();
         }
+
     }
     /// <summary>
     /// initialize dictionary that contains all settings for each roomtype
@@ -306,7 +311,9 @@ public class MonsterManager : MonoBehaviour
         int len = allMonsters.Count;
         for (int i = len - 1; i >= 0; i--)
         {
-            DestroyImmediate(allMonsters[i]);
+            GameObject current_enemy = allMonsters[i];
+            allMonsters.RemoveAt(i);
+            DestroyImmediate(current_enemy);
         }
     }
 }
