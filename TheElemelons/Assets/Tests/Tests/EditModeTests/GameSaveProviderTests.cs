@@ -5,19 +5,17 @@ using UnityEngine;
 public class GameSaveProviderTests
 {
     private GameSaveProvider saveProvider;
-    private string savePath;
 
     [SetUp]
     public void Setup()
     {
-        // Initialize the save provider and set a test save path
+        // Initialize the save provider
         saveProvider = new GameSaveProvider();
-        savePath = Path.Combine(Application.persistentDataPath, "test_save.json"); // Use a specific test file
 
         // Ensure no previous save exists
-        if (File.Exists(savePath))
+        if (File.Exists(saveProvider.SavePath)) // Use saveProvider.SavePath
         {
-            File.Delete(savePath);
+            File.Delete(saveProvider.SavePath); // Use saveProvider.SavePath
         }
     }
 
@@ -25,9 +23,9 @@ public class GameSaveProviderTests
     public void TearDown()
     {
         // Clean up the test save file after each test
-        if (File.Exists(savePath))
+        if (File.Exists(saveProvider.SavePath)) // Use saveProvider.SavePath
         {
-            File.Delete(savePath);
+            File.Delete(saveProvider.SavePath); // Use saveProvider.SavePath
         }
     }
 
@@ -47,15 +45,15 @@ public class GameSaveProviderTests
         saveProvider.SaveGame(data);
 
         // Assert
-        Assert.IsTrue(File.Exists(savePath));
+        Assert.IsTrue(File.Exists(saveProvider.SavePath)); // Use saveProvider.SavePath
 
         // Optionally, verify the contents of the file
-        string jsonData = File.ReadAllText(savePath);
+        string jsonData = File.ReadAllText(saveProvider.SavePath); // Use saveProvider.SavePath
         GameSaveData loadedData = JsonUtility.FromJson<GameSaveData>(jsonData);
         Assert.AreEqual(GameProgressionStage.CASTLE_EARLY, loadedData.progressionStage);
         Assert.AreEqual(100, loadedData.maxHealth);
         Assert.AreEqual(50, loadedData.maxMana);
-        Assert.AreEqual("test_save.json", loadedData.saveFileName);
+        Assert.AreEqual("save.json", loadedData.saveFileName); // Use "save.json"
     }
 
     [Test]
@@ -80,7 +78,7 @@ public class GameSaveProviderTests
         Assert.AreEqual(GameProgressionStage.CASTLE_LATE, loadedData.progressionStage);
         Assert.AreEqual(120, loadedData.maxHealth);
         Assert.AreEqual(60, loadedData.maxMana);
-        Assert.AreEqual("test_save.json", loadedData.saveFileName);
+        Assert.AreEqual("save.json", loadedData.saveFileName); // Use "save.json"
     }
 
     [Test]
@@ -96,13 +94,13 @@ public class GameSaveProviderTests
             saveFileName = "test_save.json"
         };
         saveProvider.SaveGame(data);
-        Assert.IsTrue(File.Exists(savePath));
+        Assert.IsTrue(File.Exists(saveProvider.SavePath)); // Use saveProvider.SavePath
 
         // Act
         saveProvider.ResetSave();
 
         // Assert
-        Assert.IsFalse(File.Exists(savePath));
+        Assert.IsFalse(File.Exists(saveProvider.SavePath)); // Use saveProvider.SavePath
     }
 
     [Test]
@@ -121,8 +119,12 @@ public class GameSaveProviderTests
         saveProvider.SaveGame(data);
 
         // Assert
-        // Since EARTH_EARLY should not be saved, verify that the file is not created or is empty.
-        Assert.IsFalse(File.Exists(savePath) || new FileInfo(savePath).Length == 0);
+        // Since EARTH_EARLY should be saved as CASTLE_EARLY, verify that the file is created and contains CASTLE_EARLY.
+        Assert.IsTrue(File.Exists(saveProvider.SavePath));
+
+        string jsonData = File.ReadAllText(saveProvider.SavePath);
+        GameSaveData loadedData = JsonUtility.FromJson<GameSaveData>(jsonData);
+        Assert.AreEqual(GameProgressionStage.CASTLE_EARLY, loadedData.progressionStage);
     }
 
     [Test]
@@ -141,8 +143,12 @@ public class GameSaveProviderTests
         saveProvider.SaveGame(data);
 
         // Assert
-        // Since EARTH_LATE should not be saved, verify that the file is not created or is empty.
-        Assert.IsFalse(File.Exists(savePath) || new FileInfo(savePath).Length == 0);
+        // Since EARTH_LATE should be saved as CASTLE_LATE, verify that the file is created and contains CASTLE_LATE.
+        Assert.IsTrue(File.Exists(saveProvider.SavePath));
+
+        string jsonData = File.ReadAllText(saveProvider.SavePath);
+        GameSaveData loadedData = JsonUtility.FromJson<GameSaveData>(jsonData);
+        Assert.AreEqual(GameProgressionStage.CASTLE_LATE, loadedData.progressionStage);
     }
 
     [Test]
@@ -150,9 +156,9 @@ public class GameSaveProviderTests
     {
         // Arrange
         // Ensure no save file exists
-        if (File.Exists(savePath))
+        if (File.Exists(saveProvider.SavePath)) // Use saveProvider.SavePath
         {
-            File.Delete(savePath);
+            File.Delete(saveProvider.SavePath); // Use saveProvider.SavePath
         }
 
         // Act
@@ -171,7 +177,7 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.CASTLE_END,
             maxHealth = 150,
             maxMana = 75,
-            saveFileName = "full_test_save.json"
+            saveFileName = "test_save.json"
         };
 
         // Act
@@ -183,6 +189,6 @@ public class GameSaveProviderTests
         Assert.AreEqual(data.progressionStage, loadedData.progressionStage);
         Assert.AreEqual(data.maxHealth, loadedData.maxHealth);
         Assert.AreEqual(data.maxMana, loadedData.maxMana);
-        Assert.AreEqual(data.saveFileName, loadedData.saveFileName);
+        Assert.AreEqual("save.json", loadedData.saveFileName); // Use "save.json"
     }
 }

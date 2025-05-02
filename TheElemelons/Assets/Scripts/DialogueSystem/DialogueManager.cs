@@ -143,6 +143,8 @@ public class DialogueManager : MonoBehaviour
             currentDialogue = null;
         }
 
+        // Change the game status back to INGAME after the dialogue ends
+        GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
     }
 
     private Sprite GetPortrait(int index)

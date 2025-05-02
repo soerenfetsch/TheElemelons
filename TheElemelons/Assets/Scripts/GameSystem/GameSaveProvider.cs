@@ -5,7 +5,7 @@ using System;
 public class GameSaveProvider : IGameSaveProvider
 {
     private const string SaveKey = "save.json"; // Now used as the filename
-    private string SavePath => Path.Combine(Application.persistentDataPath, SaveKey);
+    public string SavePath => Path.Combine(Application.persistentDataPath, SaveKey);
 
     public void SaveGame(GameSaveData data)
     {

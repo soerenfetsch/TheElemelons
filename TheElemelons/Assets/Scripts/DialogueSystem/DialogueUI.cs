@@ -8,7 +8,7 @@ public class DialogueUI : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Image portrait;
-    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] public TextMeshProUGUI dialogueText;
     [SerializeField] private Image dialogueBoxImage;
 
     [Header("Typing Settings")]
