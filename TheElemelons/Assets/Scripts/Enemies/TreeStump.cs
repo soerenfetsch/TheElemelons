@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
 public class TreeLog : Enemy
 {
     [Header("Components")]
@@ -112,13 +111,9 @@ public class TreeLog : Enemy
         switch (currentState)
         {
             case EnemyStatus.Idle:
+
                 // Wait until player is within chase or attack radius
-                if (CheckPlayerWithinRadius(attackRadius))
-                {
-                    ChangeState(EnemyStatus.Attacking);
-                    animator.SetBool("wakeUp", true);
-                }
-                else if (CheckPlayerReachableWithinRadius(chaseRadius))
+                if (CheckPlayerWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                     animator.SetBool("wakeUp", true);

@@ -142,7 +142,6 @@ public class MonsterManager : MonoBehaviour
     {
         foreach (Vector2Int door in room.doorPositions)
         {
-            Debug.DrawRay(new Vector3(door.x, door.y), new Vector3(door.x, door.y), Color.cyan, 100f);
             Vector2Int doorDirection = GetDoorDir(room, door);
             if (doorDirection == Vector2Int.up || doorDirection == Vector2Int.down)
             {

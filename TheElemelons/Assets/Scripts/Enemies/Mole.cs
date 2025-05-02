@@ -162,7 +162,7 @@ public class Mole : Enemy
         switch (currentState)
         {
             case EnemyStatus.Idle:
-                if (CheckPlayerReachableWithinRadius(chaseRadius) && isDugIn)
+                if (isDugIn && CheckPlayerWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                     ChangeAnimationClip("Walking");
