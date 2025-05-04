@@ -32,12 +32,10 @@ public class GameStateTest
         saveData.progressionStage = GameProgressionStage.CASTLE_END;
         saveData.maxHealth = 100;
         saveData.maxMana = 50;
-        saveData.saveFileName = "test_save";
 
         Assert.AreEqual(GameProgressionStage.CASTLE_END, saveData.progressionStage);
         Assert.AreEqual(100, saveData.maxHealth);
         Assert.AreEqual(50, saveData.maxMana);
-        Assert.AreEqual("test_save", saveData.saveFileName);
     }
 
     [Test]
@@ -47,8 +45,7 @@ public class GameStateTest
 
         // Assert that default values are what you expect.  Adjust as necessary.
         Assert.AreEqual(default(GameProgressionStage), saveData.progressionStage);
-        Assert.AreEqual(default(int), saveData.maxHealth);
-        Assert.AreEqual(default(int), saveData.maxMana);
-        Assert.IsNull(saveData.saveFileName);
+        Assert.AreEqual(3, saveData.maxHealth);
+        Assert.AreEqual(3, saveData.maxMana);
     }
 }

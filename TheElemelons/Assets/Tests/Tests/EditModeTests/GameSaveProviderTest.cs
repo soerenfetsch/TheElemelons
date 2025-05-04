@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System.IO;
 using UnityEngine;
 
-public class GameSaveProviderTests
+public class GameSaveProviderTest
 {
     private GameSaveProvider saveProvider;
 
@@ -38,7 +38,6 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.CASTLE_EARLY,
             maxHealth = 100,
             maxMana = 50,
-            saveFileName = "test_save.json"
         };
 
         // Act
@@ -53,7 +52,6 @@ public class GameSaveProviderTests
         Assert.AreEqual(GameProgressionStage.CASTLE_EARLY, loadedData.progressionStage);
         Assert.AreEqual(100, loadedData.maxHealth);
         Assert.AreEqual(50, loadedData.maxMana);
-        Assert.AreEqual("save.json", loadedData.saveFileName); // Use "save.json"
     }
 
     [Test]
@@ -66,7 +64,6 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.CASTLE_LATE,
             maxHealth = 120,
             maxMana = 60,
-            saveFileName = "test_save.json"
         };
         saveProvider.SaveGame(data);
 
@@ -78,7 +75,6 @@ public class GameSaveProviderTests
         Assert.AreEqual(GameProgressionStage.CASTLE_LATE, loadedData.progressionStage);
         Assert.AreEqual(120, loadedData.maxHealth);
         Assert.AreEqual(60, loadedData.maxMana);
-        Assert.AreEqual("save.json", loadedData.saveFileName); // Use "save.json"
     }
 
     [Test]
@@ -91,7 +87,6 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.CASTLE_EARLY,
             maxHealth = 100,
             maxMana = 50,
-            saveFileName = "test_save.json"
         };
         saveProvider.SaveGame(data);
         Assert.IsTrue(File.Exists(saveProvider.SavePath)); // Use saveProvider.SavePath
@@ -112,7 +107,6 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.EARTH_EARLY,
             maxHealth = 100,
             maxMana = 50,
-            saveFileName = "test_save.json"
         };
 
         // Act
@@ -136,7 +130,6 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.EARTH_LATE,
             maxHealth = 100,
             maxMana = 50,
-            saveFileName = "test_save.json"
         };
 
         // Act
@@ -165,7 +158,7 @@ public class GameSaveProviderTests
         GameSaveData loadedData = saveProvider.LoadGame();
 
         // Assert
-        Assert.IsNull(loadedData);
+        Assert.IsNull(loadedData, "LoadGame should return null when no save file exists.");
     }
 
     [Test]
@@ -177,7 +170,6 @@ public class GameSaveProviderTests
             progressionStage = GameProgressionStage.CASTLE_END,
             maxHealth = 150,
             maxMana = 75,
-            saveFileName = "test_save.json"
         };
 
         // Act
@@ -189,6 +181,6 @@ public class GameSaveProviderTests
         Assert.AreEqual(data.progressionStage, loadedData.progressionStage);
         Assert.AreEqual(data.maxHealth, loadedData.maxHealth);
         Assert.AreEqual(data.maxMana, loadedData.maxMana);
-        Assert.AreEqual("save.json", loadedData.saveFileName); // Use "save.json"
     }
+    
 }

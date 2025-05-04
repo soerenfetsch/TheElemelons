@@ -26,7 +26,6 @@ public class GameSaveProvider : IGameSaveProvider
             progressionStage = stageToSave,
             maxHealth = data.maxHealth,
             maxMana = data.maxMana,
-            saveFileName = SaveKey,
             saveDate = DateTime.Now
         };
 
