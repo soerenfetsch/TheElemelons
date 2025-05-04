@@ -14,6 +14,7 @@ public class SpearShieldMan : Enemy
     private Transform transformComponent;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
+    private SpriteRenderer spriteRenderer;
     private Animator animator;
     private FlashEffect flashEffect;
 
@@ -27,11 +28,17 @@ public class SpearShieldMan : Enemy
     public float attackRadius = 2f;
 
     private bool isAlive = true;
+    private bool isCritical = false;
 
     [Header("Combat")]
-    public float baseDamage = 1f;
+    public float baseDamageSpear = 1f;
+    public float baseDamageShield = 0.5f;
+    public float throwDamageSpear = 1.5f;
+    public float throwSpeedSpear = 5f;
+    public float throwTimeSpear = 2f;
     public float thrust = 1f;
-    public float knockTime = 0.2f;
+    public float knockTimeSpear = 0.2f;
+    public float knockTimeShield = 0.7f;
     public float flashDuration = 0.2f;
     public float attackCooldown = 1f;
 
@@ -58,6 +65,7 @@ public class SpearShieldMan : Enemy
         transformComponent = GetComponent<Transform>();
         rb2d = GetComponent<Rigidbody2D>();
         colliderBox = GetComponent<BoxCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
@@ -88,23 +96,24 @@ public class SpearShieldMan : Enemy
     /// <summary>
     /// Randomizes whether the SpearShieldMan has a spear, shield, or both.
     /// </summary>
-    private void RandomizeSpearShield()
+    [ContextMenu("Init SpearShield")]
+    public void RandomizeSpearShield()
     {
         int randomValue = UnityEngine.Random.Range(0, 3); // 0: spear, 1: shield, 2: both
         switch (randomValue)
         {
             case 0:
                 // Instantiate the spear prefab as a child of the SpearShieldMan
-                spearInstance = Instantiate(spearPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                spearInstance = Instantiate(spearPrefab, transform.position, Quaternion.identity, transform);
                 break;
             case 1:
                 // Instantiate the shield prefab as a child of the SpearShieldMan
-                shieldInstance = Instantiate(shieldPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                shieldInstance = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
                 break;
             case 2:
                 // Instantiate both spear and shield prefabs as children of the SpearShieldMan
-                spearInstance = Instantiate(spearPrefab, transformComponent.position, Quaternion.identity, transformComponent);
-                shieldInstance = Instantiate(shieldPrefab, transformComponent.position, Quaternion.identity, transformComponent);
+                spearInstance = Instantiate(spearPrefab, transform.position, Quaternion.identity, transform);
+                shieldInstance = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
                 break;
         }
     }
@@ -114,6 +123,17 @@ public class SpearShieldMan : Enemy
         attackFactor = 1f;
         defenseFactor = 1f;
         elementType = ElementType.Earth;
+
+        if (spearInstance != null)
+        {
+            spearInstance.GetComponentInChildren<ShieldSpearCollider>().OnAttackTriggered += DealDamageWithSpear;
+            spearInstance.GetComponent<Spear>().OnAttackTriggered += DealDamageWithSpearThrow;
+            spearInstance.GetComponent<Spear>().enabled = false; // Disable the spear component to not throw initially
+        }
+        if (shieldInstance != null)
+        {
+            shieldInstance.GetComponentInChildren<ShieldSpearCollider>().OnAttackTriggered += DealDamageWithShield;
+        }
     }
 
     // Start is called before the first frame update
@@ -151,7 +171,7 @@ public class SpearShieldMan : Enemy
         switch (currentState)
         {
             case EnemyStatus.Idle:
-                if (CheckPlayerReachableWithinRadius(chaseRadius))
+                if (CheckPlayerWithinRadius(chaseRadius) && CheckPlayerReachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                     ChangeAnimationClip("Walking");
@@ -160,9 +180,10 @@ public class SpearShieldMan : Enemy
                 break;
             case EnemyStatus.Approaching:
                 MoveTowardPlayer();
-                if (CheckPlayerWithinRadius(attackRadius))
+                if (CheckPlayerInAttackRange())
                 {
                     ChangeState(EnemyStatus.Attacking);
+                    ChangeAnimationClip("Idle");
                 }
                 else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
                 {
@@ -172,9 +193,10 @@ public class SpearShieldMan : Enemy
                 break;
             case EnemyStatus.Attacking:
                 AttackWithRandomWeaponIfReady();
-                if (CheckPlayerOutsideRadius(attackRadius))
+                if (!CheckPlayerInAttackRange())
                 {
                     ChangeState(EnemyStatus.Approaching);
+                    ChangeAnimationClip("Walking");
                 }
                 break;
             case EnemyStatus.Retreating:
@@ -189,7 +211,19 @@ public class SpearShieldMan : Enemy
         if (lastAttackTime + attackCooldown < Time.time)
         {
             lastAttackTime = Time.time;
-            if (spearInstance != null && shieldInstance != null)
+            // If marked as critical and has a spear instance, throw the spear
+            if (isCritical && spearInstance != null)
+            {
+                Debug.Log("SpearShieldMan: Throwing spear at player.");
+                spearInstance.GetComponent<Animator>().enabled = false;
+                spearInstance.GetComponentInChildren<ShieldSpearCollider>().DisableAttack();
+                spearInstance.GetComponentInChildren<ShieldSpearCollider>().enabled = false;
+                Vector2 attackDirection = (playerTransform.position - transform.position).normalized;
+                spearInstance.GetComponent<Spear>()?.ThrowSpear(
+                    attackDirection, throwSpeedSpear, throwTimeSpear);
+                spearInstance = null; // Remove the spear instance after throwing
+            }
+            else if (spearInstance != null && shieldInstance != null)
             {
                 // Randomly choose between spear and shield attack
                 if (UnityEngine.Random.Range(0, 2) == 0)
@@ -218,18 +252,50 @@ public class SpearShieldMan : Enemy
 
     private IEnumerator AttackWithSpear()
     {
+        ChangeAnimationClip("Attacking");
         spearInstance.GetComponent<Animator>()?.SetTrigger("Attack");
-        spearInstance.GetComponent<AttackCollider>()?.EnableAttack();
-        yield return new WaitForSeconds(1f); // Wait for the spear attack animation to finish
-        spearInstance.GetComponent<AttackCollider>()?.DisableAttack();
+        spearInstance.GetComponentInChildren<ShieldSpearCollider>()?.EnableAttack();
+        yield return new WaitForSeconds(1.2f); // Wait for the spear attack animation to finish
+        spearInstance.GetComponentInChildren<ShieldSpearCollider>()?.DisableAttack();
+        if (GetCurrentState() == EnemyStatus.Attacking)
+        {
+            ChangeAnimationClip("Idle");
+        }
     }
 
     private IEnumerator AttackWithShield()
     {
+        ChangeAnimationClip("Attacking");
         shieldInstance.GetComponent<Animator>()?.SetTrigger("Attack");
-        shieldInstance.GetComponent<AttackCollider>()?.EnableAttack();
-        yield return new WaitForSeconds(1f); // Wait for the shield attack animation to finish
-        shieldInstance.GetComponent<AttackCollider>()?.DisableAttack();
+        shieldInstance.GetComponentInChildren<ShieldSpearCollider>()?.EnableAttack();
+        yield return new WaitForSeconds(1.2f); // Wait for the shield attack animation to finish
+        shieldInstance.GetComponentInChildren<ShieldSpearCollider>()?.DisableAttack();
+        if (GetCurrentState() == EnemyStatus.Attacking)
+        {
+            ChangeAnimationClip("Idle");
+        }
+    }
+
+    private void DealDamageWithSpear(Rigidbody2D playerRb)
+    {
+        if (playerRb == null) return;
+
+        Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
+        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamageSpear, thrust, knockTimeSpear);
+    }
+
+    private void DealDamageWithShield(Rigidbody2D playerRb)
+    {
+        if (playerRb == null) return;
+
+        Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
+        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamageShield, thrust, knockTimeShield);
+    }
+
+    private void DealDamageWithSpearThrow(Rigidbody2D playerRb, Vector2 attackDirection)
+    {
+        if (playerRb == null) return;
+        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, throwDamageSpear, thrust, knockTimeSpear);
     }
 
     private void ChangeAnimationClip(string v)
@@ -249,7 +315,12 @@ public class SpearShieldMan : Enemy
     /// </summary>
     public override void ActOnHealth()
     {
-        // TODO: Implement the spear throw behavior for the SpearShieldMan enemy.
+        if (health.GetHealth() <= health.GetMaxHealth() * 0.25f && isAlive && !isCritical && spearInstance != null)
+        {
+            // Enable the spear throw by marking as critical
+            isCritical = true;
+            spearInstance.GetComponent<Spear>().enabled = true;
+        }
         if (health.IsZero() && isAlive)
         {
             isAlive = false;
@@ -279,17 +350,28 @@ public class SpearShieldMan : Enemy
 
     private void ChangeWalkAnimation(Vector2 direction)
     {
+        int ownSortingOrder = spriteRenderer.sortingOrder;
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             if (direction.x > 0)
             {
                 SetAnimationFloat("Vertical", 0f);
                 SetAnimationFloat("Horizontal", 1f);
+                // Facing right makes the shield be in front of the spear
+                if (shieldInstance != null)
+                    shieldInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder + 1;
+                if (spearInstance != null)
+                    spearInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder;
             }
             else if (direction.x < 0)
             {
                 SetAnimationFloat("Vertical", 0f);
                 SetAnimationFloat("Horizontal", -1f);
+                // Facing left makes the spear be in front of the shield
+                if (shieldInstance != null)
+                    shieldInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder;
+                if (spearInstance != null)
+                    spearInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder + 1;
             }
         }
         else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
@@ -298,11 +380,21 @@ public class SpearShieldMan : Enemy
             {
                 SetAnimationFloat("Vertical", 1f);
                 SetAnimationFloat("Horizontal", 0f);
+                // Facing back makes the character in front of spear and shield
+                if (shieldInstance != null)
+                    shieldInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder - 1;
+                if (spearInstance != null)
+                    spearInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder - 1;
             }
             else if (direction.y < 0)
             {
                 SetAnimationFloat("Vertical", -1f);
                 SetAnimationFloat("Horizontal", 0f);
+                // Facing front makes the spear and shield in front of the character
+                if (shieldInstance != null)
+                    shieldInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder + 1;
+                if (spearInstance != null)
+                    spearInstance.GetComponent<SpriteRenderer>().sortingOrder = ownSortingOrder + 1;
             }
         }
     }
@@ -327,18 +419,24 @@ public class SpearShieldMan : Enemy
     /// <returns></returns>
     private bool CheckPlayerWithinRadius(float radius)
     {
-        float distance = Vector2.Distance(GetFeetPosition(), playerTransform.position);
-        return distance <= radius;
+        return Vector2.Distance(GetFeetPosition(), playerTransform.position) <= radius;
     }
 
     /// <summary>
-    /// Check if the player is outside a certain radius of the enemy (just positions)
+    /// Check if the player is in attack range.
+    /// The method takes into account the range of player and
+    /// the direction in which the SpearShieldMan is looking
+    /// by taking the dot product.
     /// </summary>
-    /// <param name="radius"></param>
     /// <returns></returns>
-    private bool CheckPlayerOutsideRadius(float radius)
+    private bool CheckPlayerInAttackRange()
     {
-        return Vector2.Distance(GetFeetPosition(), playerTransform.position) > radius;
+        Vector2 distanceVector = (Vector2)playerTransform.position - GetFeetPosition();
+        Vector2 attackDirection = new Vector2(animator.GetFloat("Horizontal"),
+                                              animator.GetFloat("Vertical"));
+        float dotProductDistance = Vector2.Dot(distanceVector.normalized, attackDirection.normalized);
+        float regularDistance = Vector2.Distance(GetFeetPosition(), playerTransform.position);
+        return regularDistance <= attackRadius && dotProductDistance >= 0.8f;
     }
 
     /// <summary>
@@ -397,18 +495,14 @@ public class SpearShieldMan : Enemy
 
         ChangeAnimationClip("Stagger");
         flashEffect?.Flash(flashDuration);
+        if (spearInstance != null)
+            spearInstance?.GetComponent<FlashEffect>()?.Flash(flashDuration);
+        if (shieldInstance != null)
+            shieldInstance?.GetComponent<FlashEffect>()?.Flash(flashDuration);
 
         yield return new WaitForSeconds(staggerTime);
         ChangeState(previousState);
         ChangeAnimationClip(lastAnimation);
-    }
-
-    private void HandleAttack(Rigidbody2D playerRb)
-    {
-        if (playerRb == null) return;
-
-        Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
-        CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
     }
 
     public override void ModifySpeed(float factor)
