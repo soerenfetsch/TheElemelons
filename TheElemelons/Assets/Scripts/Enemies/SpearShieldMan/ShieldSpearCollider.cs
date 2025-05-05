@@ -19,7 +19,7 @@ public class ShieldSpearCollider : MonoBehaviour
     private int lastDirection;
     private bool lastEnabled;
 
-    private void Awake()
+    private void Start()
     {
         InitializeComponents();
     }
@@ -69,6 +69,15 @@ public class ShieldSpearCollider : MonoBehaviour
     public void DisableAttack()
     {
         isEnabled = false;
+    }
+
+    /// <summary>
+    /// Checks if the attack collider is enabled.
+    /// </summary>
+    /// <returns>True if enabled, false otherwise.</returns>
+    public bool IsEnabled()
+    {
+        return isEnabled;
     }
 
     private void Update()

@@ -8,9 +8,9 @@ public class SpearShieldMan : Enemy
     [Header("Components")]
     public GameObject shieldPrefab;
     public GameObject spearPrefab;
+    public GameObject spearInstance;
+    public GameObject shieldInstance;
 
-    private GameObject spearInstance;
-    private GameObject shieldInstance;
     private Transform transformComponent;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
@@ -179,17 +179,19 @@ public class SpearShieldMan : Enemy
                 }
                 break;
             case EnemyStatus.Approaching:
-                MoveTowardPlayer();
                 if (CheckPlayerInAttackRange())
                 {
                     ChangeState(EnemyStatus.Attacking);
                     ChangeAnimationClip("Idle");
+                    break;
                 }
                 else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Idle);
                     ChangeAnimationClip("Idle");
+                    break;
                 }
+                MoveTowardPlayer();
                 break;
             case EnemyStatus.Attacking:
                 AttackWithRandomWeaponIfReady();
@@ -250,7 +252,13 @@ public class SpearShieldMan : Enemy
         }
     }
 
-    private IEnumerator AttackWithSpear()
+    /// <summary>
+    /// Attacks the player with the spear. Starts the attack animation and enables the spear collider
+    /// for a short duration. After the attack animation is finished, it disables the spear collider.
+    /// If the enemy is still in the attacking state, it changes back to idle animation.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator AttackWithSpear()
     {
         ChangeAnimationClip("Attacking");
         spearInstance.GetComponent<Animator>()?.SetTrigger("Attack");
@@ -263,7 +271,13 @@ public class SpearShieldMan : Enemy
         }
     }
 
-    private IEnumerator AttackWithShield()
+    /// <summary>
+    /// Attacks the player with the shield. Starts the attack animation and enables the shield collider
+    /// for a short duration. After the attack animation is finished, it disables the shield collider.
+    /// If the enemy is still in the attacking state, it changes back to idle animation.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator AttackWithShield()
     {
         ChangeAnimationClip("Attacking");
         shieldInstance.GetComponent<Animator>()?.SetTrigger("Attack");
