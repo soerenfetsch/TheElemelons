@@ -43,24 +43,32 @@ public class PauseMenuUI : MonoBehaviour
     public void OnContinueClicked()
     {
         Debug.Log("Continue Game Clicked");
-        // TODO: Add logic to resume the game
+        // Resume the game and update the game state
+        GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
     }
 
     public void OnSaveGameClicked()
     {
         Debug.Log("Save Game Clicked");
-        // TODO: Add logic to save the game
+        // Save the game state
+        GameManager.Instance.SaveProvider.SaveGame(new GameSaveData
+        {
+            progressionStage = GameManager.Instance.CurrentProgressionStage,
+            // Add other relevant data to save here
+        });
     }
 
     public void OnOptionsClicked()
     {
         Debug.Log("Options Clicked");
-        // TODO: Add logic to open the options menu
+        // Open the options menu and update the game state
+        GameManager.Instance.ChangeGameStatus(GameStatus.SETTINGS_MENU);
     }
 
     public void OnMainMenuClicked()
     {
         Debug.Log("Main Menu Clicked");
-        // TODO: Add logic to return to the main menu
+        // Return to the main menu and save the game
+        GameManager.Instance.ChangeGameStatus(GameStatus.MAIN_MENU);
     }
 }
