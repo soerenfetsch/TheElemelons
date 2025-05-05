@@ -10,6 +10,7 @@ public class DialogueTrigger : InteractableNPC
     public override void Interact()
     {
         // This method is called by PlayerInteraction when the player presses E near this NPC
+        GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE);
         if (DialogueManager.Instance.HasDialogue())
         {
             DialogueManager.Instance.AdvanceDialogue();
@@ -23,8 +24,6 @@ public class DialogueTrigger : InteractableNPC
                 nextDialogue = 0;
             }
         }
-
-
     }
 
     public override void ActOnStatus()
