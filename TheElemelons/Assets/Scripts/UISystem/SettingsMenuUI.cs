@@ -14,6 +14,7 @@ public class SettingsMenuUI : MonoBehaviour
 
 
     private Button backButton;
+    private bool isRebinding = false;
     private Dictionary<string, GameObject> keyBindingEntries = new Dictionary<string, GameObject>();
 
     // TODO: Get actions from InputManager
@@ -61,7 +62,8 @@ public class SettingsMenuUI : MonoBehaviour
 
     private void OnBackButtonClicked()
     {
-        // TODO: Implement this in the UI Manager to return to the last panel
+        if (isRebinding) return;
+        // TODO: Implement this to return to the last panel
         Debug.Log("Back button clicked");
     }
 
@@ -113,21 +115,25 @@ public class SettingsMenuUI : MonoBehaviour
 
     private void OnKeyBindButtonClicked(string actionName)
     {
+        if (isRebinding) return; // Prevent multiple rebinding at the same time
         Debug.Log($"Rebinding key for action: {actionName}");
-        
-        // TODO: Call input manager method to start rebinding process
-        // inputManager.StartRebinding(actionName, newKey =>
-        // {
-        //     // Update the UI when the key is changed
-        //     UpdateKeyBindingEntry(actionName, newKey);
-        // });
+        isRebinding = true;
+
+        inputManager.StartRebinding(actionName, newKey =>
+        {
+            // Update the UI when the key is changed
+            UpdateKeyBindingEntry(actionName, newKey.ToString());
+
+            Debug.Log($"Key for '{actionName}' successfully rebound to {newKey}");
+            isRebinding = false;
+        });
     }
 
     public void UpdateKeyBindingEntry(string actionName, string newKey)
     {
         if (keyBindingEntries.TryGetValue(actionName, out GameObject entry))
         {
-            entry.transform.Find("ButtonText").GetComponent<TMP_Text>().text = newKey;
+            entry.transform.Find("KeyBindingButton/ButtonText").GetComponent<TMP_Text>().text = newKey;
         }
     }
 

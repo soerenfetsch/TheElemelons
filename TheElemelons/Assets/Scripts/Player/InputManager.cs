@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -270,7 +272,7 @@ public class InputManager : MonoBehaviour
         canInput = false;
     }
 
-        /// <summary>
+    /// <summary>
     /// Handles dialogue inputs.
     /// </summary>
     private void HandleDialogueInputs()
@@ -322,6 +324,37 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Starts the rebind key process for a specified action.
+    /// </summary>
+    /// <param name="action">The action to rebind.</param>
+    /// <param name="onRebindComplete">Callback to execute when the rebind is complete.</param>
+    public void StartRebinding(string action, Action<KeyCode> onRebindComplete)
+    {
+        StartCoroutine(WaitForKeyPress(action, onRebindComplete));
+    }
+
+    private IEnumerator WaitForKeyPress(string action, Action<KeyCode> onRebindComplete)
+    {
+        Debug.Log($"Waiting for new key binding for action: {action}");
+
+        // Wait until a valid key is pressed
+        bool keyDetected = false;
+        while (!keyDetected)
+        {
+            foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(keyCode))
+                {
+                    Debug.Log($"New key '{keyCode}' pressed for action '{action}'");
+                    SaveKeyBinding(action, keyCode);
+                    onRebindComplete?.Invoke(keyCode);
+                    keyDetected = true;
+                    break;
+                }
+            }
+            yield return null;
+        }
+    }
     /// Handles global inputs, such as toggling the pause menu.
     /// </summary>
     private void HandleGlobalInputs()
