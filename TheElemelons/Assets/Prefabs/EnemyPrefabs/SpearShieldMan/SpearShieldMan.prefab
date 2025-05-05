@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2018420511, guid: c0451114bb9e8e543ae4169a56f49aaa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -291,6 +291,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldPrefab: {fileID: 4813728014918536063, guid: c5bddb6c516d05942a472debf417c984, type: 3}
   spearPrefab: {fileID: 5030427605780435756, guid: a376349ef3ce8fe4eadd08925b294432, type: 3}
+  spearInstance: {fileID: 0}
+  shieldInstance: {fileID: 0}
   playerTransform: {fileID: 0}
   pathfinder: {fileID: 0}
   moveSpeed: 1
@@ -300,9 +302,9 @@ MonoBehaviour:
   baseDamageShield: 0.5
   throwDamageSpear: 1.5
   throwSpeedSpear: 5
-  throwTimeSpear: 1
+  throwTimeSpear: 7
   thrust: 1
-  knockTimeSpear: 0.2
+  knockTimeSpear: 0.3
   knockTimeShield: 0.7
   flashDuration: 0.2
   attackCooldown: 1

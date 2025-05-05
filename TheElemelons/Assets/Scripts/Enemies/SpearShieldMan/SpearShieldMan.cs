@@ -141,6 +141,12 @@ public class SpearShieldMan : Enemy
     {
         InitializeComponents();
         InitializeCombatComponents();
+        playerTransform = GameObject.Find("Player").transform;
+        if (playerTransform == null)
+        {
+            Debug.Log("Tiki couldn't find the player at Start(), please fix");
+        }
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
     }
 
     // Fixed update to handle physics and movements correctly
@@ -213,19 +219,7 @@ public class SpearShieldMan : Enemy
         if (lastAttackTime + attackCooldown < Time.time)
         {
             lastAttackTime = Time.time;
-            // If marked as critical and has a spear instance, throw the spear
-            if (isCritical && spearInstance != null)
-            {
-                Debug.Log("SpearShieldMan: Throwing spear at player.");
-                spearInstance.GetComponent<Animator>().enabled = false;
-                spearInstance.GetComponentInChildren<ShieldSpearCollider>().DisableAttack();
-                spearInstance.GetComponentInChildren<ShieldSpearCollider>().enabled = false;
-                Vector2 attackDirection = (playerTransform.position - transform.position).normalized;
-                spearInstance.GetComponent<Spear>()?.ThrowSpear(
-                    attackDirection, throwSpeedSpear, throwTimeSpear);
-                spearInstance = null; // Remove the spear instance after throwing
-            }
-            else if (spearInstance != null && shieldInstance != null)
+            if (spearInstance != null && shieldInstance != null)
             {
                 // Randomly choose between spear and shield attack
                 if (UnityEngine.Random.Range(0, 2) == 0)
@@ -329,6 +323,7 @@ public class SpearShieldMan : Enemy
     /// </summary>
     public override void ActOnHealth()
     {
+
         if (health.GetHealth() <= health.GetMaxHealth() * 0.25f && isAlive && !isCritical && spearInstance != null)
         {
             // Enable the spear throw by marking as critical
@@ -340,6 +335,18 @@ public class SpearShieldMan : Enemy
             isAlive = false;
             DeathEffect.SpawnDeathEffect(deathEffect, transformComponent.position, deathEffectDelay);
             Destroy(gameObject, 0);
+        }
+        // If marked as critical and has a spear instance, throw the spear
+        if (isCritical && spearInstance != null && currentState != EnemyStatus.Staggered)
+        {
+            Debug.Log("SpearShieldMan: Throwing spear at player.");
+            spearInstance.GetComponent<Animator>().enabled = false;
+            spearInstance.GetComponentInChildren<ShieldSpearCollider>().DisableAttack();
+            spearInstance.GetComponentInChildren<ShieldSpearCollider>().enabled = false;
+            Vector2 attackDirection = (playerTransform.position - transform.position).normalized;
+            spearInstance.GetComponent<Spear>()?.ThrowSpear(
+                attackDirection, throwSpeedSpear, throwTimeSpear);
+            spearInstance = null; // Remove the spear instance after throwing
         }
     }
 
@@ -441,6 +448,8 @@ public class SpearShieldMan : Enemy
     /// The method takes into account the range of player and
     /// the direction in which the SpearShieldMan is looking
     /// by taking the dot product.
+    /// if distance <= 0.2, true
+    /// if distance <= attackRadius && dotProductDistance >= 0.8f, true
     /// </summary>
     /// <returns></returns>
     private bool CheckPlayerInAttackRange()
@@ -450,7 +459,8 @@ public class SpearShieldMan : Enemy
                                               animator.GetFloat("Vertical"));
         float dotProductDistance = Vector2.Dot(distanceVector.normalized, attackDirection.normalized);
         float regularDistance = Vector2.Distance(GetFeetPosition(), playerTransform.position);
-        return regularDistance <= attackRadius && dotProductDistance >= 0.8f;
+        Debug.Log(regularDistance);
+        return (regularDistance <= attackRadius && dotProductDistance >= 0.8f) || (regularDistance <= 1);
     }
 
     /// <summary>

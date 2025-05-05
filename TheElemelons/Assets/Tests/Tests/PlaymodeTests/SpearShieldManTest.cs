@@ -114,20 +114,20 @@ public class SpearShieldManTests
         Assert.AreEqual(EnemyStatus.Approaching, spearShieldMan.GetCurrentState());
     }
 
-    [Test]
-    public void ActOnHealth_EnablesSpearThrowWhenLowHealth()
+    [UnityTest]
+    public IEnumerator ActOnHealth_EnablesSpearThrowWhenLowHealth()
     {
         spearShieldMan.InitializeComponents();
         spearShieldMan.spearInstance = Object.Instantiate(testSpear, testEnemy.transform);
-        spearShieldMan.spearInstance.GetComponent<Spear>().enabled = false;
-
+        spearShieldMan.spearInstance.GetComponent<Spear>().enabled = true;
+        yield return null;
         var health = spearShieldMan.GetComponent<Health>();
         health.SetMaxHealth(10);
         health.SetHealth(2); // Below 25%
 
         spearShieldMan.ActOnHealth();
 
-        Assert.IsTrue(spearShieldMan.spearInstance.GetComponent<Spear>().enabled);
+        Assert.IsNull(spearShieldMan.spearInstance);
     }
 
     [UnityTest]
