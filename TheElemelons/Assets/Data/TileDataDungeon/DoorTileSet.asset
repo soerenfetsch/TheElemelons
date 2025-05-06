@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70bb873534662df4abbaf8eb177a9d0f, type: 3}
+  m_Name: DoorTileSet
+  m_EditorClassIdentifier: 
+  topDoor:
+    doorBottomLeft: {fileID: 11400000, guid: aa451bf4c63437d45b746221d661edca, type: 2}
+    doorBottomMiddle: {fileID: 11400000, guid: ca92c29fe44a34742abde54e21a34204, type: 2}
+    doorBottomRight: {fileID: 11400000, guid: 762b3d1fe844e27469ab5f2ff7f96d86, type: 2}
+    doorUpperLeft: {fileID: 11400000, guid: 80de8c6080ca0f148bf1a6efd9725d2b, type: 2}
+    doorUpperMiddle: {fileID: 11400000, guid: 34f7454e0736bab40b6a2424df23d114, type: 2}
+    doorUpperRight: {fileID: 11400000, guid: b6e5aa4402e5f694a8623f1b6da3c9fc, type: 2}
+  bottomDoor:
+    doorBottomLeft: {fileID: 11400000, guid: f04ddc02f373a1c4fb3be184c3aa9e0f, type: 2}
+    doorBottomMiddle: {fileID: 11400000, guid: e0521b58100f1fe449498134700d1acc, type: 2}
+    doorBottomRight: {fileID: 11400000, guid: 00d13c018b4650e4894a803cafdbe564, type: 2}
+    doorUpperLeft: {fileID: 11400000, guid: 80de8c6080ca0f148bf1a6efd9725d2b, type: 2}
+    doorUpperMiddle: {fileID: 11400000, guid: 34f7454e0736bab40b6a2424df23d114, type: 2}
+    doorUpperRight: {fileID: 11400000, guid: b6e5aa4402e5f694a8623f1b6da3c9fc, type: 2}
+  leftDoor:
+    doorOne: {fileID: 11400000, guid: 9d1183c8d631cdc47a35a9616016b867, type: 2}
+    doorTwo: {fileID: 11400000, guid: 43e81eb198cecbe41a2c8a1cf76b19c9, type: 2}
+    doorThree: {fileID: 11400000, guid: d53370da732de9144843c137d944b839, type: 2}
+    doorFour: {fileID: 11400000, guid: 00b11b413a86dc84ca8e414a8005c84c, type: 2}
+    doorFive: {fileID: 11400000, guid: 04beb2457b2923348a667a0de71be068, type: 2}
+  rightDoor:
+    doorOne: {fileID: 11400000, guid: 9d1183c8d631cdc47a35a9616016b867, type: 2}
+    doorTwo: {fileID: 11400000, guid: 022f9f820e963ce4f8a380b628b1275c, type: 2}
+    doorThree: {fileID: 11400000, guid: 746977bfcf3f44b4b863bbad656998ef, type: 2}
+    doorFour: {fileID: 11400000, guid: c649764f3b55e0b418961c527181292c, type: 2}
+    doorFive: {fileID: 11400000, guid: 7dd5435b73182414893297de73b2ec56, type: 2}

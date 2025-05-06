@@ -48,6 +48,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: spells
+    uniqueID: 52686973
+    locked: 0
   - name: roof
     uniqueID: 993259095
     locked: 0

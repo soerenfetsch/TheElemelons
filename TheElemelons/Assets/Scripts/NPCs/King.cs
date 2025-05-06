@@ -52,7 +52,6 @@ public class King : DialogueTrigger
         }
         LayerMask mask = LayerMask.GetMask("Player", "Walls");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, movement, rayLength, mask);
-        UnityEngine.Debug.DrawRay(transform.position, movement * rayLength, Color.yellow);
         if (currentState == NPCStatus.Walking && hit && hit.collider.gameObject.CompareTag("Player"))
         {
             animator.SetBool("Blocked", true);

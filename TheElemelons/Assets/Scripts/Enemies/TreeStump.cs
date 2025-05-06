@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
 public class TreeLog : Enemy
 {
     [Header("Components")]
@@ -53,7 +53,8 @@ public class TreeLog : Enemy
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
-
+        playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         currentState = EnemyStatus.Idle;
         homePosition = transformComponent.position;
     }
@@ -103,16 +104,16 @@ public class TreeLog : Enemy
     /// </summary>
     public override void ActOnStatus()
     {
+        if ((playerTransform.position - transform.position).sqrMagnitude < 15)
+        {
+            Debug.Log("current status: " + currentState);
+        }
         switch (currentState)
         {
             case EnemyStatus.Idle:
+
                 // Wait until player is within chase or attack radius
-                if (CheckPlayerWithinRadius(attackRadius))
-                {
-                    ChangeState(EnemyStatus.Attacking);
-                    animator.SetBool("wakeUp", true);
-                }
-                else if (CheckPlayerReachableWithinRadius(chaseRadius))
+                if (CheckPlayerWithinRadius(chaseRadius))
                 {
                     ChangeState(EnemyStatus.Approaching);
                     animator.SetBool("wakeUp", true);
@@ -272,13 +273,17 @@ public class TreeLog : Enemy
 
         // Find the best direction to move toward the player using pathfinding (collision at feet level)
         Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
+        if ((playerTransform.position - transform.position).sqrMagnitude < 15)
+        {
+            Debug.Log(direction);
+        }
         if (direction == Vector2.zero)
         {
             direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);
         }
         if (direction == Vector2.zero) return;
 
-        direction = direction.normalized;
+        direction.Normalize();
         rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
         ChangeWalkAnimation(direction);
     }

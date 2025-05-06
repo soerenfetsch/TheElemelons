@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BipartitioningMapGenerator : AbstractMapGenerator
 {
+    MapData mapData;
+    public MonsterManager monsterManager;
     public Vector2Int startPosition = new Vector2Int(0, 0);
     public int minRoomWidth = 10;
     public int minRoomHeight = 10;
@@ -16,7 +18,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
 
     public override MapData GenerateMap()
     {
-        MapData mapData = new MapData();
+        mapData = new MapData();
         CreateFloor(mapData);
         CreateWalls(mapData);
         CreateDecorationPositions(mapData);
@@ -24,7 +26,12 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         CreateDoorPositions(mapData);
         createShrinePositions(mapData);
         createTrapPositions(mapData);
-
+        monsterManager.mapData = mapData;
+        if (monsterManager.allMonsters == null)
+        {
+            monsterManager.allMonsters = new List<GameObject>();
+        }
+        monsterManager.SpawnMonsters();
         return mapData;
     }
 
@@ -84,7 +91,10 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         roomCenters.Remove(currentRoomCenter);
         mapData.AddRoom(rooms[centerToRoomMapping[currentRoomCenter]]);
         rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.START);
-
+        //spawn in player in start room
+        Transform playerTransform = GameObject.Find("Player").transform;
+        playerTransform.position = new Vector3(currentRoomCenter.x, currentRoomCenter.y, 0);
+        mapData.SetPlayerSpawnPosition(currentRoomCenter);
         HashSet<Vector2Int> corridorPositions = new HashSet<Vector2Int>();
         while (roomCenters.Count > 0)
         {

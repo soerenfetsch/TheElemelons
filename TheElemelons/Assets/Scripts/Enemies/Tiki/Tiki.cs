@@ -6,6 +6,7 @@ using Ionic.BZip2;
 using JetBrains.Annotations;
 using UnityEngine;
 
+
 public enum TikiState
 {
     HealFriends,
@@ -66,7 +67,7 @@ public class Tiki : Enemy
     public float panicWalkSpeedFactor = 1.5f;
     [Header("CombatRangeHandling")]
     public float range = 10f;
-    public float AggroRange = 30f;
+    public float aggroRange = 30f;
     public float minimalRange = 6f;
     public float maximalRange = 18f;
     public float rangeTolerance = 1f;
@@ -107,6 +108,7 @@ public class Tiki : Enemy
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         if (playerTransform == null)
         {
             Debug.Log("Tiki couldn't find the player at Start(), please fix");
@@ -187,7 +189,7 @@ public class Tiki : Enemy
     {
         ActOnHealth();
         CalcRangeState();
-        if (currentState != EnemyStatus.Idle && currentRangeState == RangeState.OutOfRange)
+        if (currentRangeState == RangeState.OutOfRange)
         {
             ChangeState(EnemyStatus.Idle);
         }
@@ -472,14 +474,14 @@ public class Tiki : Enemy
     /// </summary>
     public void NavigateToPlayer()
     {
-        Vector2 sight = pathfinder.CheckPlayerInSight(GetFeet(), AggroRange);
+        Vector2 sight = pathfinder.CheckPlayerInSight(GetFeet(), aggroRange);
         if (sight != Vector2.zero)
         {
             bodyMovement = sight;
             return;
         }
 
-        Vector2 reachable = pathfinder.CheckPlayerReachable(bodyTransform.position, AggroRange);
+        Vector2 reachable = pathfinder.CheckPlayerReachable(bodyTransform.position, aggroRange);
         if (reachable != Vector2.zero)
         {
             bodyMovement = reachable;
@@ -558,6 +560,11 @@ public class Tiki : Enemy
         if (playerTransform != null)
         {
             float dist = Mathf.Abs((playerTransform.position - bodyTransform.position).magnitude);
+            if (dist > aggroRange)
+            {
+                currentRangeState = RangeState.OutOfRange;
+                return;
+            }
             float error = Mathf.Abs(dist - range) - rangeTolerance;
             if (dist > range && error > 0)
             {

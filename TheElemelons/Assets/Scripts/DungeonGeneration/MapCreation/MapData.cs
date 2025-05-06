@@ -9,7 +9,8 @@ using UnityEngine;
 /// </summary>
 public class Room
 {
-     /// <summary>
+    public bool areDoorsOpen = false;
+    /// <summary>
     /// Floor positions within the room.
     /// </summary>
     public HashSet<Vector2Int> floorPositions { get; private set; }
@@ -33,6 +34,10 @@ public class Room
     /// Positions where monsters can spawn.
     /// </summary>
     public HashSet<Vector2Int> monsterSpawnPositions { get; private set; }
+    /// <summary>
+    /// Monsters in the room
+    /// </summary>
+    public HashSet<GameObject> monsters { get; private set; }
 
     /// <summary>
     /// Positions of doors in the room.
@@ -59,6 +64,8 @@ public class Room
     /// </summary>
     public RoomType roomType;
 
+
+
     /// <summary>
     /// Initializes a new room with empty positions and a default type.
     /// </summary>
@@ -72,6 +79,7 @@ public class Room
         doorPositions = new HashSet<Vector2Int>();
         shrinePositions = new HashSet<Vector2Int>();
         trapPositions = new HashSet<Vector2Int>();
+        monsters = new HashSet<GameObject>();
         roomType = RoomType.NORMAL;
     }
 
@@ -134,6 +142,14 @@ public class Room
     {
         monsterSpawnPositions.Add(monsterSpawnPosition);
     }
+    public void AddMonsters(GameObject monster)
+    {
+        monsters.Add(monster);
+    }
+    public void AddMonsters(HashSet<GameObject> monster)
+    {
+        monsters.UnionWith(monster);
+    }
 
     public void AddMonsterSpawnPositions(HashSet<Vector2Int> monsterSpawnPositions)
     {
@@ -192,11 +208,12 @@ public class Room
 // Class to hold the map data (positions for floors, walls, decorations, and monsters)
 public class MapData
 {
+    public Vector2 playerSpawn { get; private set; }
     public HashSet<Vector2Int> floorPositions { get; private set; }
     public HashSet<Vector2Int> wallPositions { get; private set; }
     public HashSet<Vector2Int> destructableDecorationPositions { get; private set; }
     public HashSet<Vector2Int> indestructableDecorationPositions { get; private set; }
-
+    public HashSet<GameObject> monsters { get; private set; }
     public HashSet<Vector2Int> monsterSpawnPositions { get; private set; }
     public HashSet<Vector2Int> shrinePositions { get; private set; }
     public HashSet<Vector2Int> trapPositions { get; private set; }
@@ -219,7 +236,6 @@ public class MapData
     public MapData(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> wallPositions,
                    HashSet<Vector2Int> destructableDecorationPositions,
                    HashSet<Vector2Int> indestructableDecorationPositions,
-                   HashSet<Vector2Int> monsterSpawnPositions,
                    HashSet<Vector2Int> shrinePositions,
                    HashSet<Vector2Int> trapPositions,
                    HashSet<Vector2Int> doorPositions)
@@ -228,7 +244,6 @@ public class MapData
         this.wallPositions = wallPositions;
         this.destructableDecorationPositions = destructableDecorationPositions;
         this.indestructableDecorationPositions = indestructableDecorationPositions;
-        this.monsterSpawnPositions = monsterSpawnPositions;
         this.shrinePositions = shrinePositions;
         this.trapPositions = trapPositions;
         this.doorPositions = doorPositions;
@@ -259,6 +274,10 @@ public class MapData
     {
         wallPositions.Add(wallPosition);
     }
+    public void SetPlayerSpawnPosition(Vector2Int pos)
+    {
+        playerSpawn = pos;
+    }
     public void AddWallPositions(HashSet<Vector2Int> wallPositions)
     {
         this.wallPositions.UnionWith(wallPositions);
@@ -286,6 +305,10 @@ public class MapData
     public void AddMonsterSpawnPositions(HashSet<Vector2Int> monsterSpawnPositions)
     {
         this.monsterSpawnPositions.UnionWith(monsterSpawnPositions);
+    }
+    public void AddMonster(HashSet<GameObject> monster)
+    {
+        this.monsters.UnionWith(monster);
     }
     public void AddShrinePosition(Vector2Int shrinePosition)
     {
