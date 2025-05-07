@@ -1987839,7 +1987839,7 @@ MonoBehaviour:
   endEnemySelection:
   - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
   - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
-  - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+  - {fileID: 2875584708747893105, guid: 1fe7bf99ca2bc704584652195a63eba6, type: 3}
   bossEnemySelection:
   - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
   - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
