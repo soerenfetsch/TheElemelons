@@ -12,9 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: PaintingCastle
   m_EditorClassIdentifier: 
-  speakerName: 
-  portraits: []
+  speakerName: King
+  portraits:
+  - {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
+  - {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
   dialogueBoxImage: {fileID: -253876386, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
-  sentences:
-  - It's the Castle.
-  imageSprite: {fileID: 21300000, guid: b4301c8fa58c97649979d610c1cd43d3, type: 3}
+  dialogueLines:
+  - lineType: 0
+    sentenceText: The Painting Castle
+    portraitOverride: {fileID: 0}
+    displaySceneImage: 0
+  - lineType: 1
+    sentenceText: 
+    portraitOverride: {fileID: 0}
+    displaySceneImage: 1
+  - lineType: 0
+    sentenceText: after scene dialogue
+    portraitOverride: {fileID: 0}
+    displaySceneImage: 0
+  sceneImages:
+  - {fileID: 21300000, guid: b4301c8fa58c97649979d610c1cd43d3, type: 3}

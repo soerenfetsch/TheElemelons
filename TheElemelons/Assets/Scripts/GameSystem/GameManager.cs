@@ -9,35 +9,45 @@ public class GameManager : MonoBehaviour
     public GameProgressionStage CurrentProgressionStage { get; private set; }
     public GameStatus CurrentGameStatus { get; private set; }
 
-    public GameSaveProvider SaveProvider;
-    public UIManager uiManager;
+    public GameSaveProvider SaveProvider; // Assuming this is IGameSaveProvider
+    public UIManager uiManager; // Assuming this exists
 
-    // Events for Game Status changes
     public static event Action<GameStatus> OnGameStatusChanged;
 
     private void Awake()
     {
+        Debug.Log($"[GameManager] Awake on {gameObject.name}");
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Debug.LogWarning("[GameManager] Duplicate GameManager instance. Destroying this one.");
+            Destroy(this.gameObject); // Destroy the GameObject this script is attached to
         }
         else
         {
             Instance = this;
+            Debug.Log("[GameManager] GameManager Instance assigned.");
             DontDestroyOnLoad(gameObject);
         }
     }
 
     private void Start()
     {
+        Debug.Log("[GameManager] Start called.");
         if (SaveProvider == null)
         {
-            SaveProvider = new GameSaveProvider(); // Default
+            Debug.LogWarning("[GameManager] SaveProvider is null, creating default GameSaveProvider.");
+            SaveProvider = new GameSaveProvider();
         }
+        // Initialize with a default status if not set elsewhere, e.g., from main menu
+        // if(CurrentGameStatus == default(GameStatus)) // Check if it's the default enum value
+        // {
+        //     ChangeGameStatus(GameStatus.INGAME); // Or MAIN_MENU
+        // }
     }
 
     public void ChangeProgressionStage(GameProgressionStage newStage)
     {
+        Debug.Log($"[GameManager] ChangeProgressionStage called. Old: {CurrentProgressionStage}, New: {newStage}");
         CurrentProgressionStage = newStage;
         if (newStage != GameProgressionStage.EARTH_EARLY && newStage != GameProgressionStage.EARTH_LATE)
         {
@@ -48,72 +58,89 @@ public class GameManager : MonoBehaviour
 
     public void ChangeGameStatus(GameStatus newStatus)
     {
+        Debug.Log($"[GameManager] ChangeGameStatus called. Old: {CurrentGameStatus}, New: {newStatus}");
         CurrentGameStatus = newStatus;
-        OnGameStatusChanged?.Invoke(newStatus); // Invoke the event
+        OnGameStatusChanged?.Invoke(newStatus);
+        Debug.Log($"[GameManager] OnGameStatusChanged event invoked with {newStatus}.");
 
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                //uiManager.OpenDeathScreen(); // UIManager will handle this via the event
+                Debug.Log("[GameManager] Status: DEATH_SCREEN");
                 break;
             case GameStatus.MAIN_MENU:
+                Debug.Log("[GameManager] Status: MAIN_MENU. Saving game and loading MainMenu scene.");
                 SaveGame();
-                SceneManager.LoadScene("MainMenu"); // Replace with your main menu scene
+                SceneManager.LoadScene("MainMenu");
                 break;
             case GameStatus.PAUSE_MENU:
-                //uiManager.OpenPauseMenu(); // UIManager will handle this via the event
-                Time.timeScale = 0; // Pause the game
+                Debug.Log("[GameManager] Status: PAUSE_MENU. Time.timeScale = 0");
+                Time.timeScale = 0;
                 break;
             case GameStatus.DIALOGUE:
-                Time.timeScale = 0; // Pause the game
+                Debug.Log("[GameManager] Status: DIALOGUE. Time.timeScale = 0");
+                Time.timeScale = 0;
                 break;
             case GameStatus.SETTINGS_MENU:
-                //uiManager.OpenSettingsMenu(); // UIManager will handle this via the event
+                Debug.Log("[GameManager] Status: SETTINGS_MENU");
                 break;
             case GameStatus.INGAME:
-                Time.timeScale = 1; // Resume the game
+                Debug.Log("[GameManager] Status: INGAME. Time.timeScale = 1");
+                Time.timeScale = 1;
+                break;
+            default:
+                Debug.LogWarning($"[GameManager] Unhandled GameStatus: {newStatus}");
                 break;
         }
     }
 
     public void NewGame()
     {
+        Debug.Log("[GameManager] NewGame called.");
+        if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in NewGame!"); return; }
         SaveProvider.ResetSave();
         CurrentProgressionStage = GameProgressionStage.CASTLE_INTRODUCTION;
-        CurrentGameStatus = GameStatus.INGAME;
-        StartMainGameStage();
+        // CurrentGameStatus = GameStatus.INGAME; // Let ChangeGameStatus handle this if needed via StartMainGameStage
+        StartMainGameStage(); // This should probably set the status to INGAME
+        ChangeGameStatus(GameStatus.INGAME); // Explicitly set if StartMainGameStage doesn't
     }
 
     public void ContinueSavedGame()
     {
+        Debug.Log("[GameManager] ContinueSavedGame called.");
+        if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in ContinueSavedGame!"); return; }
         GameSaveData data = SaveProvider.LoadGame();
         if (data != null)
         {
+            Debug.Log($"[GameManager] Loaded save data. Progression: {data.progressionStage}");
             CurrentProgressionStage = data.progressionStage;
-            // Load player stats, button settings, etc.
         }
         else
         {
-            NewGame(); // If no save data, start a new game
+            Debug.LogWarning("[GameManager] No save data found or failed to load. Starting NewGame instead.");
+            NewGame();
+            return; // NewGame will handle the rest
         }
-        CurrentGameStatus = GameStatus.INGAME;
+        // CurrentGameStatus = GameStatus.INGAME;
         StartMainGameStage();
+        ChangeGameStatus(GameStatus.INGAME); // Explicitly set
     }
 
     private void SaveGame()
     {
+        Debug.Log("[GameManager] SaveGame called.");
+        if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in SaveGame!"); return; }
         GameSaveData data = new GameSaveData
         {
             progressionStage = CurrentProgressionStage,
-            // Save player stats, button settings, etc.
         };
         SaveProvider.SaveGame(data);
     }
 
     private void StartMainGameStage()
     {
-        // Implement logic to load different scenes or enable/disable game objects
-        // based on the CurrentProgressionStage.
-        Debug.Log("Starting game stage: " + CurrentProgressionStage);
+        Debug.Log("[GameManager] StartMainGameStage called. CurrentProgressionStage: " + CurrentProgressionStage);
+        // Potentially set GameStatus to INGAME here if this function implies gameplay starts/resumes
+        // Example: SceneManager.LoadScene(GetSceneNameForStage(CurrentProgressionStage));
     }
 }

@@ -132,6 +132,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4112205898563254887, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
   m_PrefabInstance: {fileID: 2076084336}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &135522227 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2689905898363102576, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+  m_PrefabInstance: {fileID: 6120705487494583996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &135522229 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4431235815004064088, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+  m_PrefabInstance: {fileID: 6120705487494583996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135522227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &159364986 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 149808544879939131, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
@@ -3759,6 +3775,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6796149993391354465, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
   m_PrefabInstance: {fileID: 6120705487494583996}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1333740056 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5652409972696292173, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+  m_PrefabInstance: {fileID: 6120705487494583996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333740054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1518785601 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5687124980623124346, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
@@ -3856,7 +3883,7 @@ TilemapRenderer:
   m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -10274,6 +10301,17 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 5732891204451770183, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
   m_PrefabInstance: {fileID: 2076084336}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1596644977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3982128321885912259, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+  m_PrefabInstance: {fileID: 6120705487494583996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1614277230 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5269416312454921712, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
@@ -10654,7 +10692,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -11567,7 +11605,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -15815,6 +15853,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 99.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2102948238805240296, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: portraitImage
+      value: 
+      objectReference: {fileID: 1596644977}
+    - target: {fileID: 2102948238805240296, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: dialogueBoxPanel
+      value: 
+      objectReference: {fileID: 135522227}
+    - target: {fileID: 2102948238805240296, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: sceneImageDisplay
+      value: 
+      objectReference: {fileID: 1333740056}
+    - target: {fileID: 2102948238805240296, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: dialogueBoxBackgroundImage
+      value: 
+      objectReference: {fileID: 135522229}
     - target: {fileID: 2305246718208910923, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_Name
       value: UI_Canvas
@@ -15899,6 +15953,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3951486811708244634, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: portraitImage
+      value: 
+      objectReference: {fileID: 1596644977}
+    - target: {fileID: 3951486811708244634, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: dialogueBoxPanel
+      value: 
+      objectReference: {fileID: 135522227}
+    - target: {fileID: 3951486811708244634, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: sceneImageDisplay
+      value: 
+      objectReference: {fileID: 1333740056}
+    - target: {fileID: 3951486811708244634, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: dialogueBoxBackgroundImage
+      value: 
+      objectReference: {fileID: 135522229}
     - target: {fileID: 5652409972696292173, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -15912,6 +15982,10 @@ PrefabInstance:
       value: 3.5506592
       objectReference: {fileID: 0}
     - target: {fileID: 6796149993391354465, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Name
+      value: SceneImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796149993391354465, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -15919,7 +15993,8 @@ PrefabInstance:
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 2076084355}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2102948238805240296, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

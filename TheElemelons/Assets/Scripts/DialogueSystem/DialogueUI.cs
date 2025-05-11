@@ -5,135 +5,269 @@ using System.Collections;
 
 public class DialogueUI : MonoBehaviour
 {
-    [Header("UI References")]
+    [Header("UI References - Dialogue Box")]
+    [SerializeField] private GameObject dialogueBoxPanel;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private Image portrait;
+    [SerializeField] private Image portraitImage;
     [SerializeField] public TextMeshProUGUI dialogueText;
-    [SerializeField] private Image dialogueBoxImage;
+    [SerializeField] private Image dialogueBoxBackgroundImage;
+
+    [Header("UI References - Scene Image")]
+    [SerializeField] private Image sceneImageDisplay;
 
     [Header("Typing Settings")]
     [SerializeField] private float baseTypingSpeed = 0.03f;
     [SerializeField] private float randomTypingOffset = 0.01f;
-    [SerializeField] private float linePause = 0.5f;
+    [SerializeField] private float linePauseAfterTyping = 0.5f;
 
     [Header("Sound Settings")]
     [SerializeField] private AudioSource typingSound;
 
     private bool isTyping;
     private bool isSkipping;
+    private Coroutine typingCoroutine;
 
     private void Awake()
     {
-        // Subscribe to dialogue events (using Awake so subscriptions occur even if inactive).
-        DialogueManager.OnDialogueStarted += ShowDialogue;
-        DialogueManager.OnDialogueLineChanged += ShowNextLine;
-        DialogueManager.OnDialogueEnded += HideDialogue;
+        Debug.Log($"[DialogueUI] Awake on GameObject: {this.name}");
+        DialogueManager.OnDisplayUpdateRequest += HandleDisplayUpdate;
+        DialogueManager.OnDialogueEnded += HideDialogueOverall;
+        Debug.Log("[DialogueUI] Subscribed to DialogueManager events.");
 
-        // Ensure the UI is disabled by default.
+        // Ensure the UI elements are in a known state initially.
+        if (dialogueBoxPanel != null) 
+        {
+            Debug.Log($"[DialogueUI] Initializing dialogueBoxPanel '{dialogueBoxPanel.name}' to inactive.");
+            dialogueBoxPanel.SetActive(false);
+        } else { Debug.LogWarning("[DialogueUI] dialogueBoxPanel is NOT assigned in Awake!");}
+
+        if (sceneImageDisplay != null) 
+        {
+            Debug.Log($"[DialogueUI] Initializing sceneImageDisplay '{sceneImageDisplay.name}' GameObject to inactive.");
+            sceneImageDisplay.gameObject.SetActive(false);
+        } else { Debug.LogWarning("[DialogueUI] sceneImageDisplay is NOT assigned in Awake!");}
+        
+        Debug.Log($"[DialogueUI] Initializing DialogueUI GameObject '{this.name}' to inactive.");
         gameObject.SetActive(false);
+        Debug.Log("[DialogueUI] Awake: Initial UI elements hidden. DialogueUI GameObject deactivated.");
     }
 
     private void OnDestroy()
     {
-        DialogueManager.OnDialogueStarted -= ShowDialogue;
-        DialogueManager.OnDialogueLineChanged -= ShowNextLine;
-        DialogueManager.OnDialogueEnded -= HideDialogue;
+        Debug.Log($"[DialogueUI] OnDestroy on GameObject: {this.name}");
+        DialogueManager.OnDisplayUpdateRequest -= HandleDisplayUpdate;
+        DialogueManager.OnDialogueEnded -= HideDialogueOverall;
+        Debug.Log("[DialogueUI] Unsubscribed from DialogueManager events.");
     }
 
-    /// <summary>
-    /// Called when dialogue starts. Activates the UI and sets speaker name, initial portrait, and dialogue box image.
-    /// </summary>
-    private void ShowDialogue(string speakerName, Sprite initialPortrait, Sprite boxImage)
+    private void HandleDisplayUpdate(DialogueLineDisplayInfo info)
     {
+        string portraitName = info.Portrait != null ? info.Portrait.name : "None";
+        string sceneImageName = info.SceneImage != null ? info.SceneImage.name : "None";
+        string dialogueBoxImageName = info.DialogueBoxImage != null ? info.DialogueBoxImage.name : "None";
+
+        Debug.Log($"[DialogueUI] HandleDisplayUpdate RECEIVED. Type: {info.Type}, Text: \"{info.Text}\", Portrait: {portraitName}, SceneImg: {sceneImageName}, Speaker: {info.SpeakerName}, DB Img: {dialogueBoxImageName}, FirstLine: {info.IsFirstLineInDialogue}");
+
+        Debug.Log($"[DialogueUI] Activating DialogueUI GameObject '{this.name}'. Current activeSelf: {gameObject.activeSelf}");
         gameObject.SetActive(true);
-        nameText.text = speakerName;
+        Debug.Log($"[DialogueUI] DialogueUI GameObject '{this.name}' activeSelf is now: {gameObject.activeSelf}");
+
+
+        if (typingCoroutine != null)
+        {
+            Debug.Log("[DialogueUI] Stopping existing typing coroutine.");
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null; // Clear the reference
+            isTyping = false;
+        }
+        isSkipping = false;
+
+        Debug.Log($"[DialogueUI] Updating Name: {info.SpeakerName}. nameText null? {nameText == null}");
+        if (nameText != null)
+        {
+            if (info.IsFirstLineInDialogue || nameText.text != info.SpeakerName)
+            {
+                 nameText.text = info.SpeakerName;
+                 Debug.Log($"[DialogueUI] Set nameText to: {info.SpeakerName}");
+            }
+        } else { Debug.LogWarning("[DialogueUI] nameText is NULL!");}
         
-        if (initialPortrait != null)
+        Debug.Log($"[DialogueUI] Updating DialogueBoxBG. dialogueBoxBackgroundImage null? {dialogueBoxBackgroundImage == null}. info.DialogueBoxImage null? {info.DialogueBoxImage == null}.");
+        if (dialogueBoxBackgroundImage != null)
         {
-            portrait.sprite = initialPortrait;
-            portrait.gameObject.SetActive(true);
-        }
-        else
+            if (info.DialogueBoxImage != null)
+            {
+                dialogueBoxBackgroundImage.sprite = info.DialogueBoxImage;
+                bool targetActiveState = info.Type == LineType.Text;
+                Debug.Log($"[DialogueUI] Set dialogueBoxBackgroundImage sprite. Setting active: {targetActiveState}");
+                dialogueBoxBackgroundImage.gameObject.SetActive(targetActiveState);
+            }
+            else
+            {
+                Debug.Log("[DialogueUI] info.DialogueBoxImage is NULL. Setting dialogueBoxBackgroundImage active: false");
+                dialogueBoxBackgroundImage.gameObject.SetActive(false);
+            }
+        } else { Debug.LogWarning("[DialogueUI] dialogueBoxBackgroundImage is NULL!");}
+
+
+        if (info.Type == LineType.SceneImage)
         {
-            portrait.gameObject.SetActive(false);
+            Debug.Log($"[DialogueUI] --- Scene Image Path --- dialogueBoxPanel null? {dialogueBoxPanel == null}. sceneImageDisplay null? {sceneImageDisplay == null}");
+            if (dialogueBoxPanel != null)
+            {
+                Debug.Log($"[DialogueUI] Setting dialogueBoxPanel '{dialogueBoxPanel.name}' active: false");
+                dialogueBoxPanel.SetActive(false);
+            } else { Debug.LogWarning("[DialogueUI] dialogueBoxPanel is NULL for Scene Image Path!");}
+            
+            if (sceneImageDisplay != null)
+            {
+                if (info.SceneImage != null)
+                {
+                    Debug.Log($"[DialogueUI] Setting sceneImageDisplay.sprite to {info.SceneImage.name}. Setting sceneImageDisplay.gameObject '{sceneImageDisplay.name}' active: true");
+                    sceneImageDisplay.sprite = info.SceneImage;
+                    sceneImageDisplay.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogWarning($"[DialogueUI] info.SceneImage is NULL for Scene Image Path. Setting sceneImageDisplay.gameObject '{sceneImageDisplay.name}' active: false");
+                    sceneImageDisplay.gameObject.SetActive(false);
+                }
+            } else { Debug.LogWarning("[DialogueUI] sceneImageDisplay is NULL for Scene Image Path!");}
         }
-        
-        if (boxImage != null)
+        else // LineType.Text
         {
-            dialogueBoxImage.sprite = boxImage;
-            dialogueBoxImage.gameObject.SetActive(true);
+            Debug.Log($"[DialogueUI] --- Text Path --- sceneImageDisplay null? {sceneImageDisplay == null}. dialogueBoxPanel null? {dialogueBoxPanel == null}. nameText null? {nameText == null}. dialogueText null? {dialogueText == null}. portraitImage null? {portraitImage == null}");
+            if (sceneImageDisplay != null)
+            {
+                Debug.Log($"[DialogueUI] Setting sceneImageDisplay.gameObject '{sceneImageDisplay.name}' active: false");
+                sceneImageDisplay.gameObject.SetActive(false);
+            } else { Debug.LogWarning("[DialogueUI] sceneImageDisplay is NULL for Text Path!");}
+
+            if (dialogueBoxPanel != null)
+            {
+                Debug.Log($"[DialogueUI] Setting dialogueBoxPanel '{dialogueBoxPanel.name}' active: true");
+                dialogueBoxPanel.SetActive(true);
+            } else { Debug.LogWarning("[DialogueUI] dialogueBoxPanel is NULL for Text Path!");}
+
+            if (nameText != null) {
+                Debug.Log($"[DialogueUI] Setting nameText '{nameText.name}' active: true");
+                nameText.gameObject.SetActive(true);
+            } // Name text already set above
+
+            if (dialogueText != null) {
+                dialogueText.text = ""; // Clear previous text
+            } else { Debug.LogWarning("[DialogueUI] dialogueText is NULL for Text Path!");}
+
+
+            if (portraitImage != null)
+            {
+                if (info.Portrait != null)
+                {
+                    portraitImage.sprite = info.Portrait;
+                    Debug.Log($"[DialogueUI] Portrait: {info.Portrait.name}. Setting portraitImage.gameObject '{portraitImage.name}' active: true");
+                    portraitImage.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.Log($"[DialogueUI] No Portrait for this line. Setting portraitImage.gameObject '{portraitImage.name}' active: false");
+                    portraitImage.gameObject.SetActive(false);
+                }
+            } else { Debug.LogWarning("[DialogueUI] portraitImage is NULL for Text Path!");}
+            
+            if (dialogueText != null && !string.IsNullOrEmpty(info.Text))
+            {
+                 Debug.Log($"[DialogueUI] Starting TypeLine coroutine with text: \"{info.Text}\"");
+                 typingCoroutine = StartCoroutine(TypeLine(info.Text));
+            }
+            else if (dialogueText != null) 
+            {
+                Debug.Log($"[DialogueUI] Text is null or empty for TypeLine. Text: \"{info.Text}\". Setting text to empty, isTyping=false.");
+                dialogueText.text = "";
+                isTyping = false; 
+            }
         }
-        else
-        {
-            dialogueBoxImage.gameObject.SetActive(false);
-        }
+        Debug.Log("[DialogueUI] HandleDisplayUpdate FINISHED.");
     }
 
-    /// <summary>
-    /// Called when a new dialogue line is ready. Stops previous typing and starts the typewriter effect.
-    /// </summary>
-    private void ShowNextLine(string line, Sprite currentPortrait)
+    private IEnumerator TypeLine(string line)
     {
-        StopAllCoroutines();
-        StartCoroutine(TypeLine(line, currentPortrait));
-    }
-
-    private IEnumerator TypeLine(string line, Sprite currentPortrait)
-    {
+        Debug.Log($"[DialogueUI] TypeLine coroutine START for line: \"{line}\"");
         isTyping = true;
         isSkipping = false;
-        dialogueText.text = "";
+        if (dialogueText != null) dialogueText.text = ""; else { Debug.LogError("[DialogueUI] TypeLine: dialogueText is NULL!"); yield break; }
 
-        // Update portrait for this line.
-        if (currentPortrait != null)
-        {
-            portrait.sprite = currentPortrait;
-            portrait.gameObject.SetActive(true);
-        }
 
-        foreach (char letter in line)
+        foreach (char letter in line.ToCharArray())
         {
             if (isSkipping)
             {
-                dialogueText.text = line;
+                Debug.Log("[DialogueUI] TypeLine: Skipping to end of line.");
+                if (dialogueText != null) dialogueText.text = line;
                 break;
             }
 
-            dialogueText.text += letter;
-            if (typingSound != null && !typingSound.isPlaying)
+            if (dialogueText != null) dialogueText.text += letter;
+            if (typingSound != null && letter != ' ')
             {
-                typingSound.Play();
+                // typingSound.Play(); // Play can be spammy, consider PlayOneShot or a custom handler
             }
-            float delay = baseTypingSpeed + Random.Range(-randomTypingOffset, randomTypingOffset);
+            float delay = baseTypingSpeed + UnityEngine.Random.Range(-randomTypingOffset, randomTypingOffset);
             yield return new WaitForSecondsRealtime(Mathf.Max(0f, delay));
         }
 
         isTyping = false;
-        yield return new WaitForSecondsRealtime(linePause);
+        // isSkipping = false; // Resetting skip flag here might be too early if player holds skip. Usually reset on new line.
+        Debug.Log($"[DialogueUI] TypeLine coroutine FINISHED for line: \"{line}\". Waiting for linePauseAfterTyping: {linePauseAfterTyping}s");
+        yield return new WaitForSecondsRealtime(linePauseAfterTyping);
+        Debug.Log($"[DialogueUI] TypeLine linePauseAfterTyping FINISHED for line: \"{line}\"");
     }
 
-    /// <summary>
-    /// Hides the dialogue UI when dialogue ends.
-    /// </summary>
-    private void HideDialogue()
+    private void HideDialogueOverall()
     {
-        dialogueText.text = "";
-        gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// Called externally (via input) to skip the current line's typewriter effect,
-    /// or if the line is fully displayed, to request the DialogueManager to advance.
-    /// </summary>
-    public void SkipTyping()
-    {
-        if (isTyping)
+        Debug.Log($"[DialogueUI] HideDialogueOverall called on GameObject: {this.name}");
+        if (typingCoroutine != null)
         {
+            Debug.Log("[DialogueUI] Stopping typingCoroutine in HideDialogueOverall.");
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+            isTyping = false;
+        }
+        if (dialogueText != null) { dialogueText.text = ""; Debug.Log("[DialogueUI] Cleared dialogueText."); }
+        
+        if (dialogueBoxPanel != null) { dialogueBoxPanel.SetActive(false); Debug.Log("[DialogueUI] Set dialogueBoxPanel inactive."); }
+        else { Debug.LogWarning("[DialogueUI] HideDialogueOverall: dialogueBoxPanel is NULL."); }
+
+        if (sceneImageDisplay != null) { sceneImageDisplay.gameObject.SetActive(false); Debug.Log("[DialogueUI] Set sceneImageDisplay inactive."); }
+        else { Debug.LogWarning("[DialogueUI] HideDialogueOverall: sceneImageDisplay is NULL."); }
+        
+        Debug.Log($"[DialogueUI] Setting DialogueUI GameObject '{this.name}' inactive.");
+        gameObject.SetActive(false);
+        Debug.Log("[DialogueUI] HideDialogueOverall FINISHED.");
+    }
+
+    public void SkipOrAdvance()
+    {
+        Debug.Log($"[DialogueUI] SkipOrAdvance called. isTyping: {isTyping}, isSkipping: {isSkipping}");
+        if (isTyping && !isSkipping)
+        {
+            Debug.Log("[DialogueUI] SkipOrAdvance: Setting isSkipping = true.");
             isSkipping = true;
         }
-        else
+        else if (!isTyping) 
         {
-            DialogueManager.Instance.AdvanceDialogue();
+            Debug.Log("[DialogueUI] SkipOrAdvance: Not typing. Requesting DialogueManager.AdvanceDialogue()");
+            if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
+            {
+                 DialogueManager.Instance.AdvanceDialogue();
+            }
+            else
+            {
+                Debug.LogWarning("[DialogueUI] SkipOrAdvance: DialogueManager.Instance is null or has no active dialogue.");
+            }
+        }
+         else
+        {
+             Debug.Log("[DialogueUI] SkipOrAdvance: Currently typing AND already skipping, or some other state. No action.");
         }
     }
 }

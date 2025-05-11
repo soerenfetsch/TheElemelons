@@ -280,7 +280,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(keyBindings["AdvanceDialogue"]))
         {
             DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
-            dialogueUI?.SkipTyping();
+            dialogueUI?.SkipOrAdvance();
         }
     }
 
