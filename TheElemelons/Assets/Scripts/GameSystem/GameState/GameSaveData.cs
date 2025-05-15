@@ -16,6 +16,5 @@ public class GameSaveData
     public int maxHealth = 3;
     public int maxMana = 3;
     public DateTime saveDate;
-
     public List<KeyBindingEntry> keyBindings = new List<KeyBindingEntry>(); // ADD THIS
 }
