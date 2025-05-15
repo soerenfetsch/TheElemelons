@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameSaveProvider SaveProvider;
     public UIManager uiManager;
 
+    public Player player;
+
     // Events for Game Status changes
     public static event Action<GameStatus> OnGameStatusChanged;
 
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
         {
             CurrentProgressionStage = data.progressionStage;
             // Load player stats, button settings, etc.
+            InputManager.Instance.ImportKeyBindings(data.keyBindings); // ADD THIS
         }
         else
         {
@@ -100,12 +103,15 @@ public class GameManager : MonoBehaviour
         StartMainGameStage();
     }
 
-    private void SaveGame()
+    public void SaveGame()
     {
         GameSaveData data = new GameSaveData
         {
             progressionStage = CurrentProgressionStage,
-            // Save player stats, button settings, etc.
+            maxHealth = player.MaxHealth,
+            maxMana = player.MaxMana,
+            saveDate = DateTime.Now,
+            keyBindings = InputManager.Instance.ExportKeyBindings() // ADD THIS
         };
         SaveProvider.SaveGame(data);
     }

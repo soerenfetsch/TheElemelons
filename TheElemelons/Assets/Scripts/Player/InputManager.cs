@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance { get; private set; }
+
     /// <summary>
     /// Dictionary of actions mapped to their key bindings.
     /// </summary>
@@ -37,6 +39,14 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         InitializeKeyBindings();
         playerMovement = GetComponent<PlayerMovement>();
         casting = GetComponent<Casting>();
@@ -137,8 +147,8 @@ public class InputManager : MonoBehaviour
     {
         if (keyBindings.ContainsKey(action))
         {
-            keyBindings[action] = newKey; // Update the key binding in the dictionary
-            Debug.Log($"Key binding for '{action}' updated to: {newKey}");
+            keyBindings[action] = newKey;
+            GameManager.Instance.SaveGame(); // ADD THIS to save immediately after rebinding
         }
         else
         {
@@ -366,11 +376,30 @@ public class InputManager : MonoBehaviour
                 GameManager.Instance.ChangeGameStatus(GameStatus.PAUSE_MENU);
                 Debug.Log("Game Paused.");
             }
-            else if (currentGameState == GameStatus.PAUSE_MENU)
+            else if (currentGameStatus == GameStatus.PAUSE_MENU)
             {
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
                 Debug.Log("Game Resumed.");
             }
+        }
+    }
+
+    public List<GameSaveData.KeyBindingEntry> ExportKeyBindings()
+    {
+        var list = new List<GameSaveData.KeyBindingEntry>();
+        foreach (var kvp in keyBindings)
+        {
+            list.Add(new GameSaveData.KeyBindingEntry { action = kvp.Key, keyCode = (int)kvp.Value });
+        }
+        return list;
+    }
+
+    public void ImportKeyBindings(List<GameSaveData.KeyBindingEntry> entries)
+    {
+        if (entries == null) return;
+        foreach (var entry in entries)
+        {
+            keyBindings[entry.action] = (KeyCode)entry.keyCode;
         }
     }
 }
