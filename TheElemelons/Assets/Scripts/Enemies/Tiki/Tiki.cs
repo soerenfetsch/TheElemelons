@@ -514,7 +514,6 @@ public class Tiki : Enemy
         float rayLength = 0.5f;
         LayerMask mask = LayerMask.GetMask("Player", "Walls");
         hit = Physics2D.Raycast(bodyTransform.position, bodyMovement, rayLength, mask);
-        Debug.DrawRay(bodyTransform.position, bodyMovement, Color.cyan, 1);
 
         if (moving_by.magnitude > 0.01)
         {

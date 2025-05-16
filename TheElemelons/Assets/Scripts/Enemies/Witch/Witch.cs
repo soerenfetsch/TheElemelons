@@ -1,16 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Codice.Client.BaseCommands.Merge.Restorer.Finder;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 public enum WitchState
 {
     Walk,
     Hover,
     Bald
 }
+public enum WitchMoves
+{
+    Dash,
+    Medusa,
+    Snek,
+    Boulder,
+    GreenPoof,
+    RedPoof,
+    Vortex,
+    Offense,
+    Circle,
+    Evasion
+}
 public class Witch : Enemy
 {
-    float dice;
+    public List<float> dice;
+    int diceCount = 3;
     public float intervalThrowdice = 3f;
     public WitchState currentWitchState = WitchState.Walk;
     [Header("CombatRangeHandling")]
@@ -20,7 +39,15 @@ public class Witch : Enemy
     public float maximalRange = 18f;
     public float rangeTolerance = 1f;
     RangeState currentRangeState = RangeState.OutOfRange;
+    [Header("Buff/Debuff handling")]
+    float moveFactor = 1f;
     [Header("Movement")]
+    Vector2 randomupdownleftright;
+    RaycastHit2D hit;
+    int clockwiseFactor = 1;
+    float circleProbability = 0.5f;
+    Vector3 destination;
+    List<Vector3> nodeCollection;
     Vector2 movement;
     float moveSpeed = 3f;
     float hoverSpeedFactor = 1.3f;
@@ -39,20 +66,37 @@ public class Witch : Enemy
     PlayerMovement playerMovement;
     [Header("Medusa")]
     public float medusaTime = 3f;
-    [Header("SpellCooldowns")]
-    bool canMedusa = true;
-    float medusaCooldown = 6f;
+    [Header("Dash")]
+    int dashMaxnumber = 3;
+    float dashtime = 1;
+    public float dashSpeed = 15f;
+    bool doingDash = false;
+    [Header("Spell- and MoveCooldowns, can and prob")]
+    bool isCasting = false;
+    public Dictionary<WitchMoves, WitchMoveInfos> moveStatsDict;
+    float rechargeProb = 0.4f;
+    float dashCooldown = 2f;
+    float dashProbability = 0.5f;
+    float medusaCooldown = 15f;
     float medusaProbability = 0.9f;
-    bool canCastOffensiveSpell = true;
+    public GameObject medusaGameObject;
     float offensiveSpellCooldown = 3f;
     float offensiveSpellProbability = 0.5f;
-    bool canCastSurvivalSpell = true;
-    float survivalSpellCooldown = 3f;
-    float survivalSpellProbability = 0.5f;
-    bool canBald = false;
-    float baldCooldown = 10f;
-    bool baldTimerisRunning = false;
+    float offensiveSpellCastTime = 1f;
+    float evasionSpellCooldown = 10f;
+    float evasionSpellProbability = 0.5f;
+    float baldCooldown = 15f;
     float baldProbability = 0.85f;
+    float baldCastTime = 1f;
+    bool baldTimerisRunning = false;
+    float redPoofProbability = 0.15f;
+    public GameObject redPoofGameObject;
+    float redPoofCooldown = 20f;
+    float greenPoofProbability = 0.8f;
+    public GameObject greenPoofGameObject;
+    float vortexProbability = 0.5f;
+    float boulderProbability = 0.25f;
+    float boulderCastTime = 1.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -65,17 +109,191 @@ public class Witch : Enemy
         wandAnimator = transform.GetChild(1).GetComponent<Animator>();
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
         movement = new Vector2(0, 0);
+        InitializeNodes();
+        InitilializeMoveStats();
+        InitializeDice();
     }
+    public void InitializeDice()
+    {
+        dice = new List<float>();
+        for (int i = 0; i < diceCount; i++)
+        {
+            dice.Add(1f);
+        }
+    }
+    public void InitilializeMoveStats()
+    {
+        //candash etc remove
+        moveStatsDict = new Dictionary<WitchMoves, WitchMoveInfos>();
+        //dash
+        WitchMoveInfos dashInfos = new WitchMoveInfos(dashProbability, dashCooldown);
+        moveStatsDict.Add(WitchMoves.Dash, dashInfos);
+        //medusa
+        WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, moveGameObject: medusaGameObject);
+        moveStatsDict.Add(WitchMoves.Medusa, medusaInfos);
+        //snek
+        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: baldCastTime);
+        moveStatsDict.Add(WitchMoves.Snek, baldInfos);
+        //evasion
+        WitchMoveInfos evasionSpellInfos = new WitchMoveInfos(evasionSpellProbability, evasionSpellCooldown);
+        moveStatsDict.Add(WitchMoves.Evasion, evasionSpellInfos);
+        //offensive
+        WitchMoveInfos offensiveSpellInfos = new WitchMoveInfos(offensiveSpellProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime);
+        moveStatsDict.Add(WitchMoves.Offense, offensiveSpellInfos);
+        //circle
+        WitchMoveInfos circleInfos = new WitchMoveInfos(circleProbability, 0);
+        moveStatsDict.Add(WitchMoves.Circle, circleInfos);
+        //redPoof
+        WitchMoveInfos redPoofInfos = new WitchMoveInfos(redPoofProbability, redPoofCooldown, moveGameObject: greenPoofGameObject);
+        moveStatsDict.Add(WitchMoves.GreenPoof, redPoofInfos);
+        //greenPoof
+        WitchMoveInfos greenPoofInfos = new WitchMoveInfos(greenPoofProbability, evasionSpellCooldown, moveGameObject: redPoofGameObject);
+        moveStatsDict.Add(WitchMoves.RedPoof, greenPoofInfos);
+        //vortex
+        WitchMoveInfos vortexInfos = new WitchMoveInfos(vortexProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime);
+        moveStatsDict.Add(WitchMoves.Vortex, vortexInfos);
+        //boulder
+        WitchMoveInfos boulderInfos = new WitchMoveInfos(boulderProbability, offensiveSpellCooldown, castTime: boulderCastTime);
+        moveStatsDict.Add(WitchMoves.Boulder, boulderInfos);
 
+    }
+    void InitializeNodes()
+    {
+        nodeCollection = new List<Vector3>();
+        GameObject nodeCollectionObject = GameObject.Find("NodeCollection");
+        int childCount = nodeCollectionObject.transform.childCount;
+        for (int child = 0; child < childCount; child++)
+        {
+            nodeCollection.Add(nodeCollectionObject.transform.GetChild(child).transform.position);
+        }
+    }
+    bool ReadDice(WitchMoves move, int diceToRead = 0)
+    {
+        if (dice[diceToRead] < moveStatsDict[move].probability)
+        {
+            return true;
+        }
+        return false;
+    }
+    void SelectDashNode(float dashDistance, bool awayFromPlayer = false)
+    {
+        nodeCollection = nodeCollection.OrderBy(x => UnityEngine.Random.value).ToList<Vector3>();
+        foreach (var node in nodeCollection)
+        {
+            Vector2 rayDir = node - transform.position;
+            if (Mathf.Abs(rayDir.magnitude) < dashDistance)
+            {
+                float rayLength = dashDistance;
+                LayerMask mask = LayerMask.GetMask("Player", "Walls");
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, dashDistance, mask);
+                if (!hit)
+                {
+                    if (!awayFromPlayer || Vector3.Angle(rayDir, playerTransform.position - transform.position) > 90f)
+                    {
+                        destination = node;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    Vector3 SelectTPNode(float distance)
+    {
+        nodeCollection = nodeCollection.OrderBy(x => UnityEngine.Random.value).ToList<Vector3>();
+        Vector3 choice = nodeCollection[0];
+        float choiceDist = Mathf.Infinity;
+        foreach (var node in nodeCollection)
+        {
+            float dist = Mathf.Abs((playerTransform.position - node).magnitude);
+            if (Mathf.Abs(dist - distance) < choiceDist)
+            {
+                choiceDist = dist;
+                choice = node;
+            }
+            if (dist < 2f)
+            {
+                return choice;
+            }
+        }
+        return choice;
+    }
+    IEnumerator DoDash(float dashDistance, bool awayFromPlayer = false, int numberOfDashes = 1)
+    {
+        moveStatsDict[WitchMoves.Dash].canDo = false;
+        doingDash = true;
+        for (int i = 0; i < numberOfDashes; i++)
+        {
+            SelectDashNode(dashDistance, awayFromPlayer);
+            movement = destination - transform.position;
+            yield return new WaitForSeconds(dashtime);
+        }
+        doingDash = false;
+        StartCoroutine(DoCooldown(WitchMoves.Dash));
+    }
+    IEnumerator DoCooldown(WitchMoves move)
+    {
+        float rechargeDice = 1f;
+        yield return new WaitForSeconds(moveStatsDict[move].cooldown);
+        while (!(rechargeDice < rechargeProb))
+        {
+            rechargeDice = UnityEngine.Random.Range(0, 1);
+            yield return new WaitForSeconds(1f);
+        }
+        moveStatsDict[move].canDo = true;
+    }
     void FixedUpdate()
     {
-        if (Time.frameCount % intervalThrowdice == 0)
-        {
-            dice = UnityEngine.Random.Range(0, 1);
-        }
+        ThrowDice();
         ActOnStatus();
         DoMovement();
+    }
+    void Update()
+    {
         ManageBodyAnimators();
+    }
+    void ThrowDice()
+    {
+        for (int i = 0; i < diceCount; i++)
+        {
+            if (Time.frameCount % intervalThrowdice * (i + 1) == 0)
+            {
+                dice[i] = UnityEngine.Random.Range(0, 1);
+            }
+        }
+    }
+    public WitchMoves Chose(List<WitchMoves> choices)
+    {
+        float sum = 0f;
+        Dictionary<WitchMoves, float> bets = new Dictionary<WitchMoves, float>();
+        foreach (WitchMoves move in choices)
+        {
+
+            Debug.Log(sum);
+            sum += moveStatsDict[move].probability;
+            Debug.Log(sum);
+            bets.Add(move, sum);
+
+        }
+        float diceThrow = UnityEngine.Random.Range(0, sum);
+        foreach (WitchMoves key in choices)
+        {
+            bets[key] = Mathf.Abs(bets[key] - diceThrow);
+        }
+        WitchMoves minKey = choices[0];
+        float minValue = Mathf.Infinity; ;
+        foreach (WitchMoves key in choices)
+        {
+            if (bets[key] < minValue)
+            {
+                minValue = bets[key];
+                minKey = key;
+            }
+        }
+        return minKey;
+    }
+    bool CanInput()
+    {
+        return !doingDash && !isCasting;
     }
     void ManageBodyAnimators()
     {
@@ -104,21 +322,56 @@ public class Witch : Enemy
     }
     public void DoMovement()
     {
-        movement.Normalize();
-        Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + moving_by);
+        if (!isCasting)
+        {
+            movement.Normalize();
+            Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + moving_by);
+        }
+
+        // check hit
+        float rayLength = 0.5f;
+        LayerMask mask = LayerMask.GetMask("Player", "Walls");
+        hit = Physics2D.Raycast(transform.position, movement, rayLength, mask);
+    }
+    Vector2 CalcCircleDir()
+    {
+        return (Vector2)(Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (Vector3)movement);
+    }
+    Vector2 PickStraightDir()
+    {
+        if (dice[2] < 0.25)
+        {
+            return Vector2.up * clockwiseFactor;
+        }
+        else if (dice[2] < 0.5)
+        {
+            return Vector2.right * clockwiseFactor;
+        }
+        else if (dice[2] < 0.75)
+        {
+            return Vector2.left * clockwiseFactor;
+        }
+        else
+        {
+            return Vector2.down * clockwiseFactor;
+        }
     }
     public float GetMoveSpeed()
     {
+        if (doingDash)
+        {
+            return dashSpeed;
+        }
         if (currentWitchState == WitchState.Walk)
         {
-            return moveSpeed;
+            return moveSpeed * moveFactor;
         }
         else if (currentWitchState == WitchState.Hover || currentWitchState == WitchState.Bald)
         {
-            return moveSpeed * hoverSpeedFactor;
+            return moveSpeed * hoverSpeedFactor * moveFactor;
         }
-        return moveSpeed;
+        return moveSpeed * moveFactor;
     }
     /// <summary>
     /// Abstract method to define behavior based on the current state.
@@ -138,15 +391,15 @@ public class Witch : Enemy
         {
             OnIdleStatus();
         }
-        else if (currentWitchState == WitchState.Walk)
+        else if (currentWitchState == WitchState.Walk && CanInput())
         {
             OnWalkStatus();
         }
-        else if (currentWitchState == WitchState.Hover)
+        else if (currentWitchState == WitchState.Hover && CanInput())
         {
             OnHoverStatus();
         }
-        else if (currentWitchState == WitchState.Bald)
+        else if (currentWitchState == WitchState.Bald && CanInput())
         {
             OnBaldStatus();
         }
@@ -155,65 +408,153 @@ public class Witch : Enemy
     { }
     public void OnHoverStatus()
     {
-        if (currentRangeState == RangeState.Close)
+        if (currentRangeState == RangeState.Close && CanInput())
         {
-            if (canMedusa && dice < medusaProbability)
+            if (moveStatsDict[WitchMoves.Medusa].canDo && ReadDice(WitchMoves.Medusa))
             {
+                // Medusa
+                HandleCast(WitchMoves.Medusa);
                 StartCoroutine(DoMedusa());
             }
-            else if (canCastSurvivalSpell && dice < survivalSpellProbability && !hairAnimator.GetBool("Medusa"))
+            else if (moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion) && !hairAnimator.GetBool("Medusa"))
             {
-                // evade with poof
+                List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                foreach (WitchMoves move in choices)
+                {
+                    if (!moveStatsDict[move].canDo)
+                    {
+                        choices.Remove(move);
+                    }
+                }
+
+                if (choices.Count > 0)
+                {
+                    WitchMoves choice = Chose(choices);
+                    HandleCast(choice);
+                    DoPoof(choice);
+                }
+            }
+            else if (moveStatsDict[WitchMoves.Dash].canDo && ReadDice(WitchMoves.Dash))
+            {
+                // Dash
+                float dashDistance = UnityEngine.Random.Range(-range, range) / 2 + range;
+                int numberOfDashes = UnityEngine.Random.Range(1, dashMaxnumber + 1);
+                StartCoroutine(DoDash(dashDistance, true, numberOfDashes));
             }
             else
             {
-                // run to range, shoot
+                // Run away
+                movement = transform.position - playerTransform.position;
+                if (hit)
+                {
+                    clockwiseFactor *= -1;
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement += CalcCircleDir();
+                }
             }
-
         }
-        else if (currentRangeState == RangeState.InRange)
+        else if (currentRangeState == RangeState.InRange && CanInput())
         {
-            if (canCastOffensiveSpell && dice < offensiveSpellProbability)
+            if (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))
             {
+                List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
+                WitchMoves choice = Chose(choices);
+                HandleCast(choice);
+                // cast and stand still
+            }
+            else if (moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) // check no wall behind player 
+            {
+                List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                WitchMoves choice = Chose(choices);
+                HandleCast(choice);
                 // cast
             }
-            else if (canCastSurvivalSpell && dice < survivalSpellProbability) // check no wall behind player 
-            {
-                // evade around player               
-            }
             else
             {
-                // walk around
+                if (hit)
+                {
+                    clockwiseFactor *= -1;
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement = CalcCircleDir();
+                }
+                else
+                {
+                    movement = PickStraightDir();
+                }
             }
         }
-        else if (currentRangeState == RangeState.Far)
+        else if (currentRangeState == RangeState.Far && CanInput())
         {
-            if (canBald && dice < baldProbability)
+            if (moveStatsDict[WitchMoves.Snek].canDo && ReadDice(WitchMoves.Snek))
             {
                 // go bald
             }
-            else if (canCastOffensiveSpell && dice < offensiveSpellProbability)
+            else if (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))
             {
                 // cast offense
             }
             else
             {
-                // walk around
+
+                if (hit)
+                {
+                    clockwiseFactor *= -1;
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement = CalcCircleDir();
+                }
+                else
+                {
+                    movement = PickStraightDir();
+                }
             }
         }
     }
+    public void DoPoof(WitchMoves poof)
+    {
+        if (poof != WitchMoves.GreenPoof && poof != WitchMoves.RedPoof)
+        {
+            return;
+        }
+        // select tp point
+        transform.position = SelectTPNode(UnityEngine.Random.Range(5f, 10f));
+        Instantiate(moveStatsDict[poof].moveGameObject, playerTransform.position, Quaternion.Euler(0f, 0f, 0f));
+        moveStatsDict[WitchMoves.Evasion].canDo = false;
+        moveStatsDict[poof].canDo = false;
+        StartCoroutine(DoCooldown(poof));
+        StartCoroutine(DoCooldown(WitchMoves.Evasion));
+    }
     public IEnumerator DoMedusa()
     {
-        canMedusa = false;
+        moveStatsDict[WitchMoves.Medusa].canDo = false;
         hairAnimator.SetBool("Medusa", true);
+        Instantiate(moveStatsDict[WitchMoves.Medusa].moveGameObject, playerTransform.position, Quaternion.Euler(0f, 0f, 0f));
         yield return new WaitForSeconds(medusaTime);
         hairAnimator.SetBool("Medusa", false);
-        StartCoroutine(MedusaCooldown());
+        StartCoroutine(DoCooldown(WitchMoves.Medusa));
     }
-    IEnumerator MedusaCooldown()
+    IEnumerator HandleCast(WitchMoves spell)
     {
-        yield return new WaitForSeconds(medusaCooldown);
-        canMedusa = true;
+        movement = playerTransform.position - transform.position;
+        if (moveStatsDict[spell].castTime > 0f)
+        {
+            isCasting = true;
+            wandAnimator.SetBool("WandOut", true);
+            yield return new WaitForSeconds(moveStatsDict[spell].castTime);
+            wandAnimator.SetBool("WandOut", false);
+            isCasting = false;
+        }
+        else
+        {
+            wandAnimator.SetBool("WandOut", true);
+            yield return new WaitForSeconds(1f);
+            wandAnimator.SetBool("WandOut", false);
+        }
     }
     public void ChangeWitchState(WitchState newState)
     {
@@ -261,7 +602,7 @@ public class Witch : Enemy
         yield return new WaitForSeconds(baldCooldown);
         if (currentRangeState == RangeState.Far)
         {
-            canBald = true;
+            moveStatsDict[WitchMoves.Snek].canDo = true;
         }
         baldTimerisRunning = false;
     }
@@ -314,7 +655,7 @@ public class Witch : Enemy
     }
     public override void ModifySpeed(float factor)
     {
-        moveSpeed *= factor;
+        moveFactor *= factor;
     }
     public override void ModifyDamage(float factor)
     {
@@ -327,5 +668,23 @@ public class Witch : Enemy
     public override void ModifyManaRegen(float factor)
     {
         mana.manaPerRegen *= factor;
+    }
+}
+public class WitchMoveInfos
+{
+    public float probability;
+    public float cooldown;
+    public bool canDo;
+    public int dice;
+    public float castTime;
+    public GameObject moveGameObject;
+    public WitchMoveInfos(float probability, float cooldown, bool canDo = true, int dice = 0, float castTime = 0, GameObject moveGameObject = null)
+    {
+        this.probability = probability;
+        this.cooldown = cooldown;
+        this.canDo = canDo;
+        this.dice = dice;
+        this.castTime = castTime;
+        this.moveGameObject = moveGameObject;
     }
 }
