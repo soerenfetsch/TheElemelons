@@ -116,7 +116,7 @@ public class InputManager : MonoBehaviour
             KeyCode.Mouse0, KeyCode.Mouse1,
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
             KeyCode.Z, KeyCode.X,
-            KeyCode.E, KeyCode.Space
+            KeyCode.E, KeyCode.E
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
