@@ -51,7 +51,6 @@ public class Witch : Enemy
     [Header("Buff/Debuff handling")]
     float moveFactor = 1f;
     [Header("Movement")]
-    Vector2 randomupdownleftright;
     RaycastHit2D hit;
     int clockwiseFactor = 1;
     int clockSwitchCounter = 0;
@@ -110,8 +109,10 @@ public class Witch : Enemy
     float greenPoofProbability = 0.8f;
     float greenPoofCooldown = 10f;
     public GameObject greenPoofGameObject;
-    float vortexProbability = 0.5f;
-    float boulderProbability = 0.25f;
+    float vortexProbability = 0.3f;
+    float vortexCooldown = 10f;
+    public GameObject vortexGameObject;
+    float boulderProbability = 0.4f;
     float boulderCastTime = 1.5f;
     public GameObject boulderGameObject;
     float specialMoveProbability = 0.8f;
@@ -178,7 +179,7 @@ public class Witch : Enemy
         WitchMoveInfos greenPoofInfos = new WitchMoveInfos(greenPoofProbability, greenPoofCooldown, moveGameObject: greenPoofGameObject, doMethod: DoGreenPoof, parentCategory: WitchMoves.Evasion);
         moveStatsDict.Add(WitchMoves.GreenPoof, greenPoofInfos);
         //vortex
-        WitchMoveInfos vortexInfos = new WitchMoveInfos(vortexProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime, parentCategory: WitchMoves.Offense);
+        WitchMoveInfos vortexInfos = new WitchMoveInfos(vortexProbability, vortexCooldown, castTime: offensiveSpellCastTime, moveGameObject: vortexGameObject, doMethod: DoVortex, parentCategory: WitchMoves.Offense);
         moveStatsDict.Add(WitchMoves.Vortex, vortexInfos);
         //boulder
         WitchMoveInfos boulderInfos = new WitchMoveInfos(boulderProbability, offensiveSpellCooldown, castTime: boulderCastTime, doMethod: DoBoulder, moveGameObject: boulderGameObject, parentCategory: WitchMoves.Offense);
@@ -186,7 +187,6 @@ public class Witch : Enemy
         //ram
         WitchMoveInfos ramPlayerInfos = new WitchMoveInfos(ramPlayerProbability, ramPlayerCooldown, dice: diceCount, doMethod: DoRamPlayer);
         moveStatsDict.Add(WitchMoves.RamPlayer, ramPlayerInfos);
-
     }
     void InitializeNodes()
     {
@@ -632,17 +632,18 @@ public class Witch : Enemy
             }
             else
             {
+                movement = playerTransform.position - transform.position;
                 if (hit)
                 {
                     SwitchClockWise();
                 }
                 if (ReadDice(WitchMoves.Circle, 2))
                 {
-                    movement = CalcCircleDir();
+                    movement += CalcCircleDir();
                 }
                 else
                 {
-                    movement = PickStraightDir();
+                    movement += PickStraightDir();
                 }
             }
         }
@@ -692,6 +693,13 @@ public class Witch : Enemy
         solidCollider.enabled = true;
         doingDash = false;
         moveStatsDict[WitchMoves.AnyMove].canDo = true;
+    }
+    void DoVortex()
+    {
+        for (int i = 0; i < healthPhase; i++)
+        {
+            CombatManager.InstantiateSpell(vortexGameObject, gameObject, playerTransform.position + new Vector3(UnityEngine.Random.Range(-range / 2, range / 2), UnityEngine.Random.Range(-range / 2, range / 2)), Quaternion.Euler(0, 0, 0));
+        }
     }
     public IEnumerator DoMedusaRoutine()
     {

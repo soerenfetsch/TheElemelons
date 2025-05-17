@@ -393,6 +393,7 @@ MonoBehaviour:
   medusaGameObject: {fileID: 983988655983635023, guid: 2ee0df0e1bc03dc44868610293620545, type: 3}
   redPoofGameObject: {fileID: 5304331100118533729, guid: b4ab63f5178469248a930b998aaedceb, type: 3}
   greenPoofGameObject: {fileID: 391362455831743570, guid: a7412562bc81feb4fb0cb9132b93edfc, type: 3}
+  vortexGameObject: {fileID: 4728450674804846625, guid: 780dac520a63c8d4fb69035df4395fca, type: 3}
   boulderGameObject: {fileID: 6995367298995900064, guid: a28aecdf3ad3c00408f71205db8b485f, type: 3}
 --- !u!1 &125569591
 GameObject:

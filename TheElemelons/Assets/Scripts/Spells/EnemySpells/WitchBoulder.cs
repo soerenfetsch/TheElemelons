@@ -40,23 +40,17 @@ public class WitchBoulder : SpellEffect
         if (distance < 0.2f && !smash)
         {
             smash = true;
-            Debug.Log("Close");
             boulderTransform.position = transform.position;
             boulderRb.gravityScale = 0;
             boulderRb.angularVelocity = 0;
             boulderRb.velocity = Vector3.zero;
             boulderRb.isKinematic = true;
-            boulderAnimator.SetTrigger("Smash");
             StartCoroutine(Expire());
         }
 
         if (distance < 2f)
         {
             circleCollider2D.enabled = true;
-        }
-        if (circleCollider2D.enabled)
-        {
-            Debug.Log("circle enabled");
         }
     }
     IEnumerator Expire()
