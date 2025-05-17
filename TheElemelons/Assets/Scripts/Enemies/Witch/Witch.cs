@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Codice.Client.BaseCommands.Merge.Restorer.Finder;
+using log4net.Config;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 public enum WitchState
 {
@@ -15,6 +18,8 @@ public enum WitchState
 }
 public enum WitchMoves
 {
+    AnyMove,
+    SpecialMove,
     Dash,
     Medusa,
     Snek,
@@ -24,7 +29,9 @@ public enum WitchMoves
     Vortex,
     Offense,
     Circle,
-    Evasion
+    Evasion,
+    RamPlayer,
+    None
 }
 public class Witch : Enemy
 {
@@ -45,6 +52,7 @@ public class Witch : Enemy
     Vector2 randomupdownleftright;
     RaycastHit2D hit;
     int clockwiseFactor = 1;
+    int clockSwitchCounter = 0;
     float circleProbability = 0.5f;
     Vector3 destination;
     List<Vector3> nodeCollection;
@@ -64,6 +72,7 @@ public class Witch : Enemy
     Animator hairAnimator;
     Animator wandAnimator;
     PlayerMovement playerMovement;
+    BoxCollider2D solidCollider;
     [Header("Medusa")]
     public float medusaTime = 3f;
     [Header("Dash")]
@@ -77,26 +86,31 @@ public class Witch : Enemy
     float rechargeProb = 0.4f;
     float dashCooldown = 2f;
     float dashProbability = 0.5f;
-    float medusaCooldown = 15f;
+    float medusaCooldown = 20f;
     float medusaProbability = 0.9f;
     public GameObject medusaGameObject;
     float offensiveSpellCooldown = 3f;
     float offensiveSpellProbability = 0.5f;
-    float offensiveSpellCastTime = 1f;
-    float evasionSpellCooldown = 10f;
+    float offensiveSpellCastTime = 1.5f;
+    float evasionSpellCooldown = 7f;
     float evasionSpellProbability = 0.5f;
     float baldCooldown = 15f;
     float baldProbability = 0.85f;
-    float baldCastTime = 1f;
+    float baldCastTime = 2f;
     bool baldTimerisRunning = false;
     float redPoofProbability = 0.15f;
     public GameObject redPoofGameObject;
     float redPoofCooldown = 20f;
     float greenPoofProbability = 0.8f;
+    float greenPoofCooldown = 10f;
     public GameObject greenPoofGameObject;
     float vortexProbability = 0.5f;
     float boulderProbability = 0.25f;
     float boulderCastTime = 1.5f;
+    float specialMoveProbability = 0.8f;
+    float specialMoveCooldown = 1f;
+    float ramPlayerProbability = 0.5f;
+    float ramPlayerCooldown = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -108,6 +122,7 @@ public class Witch : Enemy
         hairAnimator = transform.GetChild(0).GetComponent<Animator>();
         wandAnimator = transform.GetChild(1).GetComponent<Animator>();
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
+        solidCollider = GetComponent<BoxCollider2D>();
         movement = new Vector2(0, 0);
         InitializeNodes();
         InitilializeMoveStats();
@@ -116,7 +131,7 @@ public class Witch : Enemy
     public void InitializeDice()
     {
         dice = new List<float>();
-        for (int i = 0; i < diceCount; i++)
+        for (int i = 0; i < 2 * diceCount; i++)
         {
             dice.Add(1f);
         }
@@ -125,36 +140,45 @@ public class Witch : Enemy
     {
         //candash etc remove
         moveStatsDict = new Dictionary<WitchMoves, WitchMoveInfos>();
+        // anymove
+        WitchMoveInfos anyMoveInfos = new WitchMoveInfos(1, 0);
+        moveStatsDict.Add(WitchMoves.AnyMove, anyMoveInfos);
+        // specialmove
+        WitchMoveInfos specialMoveInfos = new WitchMoveInfos(specialMoveProbability, specialMoveCooldown);
+        moveStatsDict.Add(WitchMoves.SpecialMove, specialMoveInfos);
         //dash
-        WitchMoveInfos dashInfos = new WitchMoveInfos(dashProbability, dashCooldown);
+        WitchMoveInfos dashInfos = new WitchMoveInfos(dashProbability, dashCooldown, doMethod: DoDash);
         moveStatsDict.Add(WitchMoves.Dash, dashInfos);
         //medusa
-        WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, moveGameObject: medusaGameObject);
+        WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, moveGameObject: medusaGameObject, doMethod: DoMedusa, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Medusa, medusaInfos);
         //snek
-        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: baldCastTime);
+        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: baldCastTime, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Snek, baldInfos);
         //evasion
-        WitchMoveInfos evasionSpellInfos = new WitchMoveInfos(evasionSpellProbability, evasionSpellCooldown);
+        WitchMoveInfos evasionSpellInfos = new WitchMoveInfos(evasionSpellProbability, evasionSpellCooldown, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Evasion, evasionSpellInfos);
         //offensive
-        WitchMoveInfos offensiveSpellInfos = new WitchMoveInfos(offensiveSpellProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime);
+        WitchMoveInfos offensiveSpellInfos = new WitchMoveInfos(offensiveSpellProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Offense, offensiveSpellInfos);
         //circle
         WitchMoveInfos circleInfos = new WitchMoveInfos(circleProbability, 0);
         moveStatsDict.Add(WitchMoves.Circle, circleInfos);
         //redPoof
-        WitchMoveInfos redPoofInfos = new WitchMoveInfos(redPoofProbability, redPoofCooldown, moveGameObject: greenPoofGameObject);
-        moveStatsDict.Add(WitchMoves.GreenPoof, redPoofInfos);
+        WitchMoveInfos redPoofInfos = new WitchMoveInfos(redPoofProbability, redPoofCooldown, moveGameObject: redPoofGameObject, doMethod: DoRedPoof, parentCategory: WitchMoves.Evasion);
+        moveStatsDict.Add(WitchMoves.RedPoof, redPoofInfos);
         //greenPoof
-        WitchMoveInfos greenPoofInfos = new WitchMoveInfos(greenPoofProbability, evasionSpellCooldown, moveGameObject: redPoofGameObject);
-        moveStatsDict.Add(WitchMoves.RedPoof, greenPoofInfos);
+        WitchMoveInfos greenPoofInfos = new WitchMoveInfos(greenPoofProbability, greenPoofCooldown, moveGameObject: greenPoofGameObject, doMethod: DoGreenPoof, parentCategory: WitchMoves.Evasion);
+        moveStatsDict.Add(WitchMoves.GreenPoof, greenPoofInfos);
         //vortex
-        WitchMoveInfos vortexInfos = new WitchMoveInfos(vortexProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime);
+        WitchMoveInfos vortexInfos = new WitchMoveInfos(vortexProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime, parentCategory: WitchMoves.Offense);
         moveStatsDict.Add(WitchMoves.Vortex, vortexInfos);
         //boulder
-        WitchMoveInfos boulderInfos = new WitchMoveInfos(boulderProbability, offensiveSpellCooldown, castTime: boulderCastTime);
+        WitchMoveInfos boulderInfos = new WitchMoveInfos(boulderProbability, offensiveSpellCooldown, castTime: boulderCastTime, parentCategory: WitchMoves.Offense);
         moveStatsDict.Add(WitchMoves.Boulder, boulderInfos);
+        //boulder
+        WitchMoveInfos ramPlayerInfos = new WitchMoveInfos(ramPlayerProbability, ramPlayerCooldown, dice: diceCount, doMethod: DoRamPlayer);
+        moveStatsDict.Add(WitchMoves.RamPlayer, ramPlayerInfos);
 
     }
     void InitializeNodes()
@@ -167,9 +191,10 @@ public class Witch : Enemy
             nodeCollection.Add(nodeCollectionObject.transform.GetChild(child).transform.position);
         }
     }
-    bool ReadDice(WitchMoves move, int diceToRead = 0)
+    bool ReadDice(WitchMoves move, int diceToRead = -1)
     {
-        if (dice[diceToRead] < moveStatsDict[move].probability)
+        if ((diceToRead < 0 && moveStatsDict[move].dice < moveStatsDict[move].probability)
+        || dice[diceToRead] < moveStatsDict[move].probability)
         {
             return true;
         }
@@ -185,8 +210,8 @@ public class Witch : Enemy
             {
                 float rayLength = dashDistance;
                 LayerMask mask = LayerMask.GetMask("Player", "Walls");
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, dashDistance, mask);
-                if (!hit)
+                RaycastHit2D hit1 = Physics2D.Raycast(transform.position, rayDir, dashDistance, mask);
+                if (!hit1)
                 {
                     if (!awayFromPlayer || Vector3.Angle(rayDir, playerTransform.position - transform.position) > 90f)
                     {
@@ -217,7 +242,7 @@ public class Witch : Enemy
         }
         return choice;
     }
-    IEnumerator DoDash(float dashDistance, bool awayFromPlayer = false, int numberOfDashes = 1)
+    IEnumerator DoDashRoutine(float dashDistance, bool awayFromPlayer = false, int numberOfDashes = 1)
     {
         moveStatsDict[WitchMoves.Dash].canDo = false;
         doingDash = true;
@@ -228,7 +253,35 @@ public class Witch : Enemy
             yield return new WaitForSeconds(dashtime);
         }
         doingDash = false;
-        StartCoroutine(DoCooldown(WitchMoves.Dash));
+        moveStatsDict[WitchMoves.Evasion].canDo = false;
+    }
+    void DoDash()
+    {
+        float dashDistance;
+        int numberOfDashes;
+        bool away;
+        if (currentRangeState == RangeState.Far)
+        {
+            dashDistance = Mathf.Abs(UnityEngine.Random.Range(-range, range) + range);
+            numberOfDashes = UnityEngine.Random.Range(1, dashMaxnumber + 2);
+            away = false;
+        }
+        else
+        {
+            dashDistance = UnityEngine.Random.Range(-range, range) / 2 + range;
+            numberOfDashes = UnityEngine.Random.Range(1, dashMaxnumber + 1);
+            away = true;
+        }
+
+        StartCoroutine(DoDashRoutine(dashDistance, awayFromPlayer: away, numberOfDashes));
+    }
+    void DoGreenPoof()
+    {
+        DoPoof(WitchMoves.GreenPoof);
+    }
+    void DoRedPoof()
+    {
+        DoPoof(WitchMoves.RedPoof);
     }
     IEnumerator DoCooldown(WitchMoves move)
     {
@@ -243,13 +296,25 @@ public class Witch : Enemy
     }
     void FixedUpdate()
     {
+        NewHitRayCast();
         ThrowDice();
+        CalcRangeState();
         ActOnStatus();
         DoMovement();
     }
     void Update()
     {
         ManageBodyAnimators();
+    }
+    void NewHitRayCast()
+    {
+        // check hit
+        float rayLength = 2f;
+        LayerMask mask = LayerMask.GetMask("Walls");
+        RaycastHit2D hit0 = Physics2D.Raycast(transform.position, movement, rayLength, mask);
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, 10f) * movement, rayLength, mask);
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, -10f) * movement, rayLength, mask);
+        hit = hit0 ? hit0 : (hit1 ? hit1 : (hit2 ? hit2 : hit0));
     }
     void ThrowDice()
     {
@@ -258,38 +323,49 @@ public class Witch : Enemy
             if (Time.frameCount % intervalThrowdice * (i + 1) == 0)
             {
                 dice[i] = UnityEngine.Random.Range(0, 1);
+                dice[i + diceCount] = UnityEngine.Random.Range(0, 1);
             }
         }
     }
     public WitchMoves Chose(List<WitchMoves> choices)
     {
         float sum = 0f;
+        int infBetCount = 0;
         Dictionary<WitchMoves, float> bets = new Dictionary<WitchMoves, float>();
         foreach (WitchMoves move in choices)
         {
-
-            Debug.Log(sum);
-            sum += moveStatsDict[move].probability;
-            Debug.Log(sum);
-            bets.Add(move, sum);
-
-        }
-        float diceThrow = UnityEngine.Random.Range(0, sum);
-        foreach (WitchMoves key in choices)
-        {
-            bets[key] = Mathf.Abs(bets[key] - diceThrow);
-        }
-        WitchMoves minKey = choices[0];
-        float minValue = Mathf.Infinity; ;
-        foreach (WitchMoves key in choices)
-        {
-            if (bets[key] < minValue)
+            if (moveStatsDict[move].canDo && ReadDice(move))
             {
-                minValue = bets[key];
-                minKey = key;
+                sum += moveStatsDict[move].probability;
+                bets.Add(move, sum);
+            }
+            else
+            {
+                bets.Add(move, Mathf.Infinity);
+                infBetCount++;
             }
         }
-        return minKey;
+        if (infBetCount < bets.Count)
+        {
+            float diceThrow = UnityEngine.Random.Range(0, sum);
+            foreach (WitchMoves key in choices)
+            {
+                bets[key] = Mathf.Abs(bets[key] - diceThrow);
+            }
+            WitchMoves minKey = choices[0];
+            float minValue = Mathf.Infinity; ;
+            foreach (WitchMoves key in choices)
+            {
+                if (bets[key] < minValue)
+                {
+                    minValue = bets[key];
+                    minKey = key;
+                }
+            }
+            ExecuteMove(minKey);
+            return minKey;
+        }
+        return WitchMoves.None;
     }
     bool CanInput()
     {
@@ -328,15 +404,10 @@ public class Witch : Enemy
             Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + moving_by);
         }
-
-        // check hit
-        float rayLength = 0.5f;
-        LayerMask mask = LayerMask.GetMask("Player", "Walls");
-        hit = Physics2D.Raycast(transform.position, movement, rayLength, mask);
     }
     Vector2 CalcCircleDir()
     {
-        return (Vector2)(Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (Vector3)movement);
+        return (Vector2)(Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - transform.position));
     }
     Vector2 PickStraightDir()
     {
@@ -378,7 +449,6 @@ public class Witch : Enemy
     /// </summary>
     public override void ActOnStatus()
     {
-        CalcRangeState();
         if (currentRangeState == RangeState.OutOfRange)
         {
             ChangeState(EnemyStatus.Idle);
@@ -387,21 +457,92 @@ public class Witch : Enemy
         {
             ChangeState(EnemyStatus.Approaching);
         }
+
         if (currentState == EnemyStatus.Idle)
         {
             OnIdleStatus();
         }
-        else if (currentWitchState == WitchState.Walk && CanInput())
+        else if (moveStatsDict[WitchMoves.AnyMove].canDo)
         {
-            OnWalkStatus();
+            if (currentWitchState == WitchState.Walk && CanInput())
+            {
+                OnWalkStatus();
+            }
+            else if (currentWitchState == WitchState.Hover && CanInput())
+            {
+                OnHoverStatus();
+            }
+            else if (currentWitchState == WitchState.Bald && CanInput())
+            {
+                OnBaldStatus();
+            }
         }
-        else if (currentWitchState == WitchState.Hover && CanInput())
+
+    }
+    WitchMoves ChoseSpellFromPriorityBatches(List<List<WitchMoves>> moveBatches, List<float> priorityFactors)
+    {
+        float sum = 0;
+        int infBetCount = 0;
+        List<float> bets = new List<float>();
+        for (int i = 0; i < moveBatches.Count; i++)
         {
-            OnHoverStatus();
+            int canDoCount = 0;
+            for (int j = 0; j < moveBatches[i].Count; j++)
+            {
+                if (moveStatsDict[moveBatches[i][j]].canDo && ReadDice(moveBatches[i][j]))
+                {
+                    sum += moveStatsDict[moveBatches[i][j]].probability * priorityFactors[i];
+                    canDoCount++;
+                }
+            }
+            if (canDoCount > 0)
+            {
+                bets.Add(sum);
+            }
+            else
+            {
+                bets.Add(Mathf.Infinity);
+                infBetCount++;
+            }
         }
-        else if (currentWitchState == WitchState.Bald && CanInput())
+        WitchMoves chosen;
+        if (infBetCount < priorityFactors.Count)
         {
-            OnBaldStatus();
+            float diceThrow = UnityEngine.Random.Range(0, sum);
+            for (int i = 0; i < bets.Count; i++)
+            {
+                bets[i] = Mathf.Abs(bets[i] - diceThrow);
+            }
+            List<WitchMoves> batchChoice = moveBatches[bets.IndexOf(bets.Min())];
+            chosen = Chose(batchChoice);
+        }
+        else
+        {
+            chosen = WitchMoves.None;
+        }
+        return chosen;
+    }
+    void ExecuteMove(WitchMoves move)
+    {
+        if (move != WitchMoves.None && moveStatsDict[move].canDo && moveStatsDict[WitchMoves.AnyMove].canDo)
+        {
+            // reset candos and cooldowns
+            moveStatsDict[move].canDo = false;
+            StartCoroutine(DoCooldown(move));
+            WitchMoves parentCategory = moveStatsDict[move].parentCategory;
+            if (parentCategory != WitchMoves.AnyMove)
+            {
+                moveStatsDict[parentCategory].canDo = false;
+                StartCoroutine(DoCooldown(parentCategory));
+                WitchMoves grandparentCategory = moveStatsDict[parentCategory].parentCategory;
+                if (grandparentCategory != WitchMoves.AnyMove)
+                {
+                    moveStatsDict[grandparentCategory].canDo = false;
+                    StartCoroutine(DoCooldown(grandparentCategory));
+                }
+            }
+            moveStatsDict[move].doMethod();
+            StartCoroutine(HandleCast(move));
         }
     }
     public void OnWalkStatus()
@@ -410,36 +551,18 @@ public class Witch : Enemy
     {
         if (currentRangeState == RangeState.Close && CanInput())
         {
-            if (moveStatsDict[WitchMoves.Medusa].canDo && ReadDice(WitchMoves.Medusa))
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Medusa].canDo && ReadDice(WitchMoves.Medusa)) ||
+                (moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
+                (moveStatsDict[WitchMoves.Dash].canDo && ReadDice(WitchMoves.Dash))))
             {
-                // Medusa
-                HandleCast(WitchMoves.Medusa);
-                StartCoroutine(DoMedusa());
-            }
-            else if (moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion) && !hairAnimator.GetBool("Medusa"))
-            {
-                List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
-                foreach (WitchMoves move in choices)
-                {
-                    if (!moveStatsDict[move].canDo)
-                    {
-                        choices.Remove(move);
-                    }
-                }
-
-                if (choices.Count > 0)
-                {
-                    WitchMoves choice = Chose(choices);
-                    HandleCast(choice);
-                    DoPoof(choice);
-                }
-            }
-            else if (moveStatsDict[WitchMoves.Dash].canDo && ReadDice(WitchMoves.Dash))
-            {
-                // Dash
-                float dashDistance = UnityEngine.Random.Range(-range, range) / 2 + range;
-                int numberOfDashes = UnityEngine.Random.Range(1, dashMaxnumber + 1);
-                StartCoroutine(DoDash(dashDistance, true, numberOfDashes));
+                // pick witchMove
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Dash };
+                List<WitchMoves> choices2 = new List<WitchMoves> { WitchMoves.Medusa };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1, choices2 };
+                List<float> priorities = new List<float> { 1.5f, 1f, 2.5f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
             }
             else
             {
@@ -447,7 +570,7 @@ public class Witch : Enemy
                 movement = transform.position - playerTransform.position;
                 if (hit)
                 {
-                    clockwiseFactor *= -1;
+                    SwitchClockWise();
                 }
                 if (ReadDice(WitchMoves.Circle, 1))
                 {
@@ -457,25 +580,21 @@ public class Witch : Enemy
         }
         else if (currentRangeState == RangeState.InRange && CanInput())
         {
-            if (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
+                (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))))
             {
-                List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
-                WitchMoves choice = Chose(choices);
-                HandleCast(choice);
-                // cast and stand still
-            }
-            else if (moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) // check no wall behind player 
-            {
-                List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
-                WitchMoves choice = Chose(choices);
-                HandleCast(choice);
-                // cast
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
+                List<float> priorities = new List<float> { 3f, 1f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
             }
             else
             {
                 if (hit)
                 {
-                    clockwiseFactor *= -1;
+                    SwitchClockWise();
                 }
                 if (ReadDice(WitchMoves.Circle, 1))
                 {
@@ -489,22 +608,23 @@ public class Witch : Enemy
         }
         else if (currentRangeState == RangeState.Far && CanInput())
         {
-            if (moveStatsDict[WitchMoves.Snek].canDo && ReadDice(WitchMoves.Snek))
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense)) ||
+                (moveStatsDict[WitchMoves.Snek].canDo && ReadDice(WitchMoves.Snek))))
             {
-                // go bald
-            }
-            else if (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))
-            {
-                // cast offense
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Snek };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
+                List<float> priorities = new List<float> { 1f, 5f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
             }
             else
             {
-
                 if (hit)
                 {
-                    clockwiseFactor *= -1;
+                    SwitchClockWise();
                 }
-                if (ReadDice(WitchMoves.Circle, 1))
+                if (ReadDice(WitchMoves.Circle, 2))
                 {
                     movement = CalcCircleDir();
                 }
@@ -515,6 +635,18 @@ public class Witch : Enemy
             }
         }
     }
+    void SwitchClockWise()
+    {
+        clockwiseFactor *= -1;
+        ++clockSwitchCounter;
+        float variation = UnityEngine.Random.Range(-3, 3);
+        range = Mathf.Clamp(range + variation, minimalRange, maximalRange);
+        if (clockwiseFactor > 4 && ReadDice(WitchMoves.RamPlayer))
+        {
+            clockSwitchCounter = 0;
+            ExecuteMove(WitchMoves.RamPlayer);
+        }
+    }
     public void DoPoof(WitchMoves poof)
     {
         if (poof != WitchMoves.GreenPoof && poof != WitchMoves.RedPoof)
@@ -522,39 +654,59 @@ public class Witch : Enemy
             return;
         }
         // select tp point
+        Instantiate(moveStatsDict[poof].moveGameObject, transform.position, Quaternion.Euler(0f, 0f, 0f));
         transform.position = SelectTPNode(UnityEngine.Random.Range(5f, 10f));
-        Instantiate(moveStatsDict[poof].moveGameObject, playerTransform.position, Quaternion.Euler(0f, 0f, 0f));
-        moveStatsDict[WitchMoves.Evasion].canDo = false;
-        moveStatsDict[poof].canDo = false;
-        StartCoroutine(DoCooldown(poof));
-        StartCoroutine(DoCooldown(WitchMoves.Evasion));
     }
-    public IEnumerator DoMedusa()
+    void DoRamPlayer()
     {
-        moveStatsDict[WitchMoves.Medusa].canDo = false;
+        StartCoroutine(DoRamPlayerRoutine());
+    }
+    IEnumerator DoRamPlayerRoutine()
+    {
+        moveStatsDict[WitchMoves.AnyMove].canDo = false;
+        doingDash = true;
+        movement = playerTransform.position - transform.position;
+        float distance = movement.magnitude * 2;
+        //raycast to cut distance
+        LayerMask mask = LayerMask.GetMask("Walls");
+        RaycastHit2D hitInWay = Physics2D.Raycast(playerTransform.position, Quaternion.Euler(0f, 0f, 0f) * movement, distance, mask);
+        if (hitInWay)
+        {
+            distance = (hitInWay.transform.position - transform.position).magnitude - 2f;
+        }
+        float dashTime = distance * dashSpeed;
+        solidCollider.enabled = false;
+        yield return new WaitForSeconds(dashTime);
+        solidCollider.enabled = true;
+        doingDash = false;
+        moveStatsDict[WitchMoves.AnyMove].canDo = true;
+    }
+    public IEnumerator DoMedusaRoutine()
+    {
         hairAnimator.SetBool("Medusa", true);
         Instantiate(moveStatsDict[WitchMoves.Medusa].moveGameObject, playerTransform.position, Quaternion.Euler(0f, 0f, 0f));
         yield return new WaitForSeconds(medusaTime);
         hairAnimator.SetBool("Medusa", false);
-        StartCoroutine(DoCooldown(WitchMoves.Medusa));
+    }
+    void DoMedusa()
+    {
+        StartCoroutine(DoMedusaRoutine());
     }
     IEnumerator HandleCast(WitchMoves spell)
     {
         movement = playerTransform.position - transform.position;
+        wandAnimator.SetBool("WandOut", true);
         if (moveStatsDict[spell].castTime > 0f)
         {
             isCasting = true;
-            wandAnimator.SetBool("WandOut", true);
             yield return new WaitForSeconds(moveStatsDict[spell].castTime);
-            wandAnimator.SetBool("WandOut", false);
             isCasting = false;
         }
         else
         {
-            wandAnimator.SetBool("WandOut", true);
             yield return new WaitForSeconds(1f);
-            wandAnimator.SetBool("WandOut", false);
         }
+        wandAnimator.SetBool("WandOut", false);
     }
     public void ChangeWitchState(WitchState newState)
     {
@@ -595,7 +747,6 @@ public class Witch : Enemy
             }
         }
     }
-
     IEnumerator StartBaldingTimer()
     {
         baldTimerisRunning = true;
@@ -678,7 +829,10 @@ public class WitchMoveInfos
     public int dice;
     public float castTime;
     public GameObject moveGameObject;
-    public WitchMoveInfos(float probability, float cooldown, bool canDo = true, int dice = 0, float castTime = 0, GameObject moveGameObject = null)
+    public Action doMethod;
+    public WitchMoves parentCategory;
+    public WitchMoveInfos(float probability, float cooldown, bool canDo = true, int dice = 0, float castTime = 0,
+    GameObject moveGameObject = null, Action doMethod = null, WitchMoves parentCategory = WitchMoves.AnyMove)
     {
         this.probability = probability;
         this.cooldown = cooldown;
@@ -686,5 +840,7 @@ public class WitchMoveInfos
         this.dice = dice;
         this.castTime = castTime;
         this.moveGameObject = moveGameObject;
+        this.doMethod = doMethod;
+        this.parentCategory = parentCategory;
     }
 }
