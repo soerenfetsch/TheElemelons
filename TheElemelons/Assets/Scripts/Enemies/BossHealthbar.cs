@@ -24,11 +24,9 @@ public class BossHealthbar : MonoBehaviour
     }
     void CalcDestination()
     {
-        if (bossHealth.health > 0f)
-        {
-            float percentage = bossHealth.health / bossHealth.maxhealth;
-            destination = endOfLife.position.x + dist * percentage;
-        }
+
+        float percentage = bossHealth.health / bossHealth.maxhealth;
+        destination = endOfLife.position.x + dist * percentage;
         if (bossHealth == null)
         {
             destination = endOfLife.position.x;

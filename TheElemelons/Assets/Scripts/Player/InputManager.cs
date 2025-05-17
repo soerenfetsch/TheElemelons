@@ -154,10 +154,10 @@ public class InputManager : MonoBehaviour
         if (canMove)
         {
             HandleMovementInputs();
+            HandleSpellCastingInputs();
+            HandleInteractionInputs();
         }
-        HandleSpellCastingInputs();
         HandleCameraInputs();
-        HandleInteractionInputs();
     }
 
     /// <summary>

@@ -39,9 +39,11 @@ public class Witch : Enemy
     int diceCount = 3;
     public float intervalThrowdice = 3f;
     public WitchState currentWitchState = WitchState.Walk;
+    [Header("Health phases")]
+    int healthPhase = 1;
     [Header("CombatRangeHandling")]
     public float range = 10f;
-    public float aggroRange = 30f;
+    public float aggroRange = 80f;
     public float minimalRange = 6f;
     public float maximalRange = 18f;
     public float rangeTolerance = 1f;
@@ -75,6 +77,10 @@ public class Witch : Enemy
     BoxCollider2D solidCollider;
     [Header("Medusa")]
     public float medusaTime = 3f;
+    [Header("Boulder")]
+    public float boulderDamage = 2f;
+    public float boulderThrust = 6f;
+    public float boulderKnockTime = 1.5f;
     [Header("Dash")]
     int dashMaxnumber = 3;
     float dashtime = 1;
@@ -107,6 +113,7 @@ public class Witch : Enemy
     float vortexProbability = 0.5f;
     float boulderProbability = 0.25f;
     float boulderCastTime = 1.5f;
+    public GameObject boulderGameObject;
     float specialMoveProbability = 0.8f;
     float specialMoveCooldown = 1f;
     float ramPlayerProbability = 0.5f;
@@ -174,9 +181,9 @@ public class Witch : Enemy
         WitchMoveInfos vortexInfos = new WitchMoveInfos(vortexProbability, offensiveSpellCooldown, castTime: offensiveSpellCastTime, parentCategory: WitchMoves.Offense);
         moveStatsDict.Add(WitchMoves.Vortex, vortexInfos);
         //boulder
-        WitchMoveInfos boulderInfos = new WitchMoveInfos(boulderProbability, offensiveSpellCooldown, castTime: boulderCastTime, parentCategory: WitchMoves.Offense);
+        WitchMoveInfos boulderInfos = new WitchMoveInfos(boulderProbability, offensiveSpellCooldown, castTime: boulderCastTime, doMethod: DoBoulder, moveGameObject: boulderGameObject, parentCategory: WitchMoves.Offense);
         moveStatsDict.Add(WitchMoves.Boulder, boulderInfos);
-        //boulder
+        //ram
         WitchMoveInfos ramPlayerInfos = new WitchMoveInfos(ramPlayerProbability, ramPlayerCooldown, dice: diceCount, doMethod: DoRamPlayer);
         moveStatsDict.Add(WitchMoves.RamPlayer, ramPlayerInfos);
 
@@ -241,6 +248,11 @@ public class Witch : Enemy
             }
         }
         return choice;
+    }
+    Vector3 SelectRandomNode()
+    {
+        nodeCollection = nodeCollection.OrderBy(x => UnityEngine.Random.value).ToList<Vector3>();
+        return nodeCollection[0];
     }
     IEnumerator DoDashRoutine(float dashDistance, bool awayFromPlayer = false, int numberOfDashes = 1)
     {
@@ -692,6 +704,20 @@ public class Witch : Enemy
     {
         StartCoroutine(DoMedusaRoutine());
     }
+    void DoBoulder()
+    {
+        int boulderCount = (int)Mathf.Clamp(healthPhase * 2 + UnityEngine.Random.Range(-2, healthPhase + 1), 1, Mathf.Infinity);
+        for (int i = 0; i < boulderCount; i++)
+        {
+            Vector3 boulderPos = SelectRandomNode() + new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
+            Vector3 diffFromPlayer = playerTransform.position - boulderPos;
+            if (diffFromPlayer.magnitude > 15f)
+            {
+                boulderPos = boulderPos + diffFromPlayer.normalized * UnityEngine.Random.Range(0, 30f);
+            }
+            CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.Boulder].moveGameObject, gameObject, boulderPos, Quaternion.Euler(0, 0, 0));
+        }
+    }
     IEnumerator HandleCast(WitchMoves spell)
     {
         movement = playerTransform.position - transform.position;
@@ -766,6 +792,15 @@ public class Witch : Enemy
         {
             DeathEffect.SpawnDeathEffect(deathEffect, transform.position, deathEffectDelay);
             Destroy(gameObject, 0);
+        }
+        float percentage = health.GetHealth() / health.GetMaxHealth();
+        healthPhase = 1;
+        for (int i = 5; i > 0; i--)
+        {
+            if (percentage < i / 6)
+            {
+                healthPhase++;
+            }
         }
     }
     /// <summary>
