@@ -100,12 +100,20 @@ public class WitchVortex : SpellEffect
             }
         }
         // remove those that got away
-        foreach ((GameObject key, Rigidbody2D rb) in victims)
+        if (nextvictims.Count < victims.Count)
         {
-            if (!nextvictims.Contains(key))
+            List<GameObject> keysToRemove = new List<GameObject>();
+            foreach ((GameObject key, Rigidbody2D rb) in victims)
             {
-                rb.velocity = Vector2.zero;
-                rb.angularVelocity = 0;
+                if (!nextvictims.Contains(key))
+                {
+                    rb.velocity = Vector2.zero;
+                    rb.angularVelocity = 0;
+                    keysToRemove.Add(key);
+                }
+            }
+            foreach (GameObject key in keysToRemove)
+            {
                 victims.Remove(key);
             }
         }

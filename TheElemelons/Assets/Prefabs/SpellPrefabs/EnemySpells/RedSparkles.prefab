@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -1349507003, guid: 97a088f9ce684b74c814d6e7694fb577, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &6828758759400522691
 Animator:
   serializedVersion: 5
@@ -122,8 +122,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaCost: 0
   spellObject: {fileID: 2752827402320261101}
-  weaknessTime: 10
-  weaknessFactor: 1.2
+  debuffTime: 10
+  debuffFactor: 1.2
   spellLifeTime: 10
 --- !u!61 &954072299096811532
 BoxCollider2D:

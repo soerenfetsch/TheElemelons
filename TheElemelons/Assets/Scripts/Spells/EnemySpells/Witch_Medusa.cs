@@ -36,6 +36,7 @@ public class Witch_Medusa : MonoBehaviour
     void FixedUpdate()
     {
         playerTransform.position = transform.position + new Vector3(0, offset, 0);
+        transform.position = playerTransform.position + new Vector3(0, -offset, 0);
     }
     IEnumerator Expire()
     {

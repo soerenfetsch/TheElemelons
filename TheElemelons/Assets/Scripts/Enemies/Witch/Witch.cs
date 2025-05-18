@@ -65,6 +65,8 @@ public class Witch : Enemy
     public GameObject deathEffect;
     public float deathEffectDelay = 0.5f;
     FlashEffect flashEffectBody;
+    FlashEffect flashEffectWand;
+    FlashEffect flashEffectHair;
     public float flashDuration = 0.2f;
     [Header("Bound Components")]
     Transform playerTransform;
@@ -77,6 +79,7 @@ public class Witch : Enemy
     BoxCollider2D solidCollider;
     Animator sparkleEffect1;
     Animator sparkleEffect2;
+    GameObject bossbar;
     [Header("Medusa")]
     public float medusaTime = 3f;
     [Header("Boulder")]
@@ -140,9 +143,15 @@ public class Witch : Enemy
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
         solidCollider = GetComponent<BoxCollider2D>();
         health = GetComponent<Health>();
+        bossbar = GameObject.Find("UI_Canvas/InGamePanel/BossBar");
+        bossbar.SetActive(true);
+        bossbar.GetComponent<BossHealthbar>().bossHealth = health;
         sparkleEffect1 = transform.GetChild(3).GetChild(0).GetComponent<Animator>();
         sparkleEffect2 = transform.GetChild(3).GetChild(1).GetComponent<Animator>();
         movement = new Vector2(0, 0);
+        flashEffectBody = GetComponent<FlashEffect>();
+        flashEffectWand = transform.GetChild(1).GetComponent<FlashEffect>();
+        flashEffectHair = transform.GetChild(0).GetComponent<FlashEffect>();
         InitializeNodes();
         InitilializeMoveStats();
         InitializeDice();
@@ -215,10 +224,11 @@ public class Witch : Enemy
     bool ReadDice(WitchMoves move, int diceToRead = -1)
     {
         if ((diceToRead < 0 && dice[moveStatsDict[move].dice] < moveStatsDict[move].probability)
-        || dice[diceToRead] < moveStatsDict[move].probability)
+        || (diceToRead >= 0 && dice[diceToRead] < moveStatsDict[move].probability))
         {
             return true;
         }
+
         return false;
     }
     void SelectDashNode(float dashDistance, bool awayFromPlayer = false)
@@ -904,6 +914,7 @@ public class Witch : Enemy
         if (health.IsZero())
         {
             DeathEffect.SpawnDeathEffect(deathEffect, transform.position, deathEffectDelay);
+            bossbar.SetActive(false);
             Destroy(gameObject, 0);
         }
         float percentage = health.GetHealth() / health.GetMaxHealth();
@@ -949,6 +960,8 @@ public class Witch : Enemy
     {
         ChangeState(EnemyStatus.Staggered);
         flashEffectBody?.Flash(flashDuration);
+        flashEffectWand?.Flash(flashDuration);
+        flashEffectHair?.Flash(flashDuration);
         yield return new WaitForSeconds(staggerTime);
         ChangeState(EnemyStatus.Idle);
     }

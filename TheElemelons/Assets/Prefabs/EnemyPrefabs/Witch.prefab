@@ -46,8 +46,9 @@ GameObject:
   - component: {fileID: 390356967521681183}
   - component: {fileID: 5281727796697109560}
   - component: {fileID: 5896867763892534879}
-  - component: {fileID: 2925420569543978621}
   - component: {fileID: 6120102449165075140}
+  - component: {fileID: 1658527087928035634}
+  - component: {fileID: 970776514642139429}
   m_Layer: 8
   m_Name: Witch
   m_TagString: Enemy
@@ -219,20 +220,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2925420569543978621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1510177879700378871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc7205fb501bda4786c2a614533e545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxhealth: 20
-  health: 20
 --- !u!114 &6120102449165075140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +253,35 @@ MonoBehaviour:
   greenPoofGameObject: {fileID: 391362455831743570, guid: a7412562bc81feb4fb0cb9132b93edfc, type: 3}
   vortexGameObject: {fileID: 4728450674804846625, guid: 780dac520a63c8d4fb69035df4395fca, type: 3}
   boulderGameObject: {fileID: 6995367298995900064, guid: a28aecdf3ad3c00408f71205db8b485f, type: 3}
+  greenSprayGameObject: {fileID: 0}
+--- !u!114 &1658527087928035634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510177879700378871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e97659ad7949eb43916d775b8b590ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxhealth: 20
+  health: 20
+--- !u!114 &970776514642139429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510177879700378871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574b4cb4d62c1364d83ee7e342ce934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: f27bf4d18f9c8f1449a0b46cb7dc8f88, type: 2}
+  spriteRenderer: {fileID: 5134631121884573182}
 --- !u!1 &1618867697187402466
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +293,7 @@ GameObject:
   - component: {fileID: 5638083955777907165}
   - component: {fileID: 5287165566866276473}
   - component: {fileID: 3766587833185430201}
+  - component: {fileID: 6474157120231142982}
   m_Layer: 8
   m_Name: Hair
   m_TagString: Untagged
@@ -372,6 +389,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6474157120231142982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618867697187402466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574b4cb4d62c1364d83ee7e342ce934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: f27bf4d18f9c8f1449a0b46cb7dc8f88, type: 2}
+  spriteRenderer: {fileID: 5287165566866276473}
 --- !u!1 &2102823722937221513
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +491,7 @@ GameObject:
   - component: {fileID: 6641392990879434786}
   - component: {fileID: 7627378995763371192}
   - component: {fileID: 8276704807796340490}
+  - component: {fileID: 5061133561708882708}
   m_Layer: 8
   m_Name: Wand
   m_TagString: Untagged
@@ -555,6 +587,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5061133561708882708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590474102991651959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574b4cb4d62c1364d83ee7e342ce934b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: f27bf4d18f9c8f1449a0b46cb7dc8f88, type: 2}
+  spriteRenderer: {fileID: 7627378995763371192}
 --- !u!1 &6227347718793331256
 GameObject:
   m_ObjectHideFlags: 0
