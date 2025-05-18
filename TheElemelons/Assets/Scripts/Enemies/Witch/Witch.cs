@@ -107,8 +107,8 @@ public class Witch : Enemy
     float evasionSpellProbability = 0.5f;
     float baldCooldown = 15f;
     float baldProbability = 0.85f;
-    float baldCastTime = 2f;
     bool baldTimerisRunning = false;
+    float snekCastTime = 1.3f;
     float redPoofProbability = 0.15f;
     public GameObject redPoofGameObject;
     float redPoofCooldown = 20f;
@@ -146,8 +146,8 @@ public class Witch : Enemy
         bossbar = GameObject.Find("UI_Canvas/InGamePanel/BossBar");
         bossbar.SetActive(true);
         bossbar.GetComponent<BossHealthbar>().bossHealth = health;
-        sparkleEffect1 = transform.GetChild(3).GetChild(0).GetComponent<Animator>();
-        sparkleEffect2 = transform.GetChild(3).GetChild(1).GetComponent<Animator>();
+        sparkleEffect1 = transform.GetChild(2).GetChild(0).GetComponent<Animator>();
+        sparkleEffect2 = transform.GetChild(2).GetChild(1).GetComponent<Animator>();
         movement = new Vector2(0, 0);
         flashEffectBody = GetComponent<FlashEffect>();
         flashEffectWand = transform.GetChild(1).GetComponent<FlashEffect>();
@@ -181,7 +181,7 @@ public class Witch : Enemy
         WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, moveGameObject: medusaGameObject, doMethod: DoMedusa, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Medusa, medusaInfos);
         //snek
-        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: baldCastTime, parentCategory: WitchMoves.SpecialMove);
+        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: snekCastTime, parentCategory: WitchMoves.SpecialMove, doMethod: DoSnek);
         moveStatsDict.Add(WitchMoves.Snek, baldInfos);
         //evasion
         WitchMoveInfos evasionSpellInfos = new WitchMoveInfos(evasionSpellProbability, evasionSpellCooldown, parentCategory: WitchMoves.SpecialMove);
@@ -645,7 +645,88 @@ public class Witch : Enemy
         }
     }
     public void OnWalkStatus()
-    { }
+    {
+        if (currentRangeState == RangeState.Close && CanInput())
+        {
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
+                (moveStatsDict[WitchMoves.Dash].canDo && ReadDice(WitchMoves.Dash))))
+            {
+                // pick witchMove
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.GreenPoof };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Dash };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
+                List<float> priorities = new List<float> { 0.5f, 1f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
+            }
+            else
+            {
+                // Run away
+                movement = transform.position - playerTransform.position;
+                if (hit)
+                {
+                    SwitchClockWise();
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement += CalcCircleDir();
+                }
+            }
+        }
+        else if (currentRangeState == RangeState.InRange && CanInput())
+        {
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
+                (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))))
+            {
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Boulder, WitchMoves.GreenSpray };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
+                List<float> priorities = new List<float> { 1.5f, 1f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
+            }
+            else
+            {
+                if (hit)
+                {
+                    SwitchClockWise();
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement = CalcCircleDir();
+                }
+                else
+                {
+                    movement = PickStraightDir();
+                }
+            }
+        }
+        else if (currentRangeState == RangeState.Far && CanInput())
+        {
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))
+            {
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Boulder, WitchMoves.GreenSpray };
+                Chose(choices0);
+            }
+            else
+            {
+                movement = playerTransform.position - transform.position;
+                if (hit)
+                {
+                    SwitchClockWise();
+                }
+                if (ReadDice(WitchMoves.Circle, 2))
+                {
+                    movement += CalcCircleDir();
+                }
+                else
+                {
+                    movement += PickStraightDir();
+                }
+            }
+        }
+    }
     public void OnHoverStatus()
     {
         if (currentRangeState == RangeState.Close && CanInput())
@@ -683,8 +764,8 @@ public class Witch : Enemy
                 ((moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
                 (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))))
             {
-                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
-                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof, WitchMoves.GreenSpray };
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder, WitchMoves.GreenSpray };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
                 List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
                 List<float> priorities = new List<float> { 2.5f, 1f };
                 ChoseSpellFromPriorityBatches(choices, priorities);
@@ -708,13 +789,11 @@ public class Witch : Enemy
         else if (currentRangeState == RangeState.Far && CanInput())
         {
             if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
-                ((moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense)) ||
-                (moveStatsDict[WitchMoves.Snek].canDo && ReadDice(WitchMoves.Snek))))
+                (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense)))
             {
                 List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder, WitchMoves.GreenSpray };
-                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Snek };
-                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
-                List<float> priorities = new List<float> { 1f, 5f };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0 };
+                List<float> priorities = new List<float> { 1f };
                 ChoseSpellFromPriorityBatches(choices, priorities);
             }
             else
@@ -799,6 +878,17 @@ public class Witch : Enemy
     {
         StartCoroutine(DoMedusaRoutine());
     }
+    void DoSnek()
+    {
+        StartCoroutine(DoSnekRoutine());
+
+    }
+    IEnumerator DoSnekRoutine()
+    {
+        hairAnimator.SetTrigger("Snek");
+        yield return new WaitForSeconds(snekCastTime);
+        // todo: Instantiate Snek
+    }
     void DoBoulder()
     {
         int boulderCount = (int)Mathf.Clamp(healthPhase * 2 + UnityEngine.Random.Range(-2, healthPhase + 1), 1, Mathf.Infinity);
@@ -862,7 +952,91 @@ public class Witch : Enemy
         currentWitchState = newState;
     }
     public void OnBaldStatus()
-    { }
+    {
+        if (currentRangeState == RangeState.Close && CanInput())
+        {
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
+                (moveStatsDict[WitchMoves.Dash].canDo && ReadDice(WitchMoves.Dash))))
+            {
+                // pick witchMove
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Dash };
+                List<WitchMoves> choices2 = new List<WitchMoves> { WitchMoves.Medusa };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1, choices2 };
+                List<float> priorities = new List<float> { 1.5f, 1f, 2.5f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
+            }
+            else
+            {
+                // Run away
+                movement = transform.position - playerTransform.position;
+                if (hit)
+                {
+                    SwitchClockWise();
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement += CalcCircleDir();
+                }
+            }
+        }
+        else if (currentRangeState == RangeState.InRange && CanInput())
+        {
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                ((moveStatsDict[WitchMoves.Evasion].canDo && ReadDice(WitchMoves.Evasion)) ||
+                (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))))
+            {
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder, WitchMoves.GreenSpray };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
+                List<float> priorities = new List<float> { 2.5f, 1f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
+            }
+            else
+            {
+                if (hit)
+                {
+                    SwitchClockWise();
+                }
+                if (ReadDice(WitchMoves.Circle, 1))
+                {
+                    movement = CalcCircleDir();
+                }
+                else
+                {
+                    movement = PickStraightDir();
+                }
+            }
+        }
+        else if (currentRangeState == RangeState.Far && CanInput())
+        {
+            if (moveStatsDict[WitchMoves.SpecialMove].canDo && ReadDice(WitchMoves.SpecialMove) &&
+                moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))
+            {
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder, WitchMoves.GreenSpray };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0 };
+                List<float> priorities = new List<float> { 1f, 5f };
+                ChoseSpellFromPriorityBatches(choices, priorities);
+            }
+            else
+            {
+                movement = playerTransform.position - transform.position;
+                if (hit)
+                {
+                    SwitchClockWise();
+                }
+                if (ReadDice(WitchMoves.Circle, 2))
+                {
+                    movement += CalcCircleDir();
+                }
+                else
+                {
+                    movement += PickStraightDir();
+                }
+            }
+        }
+    }
     public void OnIdleStatus()
     {
         movement = Vector2.zero;
@@ -880,10 +1054,6 @@ public class Witch : Enemy
             float error = Mathf.Abs(dist - range) - rangeTolerance;
             if (dist > range && error > 0)
             {
-                if (!baldTimerisRunning && currentRangeState != RangeState.Far)
-                {
-                    StartCoroutine(StartBaldingTimer());
-                }
                 currentRangeState = RangeState.Far;
             }
             else if (dist < range && error > 0)
@@ -895,16 +1065,6 @@ public class Witch : Enemy
                 currentRangeState = RangeState.InRange;
             }
         }
-    }
-    IEnumerator StartBaldingTimer()
-    {
-        baldTimerisRunning = true;
-        yield return new WaitForSeconds(baldCooldown);
-        if (currentRangeState == RangeState.Far)
-        {
-            moveStatsDict[WitchMoves.Snek].canDo = true;
-        }
-        baldTimerisRunning = false;
     }
     /// <summary>
     /// Abstract method to define behavior based on the enemy's health.
@@ -925,6 +1085,22 @@ public class Witch : Enemy
             {
                 healthPhase++;
             }
+        }
+        if (healthPhase < 2)
+        {
+            ChangeWitchState(WitchState.Walk);
+        }
+        else if (healthPhase < 5)
+        {
+            ChangeWitchState(WitchState.Hover);
+        }
+        else
+        {
+            if (currentWitchState != WitchState.Bald)
+            {
+                moveStatsDict[WitchMoves.Snek].doMethod();
+            }
+            ChangeWitchState(WitchState.Bald);
         }
     }
     /// <summary>
@@ -948,6 +1124,7 @@ public class Witch : Enemy
     /// <returns></returns>
     public override void GetKnocked(float knockTime)
     {
+        Debug.Log("knocked");
         StartCoroutine(HandleStagger(knockTime));
     }
     /// <summary>
