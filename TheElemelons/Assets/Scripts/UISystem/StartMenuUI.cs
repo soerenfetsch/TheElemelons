@@ -45,25 +45,31 @@ public class StartMenuUI : MonoBehaviour
     public void OnNewGameClicked()
     {
         Debug.Log("New Game Clicked");
-        // TODO: Implement new game logic
+        GameManager.Instance.NewGame();
     }
 
     public void OnContinueGameClicked()
     {
         Debug.Log("Continue Game Clicked");
-        // TODO: Implement continue game logic
+        GameManager.Instance.ContinueSavedGame();
     }
 
     public void OnOptionsClicked()
     {
         Debug.Log("Options Clicked");
-        // TODO: Implement options menu logic
+        GameManager.Instance.ChangeGameStatus(GameStatus.SETTINGS_MENU);
     }
 
     public void OnQuitGameClicked()
     {
         Debug.Log("Quit Game Clicked");
-        // TODO: Implement quit game logic (e.g., Application.Quit())
+    #if UNITY_EDITOR
+        // Stop play mode if in the editor
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        // Quit the application if built
+        Application.Quit();
+    #endif
     }
 
     /// <summary>

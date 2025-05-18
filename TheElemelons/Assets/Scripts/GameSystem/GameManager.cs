@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System; 
+using System;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,9 +9,9 @@ public class GameManager : MonoBehaviour
 
     public GameProgressionStage CurrentProgressionStage { get; private set; }
     public GameStatus CurrentGameStatus { get; private set; }
+    public GameStatus PreviousGameStatus { get; private set; }
 
     public GameSaveProvider SaveProvider;
-    public UIManager uiManager;
 
     // Events for Game Status changes
     public static event Action<GameStatus> OnGameStatusChanged;
@@ -34,6 +35,18 @@ public class GameManager : MonoBehaviour
         {
             SaveProvider = new GameSaveProvider(); // Default
         }
+        // Check if a save file exists then enable the continue button
+        if (SaveProvider.SaveExists())
+        {
+            // Enable the continue button in the UI
+            UIManager.Instance?.ToggleContinueGameButton(true);
+        }
+        else
+        {
+            // Disable the continue button in the UI
+            UIManager.Instance?.ToggleContinueGameButton(false);
+        }
+        CurrentGameStatus = GameStatus.MAIN_MENU; // Start in the main menu
     }
 
     public void ChangeProgressionStage(GameProgressionStage newStage)
@@ -48,27 +61,30 @@ public class GameManager : MonoBehaviour
 
     public void ChangeGameStatus(GameStatus newStatus)
     {
+        PreviousGameStatus = CurrentGameStatus; // Store the previous status
         CurrentGameStatus = newStatus;
         OnGameStatusChanged?.Invoke(newStatus); // Invoke the event
 
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                //uiManager.OpenDeathScreen(); // UIManager will handle this via the event
+                Time.timeScale = 0; // Pause the game
+                break;
+            case GameStatus.LOADING_SCREEN:
+                Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.MAIN_MENU:
+                Time.timeScale = 0; // Pause the game
                 SaveGame();
-                SceneManager.LoadScene("MainMenu"); // Replace with your main menu scene
                 break;
             case GameStatus.PAUSE_MENU:
-                //uiManager.OpenPauseMenu(); // UIManager will handle this via the event
                 Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.DIALOGUE:
                 Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.SETTINGS_MENU:
-                //uiManager.OpenSettingsMenu(); // UIManager will handle this via the event
+                Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.INGAME:
                 Time.timeScale = 1; // Resume the game
@@ -79,9 +95,8 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         SaveProvider.ResetSave();
-        CurrentProgressionStage = GameProgressionStage.CASTLE_INTRODUCTION;
-        CurrentGameStatus = GameStatus.INGAME;
-        StartMainGameStage();
+        ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
+        ChangeGameStatus(GameStatus.INGAME);
     }
 
     public void ContinueSavedGame()
@@ -89,15 +104,13 @@ public class GameManager : MonoBehaviour
         GameSaveData data = SaveProvider.LoadGame();
         if (data != null)
         {
-            CurrentProgressionStage = data.progressionStage;
-            // Load player stats, button settings, etc.
+            ChangeProgressionStage(data.progressionStage);
         }
         else
         {
             NewGame(); // If no save data, start a new game
         }
-        CurrentGameStatus = GameStatus.INGAME;
-        StartMainGameStage();
+        ChangeGameStatus(GameStatus.INGAME);
     }
 
     private void SaveGame()
@@ -108,12 +121,19 @@ public class GameManager : MonoBehaviour
             // Save player stats, button settings, etc.
         };
         SaveProvider.SaveGame(data);
+        if (File.Exists(SaveProvider.SavePath))
+        {
+            Debug.Log("Game saved successfully.");
+            UIManager.Instance?.ToggleContinueGameButton(true);
+        }
+        else
+        {
+            Debug.LogError("Failed to save game.");
+        }
     }
 
     private void StartMainGameStage()
     {
-        // Implement logic to load different scenes or enable/disable game objects
-        // based on the CurrentProgressionStage.
-        Debug.Log("Starting game stage: " + CurrentProgressionStage);
+        MainGame.Instance?.StartGameStage(CurrentProgressionStage);
     }
 }

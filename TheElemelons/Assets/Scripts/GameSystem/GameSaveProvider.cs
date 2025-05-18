@@ -85,4 +85,9 @@ public class GameSaveProvider : IGameSaveProvider
             Debug.LogWarning("No save file found at " + SavePath + " to delete.");
         }
     }
+
+    public bool SaveExists()
+    {
+        return File.Exists(SavePath);
+    }
 }

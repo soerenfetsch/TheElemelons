@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }
     public GameObject playerObject;
     Health health;
     Mana mana;
@@ -38,6 +39,24 @@ public class UIManager : MonoBehaviour
     public GameObject startMenuPanel;
     public GameObject settingsMenuPanel;
     public GameObject ingamePanel;
+    public GameObject loadPanel;
+
+
+    /// <summary>
+    /// Singleton instance of UIManager.
+    /// </summary>
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -61,6 +80,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (GameManager.Instance.CurrentGameStatus != GameStatus.INGAME)
+        {
+            return;
+        }
         UpdateHealthBar();
         UpdateManaBar();
         UpdateBuffDebuffIcons();
@@ -298,7 +321,10 @@ public class UIManager : MonoBehaviour
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                EnablePanel("DeathScreen"); // Assuming you have a DeathScreen panel
+                EnablePanel("DeathScreen");
+                break;
+            case GameStatus.LOADING_SCREEN:
+                EnablePanel("LoadingScreen");
                 break;
             case GameStatus.PAUSE_MENU:
                 EnablePanel("PauseMenu");
@@ -343,6 +369,12 @@ public class UIManager : MonoBehaviour
     public void EnableIngamePanel() => EnablePanel("Ingame");
 
     /// <summary>
+    /// Enables the load panel. Disables all other panels.
+    /// </summary>
+    [ContextMenu("Enable Load Panel")]
+    public void EnableLoadPanel() => EnablePanel("LoadPanel");
+
+    /// <summary>
     /// Enables the specified panel and disables all other panels.
     /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu", and "Ingame".
     /// </summary>
@@ -366,6 +398,10 @@ public class UIManager : MonoBehaviour
         {
             panel = ingamePanel;
         }
+        else if (panelName == "LoadPanel")
+        {
+            panel = loadPanel;
+        }
 
         if (panel != null)
         {
@@ -384,5 +420,18 @@ public class UIManager : MonoBehaviour
         startMenuPanel?.SetActive(false);
         settingsMenuPanel?.SetActive(false);
         ingamePanel?.SetActive(false);
+    }
+
+    public void ToggleContinueGameButton(bool isEnabled)
+    {
+        if (isEnabled)
+        {
+            startMenuPanel?.GetComponent<StartMenuUI>()?.EnableContinueGame();
+        }
+        else
+        {
+            startMenuPanel?.GetComponent<StartMenuUI>()?.DisableContinueGame();
+        }
+        
     }
 }

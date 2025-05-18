@@ -63,8 +63,7 @@ public class SettingsMenuUI : MonoBehaviour
     private void OnBackButtonClicked()
     {
         if (isRebinding) return;
-        // TODO: Implement this to return to the last panel
-        Debug.Log("Back button clicked");
+        GameManager.Instance.ChangeGameStatus(GameManager.Instance.PreviousGameStatus);
     }
 
     private void InitializeKeyBindings()
