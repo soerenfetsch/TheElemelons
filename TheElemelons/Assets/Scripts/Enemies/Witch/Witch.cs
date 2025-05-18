@@ -109,6 +109,7 @@ public class Witch : Enemy
     float baldProbability = 0.85f;
     bool baldTimerisRunning = false;
     float snekCastTime = 1.3f;
+    public GameObject snekObject;
     float redPoofProbability = 0.15f;
     public GameObject redPoofGameObject;
     float redPoofCooldown = 20f;
@@ -181,7 +182,7 @@ public class Witch : Enemy
         WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, moveGameObject: medusaGameObject, doMethod: DoMedusa, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Medusa, medusaInfos);
         //snek
-        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: snekCastTime, parentCategory: WitchMoves.SpecialMove, doMethod: DoSnek);
+        WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: snekCastTime, parentCategory: WitchMoves.SpecialMove, moveGameObject: snekObject, doMethod: DoSnek);
         moveStatsDict.Add(WitchMoves.Snek, baldInfos);
         //evasion
         WitchMoveInfos evasionSpellInfos = new WitchMoveInfos(evasionSpellProbability, evasionSpellCooldown, parentCategory: WitchMoves.SpecialMove);
@@ -887,7 +888,12 @@ public class Witch : Enemy
     {
         hairAnimator.SetTrigger("Snek");
         yield return new WaitForSeconds(snekCastTime);
-        // todo: Instantiate Snek
+        Vector3 spawnPointSnek = transform.GetChild(3).GetChild(1).transform.position;
+        if (movement.x < 0)
+        {
+            spawnPointSnek = transform.GetChild(3).GetChild(0).transform.position;
+        }
+        Instantiate(moveStatsDict[WitchMoves.Snek].moveGameObject, spawnPointSnek, Quaternion.Euler(0f, 0f, 0f));
     }
     void DoBoulder()
     {
@@ -1075,6 +1081,17 @@ public class Witch : Enemy
         {
             DeathEffect.SpawnDeathEffect(deathEffect, transform.position, deathEffectDelay);
             bossbar.SetActive(false);
+            // destroy all
+            LayerMask enemyMask = LayerMask.GetMask("Enemies");
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 100f, enemyMask);
+            for (int i = colliders.Length - 1; i >= 0; i--)
+            {
+                Health enemyHealth = colliders[i].GetComponent<Health>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.SetHealth(0);
+                }
+            }
             Destroy(gameObject, 0);
         }
         float percentage = health.GetHealth() / health.GetMaxHealth();
@@ -1096,6 +1113,7 @@ public class Witch : Enemy
         }
         else
         {
+            Debug.Log("changing to baldy");
             if (currentWitchState != WitchState.Bald)
             {
                 moveStatsDict[WitchMoves.Snek].doMethod();

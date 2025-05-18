@@ -27,7 +27,6 @@ public class WitchTest
         {
             List<WitchMoves> choices = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof, WitchMoves.Dash, WitchMoves.Medusa, WitchMoves.Boulder, WitchMoves.Vortex, WitchMoves.Offense };
             WitchMoves choice = witchScript.Chose(choices);
-            Assert.IsTrue(choice != null, "chose null");
             chosens.Add(choice);
         }
         bool allIsSame = true;

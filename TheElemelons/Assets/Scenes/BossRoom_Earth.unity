@@ -24409,6 +24409,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Witch
       objectReference: {fileID: 0}
+    - target: {fileID: 1510177879700378871, guid: 4e047f2ecd7587a4198520f0ccec6382, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1658527087928035634, guid: 4e047f2ecd7587a4198520f0ccec6382, type: 3}
       propertyPath: health
       value: 40
@@ -24453,6 +24457,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 6120102449165075140, guid: 4e047f2ecd7587a4198520f0ccec6382, type: 3}
+      propertyPath: snekObject
+      value: 
+      objectReference: {fileID: 6283755400478361368, guid: 086d37fe2541e524ebff2a831b584ea3, type: 3}
     - target: {fileID: 6120102449165075140, guid: 4e047f2ecd7587a4198520f0ccec6382, type: 3}
       propertyPath: greenSprayGameObject
       value: 
