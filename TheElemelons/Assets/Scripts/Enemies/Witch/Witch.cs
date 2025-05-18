@@ -74,6 +74,8 @@ public class Witch : Enemy
     Animator wandAnimator;
     PlayerMovement playerMovement;
     BoxCollider2D solidCollider;
+    Animator sparkleEffect1;
+    Animator sparkleEffect2;
     [Header("Medusa")]
     public float medusaTime = 3f;
     [Header("Boulder")]
@@ -133,6 +135,8 @@ public class Witch : Enemy
         wandAnimator = transform.GetChild(1).GetComponent<Animator>();
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
         solidCollider = GetComponent<BoxCollider2D>();
+        sparkleEffect1 = transform.GetChild(3).GetChild(0).GetComponent<Animator>();
+        sparkleEffect2 = transform.GetChild(3).GetChild(1).GetComponent<Animator>();
         movement = new Vector2(0, 0);
         InitializeNodes();
         InitilializeMoveStats();
@@ -390,6 +394,8 @@ public class Witch : Enemy
         bodyAnimator.SetFloat("Horizontal", movement.x);
         hairAnimator.SetFloat("Horizontal", movement.x);
         wandAnimator.SetFloat("Horizontal", movement.x);
+        sparkleEffect1.SetFloat("Horizontal", movement.x);
+        sparkleEffect2.SetFloat("Horizontal", movement.x);
         bool walking = false;
         bool hovering = false;
         bool baldy = false;
@@ -409,6 +415,8 @@ public class Witch : Enemy
         bodyAnimator.SetBool("Hover", hovering);
         wandAnimator.SetBool("Hover", hovering);
         bodyAnimator.SetBool("Bald", baldy);
+        sparkleEffect1.SetBool("Hover", hovering || baldy);
+        sparkleEffect2.SetBool("Hover", hovering || baldy);
     }
     public void DoMovement()
     {
@@ -732,6 +740,8 @@ public class Witch : Enemy
     {
         movement = playerTransform.position - transform.position;
         wandAnimator.SetBool("WandOut", true);
+        int sparkleChoice = (int)UnityEngine.Random.Range(-1, 2);
+        TurnSparkleEffectOnOff(spell, sparkleChoice, true);
         if (moveStatsDict[spell].castTime > 0f)
         {
             isCasting = true;
@@ -742,7 +752,33 @@ public class Witch : Enemy
         {
             yield return new WaitForSeconds(1f);
         }
+        TurnSparkleEffectOnOff(spell, sparkleChoice, false);
         wandAnimator.SetBool("WandOut", false);
+    }
+    void TurnSparkleEffectOnOff(WitchMoves spell, int choice, bool onOff)
+    {
+        if (moveStatsDict[spell].parentCategory == WitchMoves.Offense)
+        {
+            string triggerName = "Off";
+            if (onOff)
+            {
+                triggerName = "On";
+            }
+
+            switch (choice)
+            {
+                case -1:
+                    sparkleEffect1.SetTrigger(triggerName);
+                    sparkleEffect2.SetTrigger(triggerName);
+                    break;
+                case 0:
+                    sparkleEffect1.SetTrigger(triggerName);
+                    break;
+                case 1:
+                    sparkleEffect2.SetTrigger(triggerName);
+                    break;
+            }
+        }
     }
     public void ChangeWitchState(WitchState newState)
     {
