@@ -34,7 +34,8 @@ public class WitchRedSparkles : SpellEffect
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player") &&
+        if (other.gameObject != null &&
+            other.gameObject.CompareTag("Player") &&
             other.isTrigger && !affecteds.Contains(other) &&
             other.gameObject.GetComponent<Player>() != null)
         {

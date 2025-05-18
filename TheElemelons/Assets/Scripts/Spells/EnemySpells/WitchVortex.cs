@@ -60,7 +60,7 @@ public class WitchVortex : SpellEffect
         {
             CatchVictims();
         }
-        if (Time.frameCount % 60 == 0 && UnityEngine.Random.Range(0, 1) < 0.01)
+        if (Time.frameCount % 60 == 0 && UnityEngine.Random.Range(0, 1) < 0.005f)
         {
             float distQuotient = 3f;
             CombatManager.InstantiateSpell(redsparklesObject, caster, transform.position + new Vector3(UnityEngine.Random.Range(-range / distQuotient, range / distQuotient), UnityEngine.Random.Range(-range / distQuotient, range / distQuotient)), Quaternion.Euler(0, 0, 0));

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CollectableHeart : MonoBehaviour
 {
-    public float force = 15f;
-    public float healValue = 1f;
-    public float range = 1.5f;
+    float force = 10f;
+    float healValue = 1f;
+    float range = 1f;
     Rigidbody2D player;
     Transform playerTransform;
     Health playerHealth;
@@ -16,11 +16,11 @@ public class CollectableHeart : MonoBehaviour
     BoxCollider2D boxCollider2D;
     SpriteRenderer spriteRenderer;
     [Header("Hovering Motion")]
-    public float amplitude = 0.1f;
-    public float frequency = 0.3f;
+    float amplitude = 0.1f;
+    float frequency = 0.3f;
     Vector2 fixpoint;
     Transform shadow;
-    public float shadowOffset = 0.7f;
+    float shadowOffset = 0.7f;
 
     // Start is called before the first frame update
     void Start()

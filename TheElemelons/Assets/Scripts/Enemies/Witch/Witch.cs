@@ -107,7 +107,6 @@ public class Witch : Enemy
     float evasionSpellProbability = 0.5f;
     float baldCooldown = 15f;
     float baldProbability = 0.85f;
-    bool baldTimerisRunning = false;
     float snekCastTime = 1.3f;
     public GameObject snekObject;
     float redPoofProbability = 0.15f;
