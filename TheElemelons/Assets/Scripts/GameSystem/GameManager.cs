@@ -114,6 +114,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"[GameManager] Loaded save data. Progression: {data.progressionStage}");
             CurrentProgressionStage = data.progressionStage;
+            // Load player stats, button settings, etc.
+            InputManager.Instance.ImportKeyBindings(data.keyBindings); // ADD THIS
         }
         else
         {
@@ -126,7 +128,7 @@ public class GameManager : MonoBehaviour
         ChangeGameStatus(GameStatus.INGAME); // Explicitly set
     }
 
-    private void SaveGame()
+    public void SaveGame()
     {
         Debug.Log("[GameManager] SaveGame called.");
         if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in SaveGame!"); return; }
