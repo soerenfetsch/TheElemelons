@@ -6,7 +6,7 @@ public class WitchRedSparkles : SpellEffect
 {
     public float debuffTime = 10f;
     public float debuffFactor = 1.2f;
-    public float spellLifeTime = 10f;
+    public float spellLifeTime = 3f;
     List<Collider2D> affecteds;
     SpriteRenderer spriteRenderer;
     void Start()
@@ -19,7 +19,7 @@ public class WitchRedSparkles : SpellEffect
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
-        float fadeTimer = 2f;
+        float fadeTimer = 1f;
         float fadeDuration = fadeTimer;
         Color c = spriteRenderer.color;
         float chunkiness = 30f;

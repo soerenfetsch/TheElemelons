@@ -31,6 +31,7 @@ public enum WitchMoves
     Circle,
     Evasion,
     RamPlayer,
+    GreenSpray,
     None
 }
 public class Witch : Enemy
@@ -114,13 +115,16 @@ public class Witch : Enemy
     float vortexProbability = 0.3f;
     float vortexCooldown = 10f;
     public GameObject vortexGameObject;
-    float boulderProbability = 0.4f;
+    float boulderProbability = 0.3f;
     float boulderCastTime = 1.5f;
     public GameObject boulderGameObject;
     float specialMoveProbability = 0.8f;
     float specialMoveCooldown = 1f;
     float ramPlayerProbability = 0.5f;
     float ramPlayerCooldown = 1f;
+    float greenSprayProbability = 0.9f;
+    float greenSprayCooldown = 5f;
+    public GameObject greenSprayGameObject;
 
     // Start is called before the first frame update
     void Start()
@@ -135,6 +139,7 @@ public class Witch : Enemy
         wandAnimator = transform.GetChild(1).GetComponent<Animator>();
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
         solidCollider = GetComponent<BoxCollider2D>();
+        health = GetComponent<Health>();
         sparkleEffect1 = transform.GetChild(3).GetChild(0).GetComponent<Animator>();
         sparkleEffect2 = transform.GetChild(3).GetChild(1).GetComponent<Animator>();
         movement = new Vector2(0, 0);
@@ -193,6 +198,9 @@ public class Witch : Enemy
         //ram
         WitchMoveInfos ramPlayerInfos = new WitchMoveInfos(ramPlayerProbability, ramPlayerCooldown, dice: diceCount, doMethod: DoRamPlayer);
         moveStatsDict.Add(WitchMoves.RamPlayer, ramPlayerInfos);
+        //greenspray
+        WitchMoveInfos greenSprayInfos = new WitchMoveInfos(greenSprayProbability, greenSprayCooldown, dice: diceCount, doMethod: DoGreenSpray, parentCategory: WitchMoves.Offense, castTime: 1f, moveGameObject: greenSprayGameObject);
+        moveStatsDict.Add(WitchMoves.GreenSpray, greenSprayInfos);
     }
     void InitializeNodes()
     {
@@ -206,7 +214,7 @@ public class Witch : Enemy
     }
     bool ReadDice(WitchMoves move, int diceToRead = -1)
     {
-        if ((diceToRead < 0 && moveStatsDict[move].dice < moveStatsDict[move].probability)
+        if ((diceToRead < 0 && dice[moveStatsDict[move].dice] < moveStatsDict[move].probability)
         || dice[diceToRead] < moveStatsDict[move].probability)
         {
             return true;
@@ -301,6 +309,64 @@ public class Witch : Enemy
     {
         DoPoof(WitchMoves.RedPoof);
     }
+    void DoGreenSpray()
+    {
+        StartCoroutine(DoGreenSprayCoroutine());
+    }
+    IEnumerator DoGreenSprayCoroutine()
+    {
+        int spellCount;
+        float anglePerSpell;
+        float startAngle;
+        switch (healthPhase)
+        {
+            case 1:
+                spellCount = 2;
+                anglePerSpell = 15f;
+                startAngle = 0f;
+                break;
+            case 2:
+                spellCount = 3;
+                anglePerSpell = 15f;
+                startAngle = 0f;
+                break;
+            case 3:
+                spellCount = 3;
+                anglePerSpell = 15f;
+                startAngle = -15f;
+                break;
+            case 4:
+                spellCount = 6;
+                anglePerSpell = 15f;
+                startAngle = -45f;
+                break;
+            case 5:
+                spellCount = 8;
+                anglePerSpell = 20f;
+                startAngle = -60f;
+                break;
+            case 6:
+                spellCount = 12;
+                anglePerSpell = 30f;
+                startAngle = -120f;
+                break;
+            default:
+                spellCount = 1;
+                anglePerSpell = 15f;
+                startAngle = 0f;
+                break;
+        }
+        float timeBetweenCasts = moveStatsDict[WitchMoves.GreenSpray].castTime / (float)spellCount;
+        Vector3 playerdir = (playerTransform.position - transform.position).normalized * 3f;
+        Vector3 dir = Quaternion.Euler(0f, 0f, startAngle) * playerdir;
+        for (int i = 0; i < spellCount; i++)
+        {
+            Vector3 castpoint = transform.position + dir;
+            CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.GreenSpray].moveGameObject, gameObject, castpoint, Quaternion.Euler(0, 0, 0));
+            dir = Quaternion.Euler(0f, 0f, anglePerSpell) * dir;
+            yield return new WaitForSeconds(timeBetweenCasts);
+        }
+    }
     IEnumerator DoCooldown(WitchMoves move)
     {
         float rechargeDice = 1f;
@@ -317,6 +383,7 @@ public class Witch : Enemy
         NewHitRayCast();
         ThrowDice();
         CalcRangeState();
+        ActOnHealth();
         ActOnStatus();
         DoMovement();
     }
@@ -607,9 +674,9 @@ public class Witch : Enemy
                 (moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense))))
             {
                 List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
-                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
+                List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof, WitchMoves.GreenSpray };
                 List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
-                List<float> priorities = new List<float> { 3f, 1f };
+                List<float> priorities = new List<float> { 2.5f, 1f };
                 ChoseSpellFromPriorityBatches(choices, priorities);
             }
             else
@@ -634,7 +701,7 @@ public class Witch : Enemy
                 ((moveStatsDict[WitchMoves.Offense].canDo && ReadDice(WitchMoves.Offense)) ||
                 (moveStatsDict[WitchMoves.Snek].canDo && ReadDice(WitchMoves.Snek))))
             {
-                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder };
+                List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.Vortex, WitchMoves.Boulder, WitchMoves.GreenSpray };
                 List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Snek };
                 List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
                 List<float> priorities = new List<float> { 1f, 5f };
@@ -706,9 +773,9 @@ public class Witch : Enemy
     }
     void DoVortex()
     {
-        for (int i = 0; i < healthPhase; i++)
+        for (int i = 0; i < (float)(healthPhase - 1) / 2 + 1; i++)
         {
-            CombatManager.InstantiateSpell(vortexGameObject, gameObject, transform.position + (Vector3)movement.normalized * 2f, Quaternion.Euler(0, 0, 0));
+            CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.Vortex].moveGameObject, gameObject, transform.position + (Vector3)movement.normalized * 2f, Quaternion.Euler(0, 0, 0));
         }
     }
     public IEnumerator DoMedusaRoutine()
@@ -843,7 +910,7 @@ public class Witch : Enemy
         healthPhase = 1;
         for (int i = 5; i > 0; i--)
         {
-            if (percentage < i / 6)
+            if (percentage < (float)i / 6)
             {
                 healthPhase++;
             }
