@@ -376,7 +376,7 @@ public class InputManager : MonoBehaviour
                 GameManager.Instance.ChangeGameStatus(GameStatus.PAUSE_MENU);
                 Debug.Log("Game Paused.");
             }
-            else if (currentGameStatus == GameStatus.PAUSE_MENU)
+            else if (currentGameState == GameStatus.PAUSE_MENU)
             {
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
                 Debug.Log("Game Resumed.");
