@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System; 
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -107,34 +108,45 @@ public class GameManager : MonoBehaviour
 
     public void ContinueSavedGame()
     {
-        Debug.Log("[GameManager] ContinueSavedGame called.");
-        if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in ContinueSavedGame!"); return; }
         GameSaveData data = SaveProvider.LoadGame();
+        if (data != null && data.keyBindings != null)
+        {
+            Debug.Log($"[GameManager] ContinueSavedGame: Passing {data.keyBindings.Count} keybindings to InputManager.");
+            InputManager.Instance.ImportKeyBindings(data.keyBindings);
+        } else {
+            Debug.LogWarning("[GameManager] ContinueSavedGame: No keybinding data to load (data or data.keyBindings is null).");
+        }
         if (data != null)
         {
-            Debug.Log($"[GameManager] Loaded save data. Progression: {data.progressionStage}");
             CurrentProgressionStage = data.progressionStage;
-            // Load player stats, button settings, etc.
-            InputManager.Instance.ImportKeyBindings(data.keyBindings); // ADD THIS
+            var health = FindObjectOfType<Health>();
+            var mana = FindObjectOfType<Mana>();
+            if (health != null) health.SetMaxHealth(data.maxHealth);
+            if (mana != null) mana.SetMaxMana(data.maxMana);
+            if (InputManager.Instance != null && data.keyBindings != null)
+                InputManager.Instance.ImportKeyBindings(data.keyBindings);
         }
         else
         {
-            Debug.LogWarning("[GameManager] No save data found or failed to load. Starting NewGame instead.");
             NewGame();
-            return; // NewGame will handle the rest
         }
-        // CurrentGameStatus = GameStatus.INGAME;
+        CurrentGameStatus = GameStatus.INGAME;
         StartMainGameStage();
-        ChangeGameStatus(GameStatus.INGAME); // Explicitly set
     }
 
     public void SaveGame()
     {
-        Debug.Log("[GameManager] SaveGame called.");
-        if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in SaveGame!"); return; }
+        var health = FindObjectOfType<Health>();
+        var mana = FindObjectOfType<Mana>();
+        var inputManager = InputManager.Instance;
+
         GameSaveData data = new GameSaveData
         {
             progressionStage = CurrentProgressionStage,
+            maxHealth = health != null ? (int)health.GetMaxHealth() : 3,
+            maxMana = mana != null ? (int)mana.GetMaxMana() : 3,
+            saveDate = DateTime.Now,
+            keyBindings = inputManager != null ? inputManager.ExportKeyBindings() : new List<GameSaveData.KeyBindingEntry>()
         };
         SaveProvider.SaveGame(data);
     }

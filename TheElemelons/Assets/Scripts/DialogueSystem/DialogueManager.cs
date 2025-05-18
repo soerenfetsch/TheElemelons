@@ -2,15 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using UnityEngine.UI; // Not strictly needed here anymore
-
-// Assuming GameManager and GameStatus exist in your project
-// public enum GameStatus { INGAME, DIALOGUE, /* other statuses */ }
-// public class GameManager : MonoBehaviour {
-//     public static GameManager Instance { get; private set; }
-//     public void ChangeGameStatus(GameStatus newStatus) { /* ... */ }
-//     private void Awake() { if (Instance == null) Instance = this; else Destroy(gameObject); }
-// }
 
 public struct DialogueLineDisplayInfo
 {

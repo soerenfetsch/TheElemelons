@@ -12,7 +12,6 @@ public class SettingsMenuUI : MonoBehaviour
     public GameObject keyBindingEntryPrefab;
     public InputManager inputManager;
 
-
     private Button backButton;
     private bool isRebinding = false;
     private Dictionary<string, GameObject> keyBindingEntries = new Dictionary<string, GameObject>();
@@ -23,7 +22,7 @@ public class SettingsMenuUI : MonoBehaviour
         "CastSpell", "ClearCharges",
         "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
         "ZoomIn", "ZoomOut",
-        "Interact"
+        "Interact", "AdvanceDialogue",
     };
 
     public void Start()
@@ -63,7 +62,8 @@ public class SettingsMenuUI : MonoBehaviour
     private void OnBackButtonClicked()
     {
         if (isRebinding) return;
-        // TODO: Implement this to return to the last panel
+        gameObject.SetActive(false); // Hide the settings menu
+        GameManager.Instance.ChangeGameStatus(GameStatus.PAUSE_MENU);
         Debug.Log("Back button clicked");
     }
 

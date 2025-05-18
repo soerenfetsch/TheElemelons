@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 public class GameSaveProvider : IGameSaveProvider
 {
@@ -26,10 +27,18 @@ public class GameSaveProvider : IGameSaveProvider
             progressionStage = stageToSave,
             maxHealth = data.maxHealth,
             maxMana = data.maxMana,
-            saveDate = DateTime.Now
+            saveDate = DateTime.Now,
+            keyBindings = data.keyBindings
         };
+        Debug.Log($"[GameSaveProvider] Preparing to save {saveData.keyBindings?.Count ?? 0} keybindings.");
+
+        foreach(var entry in saveData.keyBindings ?? new List<GameSaveData.KeyBindingEntry>())
+        {
+            Debug.Log($"  - SAVING TO JSON: Action: {entry.action}, keyCode: {entry.keyCode}");
+        }
 
         string jsonData = JsonUtility.ToJson(saveData);
+        Debug.Log("[GameSaveProvider] JSON to be saved: " + jsonData);
 
         try
         {
@@ -49,7 +58,17 @@ public class GameSaveProvider : IGameSaveProvider
             try
             {
                 string jsonData = File.ReadAllText(SavePath);
+                Debug.Log("[GameSaveProvider] RAW JSON LOADED: " + jsonData);
                 GameSaveData loadedData = JsonUtility.FromJson<GameSaveData>(jsonData);
+                if (loadedData == null) Debug.LogError("[GameSaveProvider] loadedData is NULL after FromJson.");
+                else if (loadedData.keyBindings == null) Debug.LogError("[GameSaveProvider] loadedData.keyBindings is NULL after FromJson.");
+                else {
+                    Debug.Log($"[GameSaveProvider] Parsed {loadedData.keyBindings.Count} keybindings from JSON.");
+                    foreach(var entry in loadedData.keyBindings)
+                    {
+                        Debug.Log($"  - PARSED FROM JSON: Action: {entry.action}, keyCode: {entry.keyCode}");
+                    }
+                }
                 Debug.Log("Loaded from " + SavePath);
                 return loadedData;
             }
