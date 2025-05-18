@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class WitchRedSparkles : SpellEffect
 {
-    public float weaknessTime = 10f;
-    public float weaknessFactor = 1.2f;
+    public float debuffTime = 10f;
+    public float debuffFactor = 1.2f;
     public float spellLifeTime = 10f;
     List<Collider2D> affecteds;
     SpriteRenderer spriteRenderer;
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         spellType = new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype);
         affecteds = new List<Collider2D>();
         StartCoroutine(Expire());
@@ -36,7 +37,16 @@ public class WitchRedSparkles : SpellEffect
         if (other.gameObject.CompareTag("Player") &&
             other.isTrigger && !affecteds.Contains(other))
         {
-            BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "Weakness", BuffDebuffManager.BuffDebuffType.WeaknessDebuff, weaknessTime, weaknessFactor, true);
+            if (UnityEngine.Random.Range(0f, 1f) < 0.5)
+            {
+                BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "Weakness", BuffDebuffManager.BuffDebuffType.WeaknessDebuff, debuffTime, debuffFactor, false);
+
+            }
+            else
+            {
+                BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "Vulnerable", BuffDebuffManager.BuffDebuffType.FragilityDebuff, debuffTime, debuffFactor, false);
+
+            }
             affecteds.Add(other);
         }
     }
