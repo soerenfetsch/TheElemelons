@@ -55,6 +55,7 @@ public class WitchBoulder : SpellEffect
     }
     IEnumerator Expire()
     {
+        boulderAnimator.SetTrigger("Smash");
         yield return new WaitForSeconds(0.9f);
         Destroy(gameObject);
     }
