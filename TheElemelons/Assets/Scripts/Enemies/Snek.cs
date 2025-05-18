@@ -21,7 +21,7 @@ public class Snek : Enemy
     Animator animator;
     GameObject witch;
     [Header("Ranges")]
-    float aggroRange = 50f;
+    float aggroRange = 30f;
     float dashRange = 10f;
     float tongueRange = 5f;
     [Header("Flags")]
@@ -62,6 +62,7 @@ public class Snek : Enemy
     }
     IEnumerator Spawn()
     {
+        aggroRange = 50f;
         float orientation = witch.GetComponent<Animator>().GetFloat("Horizontal");
         if (orientation < 0)
         {
