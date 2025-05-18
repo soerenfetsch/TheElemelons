@@ -123,6 +123,8 @@ public class Witch : Enemy
     // Start is called before the first frame update
     void Start()
     {
+        attackFactor = 1;
+        defenseFactor = 1;
         playerTransform = GameObject.Find("Player").transform;
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         rb = GetComponent<Rigidbody2D>();
@@ -698,7 +700,7 @@ public class Witch : Enemy
     {
         for (int i = 0; i < healthPhase; i++)
         {
-            CombatManager.InstantiateSpell(vortexGameObject, gameObject, playerTransform.position + new Vector3(UnityEngine.Random.Range(-range / 2, range / 2), UnityEngine.Random.Range(-range / 2, range / 2)), Quaternion.Euler(0, 0, 0));
+            CombatManager.InstantiateSpell(vortexGameObject, gameObject, transform.position + (Vector3)movement.normalized * 2f, Quaternion.Euler(0, 0, 0));
         }
     }
     public IEnumerator DoMedusaRoutine()

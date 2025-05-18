@@ -4,25 +4,34 @@ using UnityEngine;
 
 public class WitchVortex : SpellEffect
 {
-    public float gravityStrength = 1f;
+    public float gravityStrength = 50f;
     Rigidbody2D playerRb;
-    float baseDamage = 0.1f;
-    float knockTime = 0.2f;
-    float thrust = 7f;
+    float baseDamage = 0.2f;
+    float knockTime = 0f;
+    float thrust = 0f;
     float spellLifeTime = 10f;
-    float range = 15f;
+    float range = 10f;
     float force = 5f;
     SpriteRenderer spriteRenderer;
     Dictionary<GameObject, Rigidbody2D> victims;
     public GameObject redsparklesObject;
     List<GameObject> redSparkles;
     GameObject witch;
+    Rigidbody2D rigidbody2D;
+    Vector3 startTarget;
+    Vector3 startPoint;
+    float moveSpeed = 3f;
+    float driftAngle;
     // Start is called before the first frame update
     void Start()
     {
+        rigidbody2D = GetComponent<Rigidbody2D>();
         spellType = new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype);
         witch = GameObject.Find("Witch");
         victims = new Dictionary<GameObject, Rigidbody2D>();
+        startTarget = GameObject.Find("Player").transform.position;
+        driftAngle = UnityEngine.Random.Range(-45f, 45f);
+        startPoint = transform.position;
         Expire();
     }
     IEnumerator Expire()
@@ -46,16 +55,23 @@ public class WitchVortex : SpellEffect
     // Update is called once per frame
     void FixedUpdate()
     {
+        DoMovement();
         if (Time.frameCount % 31 == 0)
         {
             CatchVictims();
         }
-        if (Time.frameCount % 60 == 0 && UnityEngine.Random.Range(0, 1) < 0.1)
+        if (Time.frameCount % 60 == 0 && UnityEngine.Random.Range(0, 1) < 0.01)
         {
             float distQuotient = 3f;
             CombatManager.InstantiateSpell(redsparklesObject, caster, transform.position + new Vector3(UnityEngine.Random.Range(-range / distQuotient, range / distQuotient), UnityEngine.Random.Range(-range / distQuotient, range / distQuotient)), Quaternion.Euler(0, 0, 0));
         }
         MoveVictims();
+    }
+    void DoMovement()
+    {
+        Vector2 dirRad = startTarget - startPoint;
+        Vector2 move_by = (dirRad + (Vector2)(Quaternion.Euler(0f, 0f, driftAngle) * (Vector3)dirRad)).normalized * moveSpeed * Time.fixedDeltaTime;
+        rigidbody2D.MovePosition(rigidbody2D.position + move_by);
     }
     void MoveVictims()
     {
