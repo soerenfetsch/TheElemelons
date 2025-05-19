@@ -49,12 +49,8 @@ public class WitchBoulder : SpellEffect
             boulderRb.angularVelocity = 0;
             boulderRb.velocity = Vector3.zero;
             boulderRb.isKinematic = true;
-            StartCoroutine(Expire());
-        }
-
-        if (distance < 2f)
-        {
             circleCollider2D.enabled = true;
+            StartCoroutine(Expire());
         }
     }
     IEnumerator Expire()

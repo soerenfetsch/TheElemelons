@@ -58,7 +58,7 @@ public class Tiki : Enemy
     Collider2D bodyCollider2D;
     RaycastHit2D hit;
     Transform bodyTransform;
-    int clockwiseFactor = 1;
+    public int clockwiseFactor = 1;
     Vector2 bodyMovement;
     public float moveSpeed = 1f;
     Rigidbody2D rbBody;
@@ -608,7 +608,7 @@ public class Tiki : Enemy
             BuffDebuffManager.Instance.ApplyBuffDebuff(gameObject, "TikiPanicSpeed", BuffDebuffManager.BuffDebuffType.SpeedBuff, 120f, panicWalkSpeedFactor, false);
             speedBuffGiven = true;
         }
-        else if (health.GetHealth() < health.GetMaxHealth() / 5)
+        else if (health.GetHealth() < health.GetMaxHealth() / 3)
         {
             panic = true;
         }

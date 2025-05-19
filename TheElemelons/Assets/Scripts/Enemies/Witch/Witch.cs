@@ -96,8 +96,8 @@ public class Witch : Enemy
     bool isCasting = false;
     public Dictionary<WitchMoves, WitchMoveInfos> moveStatsDict;
     float rechargeProb = 0.4f;
-    float dashCooldown = 5f;
-    float dashProbability = 0.1f;
+    float dashCooldown = 4f;
+    float dashProbability = 0.2f;
     float medusaCooldown = 12f;
     float medusaProbability = 0.9f;
     public GameObject medusaGameObject;
@@ -127,7 +127,7 @@ public class Witch : Enemy
     float ramPlayerProbability = 0.1f;
     float ramPlayerCooldown = 3f;
     float greenSprayProbability = 0.9f;
-    float greenSprayCooldown = 5f;
+    float greenSprayCooldown = 4f;
     public GameObject greenSprayGameObject;
 
     // Start is called before the first frame update
@@ -437,6 +437,10 @@ public class Witch : Enemy
             CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.GreenSpray].moveGameObject, gameObject, castpoint, Quaternion.Euler(0, 0, 0));
             dir = Quaternion.Euler(0f, 0f, anglePerSpell) * dir;
             yield return new WaitForSeconds(timeBetweenCasts);
+        }
+        if (UnityEngine.Random.Range(0f, 1f) < 0.1f)
+        {
+            DoGreenSpray();
         }
     }
     /// <summary>
@@ -1059,19 +1063,19 @@ public class Witch : Enemy
         switch (healthPhase)
         {
             case 2:
-                boulderCount = 1 - ((dice[d] < 0.5) ? 1 : 0) + randomNumber;
+                boulderCount = 1 + ((dice[d] < 0.5) ? 1 : 0) + randomNumber / 2;
                 break;
             case 3:
-                boulderCount = 1 - ((dice[d] < 0.5) ? 1 : 0) + randomNumber;
+                boulderCount = 2 + ((dice[d] < 0.5) ? 1 : 0) + randomNumber;
                 break;
             case 4:
-                boulderCount = 1 + ((dice[d] < 0.7) ? 1 : 0) + (int)(randomNumber * (1 + dice[d]));
+                boulderCount = 2 + ((dice[d] < 0.7) ? 1 : 0) + (int)(randomNumber * (1 + dice[d]));
                 break;
             case 5:
-                boulderCount = 1 + +(int)(randomNumber * (1 + dice[d] * 2));
+                boulderCount = 3 + randomNumber / 2 + (int)(randomNumber * (1 + dice[d] * 2));
                 break;
             case 6:
-                boulderCount = 1 + +(int)(randomNumber * (1 + dice[d] * 2));
+                boulderCount = 3 + randomNumber + (int)(randomNumber * (1 + dice[d] * 2));
                 break;
             default:
                 boulderCount = 1 + ((dice[d] < 0.5) ? 1 : 0);
@@ -1083,7 +1087,11 @@ public class Witch : Enemy
             Vector3 diffFromPlayer = playerTransform.position - boulderPos;
             if (diffFromPlayer.magnitude > 15f)
             {
-                boulderPos = boulderPos + diffFromPlayer.normalized * UnityEngine.Random.Range(0, 30f);
+                boulderPos = boulderPos + diffFromPlayer * UnityEngine.Random.Range(0.7f, 1.3f);
+            }
+            if (i == 0)
+            {
+                boulderPos = pathfinder.transform.position + new Vector3(UnityEngine.Random.Range(-3, 3), UnityEngine.Random.Range(-3, 3), 0);
             }
             CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.Boulder].moveGameObject, gameObject, boulderPos, Quaternion.Euler(0, 0, 0));
         }

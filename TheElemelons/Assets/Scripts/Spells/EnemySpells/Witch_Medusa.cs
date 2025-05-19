@@ -34,12 +34,8 @@ public class Witch_Medusa : MonoBehaviour
         inputManager = playerTransform.GetComponent<InputManager>();
         inputManager.canInput = false;
         playerTransform.GetComponent<PlayerMovement>().SetMovement(Vector2.zero);
+        transform.SetParent(playerTransform, worldPositionStays: true);
         StartCoroutine(Expire());
-    }
-    void FixedUpdate()
-    {
-        playerTransform.position = transform.position + new Vector3(0, offset, 0);
-        transform.position = playerTransform.position + new Vector3(0, -offset, 0);
     }
     IEnumerator Expire()
     {
