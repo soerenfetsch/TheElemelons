@@ -27,7 +27,15 @@ public class MainGame : MonoBehaviour
     public void StartGameStage(GameProgressionStage stage)
     {
         Debug.Log("Starting game stage: " + stage);
+        StartCoroutine(StartGameStageAsync(stage));
+    }
 
+    private IEnumerator StartGameStageAsync(GameProgressionStage stage)
+    {
+        // Load scene of the game stage
+        yield return StartCoroutine(LoadScene(stage));
+
+        // Scene is now loaded
         switch (stage)
         {
             case GameProgressionStage.CASTLE_INTRODUCTION:
@@ -52,6 +60,7 @@ public class MainGame : MonoBehaviour
                 Debug.LogError("Unknown game stage: " + stage);
                 break;
         }
+        yield return null;
     }
 
     private void HandleCastleIntroStage()
@@ -59,14 +68,6 @@ public class MainGame : MonoBehaviour
         // TODO: Play the castle intro cutscene
 
         // TODO: Start the king dialogue about stolen elemelons
-
-        // If the scene is not loaded, load it
-        if (SceneManager.GetActiveScene().name != "Castle_Hub_Scene")
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
-            SceneManager.LoadScene("Castle_Hub_Scene");
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-        }
 
         // Make the initial king dialogue available and subscribe the stage change to it
         EnableKingIntroDialogue();
@@ -105,14 +106,6 @@ public class MainGame : MonoBehaviour
 
     private void HandleCastleEarlyStage()
     {
-        // If the scene is not loaded, load it
-        if (SceneManager.GetActiveScene().name != "Castle_Hub_Scene")
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
-            SceneManager.LoadScene("Castle_Hub_Scene");
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-        }
-
         EnableKingRepetitiveDialogue();
 
         GameObject portal = GameObject.Find("EarthPortal");
@@ -131,13 +124,6 @@ public class MainGame : MonoBehaviour
 
     private void HandleEarthEarlyStage()
     {
-        // If the scene is not loaded, load it
-        if (SceneManager.GetActiveScene().name != "Earth_Dungeon_Scene")
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
-            SceneManager.LoadScene("Earth_Dungeon_Scene");
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-        }
         // TODO: Allow the boss room to be accessed when all monsters are defeated
 
         // TODO: Add the boss room scene when the room is entered
@@ -149,14 +135,6 @@ public class MainGame : MonoBehaviour
 
     private void HandleCastleEndStage()
     {
-        // If the scene is not loaded, load it
-        if (SceneManager.GetActiveScene().name != "Castle_Hub_Scene")
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
-            SceneManager.LoadScene("Castle_Hub_Scene");
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-        }
-
         // TODO: Add elemelon retrieval dialogue to the King
 
         // TODO: Add event to progress to earth_late when dialogue is finished
@@ -164,14 +142,6 @@ public class MainGame : MonoBehaviour
 
     private void HandleCastleLateStage()
     {
-        // If the scene is not loaded, load it
-        if (SceneManager.GetActiveScene().name != "Castle_Hub_Scene")
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
-            SceneManager.LoadScene("Castle_Hub_Scene");
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-        }
-
         // TODO: If the earth elemelon is not loaded, load it into the scene
 
         // TODO: Add the repetitive king dialogue to the king
@@ -181,20 +151,61 @@ public class MainGame : MonoBehaviour
 
     private void HandleEarthLateStage()
     {
-        // If the scene is not loaded, load it
-        if (SceneManager.GetActiveScene().name != "Earth_Dungeon_Scene")
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
-            SceneManager.LoadScene("Earth_Dungeon_Scene");
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-        }
-
         // TODO: Allow the boss room to be accessed when all monsters are defeated
 
         // TODO: Add the boss room scene when the room is entered
 
         // TODO: Add the event to progress to castle late when the boss or the player is defeated
 
+    }
+
+    private IEnumerator LoadScene(GameProgressionStage stage)
+    {
+        string sceneToLoad = GetSceneForStage(stage);
+
+        if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad)
+        {
+            GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
+            Debug.Log("Waiting for loading screen to be displayed...");
+            // Wait until loading screen is displayed
+            yield return null;
+            yield return new WaitForEndOfFrame();
+
+            Debug.Log("Loading scene: " + sceneToLoad);
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad);
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+            Debug.Log("Scene loaded: " + sceneToLoad);
+            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
+            yield return null;
+        }
+        else
+        {
+            yield return null;
+        }
+    }
+
+    private string GetSceneForStage(GameProgressionStage stage)
+    {
+        switch (stage)
+        {
+            case GameProgressionStage.CASTLE_INTRODUCTION:
+                return "Castle_Hub_Scene";
+            case GameProgressionStage.CASTLE_EARLY:
+                return "Castle_Hub_Scene";
+            case GameProgressionStage.CASTLE_END:
+                return "Castle_Hub_Scene";
+            case GameProgressionStage.CASTLE_LATE:
+                return "Castle_Hub_Scene";
+            case GameProgressionStage.EARTH_EARLY:
+                return "Earth_Dungeon_Scene";
+            case GameProgressionStage.EARTH_LATE:
+                return "Earth_Dungeon_Scene";
+            default:
+                return null;
+        }
     }
 
     private void EnableKingIntroDialogue()

@@ -324,7 +324,7 @@ public class UIManager : MonoBehaviour
                 EnablePanel("DeathScreen");
                 break;
             case GameStatus.LOADING_SCREEN:
-                EnablePanel("LoadingScreen");
+                EnablePanel("LoadPanel");
                 break;
             case GameStatus.PAUSE_MENU:
                 EnablePanel("PauseMenu");

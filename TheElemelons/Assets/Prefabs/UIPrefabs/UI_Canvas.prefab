@@ -137,6 +137,7 @@ MonoBehaviour:
   startMenuPanel: {fileID: 9150693199017904779}
   settingsMenuPanel: {fileID: 1933944021799878360}
   ingamePanel: {fileID: 5000727264629751238}
+  loadPanel: {fileID: 8074911129632855129}
 --- !u!1 &6796149993391354465
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +546,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2316839027173856453, guid: 5c303b855d24c6546a8267142edef084, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -553,6 +558,11 @@ PrefabInstance:
 --- !u!224 &4696530352937543054 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1226568215896155410, guid: 5c303b855d24c6546a8267142edef084, type: 3}
+  m_PrefabInstance: {fileID: 5776086640030695580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8074911129632855129 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2316839027173856453, guid: 5c303b855d24c6546a8267142edef084, type: 3}
   m_PrefabInstance: {fileID: 5776086640030695580}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6554888587119869704
@@ -689,7 +699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9197427245350886008, guid: 4b4bac62f05372c4d99f538099df39fd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1099,7 +1109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224255708543485017, guid: 0a8f9cb50a1053b41af75f6544629a6d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1043528556771700932, guid: 0a8f9cb50a1053b41af75f6544629a6d, type: 3}
       propertyPath: m_Pivot.x
