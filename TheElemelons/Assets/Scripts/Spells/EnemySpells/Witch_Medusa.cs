@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-
+/// <summary>
+/// Petrification animation that appears in front of the player sprite and prevents player input during its spell lifetime (~3s). 
+/// Plays decomposition animation at end of spell life and gameobject is destroyed.
+/// </summary>
 public class Witch_Medusa : MonoBehaviour
 {
     Witch witchScript;

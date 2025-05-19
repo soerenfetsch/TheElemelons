@@ -11,7 +11,7 @@ public class WitchHealth : Health
         health = maxhealth;
     }
     /// <summary>
-    /// amount of substracted health to tiki increased if head detached
+    /// amount of substracted health to witch increased if is bald
     /// </summary>
     /// <param name="damage"></param>
     public new void SubtractHealth(float damage)

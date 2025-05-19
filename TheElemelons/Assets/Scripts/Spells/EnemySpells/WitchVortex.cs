@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Vortex that moves in a curve away from its caster. Deals minor damage to player on collision (~0.1 hearts). 
+/// Sucks player and enemies in that are in its range (~10 units). 
+/// Force parameter controls strength. Also can randomly spawn red sparkles around itself.
+/// </summary>
 public class WitchVortex : SpellEffect
 {
     public float gravityStrength = 50f;
     Rigidbody2D playerRb;
-    float baseDamage = 0.2f;
+    float baseDamage = 0.1f;
     float knockTime = 0f;
     float thrust = 0f;
     float spellLifeTime = 10f;
@@ -22,6 +26,7 @@ public class WitchVortex : SpellEffect
     Vector3 startPoint;
     float moveSpeed = 3f;
     float driftAngle;
+    CircleCollider2D circleCollider2D;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +37,17 @@ public class WitchVortex : SpellEffect
         startTarget = GameObject.Find("Player").transform.position;
         driftAngle = UnityEngine.Random.Range(-45f, 45f);
         startPoint = transform.position;
+        circleCollider2D = GetComponent<CircleCollider2D>();
+        StartCoroutine(ColliderOnOff());
         Expire();
+    }
+    IEnumerator ColliderOnOff()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+            circleCollider2D.enabled = !circleCollider2D.enabled;
+        }
     }
     IEnumerator Expire()
     {
@@ -81,6 +96,9 @@ public class WitchVortex : SpellEffect
             rb.AddForce(difference.normalized * (range - difference.magnitude) * force);
         }
     }
+    /// <summary>
+    /// updates victims. adds new ones in range and removes those that are out of range.
+    /// </summary>
     void CatchVictims()
     {
         List<GameObject> nextvictims = new List<GameObject>();

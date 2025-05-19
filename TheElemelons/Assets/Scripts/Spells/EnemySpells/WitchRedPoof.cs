@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// mall Red cloud that disappears after ~0.6s, but then grows big and becomes a big red cloud that obscures sight for
+/// the player, as it is rendered above enemies, 
+/// player, walls, floor etc. Gameobject is destroyed after spell lifetime runs out ~13s.
+/// </summary>
 public class WitchRedPoof : MonoBehaviour
 {
     Witch witchScript;

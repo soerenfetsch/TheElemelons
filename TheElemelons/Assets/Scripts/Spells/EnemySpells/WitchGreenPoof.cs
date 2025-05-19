@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Just a visual effect. Small green cloud. Gameobject is destroyed after spelllifetime runs out ~0.6s.
+/// </summary>
 public class WitchGreenPoof : MonoBehaviour
 {
     Witch witchScript;

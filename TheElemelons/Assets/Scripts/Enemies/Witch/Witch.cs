@@ -97,7 +97,7 @@ public class Witch : Enemy
     float rechargeProb = 0.4f;
     float dashCooldown = 2f;
     float dashProbability = 0.5f;
-    float medusaCooldown = 20f;
+    float medusaCooldown = 12f;
     float medusaProbability = 0.9f;
     public GameObject medusaGameObject;
     float offensiveSpellCooldown = 3f;
@@ -164,6 +164,11 @@ public class Witch : Enemy
             dice.Add(1f);
         }
     }
+    /// <summary>
+    /// Initializes a dictionary containing information on all of the witch’s abilities, 
+    /// such as their cooldown time, probability, tied gameobject, time needed to cast, method that executes the ability, 
+    /// whether the cooldown is running and which die should be read.
+    /// </summary>
     public void InitilializeMoveStats()
     {
         //candash etc remove
@@ -221,6 +226,13 @@ public class Witch : Enemy
             nodeCollection.Add(nodeCollectionObject.transform.GetChild(child).transform.position);
         }
     }
+    /// <summary>
+    /// Given a specific ability, checks its probability given the WitchMoveDictionary and the number its die is currently holding 
+    /// and returns whether the ability can currently be executed, not taking its cooldown in consideration.
+    /// </summary>
+    /// <param name="move"></param>
+    /// <param name="diceToRead"></param>
+    /// <returns></returns>
     bool ReadDice(WitchMoves move, int diceToRead = -1)
     {
         if ((diceToRead < 0 && dice[moveStatsDict[move].dice] < moveStatsDict[move].probability)
@@ -231,6 +243,12 @@ public class Witch : Enemy
 
         return false;
     }
+    /// <summary>
+    /// Sets a random node as destination. Node must be within dashDistanceRadius, 
+    /// no wall inbetween path to node , and if awayfromplayer true angle between witch/player and witch/node must be >90 deg
+    /// </summary>
+    /// <param name="dashDistance"></param>
+    /// <param name="awayFromPlayer"></param>
     void SelectDashNode(float dashDistance, bool awayFromPlayer = false)
     {
         nodeCollection = nodeCollection.OrderBy(x => UnityEngine.Random.value).ToList<Vector3>();
@@ -253,6 +271,11 @@ public class Witch : Enemy
             }
         }
     }
+    /// <summary>
+    /// select random node within distance
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <returns></returns>
     Vector3 SelectTPNode(float distance)
     {
         nodeCollection = nodeCollection.OrderBy(x => UnityEngine.Random.value).ToList<Vector3>();
@@ -273,11 +296,23 @@ public class Witch : Enemy
         }
         return choice;
     }
+    /// <summary>
+    /// selects random node
+    /// </summary>
+    /// <returns></returns>
     Vector3 SelectRandomNode()
     {
         nodeCollection = nodeCollection.OrderBy(x => UnityEngine.Random.value).ToList<Vector3>();
         return nodeCollection[0];
     }
+    /// <summary>
+    /// Given a list of node positions, randomly selects a node in proximity and sets it as destination. 
+    /// Witch will ‘dash’ towards it with increased speed for a short time.
+    /// </summary>
+    /// <param name="dashDistance"></param>
+    /// <param name="awayFromPlayer"></param>
+    /// <param name="numberOfDashes"></param>
+    /// <returns></returns>
     IEnumerator DoDashRoutine(float dashDistance, bool awayFromPlayer = false, int numberOfDashes = 1)
     {
         moveStatsDict[WitchMoves.Dash].canDo = false;
@@ -311,14 +346,24 @@ public class Witch : Enemy
 
         StartCoroutine(DoDashRoutine(dashDistance, awayFromPlayer: away, numberOfDashes));
     }
+    /// <summary>
+    /// witch teleports to random node in proximity and leaves behind a green poof effect.
+    /// </summary>
     void DoGreenPoof()
     {
         DoPoof(WitchMoves.GreenPoof);
     }
+    /// <summary>
+    /// witch casts a red poof effect and  teleports to random node in proximity and leaves behind a green poof effect.
+    /// </summary>
     void DoRedPoof()
     {
         DoPoof(WitchMoves.RedPoof);
     }
+    /// <summary>
+    /// Casts several green spells (same as tiki), that 'spray' at different angles. 
+    /// Number and angle coverage increases as the witch’s health becomes lower.
+    /// </summary>
     void DoGreenSpray()
     {
         StartCoroutine(DoGreenSprayCoroutine());
@@ -377,6 +422,11 @@ public class Witch : Enemy
             yield return new WaitForSeconds(timeBetweenCasts);
         }
     }
+    /// <summary>
+    /// Conducts cooldown of given ability. Updates its cando bool to true at the end.
+    /// </summary>
+    /// <param name="move"></param>
+    /// <returns></returns>
     IEnumerator DoCooldown(WitchMoves move)
     {
         float rechargeDice = 1f;
@@ -401,6 +451,9 @@ public class Witch : Enemy
     {
         ManageBodyAnimators();
     }
+    /// <summary>
+    /// Called every frame. 3 Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
+    /// </summary>
     void NewHitRayCast()
     {
         // check hit
@@ -411,6 +464,10 @@ public class Witch : Enemy
         RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, -10f) * movement, rayLength, mask);
         hit = hit0 ? hit0 : (hit1 ? hit1 : (hit2 ? hit2 : hit0));
     }
+    /// <summary>
+    /// Rolls dice every few seconds (~3-9). Some die are rolled every 3s, some every 6s, some every 9s. 
+    /// An individual die used to decide on how the witch should behave or which ability she should use.
+    /// </summary>
     void ThrowDice()
     {
         for (int i = 0; i < diceCount; i++)
@@ -422,6 +479,11 @@ public class Witch : Enemy
             }
         }
     }
+    /// <summary>
+    /// Given a list of abilities and taking their probability into account, randomly executes one of these abilities.
+    /// </summary>
+    /// <param name="choices"></param>
+    /// <returns></returns>
     public WitchMoves Chose(List<WitchMoves> choices)
     {
         float sum = 0f;
@@ -466,6 +528,9 @@ public class Witch : Enemy
     {
         return !doingDash && !isCasting;
     }
+    /// <summary>
+    /// Update animator for body, wand and hair to reflect witch’s current state and movement direction.
+    /// </summary>
     void ManageBodyAnimators()
     {
         bodyAnimator.SetFloat("Horizontal", movement.x);
@@ -495,6 +560,9 @@ public class Witch : Enemy
         sparkleEffect1.SetBool("Hover", hovering || baldy);
         sparkleEffect2.SetBool("Hover", hovering || baldy);
     }
+    /// <summary>
+    /// Executes chosen movement.
+    /// </summary>
     public void DoMovement()
     {
         if (!isCasting)
@@ -544,7 +612,7 @@ public class Witch : Enemy
         return moveSpeed * moveFactor;
     }
     /// <summary>
-    /// Abstract method to define behavior based on the current state.
+    /// Called every frame. Executes OnXXXStatus() method corresponding to the witch’s state.
     /// </summary>
     public override void ActOnStatus()
     {
@@ -621,6 +689,10 @@ public class Witch : Enemy
         }
         return chosen;
     }
+    /// <summary>
+    /// Given an ability, executes it (via the dictionary)
+    /// </summary>
+    /// <param name="move"></param>
     void ExecuteMove(WitchMoves move)
     {
         if (move != WitchMoves.None && moveStatsDict[move].canDo && moveStatsDict[WitchMoves.AnyMove].canDo)
@@ -644,6 +716,11 @@ public class Witch : Enemy
             StartCoroutine(HandleCast(move));
         }
     }
+    /// <summary>
+    /// Is in walkstatus if still has >~80%health. Witch randomly executes an ability from the following selection if 
+    /// their cooldown isnt running, the dice allow it and depending on her distance from the player: 
+    /// Greenpoof, RedPoof, GreenSpray, Dash, Boulder. Else she walks around randomly.
+    /// </summary>
     public void OnWalkStatus()
     {
         if (currentRangeState == RangeState.Close && CanInput())
@@ -727,6 +804,11 @@ public class Witch : Enemy
             }
         }
     }
+    /// <summary>
+    /// Is in hoverstatus if still has ~80%>health >~30%. Witch randomly executes an ability from the following selection if 
+    /// their cooldown isnt running, the dice allow it and depending on her distance from the player: 
+    /// Greenpoof, RedPoof, GreenSpray, Dash, Boulder, Vortex, Medusa. Else she walks around randomly.
+    /// </summary>
     public void OnHoverStatus()
     {
         if (currentRangeState == RangeState.Close && CanInput())
@@ -826,6 +908,10 @@ public class Witch : Enemy
             ExecuteMove(WitchMoves.RamPlayer);
         }
     }
+    /// <summary>
+    /// executes red or green poof depending on argument
+    /// </summary>
+    /// <param name="poof"></param>
     public void DoPoof(WitchMoves poof)
     {
         if (poof != WitchMoves.GreenPoof && poof != WitchMoves.RedPoof)
@@ -836,6 +922,9 @@ public class Witch : Enemy
         Instantiate(moveStatsDict[poof].moveGameObject, transform.position, Quaternion.Euler(0f, 0f, 0f));
         transform.position = SelectTPNode(UnityEngine.Random.Range(5f, 10f));
     }
+    /// <summary>
+    /// Takes position of player at the moment the move was started and dashes towards it.
+    /// </summary>
     void DoRamPlayer()
     {
         StartCoroutine(DoRamPlayerRoutine());
@@ -860,6 +949,9 @@ public class Witch : Enemy
         doingDash = false;
         moveStatsDict[WitchMoves.AnyMove].canDo = true;
     }
+    /// <summary>
+    /// Casts vortex spells. Number increases as the witch’s health becomes lower.
+    /// </summary>
     void DoVortex()
     {
         for (int i = 0; i < (float)(healthPhase - 1) / 2 + 1; i++)
@@ -867,6 +959,10 @@ public class Witch : Enemy
             CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.Vortex].moveGameObject, gameObject, transform.position + (Vector3)movement.normalized * 2f, Quaternion.Euler(0, 0, 0));
         }
     }
+    /// <summary>
+    /// Instantiates the medusa effect and shows animation in witch’s hair.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator DoMedusaRoutine()
     {
         hairAnimator.SetBool("Medusa", true);
@@ -874,10 +970,17 @@ public class Witch : Enemy
         yield return new WaitForSeconds(medusaTime);
         hairAnimator.SetBool("Medusa", false);
     }
+    /// <summary>
+    ///  Instantiates the medusa effect and shows animation in witch’s hair.
+    /// </summary>
     void DoMedusa()
     {
         StartCoroutine(DoMedusaRoutine());
     }
+    /// <summary>
+    /// Shows animation where the snake hair of the witch leave her and become 1 single independent snake. 
+    /// Witch is left bald. Instantiates a snake enemy.
+    /// </summary>
     void DoSnek()
     {
         StartCoroutine(DoSnekRoutine());
@@ -894,6 +997,10 @@ public class Witch : Enemy
         }
         Instantiate(moveStatsDict[WitchMoves.Snek].moveGameObject, spawnPointSnek, Quaternion.Euler(0f, 0f, 0f));
     }
+    /// <summary>
+    ///  Casts a few boulder spells at random locations inside of the bossroom. 
+    /// Number of boulders increases as the witch’s health becomes lower.
+    /// </summary>
     void DoBoulder()
     {
         int boulderCount = (int)Mathf.Clamp(healthPhase * 2 + UnityEngine.Random.Range(-2, healthPhase + 1), 1, Mathf.Infinity);
@@ -908,6 +1015,11 @@ public class Witch : Enemy
             CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.Boulder].moveGameObject, gameObject, boulderPos, Quaternion.Euler(0, 0, 0));
         }
     }
+    /// <summary>
+    /// Witch takes out wand and freezes during cast time. If spell to cast is offensive, show red sparkle effects around wand
+    /// </summary>
+    /// <param name="spell"></param>
+    /// <returns></returns>
     IEnumerator HandleCast(WitchMoves spell)
     {
         movement = playerTransform.position - transform.position;
@@ -927,6 +1039,12 @@ public class Witch : Enemy
         TurnSparkleEffectOnOff(spell, sparkleChoice, false);
         wandAnimator.SetBool("WandOut", false);
     }
+    /// <summary>
+    /// turns sparkle effects around wand on or off
+    /// </summary>
+    /// <param name="spell"></param>
+    /// <param name="choice"></param>
+    /// <param name="onOff"></param>
     void TurnSparkleEffectOnOff(WitchMoves spell, int choice, bool onOff)
     {
         if (moveStatsDict[spell].parentCategory == WitchMoves.Offense)
@@ -952,10 +1070,19 @@ public class Witch : Enemy
             }
         }
     }
+    /// <summary>
+    /// updates witch state
+    /// </summary>
+    /// <param name="newState"></param>
     public void ChangeWitchState(WitchState newState)
     {
         currentWitchState = newState;
     }
+    /// <summary>
+    ///  Is in baldstatus if  has <~30% health. Witch randomly executes an ability from the following selection 
+    /// if their cooldown isnt running, the dice allow it and depending on her distance from the player: 
+    /// Greenpoof, RedPoof, GreenSpray, Dash, Boulder, Vortex. Else she walks around randomly.
+    /// </summary>
     public void OnBaldStatus()
     {
         if (currentRangeState == RangeState.Close && CanInput())
@@ -967,9 +1094,8 @@ public class Witch : Enemy
                 // pick witchMove
                 List<WitchMoves> choices0 = new List<WitchMoves> { WitchMoves.GreenPoof, WitchMoves.RedPoof };
                 List<WitchMoves> choices1 = new List<WitchMoves> { WitchMoves.Dash };
-                List<WitchMoves> choices2 = new List<WitchMoves> { WitchMoves.Medusa };
-                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1, choices2 };
-                List<float> priorities = new List<float> { 1.5f, 1f, 2.5f };
+                List<List<WitchMoves>> choices = new List<List<WitchMoves>> { choices0, choices1 };
+                List<float> priorities = new List<float> { 1.5f, 1f };
                 ChoseSpellFromPriorityBatches(choices, priorities);
             }
             else
@@ -1042,6 +1168,9 @@ public class Witch : Enemy
             }
         }
     }
+    /// <summary>
+    /// Is idle if player out of range. no movement.
+    /// </summary>
     public void OnIdleStatus()
     {
         movement = Vector2.zero;

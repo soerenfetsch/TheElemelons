@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Red sparkle effect. Gameobject is destroyed after spelllifetime runs out ~2s. 
+/// Deals a weakness or defense Debuff to the player on collision, chosen randomly. Can also do both.
+/// </summary>
 public class WitchRedSparkles : SpellEffect
 {
     public float debuffTime = 10f;
     public float debuffFactor = 1.2f;
-    public float spellLifeTime = 3f;
+    public float spellLifeTime = 2f;
     List<Collider2D> affecteds;
     SpriteRenderer spriteRenderer;
     void Start()

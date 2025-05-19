@@ -31,7 +31,7 @@ public class Snek : Enemy
     public SnekStatus currentSnekStatus = SnekStatus.Crawl;
     bool spawned = true;
     [Header("Damage")]
-    float baseDamage = 1f;
+    float baseDamage = 0.5f;
     float knockTime = 0.3f;
     float thrust = 5f;
     [Header("Movement")]
@@ -60,6 +60,11 @@ public class Snek : Enemy
             StartCoroutine(Spawn());
         }
     }
+    /// <summary>
+    /// if snake was spawned by witch, spawn at correct point with correct orientation. 
+    /// start at witch scale and gradually become scale 1.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Spawn()
     {
         aggroRange = 50f;
@@ -74,9 +79,9 @@ public class Snek : Enemy
             transform.position = witch.transform.GetChild(3).GetChild(1).transform.position;
             movement = Vector2.right;
         }
-        float scale = 2;
+        float scale = witch.transform.localScale.x;
         transform.localScale = new Vector3(scale, scale, 0);
-        float fadeTimer = 1f;
+        float fadeTimer = 3f;
         float fadeDuration = fadeTimer;
         float chunkiness = 30f;
         while (fadeTimer > 0f)
@@ -101,6 +106,9 @@ public class Snek : Enemy
             DoMovement();
         }
     }
+    /// <summary>
+    /// Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
+    /// </summary>
     void NewRayCast()
     {
         // check hit
@@ -115,6 +123,9 @@ public class Snek : Enemy
     {
         UpdateAnimator();
     }
+    /// <summary>
+    /// Update animator to reflect snake’s current state and movement direction.
+    /// </summary>
     void UpdateAnimator()
     {
         if (currentSnekStatus == SnekStatus.Crawl)
@@ -128,6 +139,11 @@ public class Snek : Enemy
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
     }
+    /// <summary>
+    /// If raycast from NewRayCast() detects a wall, movement vector is rotated by ~20 deg and new raycasts 
+    /// generated until the snake finds a free path or 
+    /// that movement been rotated by 360 deg. Executes chosen movement.
+    /// </summary>
     public void DoMovement()
     {
         int turn = 15;
@@ -224,6 +240,10 @@ public class Snek : Enemy
     void OnAttackStatus()
     {
     }
+    /// <summary>
+    /// Dash status when snake is ~10 units or closer to player. Snake increases its speed towards player. 
+    /// However, if attackcooldown is still running, snake will chose the direction with which it can move away from the player. 
+    /// </summary>
     void OnDashStatus()
     {
         Vector2 dir;
@@ -250,6 +270,11 @@ public class Snek : Enemy
             movement = new Vector2(0, dir.y);
         }
     }
+    /// <summary>
+    /// moves in direction which was decided at the moment it switched into this state (towards player). 
+    /// Automatically switches out of state after given time (~2s).
+    /// </summary>
+    /// <returns></returns>
     IEnumerator DoTongue()
     {
         movement = playerTransform.position - transform.position;
@@ -262,10 +287,16 @@ public class Snek : Enemy
         yield return new WaitForSeconds(tongueCooldown);
         canTongue = true;
     }
+    /// <summary>
+    ///  no movement.
+    /// </summary>
     public void OnIdleStatus()
     {
         movement = Vector2.zero;
     }
+    /// <summary>
+    /// If snake is too far away, movement speed is decreased. Moves towards player if attack cooldown isnt running, else moves away.
+    /// </summary>
     public void OnCrawlStatus()
     {
         Vector2 dir = pathfinder.CheckPlayerInSight(transform.position, aggroRange);
@@ -279,9 +310,8 @@ public class Snek : Enemy
         }
         movement = new Vector2(Mathf.Sign(dir.x), Mathf.Sign(dir.y));
     }
-
     /// <summary>
-    /// Abstract method to define behavior based on the enemy's health.
+    /// If health is zero, the snake Dies and triggers the death animation.
     /// </summary>
     public override void ActOnHealth()
     {
@@ -291,9 +321,8 @@ public class Snek : Enemy
             Destroy(gameObject, 0);
         }
     }
-
     /// <summary>
-    /// Abstract method to define behavior based on the enemy's mana.
+    /// does nothing.
     /// </summary>
     public override void ActOnMana()
     { }
@@ -313,21 +342,22 @@ public class Snek : Enemy
     {
         moveFactor *= factor;
     }
-
     public override void ModifyDamage(float factor)
     {
         attackFactor *= factor;
     }
-
     public override void ModifyDefense(float factor)
     {
         defenseFactor *= factor;
     }
-
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
     }
+    /// <summary>
+    /// Deals damage (~0.5 hearts) to the player if they collide.
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&
