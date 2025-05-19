@@ -102,6 +102,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        if (GameManager.Instance.CurrentGameStatus != GameStatus.INGAME)
+        {
+            return;
+        }
         UpdateAimingArrow();
     }
 
@@ -318,6 +322,7 @@ public class UIManager : MonoBehaviour
 
     private void HandleGameStatusChanged(GameStatus newStatus)
     {
+        Debug.Log($"UIManager: Game status changed to {newStatus}");
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
@@ -420,6 +425,7 @@ public class UIManager : MonoBehaviour
         startMenuPanel?.SetActive(false);
         settingsMenuPanel?.SetActive(false);
         ingamePanel?.SetActive(false);
+        loadPanel?.SetActive(false);
     }
 
     public void ToggleContinueGameButton(bool isEnabled)

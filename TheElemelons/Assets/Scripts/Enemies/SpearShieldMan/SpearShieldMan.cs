@@ -70,6 +70,8 @@ public class SpearShieldMan : Enemy
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
+        playerTransform = GameObject.Find("Player").transform;
+        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
 
         RandomizeSpearShield();
 

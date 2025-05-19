@@ -194,6 +194,7 @@ public class LineOfSightPathfinder : MonoBehaviour
 
     private void Awake()
     {
+        player = FindFirstObjectByType<Player>().transform;
         obstacleLayer = LayerMask.GetMask("Obstacles", "Walls");
         InitializeFloorPositions();
         InitializeVisibilityGrid();

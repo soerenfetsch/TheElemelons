@@ -10,7 +10,7 @@ public class StartMenuUI : MonoBehaviour
     private Button optionsButton;
     private Button quitGameButton;
 
-    private void Start()
+    private void Awake()
     {
         // Initialize button components
         InitializeButtons();

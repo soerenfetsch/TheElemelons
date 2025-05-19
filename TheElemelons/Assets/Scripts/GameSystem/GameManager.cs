@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public GameProgressionStage CurrentProgressionStage { get; private set; }
-    public GameStatus CurrentGameStatus { get; private set; }
+    public GameStatus CurrentGameStatus { get; private set; } = GameStatus.MAIN_MENU;
     public GameStatus PreviousGameStatus { get; private set; }
 
     public GameSaveProvider SaveProvider;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             // Disable the continue button in the UI
             UIManager.Instance?.ToggleContinueGameButton(false);
         }
-        CurrentGameStatus = GameStatus.MAIN_MENU; // Start in the main menu
+        ChangeGameStatus(GameStatus.MAIN_MENU);
     }
 
     public void ChangeProgressionStage(GameProgressionStage newStage)
@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeGameStatus(GameStatus newStatus)
     {
+        Debug.Log($"Changing game status from {CurrentGameStatus} to {newStatus}");
         PreviousGameStatus = CurrentGameStatus; // Store the previous status
         CurrentGameStatus = newStatus;
         OnGameStatusChanged?.Invoke(newStatus); // Invoke the event
@@ -75,7 +76,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameStatus.MAIN_MENU:
                 Time.timeScale = 0; // Pause the game
-                SaveGame();
                 break;
             case GameStatus.PAUSE_MENU:
                 Time.timeScale = 0; // Pause the game
@@ -96,7 +96,6 @@ public class GameManager : MonoBehaviour
     {
         SaveProvider.ResetSave();
         ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
-        ChangeGameStatus(GameStatus.INGAME);
     }
 
     public void ContinueSavedGame()
@@ -110,7 +109,6 @@ public class GameManager : MonoBehaviour
         {
             NewGame(); // If no save data, start a new game
         }
-        ChangeGameStatus(GameStatus.INGAME);
     }
 
     private void SaveGame()

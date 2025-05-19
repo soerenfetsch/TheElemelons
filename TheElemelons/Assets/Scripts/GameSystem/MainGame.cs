@@ -159,7 +159,7 @@ public class MainGame : MonoBehaviour
 
     }
 
-    private IEnumerator LoadScene(GameProgressionStage stage)
+    private IEnumerator LoadScene(GameProgressionStage stage, bool isStartScene = false)
     {
         string sceneToLoad = GetSceneForStage(stage);
 
@@ -178,7 +178,8 @@ public class MainGame : MonoBehaviour
                 yield return null;
             }
             Debug.Log("Scene loaded: " + sceneToLoad);
-            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
+            GameStatus sceneStatus = isStartScene ? GameStatus.MAIN_MENU : GameStatus.INGAME;
+            GameManager.Instance.ChangeGameStatus(sceneStatus);
             yield return null;
         }
         else

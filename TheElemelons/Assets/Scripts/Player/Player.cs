@@ -58,6 +58,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     void Start()
     {
         Initialize();
+        DontDestroyOnLoad(gameObject); // Persist across scenes
     }
 
     /// <summary>
