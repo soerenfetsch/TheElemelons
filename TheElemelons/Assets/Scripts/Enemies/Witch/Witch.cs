@@ -58,7 +58,7 @@ public class Witch : Enemy
     float circleProbability = 0.5f;
     Vector3 destination;
     List<Vector3> nodeCollection;
-    Vector2 movement;
+    Vector2 movement { get; set; }
     float moveSpeed = 3f;
     float hoverSpeedFactor = 1.3f;
     [Header("Effects")]
@@ -132,10 +132,26 @@ public class Witch : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        attackFactor = 1;
-        defenseFactor = 1;
+        InitializeFindPlayerPathfinder();
+        InitializeGeneral();
+        InitializeNodes();
+        InitilializeMoveStats();
+        InitializeDice();
+    }
+    public void InitializeGivenPlayerPathfinder(Transform player, LineOfSightPathfinder pathfinder)
+    {
+        playerTransform = player;
+        this.pathfinder = pathfinder;
+    }
+    void InitializeFindPlayerPathfinder()
+    {
         playerTransform = GameObject.Find("Player").transform;
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
+    }
+    public void InitializeGeneral()
+    {
+        attackFactor = 1;
+        defenseFactor = 1;
         rb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
         hairAnimator = transform.GetChild(0).GetComponent<Animator>();
@@ -152,9 +168,6 @@ public class Witch : Enemy
         flashEffectBody = GetComponent<FlashEffect>();
         flashEffectWand = transform.GetChild(1).GetComponent<FlashEffect>();
         flashEffectHair = transform.GetChild(0).GetComponent<FlashEffect>();
-        InitializeNodes();
-        InitilializeMoveStats();
-        InitializeDice();
     }
     public void InitializeDice()
     {
@@ -454,7 +467,7 @@ public class Witch : Enemy
     /// <summary>
     /// Called every frame. 3 Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
     /// </summary>
-    void NewHitRayCast()
+    public void NewHitRayCast()
     {
         // check hit
         float rayLength = 2f;
@@ -470,9 +483,10 @@ public class Witch : Enemy
     /// </summary>
     void ThrowDice()
     {
+        int intervalThrowDiceFramerate = (int)(1.0f / Time.deltaTime * intervalThrowdice);
         for (int i = 0; i < diceCount; i++)
         {
-            if (Time.frameCount % intervalThrowdice * (i + 1) == 0)
+            if (Time.frameCount % intervalThrowDiceFramerate * (i + 1) == 0)
             {
                 dice[i] = UnityEngine.Random.Range(0, 1);
                 dice[i + diceCount] = UnityEngine.Random.Range(0, 1);
@@ -484,7 +498,7 @@ public class Witch : Enemy
     /// </summary>
     /// <param name="choices"></param>
     /// <returns></returns>
-    public WitchMoves Chose(List<WitchMoves> choices)
+    public WitchMoves Chose(List<WitchMoves> choices, bool executeChoice = true)
     {
         float sum = 0f;
         int infBetCount = 0;
@@ -519,7 +533,10 @@ public class Witch : Enemy
                     minKey = key;
                 }
             }
-            ExecuteMove(minKey);
+            if (executeChoice)
+            {
+                ExecuteMove(minKey);
+            }
             return minKey;
         }
         return WitchMoves.None;
@@ -572,11 +589,11 @@ public class Witch : Enemy
             rb.MovePosition(rb.position + moving_by);
         }
     }
-    Vector2 CalcCircleDir()
+    public Vector2 CalcCircleDir()
     {
         return (Vector2)(Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - transform.position));
     }
-    Vector2 PickStraightDir()
+    public Vector2 PickStraightDir()
     {
         if (dice[2] < 0.25)
         {
@@ -646,7 +663,7 @@ public class Witch : Enemy
         }
 
     }
-    WitchMoves ChoseSpellFromPriorityBatches(List<List<WitchMoves>> moveBatches, List<float> priorityFactors)
+    public WitchMoves ChoseSpellFromPriorityBatches(List<List<WitchMoves>> moveBatches, List<float> priorityFactors, bool executeChoice = true)
     {
         float sum = 0;
         int infBetCount = 0;
@@ -662,7 +679,7 @@ public class Witch : Enemy
                     canDoCount++;
                 }
             }
-            if (canDoCount > 0)
+            if (canDoCount > 0 && priorityFactors[i] > 0)
             {
                 bets.Add(sum);
             }
@@ -681,7 +698,7 @@ public class Witch : Enemy
                 bets[i] = Mathf.Abs(bets[i] - diceThrow);
             }
             List<WitchMoves> batchChoice = moveBatches[bets.IndexOf(bets.Min())];
-            chosen = Chose(batchChoice);
+            chosen = Chose(batchChoice, executeChoice: executeChoice);
         }
         else
         {
@@ -902,7 +919,7 @@ public class Witch : Enemy
         ++clockSwitchCounter;
         float variation = UnityEngine.Random.Range(-3, 3);
         range = Mathf.Clamp(range + variation, minimalRange, maximalRange);
-        if (clockwiseFactor > 4 && ReadDice(WitchMoves.RamPlayer))
+        if (clockSwitchCounter > 4 && ReadDice(WitchMoves.RamPlayer))
         {
             clockSwitchCounter = 0;
             ExecuteMove(WitchMoves.RamPlayer);
@@ -1241,7 +1258,6 @@ public class Witch : Enemy
         }
         else
         {
-            Debug.Log("changing to baldy");
             if (currentWitchState != WitchState.Bald)
             {
                 moveStatsDict[WitchMoves.Snek].doMethod();
@@ -1270,7 +1286,6 @@ public class Witch : Enemy
     /// <returns></returns>
     public override void GetKnocked(float knockTime)
     {
-        Debug.Log("knocked");
         StartCoroutine(HandleStagger(knockTime));
     }
     /// <summary>
@@ -1303,6 +1318,20 @@ public class Witch : Enemy
     public override void ModifyManaRegen(float factor)
     {
         mana.manaPerRegen *= factor;
+    }
+    public void SetMovement(Vector2 newMovement)
+    { movement = newMovement; }
+    public RaycastHit2D GetHit()
+    {
+        return hit;
+    }
+    public float GetWalkSpeed()
+    {
+        return moveSpeed;
+    }
+    public float GetHoverSpeed()
+    {
+        return moveSpeed * hoverSpeedFactor;
     }
 }
 public class WitchMoveInfos
