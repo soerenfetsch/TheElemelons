@@ -13,7 +13,7 @@ public class WitchVortex : SpellEffect
     float baseDamage = 0.1f;
     float knockTime = 0f;
     float thrust = 0f;
-    float spellLifeTime = 10f;
+    float spellLifeTime = 7f;
     float range = 10f;
     float force = 5f;
     SpriteRenderer spriteRenderer;
@@ -39,7 +39,7 @@ public class WitchVortex : SpellEffect
         startPoint = transform.position;
         circleCollider2D = GetComponent<CircleCollider2D>();
         StartCoroutine(ColliderOnOff());
-        Expire();
+        StartCoroutine(Expire());
     }
     IEnumerator ColliderOnOff()
     {
@@ -52,19 +52,6 @@ public class WitchVortex : SpellEffect
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
-        float fadeTimer = 2f;
-        float fadeDuration = fadeTimer;
-        float c = force;
-        float chunkiness = 30f;
-        while (fadeTimer > 0f)
-        {
-            fadeTimer -= Time.deltaTime * chunkiness;
-            float alpha = Mathf.Clamp01(fadeTimer / fadeDuration);
-            force = alpha;
-            yield return new WaitForSeconds(Time.deltaTime * chunkiness);
-        }
-        playerRb.angularVelocity = 0f;
-        playerRb.velocity = Vector2.zero;
         Destroy(gameObject);
     }
     // Update is called once per frame
