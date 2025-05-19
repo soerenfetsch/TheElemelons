@@ -38,7 +38,7 @@ public class Witch : Enemy
 {
     public List<float> dice;
     int diceCount = 3;
-    public float intervalThrowdice = 3f;
+    public float intervalThrowdice = 6f;
     public WitchState currentWitchState = WitchState.Walk;
     [Header("Health phases")]
     int healthPhase = 1;
@@ -80,23 +80,24 @@ public class Witch : Enemy
     Animator sparkleEffect1;
     Animator sparkleEffect2;
     GameObject bossbar;
+    BoxCollider2D playerCollider;
     [Header("Medusa")]
     public float medusaTime = 3f;
     [Header("Boulder")]
-    public float boulderDamage = 2f;
+    public float boulderDamage = 1f;
     public float boulderThrust = 6f;
-    public float boulderKnockTime = 1.5f;
+    public float boulderKnockTime = 0.8f;
     [Header("Dash")]
     int dashMaxnumber = 3;
     float dashtime = 1;
-    public float dashSpeed = 15f;
+    float dashSpeed = 12f;
     bool doingDash = false;
     [Header("Spell- and MoveCooldowns, can and prob")]
     bool isCasting = false;
     public Dictionary<WitchMoves, WitchMoveInfos> moveStatsDict;
     float rechargeProb = 0.4f;
-    float dashCooldown = 2f;
-    float dashProbability = 0.5f;
+    float dashCooldown = 5f;
+    float dashProbability = 0.1f;
     float medusaCooldown = 12f;
     float medusaProbability = 0.9f;
     public GameObject medusaGameObject;
@@ -123,8 +124,8 @@ public class Witch : Enemy
     public GameObject boulderGameObject;
     float specialMoveProbability = 0.8f;
     float specialMoveCooldown = 1f;
-    float ramPlayerProbability = 0.5f;
-    float ramPlayerCooldown = 1f;
+    float ramPlayerProbability = 0.1f;
+    float ramPlayerCooldown = 3f;
     float greenSprayProbability = 0.9f;
     float greenSprayCooldown = 5f;
     public GameObject greenSprayGameObject;
@@ -152,6 +153,9 @@ public class Witch : Enemy
     {
         attackFactor = 1;
         defenseFactor = 1;
+
+        BoxCollider2D[] playerColliders = playerTransform.GetComponents<BoxCollider2D>();
+        playerCollider = playerColliders[0].isTrigger ? playerColliders[0] : playerColliders[1];
         rb = GetComponent<Rigidbody2D>();
         bodyAnimator = GetComponent<Animator>();
         hairAnimator = transform.GetChild(0).GetComponent<Animator>();
@@ -463,6 +467,10 @@ public class Witch : Enemy
     void Update()
     {
         ManageBodyAnimators();
+        if ((transform.position - playerTransform.position).magnitude > 30f)
+        {
+            DoGreenPoof();
+        }
     }
     /// <summary>
     /// Called every frame. 3 Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
@@ -584,7 +592,7 @@ public class Witch : Enemy
     {
         if (!isCasting)
         {
-            movement.Normalize();
+            movement = movement.normalized;
             Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + moving_by);
         }
@@ -712,6 +720,7 @@ public class Witch : Enemy
     /// <param name="move"></param>
     void ExecuteMove(WitchMoves move)
     {
+        Debug.Log("executing: " + move.ToString());
         if (move != WitchMoves.None && moveStatsDict[move].canDo && moveStatsDict[WitchMoves.AnyMove].canDo)
         {
             // reset candos and cooldowns
@@ -919,7 +928,7 @@ public class Witch : Enemy
         ++clockSwitchCounter;
         float variation = UnityEngine.Random.Range(-3, 3);
         range = Mathf.Clamp(range + variation, minimalRange, maximalRange);
-        if (clockSwitchCounter > 4 && ReadDice(WitchMoves.RamPlayer))
+        if (clockSwitchCounter > 4 && ReadDice(WitchMoves.RamPlayer) && currentWitchState == WitchState.Hover)
         {
             clockSwitchCounter = 0;
             ExecuteMove(WitchMoves.RamPlayer);
@@ -951,18 +960,18 @@ public class Witch : Enemy
         moveStatsDict[WitchMoves.AnyMove].canDo = false;
         doingDash = true;
         movement = playerTransform.position - transform.position;
-        float distance = movement.magnitude * 2;
+        float distance = movement.magnitude + 5f;
         //raycast to cut distance
         LayerMask mask = LayerMask.GetMask("Walls");
-        RaycastHit2D hitInWay = Physics2D.Raycast(playerTransform.position, Quaternion.Euler(0f, 0f, 0f) * movement, distance, mask);
+        RaycastHit2D hitInWay = Physics2D.Raycast(transform.position, movement, movement.magnitude, mask);
         if (hitInWay)
         {
-            distance = (hitInWay.transform.position - transform.position).magnitude - 2f;
+            distance = movement.magnitude;
         }
-        float dashTime = distance * dashSpeed;
-        solidCollider.enabled = false;
+        float dashTime = dashSpeed / distance;
+        Physics2D.IgnoreCollision(solidCollider, playerCollider, true);
         yield return new WaitForSeconds(dashTime);
-        solidCollider.enabled = true;
+        Physics2D.IgnoreCollision(solidCollider, playerCollider, false);
         doingDash = false;
         moveStatsDict[WitchMoves.AnyMove].canDo = true;
     }
@@ -971,7 +980,31 @@ public class Witch : Enemy
     /// </summary>
     void DoVortex()
     {
-        for (int i = 0; i < (float)(healthPhase - 1) / 2 + 1; i++)
+        //(float)(healthPhase - 1) / 2 + 1
+        int vortexCount;
+        int d = 3;
+        switch (healthPhase)
+        {
+            case 2:
+                vortexCount = 1 + ((dice[d] < 0.2) ? 1 : 0);
+                break;
+            case 3:
+                vortexCount = 1 + ((dice[d] < 0.5) ? 1 : 0);
+                break;
+            case 4:
+                vortexCount = 1 + ((dice[d] < 0.7) ? 1 : 0);
+                break;
+            case 5:
+                vortexCount = 1 + ((dice[d] < 0.5) ? 1 : 0) + ((dice[d + 1] < 0.3) ? 1 : 0);
+                break;
+            case 6:
+                vortexCount = 1 + ((dice[d] < 0.5) ? 1 : 0) + ((dice[d + 1] < 0.3) ? 1 : 0);
+                break;
+            default:
+                vortexCount = 1;
+                break;
+        }
+        for (int i = 0; i < vortexCount; i++)
         {
             CombatManager.InstantiateSpell(moveStatsDict[WitchMoves.Vortex].moveGameObject, gameObject, transform.position + (Vector3)movement.normalized * 2f, Quaternion.Euler(0, 0, 0));
         }
@@ -1021,6 +1054,29 @@ public class Witch : Enemy
     void DoBoulder()
     {
         int boulderCount = (int)Mathf.Clamp(healthPhase * 2 + UnityEngine.Random.Range(-2, healthPhase + 1), 1, Mathf.Infinity);
+        int randomNumber = UnityEngine.Random.Range(0, healthPhase);
+        int d = 2;
+        switch (healthPhase)
+        {
+            case 2:
+                boulderCount = 1 - ((dice[d] < 0.5) ? 1 : 0) + randomNumber;
+                break;
+            case 3:
+                boulderCount = 1 - ((dice[d] < 0.5) ? 1 : 0) + randomNumber;
+                break;
+            case 4:
+                boulderCount = 1 + ((dice[d] < 0.7) ? 1 : 0) + (int)(randomNumber * (1 + dice[d]));
+                break;
+            case 5:
+                boulderCount = 1 + +(int)(randomNumber * (1 + dice[d] * 2));
+                break;
+            case 6:
+                boulderCount = 1 + +(int)(randomNumber * (1 + dice[d] * 2));
+                break;
+            default:
+                boulderCount = 1 + ((dice[d] < 0.5) ? 1 : 0);
+                break;
+        }
         for (int i = 0; i < boulderCount; i++)
         {
             Vector3 boulderPos = SelectRandomNode() + new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
