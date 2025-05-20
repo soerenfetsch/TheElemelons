@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathScreen : MonoBehaviour
+public class ResurrectionButton : MonoBehaviour
 {
     [Header("Hovering Motion")]
-    public float amplitude = 0.1f;
-    public float frequency = 0.3f;
+    public float amplitude = 20f;
+    public float frequency = 0.25f;
     Vector2 fixpoint;
     // Start is called before the first frame update
     void Start()
