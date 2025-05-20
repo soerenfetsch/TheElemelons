@@ -137,6 +137,7 @@ MonoBehaviour:
   startMenuPanel: {fileID: 9150693199017904779}
   settingsMenuPanel: {fileID: 1933944021799878360}
   ingamePanel: {fileID: 5000727264629751238}
+  deathScreenPanel: {fileID: 849327084778862151}
 --- !u!1 &6796149993391354465
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,6 +934,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeathscreenPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 8798957649547074970, guid: 00d16b3a71d64294d8c6010897d22dc7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -941,6 +946,11 @@ PrefabInstance:
 --- !u!224 &55254800764188080 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8147305106657123949, guid: 00d16b3a71d64294d8c6010897d22dc7, type: 3}
+  m_PrefabInstance: {fileID: 8202540528427412445}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &849327084778862151 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8798957649547074970, guid: 00d16b3a71d64294d8c6010897d22dc7, type: 3}
   m_PrefabInstance: {fileID: 8202540528427412445}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9070669231835385554
