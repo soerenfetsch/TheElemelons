@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System; 
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                //uiManager.OpenDeathScreen(); // UIManager will handle this via the event
+                uiManager.EnableDeathScreen();
                 break;
             case GameStatus.MAIN_MENU:
                 SaveGame();
