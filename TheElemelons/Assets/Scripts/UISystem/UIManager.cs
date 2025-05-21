@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     public GameObject startMenuPanel;
     public GameObject settingsMenuPanel;
     public GameObject ingamePanel;
+    public GameObject deathScreenPanel;
     public GameObject loadPanel;
 
 
@@ -366,6 +367,8 @@ public class UIManager : MonoBehaviour
     /// </summary> 
     [ContextMenu("Enable Settings Menu")]
     public void EnableSettingsMenu() => EnablePanel("SettingsMenu");
+    [ContextMenu("Enable Death Menu")]
+    public void EnableDeathScreen() => EnablePanel("DeathScreen");
 
     /// <summary>
     /// Enables the ingame panel. Disables all other panels.
@@ -381,7 +384,7 @@ public class UIManager : MonoBehaviour
 
     /// <summary>
     /// Enables the specified panel and disables all other panels.
-    /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu", and "Ingame".
+    /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu","DeathScreen", and "Ingame".
     /// </summary>
     /// <param name="panelName"></param>
     private void EnablePanel(string panelName)
@@ -402,6 +405,10 @@ public class UIManager : MonoBehaviour
         else if (panelName == "Ingame")
         {
             panel = ingamePanel;
+        }
+        else if (panelName == "DeathScreen")
+        {
+            panel = deathScreenPanel;
         }
         else if (panelName == "LoadPanel")
         {
@@ -425,6 +432,7 @@ public class UIManager : MonoBehaviour
         startMenuPanel?.SetActive(false);
         settingsMenuPanel?.SetActive(false);
         ingamePanel?.SetActive(false);
+        deathScreenPanel?.SetActive(false);
         loadPanel?.SetActive(false);
     }
 

@@ -1986736,25 +1986736,22 @@ MonoBehaviour:
   normalEnemySelection:
   - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
   - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
+  - {fileID: 2875584708747893105, guid: 1fe7bf99ca2bc704584652195a63eba6, type: 3}
   advancedEnemySelection:
   - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
-  - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
-  - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
-  endEnemySelection:
-  - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
-  - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
   - {fileID: 2875584708747893105, guid: 1fe7bf99ca2bc704584652195a63eba6, type: 3}
-  bossEnemySelection:
   - {fileID: 199026192840898637, guid: 9d1ea86c36c972746963d2f519201605, type: 3}
-  - {fileID: 7441202466962739815, guid: df7aab8ee3bd1f24ab4ea55a39a7e9af, type: 3}
-  - {fileID: 429357523056024730, guid: 643baaaedaa955c42a065bb46a76d6b1, type: 3}
+  endEnemySelection:
+  - {fileID: 6283755400478361368, guid: 086d37fe2541e524ebff2a831b584ea3, type: 3}
+  bossEnemySelection:
+  - {fileID: 6283755400478361368, guid: 086d37fe2541e524ebff2a831b584ea3, type: 3}
   startEnemyCount: 1
   startEnemyCountVariability: 0
   normalEnemyCount: 2
   normalEnemyCountVariability: 1
   advancedEnemyCount: 3
   advancedEnemyCountVariability: 2
-  endEnemyCount: 5
+  endEnemyCount: 3
   endEnemyCountVariability: 0
   bossEnemyCount: 6
   bossEnemyCountVariability: 1
