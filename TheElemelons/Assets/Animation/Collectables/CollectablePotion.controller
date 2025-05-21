@@ -64,7 +64,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: collect
+    m_ConditionEvent: heal
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -204076740774552547}
@@ -89,7 +89,7 @@ AnimatorController:
   m_Name: CollectablePotion
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: collect
+  - m_Name: heal
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0

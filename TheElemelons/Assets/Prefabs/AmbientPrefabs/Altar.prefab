@@ -440,8 +440,9 @@ MonoBehaviour:
   gold: 0
   blood: 1
   collectableHeart: {fileID: 4760876517164744561, guid: 03afbd5f0bd03f141b220403a4e3392b, type: 3}
-  collectableMaxHeart: {fileID: 4760876517164744561, guid: 03afbd5f0bd03f141b220403a4e3392b, type: 3}
-  collectableMaxMana: {fileID: 4760876517164744561, guid: 03afbd5f0bd03f141b220403a4e3392b, type: 3}
+  collectableMaxHeart: {fileID: 4760876517164744561, guid: 0c9f274ae8adf334da81809ef98e48e4, type: 3}
+  collectableMaxMana: {fileID: 4760876517164744561, guid: 7981992add6e6e941bd9f52f8a451cd1, type: 3}
+  collectablePinkPotion: {fileID: 2233585783149294923, guid: e62ff7e17d4c6cc4dad3b8c8c7152f27, type: 3}
 --- !u!60 &1397784224214695858
 PolygonCollider2D:
   m_ObjectHideFlags: 0

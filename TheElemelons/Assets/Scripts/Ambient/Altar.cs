@@ -18,6 +18,7 @@ public class Altar : InteractableObject
     public GameObject collectableHeart;
     public GameObject collectableMaxHeart;
     public GameObject collectableMaxMana;
+    public GameObject collectablePinkPotion;
     List<GameObject> lootList;
     List<Rigidbody2D> rbLootList;
     [Header("Movement")]
@@ -88,15 +89,14 @@ public class Altar : InteractableObject
                 lootList.Add(collectableHeart);
             }
         }
+        else
+        {
+            lootList.Add(collectablePinkPotion);
+        }
         SpawnLoot();
     }
     void SpawnLoot()
     {
-        if (lootList.Count == 0)
-        {
-            GrantBuffs();
-            return;
-        }
 
         for (int i = 0; i < lootList.Count; i++)
         {
