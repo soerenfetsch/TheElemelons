@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                uiManager.EnableDeathScreen();
                 break;
             case GameStatus.MAIN_MENU:
                 SaveGame();
