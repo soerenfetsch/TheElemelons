@@ -19,16 +19,20 @@ public class CollectableHeart : Collectable
     // Update is called once per frame
     void FixedUpdate()
     {
-        Movement();
-    }
-    protected override void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Player") &&
-            other.isTrigger)
+        if (!collected)
         {
-            playerHealth.AddHealth(healValue);
-            StartCoroutine(Expire());
+            Movement();
+
         }
+        else
+        {
+            transform.position = player.position;
+        }
+    }
+    protected override void OnCollect()
+    {
+        playerHealth.AddHealth(healValue);
+        StartCoroutine(Expire());
     }
     IEnumerator Expire()
     {
