@@ -46,10 +46,14 @@ public abstract class Collectable : MonoBehaviour
                 rb.MovePosition(fixpoint + moving_by);
             }
         }
-        else
+    }
+    protected void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player") &&
+            other.isTrigger)
         {
-            transform.position = player.position;
+            OnCollect();
         }
     }
-    protected abstract void OnTriggerEnter2D(Collider2D other);
+    protected abstract void OnCollect();
 }
