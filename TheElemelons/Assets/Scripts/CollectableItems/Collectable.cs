@@ -20,7 +20,7 @@ public abstract class Collectable : MonoBehaviour
     protected Transform shadow;
     protected float shadowOffset = 0.7f;
 
-    protected void InitializeGeneral()
+    public void InitializeGeneral()
     {
         player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
         rb = GetComponent<Rigidbody2D>();
