@@ -54,6 +54,10 @@ public abstract class Collectable : MonoBehaviour
                 rb.MovePosition(fixpoint + moving_by);
             }
         }
+        else
+        {
+            transform.position = player.position;
+        }
     }
     protected void OnTriggerEnter2D(Collider2D other)
     {

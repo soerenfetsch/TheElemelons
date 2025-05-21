@@ -16,14 +16,7 @@ public class CollectableMaxHeart : Collectable
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!collected)
-        {
-            Movement();
-        }
-        else
-        {
-            transform.position = player.position;
-        }
+        Movement();
     }
     protected override void OnCollect()
     {
