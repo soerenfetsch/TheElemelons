@@ -145,11 +145,12 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **On all monsters defeated**: Emits an event once all the monsters of the dungeon are cleared/defeated, this can be used by the **Main Game** to progress the game.
 
 #### 2.2.7 Altars:
--Altar can be golden or not, and can either contain blood or a pink fluid.
--Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
--Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
--Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
--Case not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense or speed) that has a duration of ~2mins on interact.
+
+-**Types**: Altar can be golden or not, and can either contain blood or a pink fluid.
+  -Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
+  -Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
+  -Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
+  -Case not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense or speed) that has a duration of ~2mins on interact.
 -**On Interact**: Plays self-destruct animation and spawns loot depending on altar type. The “Collectable”-script component of the collectables is deactivated first.
 -**DoMovement()**: Moves each spawned collectable around in a parabola shaped trajectory. The distance each collectable travels is measured and after a short random distance, the movement is interupted and their collectable scripts become enabled.
 -After all spawned collectables have travelled their desired distance and their collectable scripts have been activated, Update() deactivates the altar’s altar script.
