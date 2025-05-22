@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        CursorOnOff();
     }
 
     private void Start()
@@ -73,13 +74,14 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1; // Resume the game
                 break;
         }
+        CursorOnOff();
     }
 
     public void NewGame()
     {
         SaveProvider.ResetSave();
         CurrentProgressionStage = GameProgressionStage.CASTLE_INTRODUCTION;
-        CurrentGameStatus = GameStatus.INGAME;
+        ChangeGameStatus(GameStatus.INGAME);
         StartMainGameStage();
     }
 
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour
         {
             NewGame(); // If no save data, start a new game
         }
-        CurrentGameStatus = GameStatus.INGAME;
+        ChangeGameStatus(GameStatus.INGAME);
         StartMainGameStage();
     }
 
@@ -114,5 +116,18 @@ public class GameManager : MonoBehaviour
         // Implement logic to load different scenes or enable/disable game objects
         // based on the CurrentProgressionStage.
         Debug.Log("Starting game stage: " + CurrentProgressionStage);
+    }
+    [ContextMenu("CursorOnOff")]
+    void CursorOnOff()
+    {
+        Debug.Log("checking cursor " + CurrentGameStatus.ToString());
+        if (CurrentGameStatus == GameStatus.INGAME)
+        {
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.visible = true;
+        }
     }
 }
