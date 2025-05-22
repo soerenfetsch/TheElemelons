@@ -37,6 +37,10 @@ public abstract class Collectable : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
+    /// <summary>
+    /// Object is pulled towards player in in range (~2 units), else performs a hovering motion on a fixed location.
+    /// If already collected follow the player
+    /// </summary>
     protected void Movement()
     {
         if (!collected)
@@ -59,6 +63,10 @@ public abstract class Collectable : MonoBehaviour
             transform.position = player.position;
         }
     }
+    /// <summary>
+    /// Calls the abstract method OnCollect() if collision with the player detected.
+    /// </summary>
+    /// <param name="other"></param>
     protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&

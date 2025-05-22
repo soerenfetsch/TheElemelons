@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
+///Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
+///Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
+///Case not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense or speed) 
+/// that has a duration of ~2mins on interact.
+/// </summary>
 public class Altar : InteractableObject
 {
     [Header("Bound Components")]
@@ -56,6 +62,10 @@ public class Altar : InteractableObject
         xsign = new List<int>();
         ysign = new List<int>();
     }
+    /// <summary>
+    /// Plays self-destruct animation and spawns loot depending on altar type. 
+    /// The “Collectable”-script component of the collectables is deactivated first.
+    /// </summary>
     public override void Interact()
     {
         Debug.Log("interact altar");
@@ -114,6 +124,9 @@ public class Altar : InteractableObject
         }
         spawned = true;
     }
+    /// <summary>
+    ///  if the collectables have spawned, calls DoMovement().
+    /// </summary>
     void FixedUpdate()
     {
         if (spawned)
@@ -121,6 +134,11 @@ public class Altar : InteractableObject
             DoMovement();
         }
     }
+    /// <summary>
+    /// Moves each collectable around in a parabola shaped trajectory. 
+    /// The distance each collectable travels is measured and after a short random distance, 
+    /// the movement is interupted and their collectable scripts become enabled.
+    /// </summary>
     void DoMovement()
     {
         for (int i = 0; i < rbLootList.Count; i++)
@@ -149,10 +167,10 @@ public class Altar : InteractableObject
 
         }
     }
-    void GrantBuffs()
-    {
-        //TODO: BuffEffect
-    }
+    /// <summary>
+    /// After all spawned collectables have travelled their desired distance and their collectable 
+    /// scripts have been activated, Update() deactivates the altar’s altar script.
+    /// </summary>
     void Update()
     {
         if (spawned && rbLootList.Count == 0)
