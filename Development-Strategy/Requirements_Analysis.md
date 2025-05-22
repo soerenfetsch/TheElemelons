@@ -146,14 +146,14 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.2.7 Altars:
 
--**Types**: Altar can be golden or not, and can either contain blood or a pink fluid.
-  -Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
-  -Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
-  -Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
-  -Case not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense or speed) that has a duration of ~2mins on interact.
--**On Interact**: Plays self-destruct animation and spawns loot depending on altar type. The “Collectable”-script component of the collectables is deactivated first.
--**DoMovement()**: Moves each spawned collectable around in a parabola shaped trajectory. The distance each collectable travels is measured and after a short random distance, the movement is interupted and their collectable scripts become enabled.
--After all spawned collectables have travelled their desired distance and their collectable scripts have been activated, Update() deactivates the altar’s altar script.
+- **Types**: Altar can be golden or not, and can either contain blood or a pink fluid.
+  - Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
+  - Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
+  - Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
+  - Case not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense or speed) that has a duration of ~2mins on interact.
+- **On Interact**: Plays self-destruct animation and spawns loot depending on altar type. The “Collectable”-script component of the collectables is deactivated first.
+- **DoMovement()**: Moves each spawned collectable around in a parabola shaped trajectory. The distance each collectable travels is measured and after a short random distance, the movement is interupted and their collectable scripts become enabled.
+- After all spawned collectables have travelled their desired distance and their collectable scripts have been activated, Update() deactivates the altar’s altar script.
 
 ### 2.3 Enemy System
 
@@ -230,61 +230,61 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 2.3.7 Snek (Enemy):
 
--Attack coroutine: attack where it dashes towards the player. Conditions for this attack: Distance to player smaller than ~3 and cooldown from previous attack has run out.
--Cooldown coroutine: (~6s) cooldown for attack. triggered after each attack.
--**NewRayCast**: Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
--**ActOnStatus**: Executes OnXXXStatus() method corresponding to the snake’s state.
--**OnDashStatus**: Dash status when snake is ~10 units or closer to player. Snake increases its speed towards player. However, if attackcooldown is still running, snake will chose the direction with which it can move away from the player. Animation reflects status.
--**OnCrawlStatus**: If snake is too far away, movement speed is decreased. Moves towards player if attack cooldown isnt running, else moves away.
--While cooldown is running, runs away from player.
--**OnAttackStatus**: moves in direction which was decided at the moment it switched into this state (towards player). Automatically switches out of state after given time (~2s).
--**OnIdleStatus**: no movement.
--**DoMovement**: If raycast from NewRayCast() detects a wall, movement vector is rotated by ~20 deg and new raycasts generated until the snake finds a free path or that movement been rotated by 360 deg. Executes chosen movement.
--**ActOnHealth**: If health is zero, the snake Dies and triggers the death animation.
--**UpdateAnimator**: Update animator to reflect snake’s current state and movement direction.
--**OnTriggerEnter2D**: Deals damage (~0.5 hearts) to the player if they collide.
--**In earthdungeon**: spawns in last room before boss.
--**Change state**: Given the new state change the state to the new state.
--**Get Enemy Element Type**: snake should be of element type EARTH
+- Attack coroutine: attack where it dashes towards the player. Conditions for this attack: Distance to player smaller than ~3 and cooldown from previous attack has run out.
+- Cooldown coroutine: (~6s) cooldown for attack. triggered after each attack.
+- **NewRayCast**: Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
+- **ActOnStatus**: Executes OnXXXStatus() method corresponding to the snake’s state.
+- **OnDashStatus**: Dash status when snake is ~10 units or closer to player. Snake increases its speed towards player. However, if attackcooldown is still running, snake will chose the direction with which it can move away from the player. Animation reflects status.
+- **OnCrawlStatus**: If snake is too far away, movement speed is decreased. Moves towards player if attack cooldown isnt running, else moves away.
+- While cooldown is running, runs away from player.
+- **OnAttackStatus**: moves in direction which was decided at the moment it switched into this state (towards player). Automatically switches out of state after given time (~2s).
+- **OnIdleStatus**: no movement.
+- **DoMovement**: If raycast from NewRayCast() detects a wall, movement vector is rotated by ~20 deg and new raycasts generated until the snake finds a free path or that movement been rotated by 360 deg. Executes chosen movement.
+- **ActOnHealth**: If health is zero, the snake Dies and triggers the death animation.
+- **UpdateAnimator**: Update animator to reflect snake’s current state and movement direction.
+- **OnTriggerEnter2D**: Deals damage (~0.5 hearts) to the player if they collide.
+- **In earthdungeon**: spawns in last room before boss.
+- **Change state**: Given the new state change the state to the new state.
+- **Get Enemy Element Type**: snake should be of element type EARTH
 
 #### 2.3.8 Witch (Enemy):
 
--**ActOnStatus**: Called every frame. Executes OnXXXStatus() method corresponding to the witch’s state.
--**CalcRangeState**: Measures distance to player and updates current rangestate accordingly. ~8-12 units is in range, less is close, more is far. >50 units is out of range.
--**NewRayCast**: Called every frame. Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
--**ThrowDice**: Rolls dice every few seconds (~3-9). Some die are rolled every 3s, some every 6s, some every 9s. An individual die used to decide on how the witch should behave or which ability she should use.
--**ReadDice**: Given a specific ability, checks its probability given the WitchMoveDictionary and the number its die is currently holding and returns whether the ability can currently be executed, not taking its cooldown in consideration.
--**WitchMoveDictionary**: A dictionary initialized at start containing information on all of the witch’s abilities, such as their cooldown time, probability, tied gameobject, time needed to cast, method that executes the ability, whether the cooldown is running and which die should be read.
--**Chose**: Given a list of abilities and taking their probability into account, randomly executes one of these abilities.
--**ExecuteMove**: Given an ability, executes it (via the dictionary)
--**UpdateAnimators**: Update animator for body, wand and hair to reflect witch’s current state and movement direction.
--**OnIdleStatus**: Is idle if player out of range. no movement.
--**OnWalkStatus**: Is in walkstatus if still has >~80%health. Witch randomly executes an ability from the following selection if their cooldown isnt running, the dice allow it and depending on her distance from the player: Greenpoof, RedPoof, GreenSpray, Dash, Boulder. Else she walks around randomly.
--**OnHoverStatus**:  Is in hoverstatus if still has ~80%>health >~30%. Witch randomly executes an ability from the following selection if their cooldown isnt running, the dice allow it and depending on her distance from the player: Greenpoof, RedPoof, GreenSpray, Dash, Boulder, Vortex, Medusa. Else she walks around randomly.
--**OnBaldStatus**: Is in baldstatus if  has <~30% health. Witch randomly executes an ability from the following selection if their cooldown isnt running, the dice allow it and depending on her distance from the player: Greenpoof, RedPoof, GreenSpray, Dash, Boulder, Vortex. Else she walks around randomly.
--**About the random Movement**: Will either move in straight lines or circle trajectory for random time depending on dice. If raycast detects wall, walk direction is inverted. After a random number of direction changes (~>4), may execute ability Ram Player.
--**DoMovement**: Executes chosen movement.
--**ActOnHealth**: Called every frame. If health is zero, the witch Dies and triggers the death animation. Also deactivates the bossbar and kills all other enemies in a 100 unit radius. Else, updates the int healthphase (depending on health percentage), read by other functions to determine parameters of attacks. Also updates state depending on healthphase. Executes the ‘Snek’ ability if transitions into bald status.
--**Change state**: Given the new state change the state to the new state.
--**Get Enemy Element Type**: witch should be of element type EARTH
--**DoCoolDown**: Conducts cooldown of given ability.
--**HandleCast**: Witch takes out wand and freezes during cast time. If spell to cast is offensive, show red sparkle effects around wand
+- **ActOnStatus**: Called every frame. Executes OnXXXStatus() method corresponding to the witch’s state.
+- **CalcRangeState**: Measures distance to player and updates current rangestate accordingly. ~8-12 units is in range, less is close, more is far. >50 units is out of range.
+- **NewRayCast**: Called every frame. Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
+- **ThrowDice**: Rolls dice every few seconds (~3-9). Some die are rolled every 3s, some every 6s, some every 9s. An individual die used to decide on how the witch should behave or which ability she should use.
+- **ReadDice**: Given a specific ability, checks its probability given the WitchMoveDictionary and the number its die is currently holding and returns whether the ability can currently be executed, not taking its cooldown in consideration.
+- **WitchMoveDictionary**: A dictionary initialized at start containing information on all of the witch’s abilities, such as their cooldown time, probability, tied gameobject, time needed to cast, method that executes the ability, whether the cooldown is running and which die should be read.
+- **Chose**: Given a list of abilities and taking their probability into account, randomly executes one of these abilities.
+- **ExecuteMove**: Given an ability, executes it (via the dictionary)
+- **UpdateAnimators**: Update animator for body, wand and hair to reflect witch’s current state and movement direction.
+- **OnIdleStatus**: Is idle if player out of range. no movement.
+- **OnWalkStatus**: Is in walkstatus if still has >~80%health. Witch randomly executes an ability from the following selection if their cooldown isnt running, the dice allow it and depending on her distance from the player: Greenpoof, RedPoof, GreenSpray, Dash, Boulder. Else she walks around randomly.
+- **OnHoverStatus**:  Is in hoverstatus if still has ~80%>health >~30%. Witch randomly executes an ability from the following selection if their cooldown isnt running, the dice allow it and depending on her distance from the player: Greenpoof, RedPoof, GreenSpray, Dash, Boulder, Vortex, Medusa. Else she walks around randomly.
+- **OnBaldStatus**: Is in baldstatus if  has <~30% health. Witch randomly executes an ability from the following selection if their cooldown isnt running, the dice allow it and depending on her distance from the player: Greenpoof, RedPoof, GreenSpray, Dash, Boulder, Vortex. Else she walks around randomly.
+- **About the random Movement**: Will either move in straight lines or circle trajectory for random time depending on dice. If raycast detects wall, walk direction is inverted. After a random number of direction changes (~>4), may execute ability Ram Player.
+- **DoMovement**: Executes chosen movement.
+- **ActOnHealth**: Called every frame. If health is zero, the witch Dies and triggers the death animation. Also deactivates the bossbar and kills all other enemies in a 100 unit radius. Else, updates the int healthphase (depending on health percentage), read by other functions to determine parameters of attacks. Also updates state depending on healthphase. Executes the ‘Snek’ ability if transitions into bald status.
+- **Change state**: Given the new state change the state to the new state.
+- **Get Enemy Element Type**: witch should be of element type EARTH
+- **DoCoolDown**: Conducts cooldown of given ability.
+- **HandleCast**: Witch takes out wand and freezes during cast time. If spell to cast is offensive, show red sparkle effects around wand
 ### The abilities:
--**Dash**: Given a list of node positions, randomly selects a node in proximity and sets it as destination. Witch will ‘dash’ towards it with increased speed for a short time.
--**Medusa**: Instantiates the medusa effect and shows animation in witch’s hair. 
-  -**Medusa** effect: Petrification animation that appears in front of the player sprite and prevents player input during its spell lifetime (~3s). Plays decomposition      animation at end of spell life and gameobject is destroyed.
--**Snek**: Shows animation where the snake hair of the witch leave her and become 1 single independent snake. Witch is left bald. Instantiates a snake enemy.
--**Boulder**: Casts a few boulder spells at random locations inside of the bossroom. Number of boulders increases as the witch’s health becomes lower. 
-  -**Boulder effect**: Boulder that free falls ~20 units and then shatters (on the ground) , dealing damage (~1heart) to the player on collision when it is ~2 units or closer to its shattering point. Drop shadow indicates where it will hit the ground. GameObject is destroyed after shatter animation.
--**Vortex**: Casts vortex spells. Number increases as the witch’s health becomes lower. 
-  -**Vortex effect**: Vortex that moves in a curve away from its caster. Deals minor damage to player on collision (~0.1 hearts). Sucks player and enemies in that are in its range (~10 units). Force parameter controls strength. Also can randomly spawn red sparkles around itself. 
-  -**Red Sparkle effect**: Red sparkle effect. Gameobject is destroyed after spelllifetime runs out ~2s. Deals a weakness or defense Debuff to the player on collision, chosen randomly. Can also do both.
--**Green Poof**: witch teleports to random node in proximity and leaves behind a green poof effect. 
-  -**Green Poof effect**: Just a visual effect. Small green cloud. Gameobject is destroyed after spelllifetime runs out ~0.6s.
--**Red Poof**: witch casts a red poof effect and  teleports to random node in proximity and leaves behind a green poof effect.
-  -**Red Poof effect**: Small Red cloud that disappears after ~0.6s, but then grows big and becomes a big red cloud that obscures sight for the player, as it is rendered above enemies, player, walls, floor etc. Gameobject is destroyed after spell lifetime runs out ~13s.
--**Green Spray**: Casts several green spells (same as tiki), that 'spray' at different angles. Number and angle coverage increases as the witch’s health becomes lower.
--**Ram Player**: Takes position of player at the moment the move was started and dashes towards it.
+- **Dash**: Given a list of node positions, randomly selects a node in proximity and sets it as destination. Witch will ‘dash’ towards it with increased speed for a short time.
+- **Medusa**: Instantiates the medusa effect and shows animation in witch’s hair. 
+  - **Medusa** effect: Petrification animation that appears in front of the player sprite and prevents player input during its spell lifetime (~3s). Plays decomposition animation at end of spell life and gameobject is destroyed.
+- **Snek**: Shows animation where the snake hair of the witch leave her and become 1 single independent snake. Witch is left bald. Instantiates a snake enemy.
+- **Boulder**: Casts a few boulder spells at random locations inside of the bossroom. Number of boulders increases as the witch’s health becomes lower. 
+  - **Boulder effect**: Boulder that free falls ~20 units and then shatters (on the ground) , dealing damage (~1heart) to the player on collision when it is ~2 units or closer to its shattering point. Drop shadow indicates where it will hit the ground. GameObject is destroyed after shatter animation.
+- **Vortex**: Casts vortex spells. Number increases as the witch’s health becomes lower. 
+  - **Vortex effect**: Vortex that moves in a curve away from its caster. Deals minor damage to player on collision (~0.1 hearts). Sucks player and enemies in that are in its range (~10 units). Force parameter controls strength. Also can randomly spawn red sparkles around itself. 
+  - **Red Sparkle effect**: Red sparkle effect. Gameobject is destroyed after spelllifetime runs out ~2s. Deals a weakness or defense Debuff to the player on collision, chosen randomly. Can also do both.
+- **Green Poof**: witch teleports to random node in proximity and leaves behind a green poof effect. 
+  - **Green Poof effect**: Just a visual effect. Small green cloud. Gameobject is destroyed after spelllifetime runs out ~0.6s.
+- **Red Poof**: witch casts a red poof effect and  teleports to random node in proximity and leaves behind a green poof effect.
+  - **Red Poof effect**: Small Red cloud that disappears after ~0.6s, but then grows big and becomes a big red cloud that obscures sight for the player, as it is rendered above enemies, player, walls, floor etc. Gameobject is destroyed after spell lifetime runs out ~13s.
+- **Green Spray**: Casts several green spells (same as tiki), that 'spray' at different angles. Number and angle coverage increases as the witch’s health becomes lower.
+- **Ram Player**: Takes position of player at the moment the move was started and dashes towards it.
 
 ### 2.4 Combat System
 
@@ -325,17 +325,17 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 2.4.5 Collectables
 
--Abstract class for collectable items:
--**InitializeGeneral**: Initializes necessary components.
--**Movement**: Object is pulled towards player in in range (~2 units), else performs a hovering motion on a fixed location.
--**OnTriggerEnter2D**: Calls the abstract method OnCollect() if collision with the player detected.
--**Collectable items**:
--CollectableHeart heals the player by 1 health OnCollect
--CollectableMaxHeart increases the player maxhealth by 1 OnCollect
--CollectableMana fills up the player’s mana by 1
--CollectableMaxMana increases the player maxmana by 1 OnCollect
--CollectablePinkPotion** grants the player a random Buff for ~2mins with a factor of ~1.5 (Speed, Strength, Defense)
--All collectables play an animation OnCollect and then self-destruct
+- Abstract class for collectable items:
+- **InitializeGeneral**: Initializes necessary components.
+- **Movement**: Object is pulled towards player in in range (~2 units), else performs a hovering motion on a fixed location.
+- **OnTriggerEnter2D**: Calls the abstract method OnCollect() if collision with the player detected.
+- **Collectable items**:
+- CollectableHeart heals the player by 1 health OnCollect
+- CollectableMaxHeart increases the player maxhealth by 1 OnCollect
+- CollectableMana fills up the player’s mana by 1
+- CollectableMaxMana increases the player maxmana by 1 OnCollect
+- CollectablePinkPotion** grants the player a random Buff for ~2mins with a factor of ~1.5 (Speed, Strength, Defense)
+- All collectables play an animation OnCollect and then self-destruct
 
 ### 2.5 Game Progression and Save System
 
@@ -463,7 +463,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.6.8 Bossbar:
 
--Given an attached healthscript, visualizes how much health compared to maxhealth the enemy/player etc of the script has.
+- Given an attached healthscript, visualizes how much health compared to maxhealth the enemy/player etc of the script has.
 
 ### 2.7 Interaction and Dialogue System
 
