@@ -21,6 +21,7 @@ public class Altar : InteractableObject
     public bool blood = false;
     bool spawned;
     [Header("Loot")]
+    public int maxSpawnableHearts = 3;
     public GameObject collectableHeart;
     public GameObject collectableMaxHeart;
     public GameObject collectableMaxMana;
@@ -41,8 +42,10 @@ public class Altar : InteractableObject
     void Start()
     {
         InitializeGeneral();
+        InitializeLists();
+        InitializeCollider();
     }
-    void InitializeGeneral()
+    public void InitializeGeneral()
     {
         animator = GetComponent<Animator>();
         fluidAnimator = transform.GetChild(0).GetComponent<Animator>();
@@ -50,6 +53,14 @@ public class Altar : InteractableObject
         colliderDestroyed = transform.GetChild(2).GetComponent<PolygonCollider2D>();
         animator.SetBool("Gold", gold);
         fluidAnimator.SetBool("Blood", blood);
+    }
+    void InitializeCollider()
+    {
+        collider2D = GetComponent<PolygonCollider2D>();
+        collider2D.points = colliderNormal.points;
+    }
+    public void InitializeLists()
+    {
         lootList = new List<GameObject>();
         rbLootList = new List<Rigidbody2D>();
         distances = new List<float>();
@@ -57,8 +68,6 @@ public class Altar : InteractableObject
         maxDistances = new List<float>();
         xOffset = new List<float>();
         dirs = new List<Vector2>();
-        collider2D = GetComponent<PolygonCollider2D>();
-        collider2D.points = colliderNormal.points;
         xsign = new List<int>();
         ysign = new List<int>();
     }
@@ -80,7 +89,7 @@ public class Altar : InteractableObject
         collider2D.points = colliderDestroyed.points;
         ChoseLoot();
     }
-    void ChoseLoot()
+    public List<GameObject> ChoseLoot(bool spawn = true)
     {
         // add small debuff chance
         if (gold && blood)
@@ -93,7 +102,7 @@ public class Altar : InteractableObject
         }
         else if (blood)
         {
-            int count = UnityEngine.Random.Range(1, 4);
+            int count = UnityEngine.Random.Range(1, maxSpawnableHearts + 1);
             for (int i = 0; i < count; i++)
             {
                 lootList.Add(collectableHeart);
@@ -103,7 +112,11 @@ public class Altar : InteractableObject
         {
             lootList.Add(collectablePinkPotion);
         }
-        SpawnLoot();
+        if (spawn)
+        {
+            SpawnLoot();
+        }
+        return lootList;
     }
     void SpawnLoot()
     {
