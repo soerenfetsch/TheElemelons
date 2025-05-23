@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     // Radius within which the player can interact
+    public bool gizmosEnabled = false;
     public LayerMask interactableLayer; // Ensure interactable objects have this layer
     public Animator playerAnimator;
     Vector2 interactionBoxOffSetUp;
@@ -22,7 +23,7 @@ public class PlayerInteraction : MonoBehaviour
     public void InitializeInteractionBoxes()
     {
         interactionBoxOffSetDown = new Vector2(-0.076f, -0.245f);
-        interactionBoxOffSetUp = new Vector2(0.05f, 0.8f);
+        interactionBoxOffSetUp = new Vector2(0.05f, 1);
         interactionBoxOffSetRight = new Vector2(0.770f, 0.392f);
         interactionBoxOffSetLeft = new Vector2(-0.770f, 0.392f);
         interactionBoxSizeVertical = new Vector2(0.63f, 1.25f);
@@ -70,7 +71,10 @@ public class PlayerInteraction : MonoBehaviour
     }
     void OnDrawGizmos()
     {
-        Gizmos.DrawCube(transform.position + (Vector3)CalcDir(), size: CalcSize());
+        if (gizmosEnabled)
+        {
+            Gizmos.DrawCube(transform.position + (Vector3)CalcDir(), size: CalcSize());
+        }
     }
     /// <summary>
     /// Finds the closest interactable object to the player within interactionRange
