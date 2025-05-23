@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     // Radius within which the player can interact
-    public float interactionRange = 2f;
     public LayerMask interactableLayer; // Ensure interactable objects have this layer
     public Animator playerAnimator;
     Vector2 interactionBoxOffSetUp;
@@ -17,6 +16,10 @@ public class PlayerInteraction : MonoBehaviour
     Vector2 interactionBoxSizeVertical;
     Vector2 interactionBoxSizeHorizontal;
     void Start()
+    {
+        InitializeInteractionBoxes();
+    }
+    public void InitializeInteractionBoxes()
     {
         interactionBoxOffSetDown = new Vector2(-0.076f, -0.245f);
         interactionBoxOffSetUp = new Vector2(0.05f, 0.8f);
@@ -82,7 +85,6 @@ public class PlayerInteraction : MonoBehaviour
         float minDistance = Mathf.Infinity;
         foreach (Collider2D collider in colliders)
         {
-            Debug.Log("collide interact");
             InteractableObject interactable = collider.GetComponent<InteractableObject>();
             if (interactable != null && interactable.CanInteract(transform))
             {
@@ -94,7 +96,6 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
-
         return closestInteractable;
     }
 }
