@@ -64,6 +64,9 @@ public class InputManagerPlayModeTests
     public IEnumerator InputManager_UpdatesKeyBindingsCorrectly()
     {
         // Arrange
+        GameObject gmObj = new GameObject("GameManager");
+        gmObj.AddComponent<GameManager>();
+
         GameObject inputManagerObj = new GameObject("InputManager");
         InputManager inputManager = inputManagerObj.AddComponent<InputManager>();
         yield return null; // Allow Awake() to execute.
@@ -77,6 +80,7 @@ public class InputManagerPlayModeTests
 
         // Clean up
         Object.Destroy(inputManagerObj);
+        Object.Destroy(gmObj);
     }
 
 
