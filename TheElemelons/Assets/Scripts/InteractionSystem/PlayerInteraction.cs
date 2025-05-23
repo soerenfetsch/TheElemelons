@@ -21,7 +21,7 @@ public class PlayerInteraction : MonoBehaviour
             closestInteractable.Interact();
         }
     }
-    
+
     /// <summary>
     /// Finds the closest interactable object to the player within interactionRange
     /// of the player which can be interacted with.

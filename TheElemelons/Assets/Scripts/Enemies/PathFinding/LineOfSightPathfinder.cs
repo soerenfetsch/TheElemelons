@@ -194,7 +194,7 @@ public class LineOfSightPathfinder : MonoBehaviour
 
     private void Awake()
     {
-        obstacleLayer = LayerMask.GetMask("Obstacles", "Walls");
+        obstacleLayer = LayerMask.GetMask("Obstacles", "Walls", "Interactable");
         InitializeFloorPositions();
         InitializeVisibilityGrid();
     }

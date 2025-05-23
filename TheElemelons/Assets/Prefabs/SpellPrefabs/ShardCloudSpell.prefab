@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 603282889936994401}
   - component: {fileID: 3912938921074237395}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ShardCloudSpell
   m_TagString: Spell
   m_Icon: {fileID: 0}

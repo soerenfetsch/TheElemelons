@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7339882948856284390}
   - component: {fileID: 1659158376228679026}
   - component: {fileID: -5115019474748566744}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TikiGreenAttack
   m_TagString: Spell
   m_Icon: {fileID: 0}

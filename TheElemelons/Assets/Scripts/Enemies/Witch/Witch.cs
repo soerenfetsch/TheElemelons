@@ -146,8 +146,17 @@ public class Witch : Enemy
     }
     void InitializeFindPlayerPathfinder()
     {
-        playerTransform = GameObject.Find("Player").transform;
-        pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
+        try
+        {
+            playerTransform = GameObject.Find("Player").transform;
+            pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("no player or pathfinder found");
+            throw;
+        }
+
     }
     public void InitializeGeneral()
     {
@@ -163,9 +172,17 @@ public class Witch : Enemy
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
         solidCollider = GetComponent<BoxCollider2D>();
         health = GetComponent<Health>();
-        bossbar = GameObject.Find("UI_Canvas/InGamePanel/BossBar");
-        bossbar.SetActive(true);
-        bossbar.GetComponent<BossHealthbar>().bossHealth = health;
+        try
+        {
+            bossbar = GameObject.Find("UI_Canvas/InGamePanel/BossBar");
+            bossbar.SetActive(true);
+            bossbar.GetComponent<BossHealthbar>().bossHealth = health;
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("Bossbar not found");
+            throw;
+        }
         sparkleEffect1 = transform.GetChild(2).GetChild(0).GetComponent<Animator>();
         sparkleEffect2 = transform.GetChild(2).GetChild(1).GetComponent<Animator>();
         movement = new Vector2(0, 0);
@@ -236,11 +253,19 @@ public class Witch : Enemy
     void InitializeNodes()
     {
         nodeCollection = new List<Vector3>();
-        GameObject nodeCollectionObject = GameObject.Find("NodeCollection");
-        int childCount = nodeCollectionObject.transform.childCount;
-        for (int child = 0; child < childCount; child++)
+        try
         {
-            nodeCollection.Add(nodeCollectionObject.transform.GetChild(child).transform.position);
+            GameObject nodeCollectionObject = GameObject.Find("NodeCollection");
+            int childCount = nodeCollectionObject.transform.childCount;
+            for (int child = 0; child < childCount; child++)
+            {
+                nodeCollection.Add(nodeCollectionObject.transform.GetChild(child).transform.position);
+            }
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("no node collection found");
+            throw;
         }
     }
     /// <summary>
@@ -1289,7 +1314,15 @@ public class Witch : Enemy
         if (health.IsZero())
         {
             DeathEffect.SpawnDeathEffect(deathEffect, transform.position, deathEffectDelay);
-            bossbar.SetActive(false);
+            try
+            {
+                bossbar.SetActive(false);
+            }
+            catch (System.Exception)
+            {
+                Debug.LogError("no bossbar to deactivate");
+                throw;
+            }
             // destroy all
             LayerMask enemyMask = LayerMask.GetMask("Enemies");
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 100f, enemyMask);

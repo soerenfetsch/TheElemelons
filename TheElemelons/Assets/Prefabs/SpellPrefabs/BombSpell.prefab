@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8290162487191898985}
   - component: {fileID: 6341222906691431720}
   - component: {fileID: 9035453287502426338}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BombWick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 8441500415249421220}
   - component: {fileID: 3766400554032578748}
   - component: {fileID: 7462602604781741071}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BombSpell
   m_TagString: Spell
   m_Icon: {fileID: 0}

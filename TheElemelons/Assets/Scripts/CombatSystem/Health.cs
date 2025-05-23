@@ -32,12 +32,14 @@ public class Health : MonoBehaviour
     /// <param name="damage">The amount of damage to subtract from health. Must be >= 0</param>
     public void SubtractHealth(float damage)
     {
+        Debug.Log("health before substraction: " + health);
         if (damage < 0)
         {
             Debug.LogError("Damage must be greater than or equal to 0.");
             return;
         }
         health = Mathf.Clamp(health - damage, 0f, maxhealth);
+        Debug.Log("health after substraction: " + health);
     }
 
     /// <summary>
