@@ -749,7 +749,6 @@ public class Witch : Enemy
     /// <param name="move"></param>
     void ExecuteMove(WitchMoves move)
     {
-        Debug.Log("executing: " + move.ToString());
         if (move != WitchMoves.None && moveStatsDict[move].canDo && moveStatsDict[WitchMoves.AnyMove].canDo)
         {
             // reset candos and cooldowns

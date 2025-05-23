@@ -18,7 +18,6 @@ public class AltarTest
         // Create player object with PlayerInteraction script
         player = new GameObject("Player");
         playerInteraction = player.AddComponent<PlayerInteraction>();
-        playerInteraction.interactionRange = 5f; // Test range
 
         // Create a new LayerMask for interactables
         int interactableLayerIndex = LayerMask.NameToLayer("Interactable");

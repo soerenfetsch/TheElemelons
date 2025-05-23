@@ -15058,6 +15058,10 @@ PrefabInstance:
       propertyPath: hearts.Array.data[9]
       value: 
       objectReference: {fileID: 6120705487494583997}
+    - target: {fileID: 2704578572486526621, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 2076084366}
     - target: {fileID: 3849979733952565575, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -15207,6 +15211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb090e26a25e874d95890748e3fffbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2076084366 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6349638453745216358, guid: 999356d3f6f25b94faf763329db4685a, type: 3}
+  m_PrefabInstance: {fileID: 2076084336}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2081607768
 PrefabInstance:
   m_ObjectHideFlags: 0
