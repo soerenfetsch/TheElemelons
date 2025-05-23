@@ -108,7 +108,7 @@ public class InputManager : MonoBehaviour
             "CastSpell", "ClearCharges",
             "SelectFire", "SelectWater", "SelectEarth", "SelectAir",
             "ZoomIn", "ZoomOut",
-            "Interact", "AdvanceDialogue"
+            "Interact"
         };
 
         KeyCode[] defaultKeys = {
@@ -116,7 +116,7 @@ public class InputManager : MonoBehaviour
             KeyCode.Mouse0, KeyCode.Mouse1,
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4,
             KeyCode.Z, KeyCode.X,
-            KeyCode.E, KeyCode.E
+            KeyCode.E
         };
 
         keyBindings = new Dictionary<string, KeyCode>();
@@ -277,7 +277,7 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleDialogueInputs()
     {
-        if (Input.GetKeyDown(keyBindings["AdvanceDialogue"]))
+        if (Input.GetKeyDown(keyBindings["Interact"]))
         {
             DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
             dialogueUI?.SkipTyping();

@@ -194,7 +194,6 @@ public class Snek : Enemy
         {
             float dist = Mathf.Abs((transform.position - playerTransform.position).magnitude);
             bool isDashing = dist < dashRange;
-            Debug.Log(currentState.ToString() + "  " + currentSnekStatus.ToString());
             if (!isDashing)
             {
                 currentSnekStatus = SnekStatus.Crawl;
