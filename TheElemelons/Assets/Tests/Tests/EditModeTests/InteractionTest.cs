@@ -34,10 +34,10 @@ public class InteractableTests
         obj.layer = LayerMask.NameToLayer("Interactable");
         obj.transform.position = position;
         obj.AddComponent(type);
-        
+
         // Ensure the object has a Collider2D
         obj.AddComponent<CircleCollider2D>().isTrigger = true;
-        
+
         return obj;
     }
 

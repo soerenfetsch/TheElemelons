@@ -7,7 +7,24 @@ public class PlayerInteraction : MonoBehaviour
     // Radius within which the player can interact
     public float interactionRange = 2f;
     public LayerMask interactableLayer; // Ensure interactable objects have this layer
-
+    public Animator playerAnimator;
+    Vector2 interactionBoxOffSetUp;
+    Vector2 interactionBoxOffSetDown;
+    Vector2 interactionBoxOffSetLeft;
+    Vector2 interactionBoxOffSetRight;
+    Vector2 interactionBoxOffSet;
+    Vector2 interactionBoxSize;
+    Vector2 interactionBoxSizeVertical;
+    Vector2 interactionBoxSizeHorizontal;
+    void Start()
+    {
+        interactionBoxOffSetDown = new Vector2(-0.076f, -0.245f);
+        interactionBoxOffSetUp = new Vector2(0.05f, 0.8f);
+        interactionBoxOffSetRight = new Vector2(0.770f, 0.392f);
+        interactionBoxOffSetLeft = new Vector2(-0.770f, 0.392f);
+        interactionBoxSizeVertical = new Vector2(0.63f, 1.25f);
+        interactionBoxSizeHorizontal = new Vector2(1f, 0.63f);
+    }
     /// <summary>
     /// Finds the closest interactable object to the player within interactionRange
     /// of the player which can be interacted with and interacts with it.
@@ -21,7 +38,37 @@ public class PlayerInteraction : MonoBehaviour
             closestInteractable.Interact();
         }
     }
-
+    Vector2 CalcDir()
+    {
+        Vector2 movement = new Vector2(playerAnimator.GetFloat("Horizontal"), playerAnimator.GetFloat("Vertical"));
+        interactionBoxOffSet = interactionBoxOffSetRight;
+        if (Mathf.Abs(movement.x) < Mathf.Abs(movement.y))
+        {
+            interactionBoxOffSet = interactionBoxOffSetUp;
+            if (movement.y < 0)
+            {
+                interactionBoxOffSet = interactionBoxOffSetDown;
+            }
+        }
+        else if (movement.x < 0)
+        {
+            interactionBoxOffSet = interactionBoxOffSetLeft;
+        }
+        return interactionBoxOffSet;
+    }
+    Vector2 CalcSize()
+    {
+        interactionBoxSize = interactionBoxSizeHorizontal;
+        if (interactionBoxOffSet == interactionBoxOffSetDown || interactionBoxOffSet == interactionBoxOffSetUp)
+        {
+            interactionBoxSize = interactionBoxSizeVertical;
+        }
+        return interactionBoxSize;
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawCube(transform.position + (Vector3)CalcDir(), size: CalcSize());
+    }
     /// <summary>
     /// Finds the closest interactable object to the player within interactionRange
     /// of the player which can be interacted with.
@@ -29,12 +76,13 @@ public class PlayerInteraction : MonoBehaviour
     /// <returns>InteractableObject or null if none found</returns>
     private InteractableObject FindClosestInteractable()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactableLayer);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)CalcDir(),
+        size: CalcSize(), angle: 0, layerMask: interactableLayer);
         InteractableObject closestInteractable = null;
         float minDistance = Mathf.Infinity;
-
         foreach (Collider2D collider in colliders)
         {
+            Debug.Log("collide interact");
             InteractableObject interactable = collider.GetComponent<InteractableObject>();
             if (interactable != null && interactable.CanInteract(transform))
             {
