@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -8645814532834694871}
   - component: {fileID: 6624178363686242528}
   - component: {fileID: 1272819922048125154}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpeedBuff_Spell
   m_TagString: Spell
   m_Icon: {fileID: 0}

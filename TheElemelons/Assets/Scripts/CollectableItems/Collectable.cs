@@ -9,6 +9,8 @@ public abstract class Collectable : MonoBehaviour
     protected Rigidbody2D player;
     protected Transform playerTransform;
     protected Health playerHealth;
+    protected Mana playerMana;
+    protected Animator animator;
     protected Rigidbody2D rb;
     protected bool collected;
     protected BoxCollider2D boxCollider2D;
@@ -17,18 +19,28 @@ public abstract class Collectable : MonoBehaviour
     protected float amplitude = 0.1f;
     protected float frequency = 0.3f;
     protected Vector2 fixpoint;
+    public GameObject shadowObject;
     protected Transform shadow;
     protected float shadowOffset = 0.7f;
+    protected float shadowScale = 1f;
 
-    protected void InitializeGeneral()
+    public void InitializeGeneral()
     {
         player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
         rb = GetComponent<Rigidbody2D>();
         fixpoint = rb.position;
-        shadow = transform.GetChild(0).transform;
+        shadow = Instantiate(shadowObject, transform.position - Vector3.down * shadowOffset, Quaternion.Euler(0, 0, 0)).transform;
+        shadow.parent = transform;
+        shadow.localScale = new Vector3(shadowScale, shadowScale, 1);
         boxCollider2D = GetComponent<BoxCollider2D>();
         playerTransform = player.transform;
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
+    /// <summary>
+    /// Object is pulled towards player in in range (~2 units), else performs a hovering motion on a fixed location.
+    /// If already collected follow the player
+    /// </summary>
     protected void Movement()
     {
         if (!collected)
@@ -46,7 +58,15 @@ public abstract class Collectable : MonoBehaviour
                 rb.MovePosition(fixpoint + moving_by);
             }
         }
+        else
+        {
+            transform.position = player.position;
+        }
     }
+    /// <summary>
+    /// Calls the abstract method OnCollect() if collision with the player detected.
+    /// </summary>
+    /// <param name="other"></param>
     protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&

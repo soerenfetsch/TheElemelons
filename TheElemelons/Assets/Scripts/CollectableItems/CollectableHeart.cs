@@ -5,29 +5,18 @@ using UnityEngine;
 public class CollectableHeart : Collectable
 {
     float healValue = 1f;
-    Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
         InitializeGeneral();
         playerHealth = player.GetComponent<Health>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!collected)
-        {
-            Movement();
-
-        }
-        else
-        {
-            transform.position = player.position;
-        }
+        Movement();
     }
     protected override void OnCollect()
     {

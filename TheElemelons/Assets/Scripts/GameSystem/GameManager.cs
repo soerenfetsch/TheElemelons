@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        CursorOnOff();
     }
 
     private void Start()
@@ -90,6 +91,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 1; // Resume the game
                 break;
         }
+        CursorOnOff();
     }
 
     public void NewGame()
@@ -133,5 +135,19 @@ public class GameManager : MonoBehaviour
     private void StartMainGameStage()
     {
         MainGame.Instance?.StartGameStage(CurrentProgressionStage);
+    }
+    
+    [ContextMenu("CursorOnOff")]
+    void CursorOnOff()
+    {
+        Debug.Log("checking cursor " + CurrentGameStatus.ToString());
+        if (CurrentGameStatus == GameStatus.INGAME)
+        {
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.visible = true;
+        }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4330796713577522604}
   - component: {fileID: 9010229022978654111}
   - component: {fileID: 1143166641356506770}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Vortex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
