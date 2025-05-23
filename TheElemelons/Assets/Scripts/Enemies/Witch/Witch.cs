@@ -79,7 +79,6 @@ public class Witch : Enemy
     BoxCollider2D solidCollider;
     Animator sparkleEffect1;
     Animator sparkleEffect2;
-    GameObject bossbar;
     BoxCollider2D playerCollider;
     [Header("Medusa")]
     public float medusaTime = 3f;
@@ -130,6 +129,9 @@ public class Witch : Enemy
     float greenSprayCooldown = 4f;
     public GameObject greenSprayGameObject;
 
+    [Header("On Death")]
+    public Action OnWitchDeath;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -172,17 +174,7 @@ public class Witch : Enemy
         playerMovement = playerTransform.GetComponent<PlayerMovement>();
         solidCollider = GetComponent<BoxCollider2D>();
         health = GetComponent<Health>();
-        try
-        {
-            bossbar = GameObject.Find("UI_Canvas/InGamePanel/BossBar");
-            bossbar.SetActive(true);
-            bossbar.GetComponent<BossHealthbar>().bossHealth = health;
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError("Bossbar not found");
-            throw;
-        }
+        UIManager.Instance.ToggleBossBar(true, health);
         sparkleEffect1 = transform.GetChild(2).GetChild(0).GetComponent<Animator>();
         sparkleEffect2 = transform.GetChild(2).GetChild(1).GetComponent<Animator>();
         movement = new Vector2(0, 0);
@@ -1313,15 +1305,7 @@ public class Witch : Enemy
         if (health.IsZero())
         {
             DeathEffect.SpawnDeathEffect(deathEffect, transform.position, deathEffectDelay);
-            try
-            {
-                bossbar.SetActive(false);
-            }
-            catch (System.Exception)
-            {
-                Debug.LogError("no bossbar to deactivate");
-                throw;
-            }
+            UIManager.Instance.ToggleBossBar(false, null);
             // destroy all
             LayerMask enemyMask = LayerMask.GetMask("Enemies");
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 100f, enemyMask);
@@ -1334,6 +1318,8 @@ public class Witch : Enemy
                 }
             }
             Destroy(gameObject, 0);
+            // Trigger the on death event
+            OnWitchDeath?.Invoke();
         }
         float percentage = health.GetHealth() / health.GetMaxHealth();
         healthPhase = 1;

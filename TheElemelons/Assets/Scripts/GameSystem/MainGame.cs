@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviour
 {
+    public GameObject earthElemelonPrefab; // Prefab for the earth elemelon
     public static MainGame Instance { get; private set; }
     public List<DialogueData> kingIntroDialoguesList;
     public List<DialogueData> kingRepetitiveDialoguesList;
@@ -24,16 +25,32 @@ public class MainGame : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Persist across scenes
     }
 
-    public void StartGameStage(GameProgressionStage stage)
+    private void Start()
     {
-        Debug.Log("Starting game stage: " + stage);
-        StartCoroutine(StartGameStageAsync(stage));
+        // Add event when the player is defeated
+        CombatManager.OnPlayerDeath += () =>
+        {
+            GameManager.Instance.ChangeGameStatus(GameStatus.DEATH_SCREEN);
+            UIManager.Instance.ToggleBossBar(false, null);
+        };
     }
 
-    private IEnumerator StartGameStageAsync(GameProgressionStage stage)
+    public void StartGameStage(GameProgressionStage stage, bool isStartScene = false)
+    {
+        Debug.Log("Starting game stage: " + stage);
+        StartCoroutine(StartGameStageAsync(stage, isStartScene));
+    }
+
+    private IEnumerator StartGameStageAsync(GameProgressionStage stage, bool isStartScene = false)
     {
         // Load scene of the game stage
-        yield return StartCoroutine(LoadScene(stage));
+        string sceneToLoad = GetSceneForStage(stage);
+        yield return StartCoroutine(LoadScene(sceneToLoad));
+
+        ResetPlayerCombatStatus();
+
+        GameStatus sceneStatus = isStartScene ? GameStatus.MAIN_MENU : GameStatus.INGAME;
+        GameManager.Instance.ChangeGameStatus(sceneStatus);
 
         // Scene is now loaded
         switch (stage)
@@ -47,6 +64,9 @@ public class MainGame : MonoBehaviour
             case GameProgressionStage.EARTH_EARLY:
                 HandleEarthEarlyStage();
                 break;
+            case GameProgressionStage.EARTH_EARLY_BOSS:
+                HandleEarthEarlyBossStage();
+                break;
             case GameProgressionStage.CASTLE_END:
                 HandleCastleEndStage();
                 break;
@@ -55,6 +75,9 @@ public class MainGame : MonoBehaviour
                 break;
             case GameProgressionStage.EARTH_LATE:
                 HandleEarthLateStage();
+                break;
+            case GameProgressionStage.EARTH_LATE_BOSS:
+                HandleEarthLateBossStage();
                 break;
             default:
                 Debug.LogError("Unknown game stage: " + stage);
@@ -114,6 +137,7 @@ public class MainGame : MonoBehaviour
             portal.GetComponent<Portal>().OnPortalEnter += () =>
             {
                 GameManager.Instance.ChangeProgressionStage(GameProgressionStage.EARTH_EARLY);
+                portal.GetComponent<Portal>().OnPortalEnter -= portal.GetComponent<Portal>().OnPortalEnter;
             };
         }
         else
@@ -124,13 +148,77 @@ public class MainGame : MonoBehaviour
 
     private void HandleEarthEarlyStage()
     {
-        // TODO: Allow the boss room to be accessed when all monsters are defeated
+        // Allow the boss room to be accessed when all monsters are defeated
+        GameObject endPortalGameObject = GameObject.Find("EndPortal");
+        Portal endPortal = endPortalGameObject?.GetComponent<Portal>();
+        MonsterManager monsterManager = GameObject.Find("MonsterManager").GetComponent<MonsterManager>();
+        if (endPortalGameObject != null && endPortal.OnPortalEnter == null)
+        {
+            endPortal.OnPortalEnter += () =>
+            {
+                // First check that all the monsters in the room are defeated
+                if (!monsterManager.IsEndPortalEnabled())
+                {
+                    Debug.Log("End portal is not enabled yet.");
+                    return;
+                }
+                GameManager.Instance.ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
+                endPortal.OnPortalEnter -= endPortal.OnPortalEnter;
+            };
+        }
+        else
+        {
+            Debug.LogError("EndPortal GameObject not found in the scene.");
+        }
+    }
 
-        // TODO: Add the boss room scene when the room is entered
+    private void HandleEarthEarlyBossStage()
+    {
+        // Teleport the player to the start location of the boss room
+        GameObject player = GameObject.Find("Player");
+        if (player != null)
+        {
+            player.transform.position = new Vector3(-3, -3, 0);
+        }
+        else
+        {
+            Debug.LogError("Player GameObject not found in the scene.");
+        }
 
-        // TODO: Add the event to progress to castle end when the boss is defeated
+        // If the boss is defeated, drop the earth elemelon in the boss room
+        GameObject witchObject = GameObject.Find("Witch");
+        Witch witch = witchObject?.GetComponent<Witch>();
+        if (witch != null)
+        {
+            witch.OnWitchDeath += () =>
+            {
+                // Spawn the earth elemelon
+                GameObject earthElemelon = Instantiate(earthElemelonPrefab, witchObject.transform.position, Quaternion.identity);
+                // If the earth elemelon is picked up, the progression stage is changed
+                SetupEarthElemelonPickup(earthElemelon);
+            };
+        }
+        else
+        {
+            Debug.LogError("Witch GameObject not found in the scene.");
+        }
+    }
 
-        // TODO: Add event to go back to castle_early stage when the player is defeated
+    private static void SetupEarthElemelonPickup(GameObject earthElemelon)
+    {
+        CollectableEarthElemelon collectableEarthElemelon = earthElemelon.GetComponent<CollectableEarthElemelon>();
+        if (collectableEarthElemelon != null)
+        {
+            collectableEarthElemelon.OnEarthElemelonCollected += () =>
+            {
+                GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_END);
+                collectableEarthElemelon.OnEarthElemelonCollected -= collectableEarthElemelon.OnEarthElemelonCollected;
+            };
+        }
+        else
+        {
+            Debug.LogError("CollectableEarthElemelon component not found on the earth elemelon prefab.");
+        }
     }
 
     private void HandleCastleEndStage()
@@ -154,15 +242,15 @@ public class MainGame : MonoBehaviour
         // TODO: Allow the boss room to be accessed when all monsters are defeated
 
         // TODO: Add the boss room scene when the room is entered
-
-        // TODO: Add the event to progress to castle late when the boss or the player is defeated
-
     }
 
-    private IEnumerator LoadScene(GameProgressionStage stage, bool isStartScene = false)
+    private void HandleEarthLateBossStage()
     {
-        string sceneToLoad = GetSceneForStage(stage);
+        // If the boss is defeated, load the castle late stage
+    }
 
+    private static IEnumerator LoadScene(string sceneToLoad)
+    {
         if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad)
         {
             GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
@@ -178,17 +266,29 @@ public class MainGame : MonoBehaviour
                 yield return null;
             }
             Debug.Log("Scene loaded: " + sceneToLoad);
-            GameStatus sceneStatus = isStartScene ? GameStatus.MAIN_MENU : GameStatus.INGAME;
-            GameManager.Instance.ChangeGameStatus(sceneStatus);
-            yield return null;
+            if (sceneToLoad == "Castle_Hub_Scene")
+            {
+                ResetPlayerPosition();
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
+    }
+
+    private static void ResetPlayerPosition()
+    {
+        GameObject player = GameObject.Find("Player");
+        if (player != null)
+        {
+            player.transform.position = new Vector3(0, 0, 0); // Reset to initial position
         }
         else
         {
-            yield return null;
+            Debug.LogError("Player GameObject not found in the scene.");
         }
     }
 
-    private string GetSceneForStage(GameProgressionStage stage)
+    private static string GetSceneForStage(GameProgressionStage stage)
     {
         switch (stage)
         {
@@ -204,6 +304,10 @@ public class MainGame : MonoBehaviour
                 return "Earth_Dungeon_Scene";
             case GameProgressionStage.EARTH_LATE:
                 return "Earth_Dungeon_Scene";
+            case GameProgressionStage.EARTH_EARLY_BOSS:
+                return "BossRoom_Earth";
+            case GameProgressionStage.EARTH_LATE_BOSS:
+                return "BossRoom_Earth";
             default:
                 return null;
         }
@@ -234,6 +338,24 @@ public class MainGame : MonoBehaviour
         else
         {
             Debug.LogError("King GameObject not found in the scene.");
+        }
+    }
+
+    private static void ResetPlayerCombatStatus()
+    {
+        // Find player in the scene and reset it
+        GameObject player = GameObject.Find("Player");
+        if (player != null)
+        {
+            Health playerHealth = player.GetComponent<Health>(); // Reset health
+            playerHealth.SetHealth(playerHealth.GetMaxHealth());
+            Mana playerMana = player.GetComponent<Mana>(); // Reset mana
+            playerMana.SetMana(playerMana.GetMaxMana());
+            BuffDebuffManager.Instance.ClearEffects(player); // Clear buffs and debuffs
+        }
+        else
+        {
+            Debug.LogError("Player GameObject not found in the scene.");
         }
     }
 }

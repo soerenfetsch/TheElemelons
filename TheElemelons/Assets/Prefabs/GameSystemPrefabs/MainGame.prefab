@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf72d72b5a8eafc4b8ea126e80ca94ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  earthElemelonPrefab: {fileID: 5925793305830651594, guid: 96f2c35eabdf8aa4ea21715379505e96, type: 3}
   kingIntroDialoguesList:
   - {fileID: 11400000, guid: d5f9a9e21f863e44d93039b70f7669a6, type: 2}
   kingRepetitiveDialoguesList:

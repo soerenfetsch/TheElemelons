@@ -11,11 +11,13 @@ public class GameSaveProvider : IGameSaveProvider
     {
         // Handle EARTH_EARLY and EARTH_LATE saving logic
         GameProgressionStage stageToSave = data.progressionStage;
-        if (data.progressionStage == GameProgressionStage.EARTH_EARLY)
+        if (data.progressionStage == GameProgressionStage.EARTH_EARLY ||
+            data.progressionStage == GameProgressionStage.EARTH_EARLY_BOSS)
         {
             stageToSave = GameProgressionStage.CASTLE_EARLY;
         }
-        else if (data.progressionStage == GameProgressionStage.EARTH_LATE)
+        else if (data.progressionStage == GameProgressionStage.EARTH_LATE ||
+                 data.progressionStage == GameProgressionStage.EARTH_LATE_BOSS)
         {
             stageToSave = GameProgressionStage.CASTLE_LATE;
         }

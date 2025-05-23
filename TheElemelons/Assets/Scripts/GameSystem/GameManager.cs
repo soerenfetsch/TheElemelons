@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public GameProgressionStage CurrentProgressionStage { get; private set; }
+    public GameProgressionStage CurrentProgressionStage { get; private set; } = GameProgressionStage.INVALID;
+    public GameProgressionStage PreviousProgressionStage { get; private set; } = GameProgressionStage.INVALID;
     public GameStatus CurrentGameStatus { get; private set; } = GameStatus.MAIN_MENU;
     public GameStatus PreviousGameStatus { get; private set; }
 
@@ -51,9 +52,13 @@ public class GameManager : MonoBehaviour
 
     public void ChangeProgressionStage(GameProgressionStage newStage)
     {
+        Debug.Log($"Changing progression stage from {CurrentProgressionStage} to {newStage}");
+        PreviousProgressionStage = CurrentProgressionStage; // Store the previous stage
         CurrentProgressionStage = newStage;
-        if (newStage != GameProgressionStage.EARTH_EARLY && newStage != GameProgressionStage.EARTH_LATE)
+        if (newStage != GameProgressionStage.EARTH_EARLY && newStage != GameProgressionStage.EARTH_LATE
+            && newStage != GameProgressionStage.EARTH_EARLY_BOSS && newStage != GameProgressionStage.EARTH_LATE_BOSS)
         {
+            // Save the game if the stage is not EARTH_EARLY or EARTH_LATE
             SaveGame();
         }
         StartMainGameStage();
@@ -69,12 +74,13 @@ public class GameManager : MonoBehaviour
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                Time.timeScale = 0; // Pause the game
+                // Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.LOADING_SCREEN:
                 Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.MAIN_MENU:
+                ResetProgressionStage();
                 Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.PAUSE_MENU:
@@ -92,9 +98,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ResetProgressionStage()
+    {
+        CurrentProgressionStage = GameProgressionStage.INVALID;
+        PreviousProgressionStage = GameProgressionStage.INVALID;
+    }
+
     public void NewGame()
     {
         SaveProvider.ResetSave();
+        // Reset the progression stage
         ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
     }
 
@@ -134,4 +147,11 @@ public class GameManager : MonoBehaviour
     {
         MainGame.Instance?.StartGameStage(CurrentProgressionStage);
     }
+
+    [ContextMenu("Change to Boss Stage")]
+    private void ChangeToBossStage()
+    {
+        ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
+    }
+    
 }

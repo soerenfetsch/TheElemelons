@@ -38,6 +38,9 @@ public class MonsterManager : MonoBehaviour
     int intervalDeactivateEnemiesOutOfReach = 120;
     int intervalOpenCloseDoors = 60;
 
+    [Header("Dungeon Progression")]
+    public bool endRoomEnemiesDefeated = false;
+
     /// <summary>
     /// find player at start
     /// </summary>
@@ -84,6 +87,7 @@ public class MonsterManager : MonoBehaviour
             foreach (Room room in mapData.rooms)
             {
                 OpenCloseDoor(room);
+                EnableDisableEndPortal(room);
             }
         }
         if (deactivateEnemiesOutOfReach && Time.frameCount % intervalDeactivateEnemiesOutOfReach == 0)
@@ -101,6 +105,20 @@ public class MonsterManager : MonoBehaviour
             }
         }
     }
+
+    private void EnableDisableEndPortal(Room room)
+    {
+        bool playerIsInRoom = IsInRoom(playerTransform.position, room);
+        if (playerIsInRoom && !AreMonstersInRoom(room))
+        {
+            endRoomEnemiesDefeated = true;
+        }
+        else
+        {
+            endRoomEnemiesDefeated = false;
+        }
+    }
+
     /// <summary>
     /// yet unused method to open and close doors depending on whether the player is close to enemies
     /// </summary>
@@ -315,5 +333,15 @@ public class MonsterManager : MonoBehaviour
             allMonsters.RemoveAt(i);
             DestroyImmediate(current_enemy);
         }
+    }
+
+    /// <summary>
+    /// Checks if the end portal is enabled based on the state of the end room enemies.
+    /// If all enemies in the end room are defeated, the end portal is enabled.
+    /// </summary>
+    /// <returns> bool </returns>
+    public bool IsEndPortalEnabled()
+    {
+        return endRoomEnemiesDefeated;
     }
 }

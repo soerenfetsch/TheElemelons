@@ -42,6 +42,9 @@ public class UIManager : MonoBehaviour
     public GameObject deathScreenPanel;
     public GameObject loadPanel;
 
+    [Header("Bossbar")]
+    public GameObject bossBar;
+
 
     /// <summary>
     /// Singleton instance of UIManager.
@@ -73,6 +76,8 @@ public class UIManager : MonoBehaviour
         castingScript = playerObject.GetComponent<Casting>();
         inputManager = playerObject.GetComponent<InputManager>();
         playerMovement = playerObject.GetComponent<PlayerMovement>();
+        bossBar = ingamePanel?.transform.Find("BossBar")?.gameObject;
+        ToggleBossBar(false, null);
     }
 
     /// <summary>
@@ -436,6 +441,10 @@ public class UIManager : MonoBehaviour
         loadPanel?.SetActive(false);
     }
 
+    /// <summary>
+    /// Toggles the visibility of the continue game button in the start menu.
+    /// </summary>
+    /// <param name="isEnabled">True to enable the button, false to disable it.</param>
     public void ToggleContinueGameButton(bool isEnabled)
     {
         if (isEnabled)
@@ -446,6 +455,30 @@ public class UIManager : MonoBehaviour
         {
             startMenuPanel?.GetComponent<StartMenuUI>()?.DisableContinueGame();
         }
-        
+
+    }
+    
+    /// <summary>
+    /// Toggles the visibility of the boss bar and locks its health content
+    /// to the boss's health.
+    /// </summary>
+    /// <param name="isEnabled">True to show the boss bar, false to hide it.</param>
+    public void ToggleBossBar(bool isEnabled, Health bossHealth)
+    {
+        if (bossBar == null)
+        {
+            Debug.LogError("Boss bar not found.");
+            return;
+        }
+        if (isEnabled)
+        {
+            bossBar.SetActive(true);
+            bossBar.GetComponent<BossHealthbar>().bossHealth = bossHealth;
+        }
+        else
+        {
+            bossBar.SetActive(false);
+            bossBar.GetComponent<BossHealthbar>().bossHealth = null;
+        }
     }
 }

@@ -805,6 +805,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3212711402543758736, guid: 293b00f9c2412a849b3b2bf43ea37f79, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3212711402543758736, guid: 293b00f9c2412a849b3b2bf43ea37f79, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3212711402543758736, guid: 293b00f9c2412a849b3b2bf43ea37f79, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696128312829559327, guid: 293b00f9c2412a849b3b2bf43ea37f79, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696128312829559327, guid: 293b00f9c2412a849b3b2bf43ea37f79, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5033401037362650900, guid: 293b00f9c2412a849b3b2bf43ea37f79, type: 3}
       propertyPath: m_Name
       value: SettingsPanel
@@ -1039,6 +1059,10 @@ PrefabInstance:
     - target: {fileID: 6424746751298746402, guid: ef88d62ad24e356469562c1eed3176c5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 178.99998
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572421337444197855, guid: ef88d62ad24e356469562c1eed3176c5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7184439721222835542, guid: ef88d62ad24e356469562c1eed3176c5, type: 3}
       propertyPath: m_AnchoredPosition.x
