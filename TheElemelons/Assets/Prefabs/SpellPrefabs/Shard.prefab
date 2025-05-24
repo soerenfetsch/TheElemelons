@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 912745894595786883}
   - component: {fileID: 6651325331926875053}
   - component: {fileID: 8552706276253563070}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shard
   m_TagString: Spell
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 2851317206042007363}
   - component: {fileID: 2106262005925366403}
   - component: {fileID: 2549966256386615852}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wind2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 4791756127088750902}
   - component: {fileID: 2705363402443934942}
   - component: {fileID: 8116920520733455254}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wind1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

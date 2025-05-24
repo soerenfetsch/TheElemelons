@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 347838262574767930}
   - component: {fileID: -2172532435036667880}
   - component: {fileID: 3176710709109430576}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FireTornado
   m_TagString: Spell
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -8645814532834694871}
   - component: {fileID: 6624178363686242528}
   - component: {fileID: 1272819922048125154}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SpeedBuff_Spell
   m_TagString: Spell
   m_Icon: {fileID: 0}
@@ -100,8 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaCost: 1
   spellObject: {fileID: 6040504040626901719}
-  spellLifeTime: 30
-  moveSpeedFactor: 1.5
+  spellLifeTime: 45
+  moveSpeedFactor: 1.7
 --- !u!95 &1272819922048125154
 Animator:
   serializedVersion: 5

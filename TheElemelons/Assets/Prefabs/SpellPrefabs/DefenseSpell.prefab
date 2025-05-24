@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7653589843008913821}
   - component: {fileID: -5852758943557723479}
   - component: {fileID: 7650559031551619193}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DefenseSpell
   m_TagString: Spell
   m_Icon: {fileID: 0}

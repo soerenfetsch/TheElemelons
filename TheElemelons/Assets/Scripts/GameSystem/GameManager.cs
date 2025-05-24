@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         {
             NewGame();
         }
-        CurrentGameStatus = GameStatus.INGAME;
+        ChangeGameStatus(GameStatus.INGAME);
         StartMainGameStage();
     }
 

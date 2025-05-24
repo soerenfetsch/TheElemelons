@@ -451,8 +451,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dce28cc48db7e44fa3c7da28c4eda2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealth: 12
-  health: 12
+  maxhealth: 10
+  health: 10
 --- !u!114 &3124615042118175357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,7 +651,7 @@ MonoBehaviour:
   directionChangeStop: 6
   panicWalkSpeedFactor: 1.5
   range: 4
-  AggroRange: 30
+  aggroRange: 30
   minimalRange: 6
   maximalRange: 20
   rangeTolerance: 1

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5321771212471334813}
   - component: {fileID: 6505126376186149572}
   - component: {fileID: 8800436801242761653}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FireballSpell
   m_TagString: Spell
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ BoxCollider2D:
     m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
