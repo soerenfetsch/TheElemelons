@@ -704,6 +704,7 @@ MonoBehaviour:
   earthSpell: {fileID: 909741432932913071, guid: fee8c13b5d90bb847a1fc3b9c07aa6d2, type: 3}
   earthearthSpell: {fileID: 898128783897314616, guid: 793d49ed943fd5844973750dbb12b07e, type: 3}
   windwindSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
+  waterSpell: {fileID: 9083567590189717510, guid: f35b39d356741ee459df6e5778544c6b, type: 3}
   manaCost: 1
   playerMovement: {fileID: 1581666591548288514}
   uiManager: {fileID: 0}
@@ -821,6 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5257bb8b2d31754cab286ba018d60c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gizmosEnabled: 0
   interactableLayer:
     serializedVersion: 2
     m_Bits: 512

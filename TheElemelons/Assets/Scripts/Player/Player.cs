@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
+
 /// <summary>
 /// Enum to capture the player state at any given time.
 /// </summary>
@@ -107,6 +107,11 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
         animator.SetBool("Stagger", true);
         animator.SetTrigger("Stagger_trig");
         wandAnimator.SetBool("RaiseWand", false);
+        GameObject earthskin = transform.Find("DefenseSpell(Clone)").gameObject;
+        if (earthskin != null)
+        {
+            earthskin.GetComponent<Animator>().SetTrigger("Stagger_trig");
+        }
 
         yield return new WaitForSeconds(knockTime);
 

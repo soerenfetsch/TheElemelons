@@ -347,14 +347,16 @@ public class BuffDebuffManager : MonoBehaviour
         if (targets.ContainsKey(target))
         {
             TargetEntity entity = targets[target];
-            foreach (var effect in entity.ActiveEffects)
+            // Cannot directly remove from the list while iterating
+            // so we need to create a copy of the list
+            foreach (var effect in new List<BuffDebuff>(GetActiveEffects(target)))
             {
-                effect.OnExpire?.Invoke(effect);
+                entity.RemoveEffect(effect);
+                ApplyEffectToStats(target, effect, false);
             }
-
-            entity.ActiveEffects.Clear();
         }
     }
+
 
     /// <summary>
     /// Get the active buffs and debuffs for a target.
