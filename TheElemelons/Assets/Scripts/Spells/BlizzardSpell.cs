@@ -11,7 +11,7 @@ public class BlizzardSpell : SpellEffect
     public GameObject Ice;
     Dictionary<GameObject, GameObject> victims;
     Vector2 movement;
-    Rigidbody2D rigidbody2D;
+    new Rigidbody2D rigidbody2D;
     float moveSpeed = 0.5f;
     int dir = 1;
     // Start is called before the first frame update
@@ -86,7 +86,8 @@ public class BlizzardSpell : SpellEffect
     }
     void DoMovement()
     {
-        rigidbody2D.MovePosition(rigidbody2D.position + movement * movement * Time.fixedDeltaTime * dir);
+        movement = movement.normalized;
+        rigidbody2D.MovePosition(rigidbody2D.position + moveSpeed * movement * Time.fixedDeltaTime * dir);
     }
     IEnumerator FreezeImmunityCooldown(GameObject victim)
     {
