@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class BlizzardSpell : SpellEffect
@@ -26,8 +27,25 @@ public class BlizzardSpell : SpellEffect
         {
             spriteRenderers.Add(transform.GetChild(i).GetComponent<SpriteRenderer>());
         }
-        StartCoroutine(Expire());
+
+        StartCoroutine(Grow(transform.localScale.x));
         Debug.Log("start end");
+    }
+    IEnumerator Grow(float maxScale)
+    {
+        transform.localScale = new Vector2(0.1f * maxScale, 0.1f * maxScale);
+        float duration = 1f;
+        float fadeTimer = duration;
+        float chunkiness = 2f;
+        while (fadeTimer > 0f)
+        {
+            fadeTimer -= Time.deltaTime * chunkiness;
+            float alpha = Mathf.Clamp(1 - fadeTimer / fadeDuration, 0.1f, 1f);
+            transform.localScale = new Vector2(alpha * maxScale, alpha * maxScale);
+            yield return new WaitForSeconds(Time.deltaTime * chunkiness);
+        }
+        GetComponent<CircleCollider2D>().enabled = true;
+        StartCoroutine(Expire());
     }
     IEnumerator Expire()
     {

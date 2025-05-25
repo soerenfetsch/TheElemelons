@@ -68,7 +68,8 @@ public class IceCrystal : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Spell") && other.gameObject.GetComponent<SpellEffect>().spellType.HasHowMany(ChargeTypes.fire) > 0)
+        SpellEffect spellEffect = other.gameObject.GetComponent<SpellEffect>();
+        if (other.CompareTag("Spell") && spellEffect != null && spellEffect.spellType.HasHowMany(ChargeTypes.fire) > 0)
         {
             Unfreeze();
         }
