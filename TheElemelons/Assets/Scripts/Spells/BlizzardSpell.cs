@@ -10,9 +10,15 @@ public class BlizzardSpell : SpellEffect
     List<SpriteRenderer> spriteRenderers;
     public GameObject Ice;
     Dictionary<GameObject, GameObject> victims;
+    Vector2 movement;
+    Rigidbody2D rigidbody2D;
+    float moveSpeed = 0.5f;
+    int dir = 1;
     // Start is called before the first frame update
     void Start()
     {
+        movement = transform.position - caster.transform.position;
+        rigidbody2D = GetComponent<Rigidbody2D>();
         transform.position = caster.transform.position;
         victims = new Dictionary<GameObject, GameObject>();
         spriteRenderers = new List<SpriteRenderer>();
@@ -59,7 +65,7 @@ public class BlizzardSpell : SpellEffect
             FreezeVictim(other.gameObject);
         }
     }
-    void Update()
+    void FixedUpdate()
     {
         if (Time.frameCount % 19 == 0)
         {
@@ -71,6 +77,16 @@ public class BlizzardSpell : SpellEffect
                 }
             }
         }
+        if (Time.frameCount % 60 == 0)
+        {
+            dir *= -1;
+            movement = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0f, 180f)) * movement;
+        }
+        DoMovement();
+    }
+    void DoMovement()
+    {
+        rigidbody2D.MovePosition(rigidbody2D.position + movement * movement * Time.fixedDeltaTime * dir);
     }
     IEnumerator FreezeImmunityCooldown(GameObject victim)
     {
