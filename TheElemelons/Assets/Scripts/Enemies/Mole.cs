@@ -151,7 +151,7 @@ public class Mole : Enemy
     public override void ChangeState(EnemyStatus newState)
     {
         if (currentState == newState) return;
-        Debug.Log($"Mole: Changing state from {currentState} to {newState}");
+        //        Debug.Log($"Mole: Changing state from {currentState} to {newState}");
         currentState = newState;
     }
 

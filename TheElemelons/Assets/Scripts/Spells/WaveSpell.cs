@@ -62,22 +62,26 @@ public class WaveSpell : SpellEffect
         yield return new WaitForSeconds(1.1f);
         Destroy(transform.gameObject);
     }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger &&
         other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
         {
-            GameObject splash = Instantiate(splashEffect, other.transform.position + (Vector3)Vector3.down * 0.01f, Quaternion.Euler(0, 0, 0));
-            splash.transform.parent = other.transform;
-            victims.Add(other.gameObject.GetComponent<Rigidbody2D>(), splash);
+            Rigidbody2D otherRb = other.gameObject.GetComponent<Rigidbody2D>();
+            if (!victims.ContainsKey(otherRb))
+            {
+                GameObject splash = Instantiate(splashEffect, other.transform.position + (Vector3)Vector3.down * 0.01f, Quaternion.Euler(0, 0, 0));
+                splash.transform.localScale = other.transform.localScale;
+                splash.transform.parent = other.transform;
+                victims.Add(otherRb, splash);
+            }
             CombatManager.ExecuteAttack(caster, other.GetComponent<Rigidbody2D>(), spellType, movement, damage, thrust, knockTime);
         }
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        Rigidbody2D otherRb = GetComponent<Rigidbody2D>();
-        if (other.attachedRigidbody != null && victims.ContainsKey(otherRb))
+        Rigidbody2D otherRb = other.GetComponent<Rigidbody2D>();
+        if (other.gameObject.CompareTag("Enemy") && otherRb != null && victims.ContainsKey(otherRb))
         {
             RemoveSplash(otherRb);
         }
