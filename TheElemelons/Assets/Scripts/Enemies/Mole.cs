@@ -18,8 +18,6 @@ public class Mole : Enemy
     Animator armAnimators;
 
     [Header("Pathfinding")]
-    Vector2 movement;
-    public Transform playerTransform; // To store the player's transform for pathfinding.
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
@@ -139,7 +137,7 @@ public class Mole : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        if (!isMovementBlocked)
+        if (CanAct())
         {
             ActOnStatus();
         }

@@ -58,7 +58,6 @@ public class Witch : Enemy
     float circleProbability = 0.5f;
     Vector3 destination;
     List<Vector3> nodeCollection;
-    Vector2 movement { get; set; }
     float moveSpeed = 3f;
     float hoverSpeedFactor = 1.3f;
     [Header("Effects")]
@@ -69,7 +68,6 @@ public class Witch : Enemy
     FlashEffect flashEffectHair;
     public float flashDuration = 0.2f;
     [Header("Bound Components")]
-    Transform playerTransform;
     LineOfSightPathfinder pathfinder;
     Rigidbody2D rb;
     Animator bodyAnimator;
@@ -490,7 +488,7 @@ public class Witch : Enemy
         ThrowDice();
         CalcRangeState();
         ActOnHealth();
-        if (!isMovementBlocked)
+        if (CanAct())
         {
             ActOnStatus();
         }

@@ -14,11 +14,9 @@ public class TreeLog : Enemy
     private FlashEffect flashEffect;
 
     [Header("Pathfinding")]
-    public Transform playerTransform; // To store the player's transform for pathfinding.
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
-    Vector2 movement;
     private Vector2 homePosition;
     private bool isAlive = true;
     public float moveSpeed = 1f;
@@ -87,7 +85,7 @@ public class TreeLog : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        if (!isMovementBlocked)
+        if (CanAct())
         {
             ActOnStatus();
         }
@@ -95,7 +93,10 @@ public class TreeLog : Enemy
         ActOnHealth();
         ActOnMana();
     }
-
+    void Update()
+    {
+        ChangeWalkAnimation();
+    }
     public override void ChangeState(EnemyStatus newState)
     {
         currentState = newState;
@@ -213,8 +214,9 @@ public class TreeLog : Enemy
         StartCoroutine(HandleStagger(knockTime));
     }
 
-    private void ChangeWalkAnimation(Vector2 direction)
+    private void ChangeWalkAnimation()
     {
+        Vector2 direction = movement;
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
             if (direction.x > 0)
@@ -307,7 +309,6 @@ public class TreeLog : Enemy
 
         direction.Normalize();
         movement = direction;
-        ChangeWalkAnimation(direction);
     }
 
     private void MoveTowardHome()
@@ -315,7 +316,6 @@ public class TreeLog : Enemy
         // Find the best direction to move toward the home using pathfinding (collision at feet level)
         Vector2 direction = RaycastPathfinder.FindBestDirection(GetFeetPosition(), homePosition);
         movement = direction;
-        ChangeWalkAnimation(direction);
     }
 
     private bool CheckAtHome()

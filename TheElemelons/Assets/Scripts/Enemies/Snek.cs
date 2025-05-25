@@ -15,7 +15,6 @@ public class Snek : Enemy
     float deathEffectDelay = 0.5f;
     public FlashEffect flashEffect;
     public float flashDuration = 0.2f;
-    Transform playerTransform;
     LineOfSightPathfinder pathfinder;
     Rigidbody2D rb;
     Animator animator;
@@ -36,7 +35,6 @@ public class Snek : Enemy
     float thrust = 5f;
     [Header("Movement")]
     RaycastHit2D hit;
-    Vector2 movement;
     float moveFactor = 1f;
     float dashSpeed = 7f;
     float attackSpeed = 10f;
@@ -102,7 +100,10 @@ public class Snek : Enemy
             NewRayCast();
             ActOnHealth();
             ActOnRange();
-            ActOnStatus();
+            if (CanAct())
+            {
+                ActOnStatus();
+            }
             DoMovementWithChecks();
         }
     }

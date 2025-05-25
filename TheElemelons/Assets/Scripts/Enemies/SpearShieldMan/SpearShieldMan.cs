@@ -18,10 +18,7 @@ public class SpearShieldMan : Enemy
     private Animator animator;
     private FlashEffect flashEffect;
 
-    [Header("Pathfinding")]
-    Vector2 movement;
-    public Transform playerTransform; // To store the player's transform for pathfinding.
-    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
+    [Header("Pathfinding")] public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
     public float moveSpeed = 1f;
@@ -153,7 +150,7 @@ public class SpearShieldMan : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        if (!isMovementBlocked)
+        if (CanAct())
         {
             ActOnStatus();
         }

@@ -20,7 +20,11 @@ public enum EnemyStatus
 /// </summary>
 public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
 {
+    public Transform playerTransform;
+    protected Vector2 movement;
     protected bool isMovementBlocked = false;
+    protected bool isSightObstructed = false;
+    protected float obstructedSightRange = 2.5f;
     /// <summary>
     /// Reference to the Health script for managing enemy health.
     /// </summary>
@@ -48,8 +52,38 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
         }
         else
         {
+            if (ObstructedSightCantSeePlayer())
+            {
+                RandomWalk();
+            }
             DoMovement();
         }
+    }
+    protected bool ObstructedSightCantSeePlayer()
+    {
+        return isSightObstructed && (playerTransform.position - transform.position).magnitude > obstructedSightRange;
+    }
+    protected void RandomWalk()
+    {
+        Debug.Log("random walk");
+        if (Time.frameCount % 50 == 0)
+        {
+            Debug.Log("new dir: " + movement.ToString());
+            movement = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-90f, 90f)) * movement;
+            movement = movement.normalized;
+        }
+    }
+    public void ObstructSight(bool onOff)
+    {
+        if (onOff && movement == Vector2.zero)
+        {
+            movement = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
+        }
+        isSightObstructed = onOff;
+    }
+    protected bool CanAct()
+    {
+        return !isMovementBlocked && !ObstructedSightCantSeePlayer();
     }
     public abstract void DoMovement();
     public abstract void OnFreeze(bool freezeOn = true);
@@ -130,15 +164,20 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     {
         isMovementBlocked = newIsMovementBlocked;
     }
-    [ContextMenu("Freeze")]
-    public void DoFreezeUnFreeze()
-    {
-        isMovementBlocked = !isMovementBlocked;
-        OnFreeze(freezeOn: isMovementBlocked);
-    }
     public void DoFreezeUnFreeze(bool freezeOn)
     {
         isMovementBlocked = freezeOn;
         OnFreeze(freezeOn: freezeOn);
     }
+    [ContextMenu("Freeze")]
+    public void DoFreezeUnFreeze()
+    {
+        DoFreezeUnFreeze(!isMovementBlocked);
+    }
+    [ContextMenu("ObstructSight")]
+    public void DoObstructSightOnOff()
+    {
+        ObstructSight(!isSightObstructed);
+    }
+
 }
