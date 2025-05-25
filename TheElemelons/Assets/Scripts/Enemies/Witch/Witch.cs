@@ -606,6 +606,7 @@ public class Witch : Enemy
         else if (currentWitchState == WitchState.Bald)
         {
             baldy = true;
+            hovering = true;
         }
         bodyAnimator.SetBool("Walk", walking);
         bodyAnimator.SetBool("Hover", hovering);
