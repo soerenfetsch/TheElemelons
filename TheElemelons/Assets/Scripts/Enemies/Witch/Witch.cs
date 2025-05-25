@@ -490,7 +490,10 @@ public class Witch : Enemy
         ThrowDice();
         CalcRangeState();
         ActOnHealth();
-        ActOnStatus();
+        if (!isMovementBlocked)
+        {
+            ActOnStatus();
+        }
         DoMovement();
     }
     void Update()
@@ -606,7 +609,6 @@ public class Witch : Enemy
         else if (currentWitchState == WitchState.Bald)
         {
             baldy = true;
-            hovering = true;
         }
         bodyAnimator.SetBool("Walk", walking);
         bodyAnimator.SetBool("Hover", hovering);
@@ -618,13 +620,29 @@ public class Witch : Enemy
     /// <summary>
     /// Executes chosen movement.
     /// </summary>
-    public void DoMovement()
+    public override void DoMovement()
     {
         if (!isCasting)
         {
             movement = movement.normalized;
             Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + moving_by);
+        }
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            bodyAnimator.speed = 0;
+            hairAnimator.speed = 0;
+            wandAnimator.speed = 0;
+        }
+        else
+        {
+            bodyAnimator.speed = 1;
+            hairAnimator.speed = 1;
+            wandAnimator.speed = 1;
         }
     }
     public Vector2 CalcCircleDir()

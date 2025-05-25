@@ -63,4 +63,12 @@ public class TikiBody : Enemy
     {
         tikiScript.ModifyManaRegen(factor);
     }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        tikiScript.OnFreeze(freezeOn);
+        tikiScript.SetIsMovementBlocked(freezeOn);
+    }
+    public override void DoMovement()
+    {
+    }
 }

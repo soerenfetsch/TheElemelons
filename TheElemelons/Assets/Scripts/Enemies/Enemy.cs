@@ -20,6 +20,7 @@ public enum EnemyStatus
 /// </summary>
 public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
 {
+    protected bool isMovementBlocked = false;
     /// <summary>
     /// Reference to the Health script for managing enemy health.
     /// </summary>
@@ -39,7 +40,19 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public bool isInvincible { get; set; }
     public ElementType elementType { get; set; }
 
-
+    public void DoMovementWithChecks()
+    {
+        if (isMovementBlocked)
+        {
+            OnFreeze();
+        }
+        else
+        {
+            DoMovement();
+        }
+    }
+    public abstract void DoMovement();
+    public abstract void OnFreeze(bool freezeOn = true);
     /// <summary>
     /// Abstract method to enforce state transitions in derived classes.
     /// </summary>
@@ -111,4 +124,21 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public abstract void ModifyDamage(float factor);
     public abstract void ModifyDefense(float factor);
     public abstract void ModifyManaRegen(float factor);
+    public bool GetIsMovementBlocked()
+    { return isMovementBlocked; }
+    public void SetIsMovementBlocked(bool newIsMovementBlocked)
+    {
+        isMovementBlocked = newIsMovementBlocked;
+    }
+    [ContextMenu("Freeze")]
+    public void DoFreezeUnFreeze()
+    {
+        isMovementBlocked = !isMovementBlocked;
+        OnFreeze(freezeOn: isMovementBlocked);
+    }
+    public void DoFreezeUnFreeze(bool freezeOn)
+    {
+        isMovementBlocked = freezeOn;
+        OnFreeze(freezeOn: freezeOn);
+    }
 }

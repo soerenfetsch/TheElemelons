@@ -15,8 +15,10 @@ public class Mole : Enemy
     private Animator animator;
     private FlashEffect flashEffect;
     private FlashEffect armFlashEffect;
+    Animator armAnimators;
 
     [Header("Pathfinding")]
+    Vector2 movement;
     public Transform playerTransform; // To store the player's transform for pathfinding.
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
@@ -73,6 +75,7 @@ public class Mole : Enemy
         rb2d = GetComponent<Rigidbody2D>();
         colliderBox = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
+        armAnimators = transform.GetChild(0).GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
@@ -136,7 +139,11 @@ public class Mole : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        ActOnStatus();
+        if (!isMovementBlocked)
+        {
+            ActOnStatus();
+        }
+        DoMovementWithChecks();
         ActOnHealth();
         ActOnMana();
     }
@@ -164,6 +171,7 @@ public class Mole : Enemy
             case EnemyStatus.Idle:
                 if (isDugIn && CheckPlayerWithinRadius(chaseRadius))
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Approaching);
                     ChangeAnimationClip("Walking");
                     break;
@@ -341,7 +349,7 @@ public class Mole : Enemy
         if (direction == Vector2.zero) return;
 
         direction = direction.normalized;
-        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        movement = direction;
         ChangeWalkAnimation(direction);
     }
 
@@ -485,5 +493,24 @@ public class Mole : Enemy
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            animator.speed = 0;
+            armAnimators.speed = 0;
+        }
+        else
+        {
+            animator.speed = 1;
+            armAnimators.speed = 1;
+        }
+    }
+    public override void DoMovement()
+    {
+        movement = movement.normalized;
+        rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
     }
 }

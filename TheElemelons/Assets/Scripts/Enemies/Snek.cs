@@ -103,7 +103,7 @@ public class Snek : Enemy
             ActOnHealth();
             ActOnRange();
             ActOnStatus();
-            DoMovement();
+            DoMovementWithChecks();
         }
     }
     /// <summary>
@@ -144,7 +144,7 @@ public class Snek : Enemy
     /// generated until the snake finds a free path or 
     /// that movement been rotated by 360 deg. Executes chosen movement.
     /// </summary>
-    public void DoMovement()
+    public override void DoMovement()
     {
         int turn = 15;
         for (int i = 0; i < 360f; i = i + turn)
@@ -158,6 +158,18 @@ public class Snek : Enemy
         movement.Normalize();
         Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + moving_by);
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            animator.speed = 0f;
+        }
+        else
+        {
+            animator.speed = 1;
+        }
     }
     public float GetMoveSpeed()
     {

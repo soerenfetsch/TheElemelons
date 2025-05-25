@@ -18,6 +18,7 @@ public class TreeLog : Enemy
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
+    Vector2 movement;
     private Vector2 homePosition;
     private bool isAlive = true;
     public float moveSpeed = 1f;
@@ -39,7 +40,7 @@ public class TreeLog : Enemy
     {
         playerTransform = player;
         this.pathfinder = pathfinder;
-
+        movement = Vector2.zero;
         InitializeCombatComponents();
     }
 
@@ -86,7 +87,11 @@ public class TreeLog : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        ActOnStatus();
+        if (!isMovementBlocked)
+        {
+            ActOnStatus();
+        }
+        DoMovementWithChecks();
         ActOnHealth();
         ActOnMana();
     }
@@ -115,6 +120,7 @@ public class TreeLog : Enemy
                 // Wait until player is within chase or attack radius
                 if (CheckPlayerWithinRadius(chaseRadius))
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Approaching);
                     animator.SetBool("wakeUp", true);
                 }
@@ -156,7 +162,23 @@ public class TreeLog : Enemy
                 break;
         }
     }
-
+    public override void DoMovement()
+    {
+        movement = movement.normalized;
+        rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            animator.speed = 0;
+        }
+        else
+        {
+            animator.speed = 1;
+        }
+    }
     /// <summary>
     /// Acts on the current health status of the enemy.
     /// This method checks if the enemy's health is zero and if the enemy is still alive. If both conditions are met,
@@ -284,7 +306,7 @@ public class TreeLog : Enemy
         if (direction == Vector2.zero) return;
 
         direction.Normalize();
-        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        movement = direction;
         ChangeWalkAnimation(direction);
     }
 
@@ -292,7 +314,7 @@ public class TreeLog : Enemy
     {
         // Find the best direction to move toward the home using pathfinding (collision at feet level)
         Vector2 direction = RaycastPathfinder.FindBestDirection(GetFeetPosition(), homePosition);
-        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        movement = direction;
         ChangeWalkAnimation(direction);
     }
 
@@ -318,7 +340,7 @@ public class TreeLog : Enemy
 
     private void HandleAttack(Rigidbody2D playerRb)
     {
-        if (playerRb == null) return;
+        if (playerRb == null || isMovementBlocked) return;
 
         Vector2 attackDirection = (playerRb.transform.position - transform.position).normalized;
         CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);

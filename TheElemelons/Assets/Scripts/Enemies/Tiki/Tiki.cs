@@ -140,9 +140,12 @@ public class Tiki : Enemy
     }
     void FixedUpdate()
     {
-        ActOnStatus();
+        if (!isMovementBlocked)
+        {
+            ActOnStatus();
+        }
         HandleHead();
-        DoMovement();
+        DoMovementWithChecks();
     }
     /// <summary>
     /// if head is attached, should follow movement of body
@@ -498,7 +501,7 @@ public class Tiki : Enemy
     /// execute movement by reading the bodyMovement vector. also send aout a raycast in the movement direction
     /// checks if can switch into healfriends state and does so if possible
     /// </summary>
-    public void DoMovement()
+    public override void DoMovement()
     {
         bodyMovement.Normalize();
         // Moves the Rigidbody2D based on the current movement vector and speed.
@@ -549,6 +552,20 @@ public class Tiki : Enemy
                 friendsCenter = goal;
                 ChangeTikiState(TikiState.HealFriends);
             }
+        }
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            bodyMovement = Vector2.zero;
+            bodyAnimator.speed = 0;
+            skirtAnimator.speed = 0;
+        }
+        else
+        {
+            bodyAnimator.speed = 1;
+            skirtAnimator.speed = 1;
         }
     }
     /// <summary>
