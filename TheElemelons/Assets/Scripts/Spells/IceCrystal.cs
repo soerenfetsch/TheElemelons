@@ -29,9 +29,9 @@ public class IceCrystal : MonoBehaviour
     public void SetVictim(GameObject victim)
     {
         target = victim;
+        transform.localScale = victim.transform.localScale;
         transform.position = target.transform.position + (Vector3)Vector2.down * 0.1f;
         transform.parent = target.transform;
-        transform.localScale = victim.transform.localScale;
         targetScript = victim.GetComponent<Enemy>();
         targetScript.DoFreezeUnFreeze(true);
         target.transform.position = transform.position;
