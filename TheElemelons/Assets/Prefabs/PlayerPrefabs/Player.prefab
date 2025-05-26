@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7aaaf5e25cccd84ba19a41cd25ea3c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hiddenByThings: 0
 --- !u!212 &708902967062599466
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -796,6 +797,10 @@ MonoBehaviour:
     sprite: {fileID: 1144984600, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
   - type: 7
     sprite: {fileID: 2011474405, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 8
+    sprite: {fileID: 194035212, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 9
+    sprite: {fileID: -1949625035, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
 --- !u!114 &6168585797730868514
 MonoBehaviour:
   m_ObjectHideFlags: 0
