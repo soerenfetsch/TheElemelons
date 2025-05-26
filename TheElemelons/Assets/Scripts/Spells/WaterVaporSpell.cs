@@ -23,11 +23,11 @@ public class WaterVaporSpell : SpellEffect
         spriteRenderer = GetComponent<SpriteRenderer>();
         circleCollider2D.enabled = false;
         StartCoroutine(Expire());
-        StartCoroutine(ColliderOnOff());
     }
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(2.6f);
+        StartCoroutine(ColliderOnOff());
         circleCollider2D.enabled = true;
         yield return new WaitForSeconds(spellLifeTime);
         float fadeTimer = fadeDuration;
@@ -66,6 +66,10 @@ public class WaterVaporSpell : SpellEffect
         {
             BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "WaterVaporHide", BuffDebuffManager.BuffDebuffType.HiddenBuff, 0.8f, 1, false);
         }
+    }
+    void FixedUpdate()
+    {
+        Debug.Log("collider: " + circleCollider2D.enabled);
     }
     /*
         void OnTriggerExit2D(Collider2D other)

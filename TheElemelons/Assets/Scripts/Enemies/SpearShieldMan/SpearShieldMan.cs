@@ -54,7 +54,7 @@ public class SpearShieldMan : Enemy
     {
         playerTransform = player;
         this.pathfinder = pathfinder;
-
+        this.player = playerTransform.GetComponent<Player>();
         InitializeCombatComponents();
     }
 
@@ -140,6 +140,7 @@ public class SpearShieldMan : Enemy
         InitializeComponents();
         InitializeCombatComponents();
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         if (playerTransform == null)
         {
             Debug.Log("Tiki couldn't find the player at Start(), please fix");

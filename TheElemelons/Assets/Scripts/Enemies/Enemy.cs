@@ -27,7 +27,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     protected bool isMovementBlocked = false;
     protected bool isSightObstructed = false;
     protected int confusedCounter = 0;
-    protected float obstructedSightRange = 3f;
+    protected float obstructedSightRange = 2f;
     /// <summary>
     /// Reference to the Health script for managing enemy health.
     /// </summary>
