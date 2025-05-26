@@ -30,4 +30,5 @@ public class TestBuffable : MonoBehaviour, IBuffable
     }
     public void ModifyIsHidden(float factor) { }
     public void ModifyIsConfused(float factor) { }
+    public void ModifyIsFrozen(float factor) { }
 }

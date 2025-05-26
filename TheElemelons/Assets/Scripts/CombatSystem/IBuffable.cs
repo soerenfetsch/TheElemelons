@@ -25,4 +25,5 @@ public interface IBuffable
     public void ModifyManaRegen(float factor);
     public void ModifyIsHidden(float factor);
     public void ModifyIsConfused(float factor);
+    public void ModifyIsFrozen(float factor);
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,18 +11,19 @@ public class BlizzardSpell : SpellEffect
     float freezeImmunitylength = 2f;
     List<SpriteRenderer> spriteRenderers;
     public GameObject Ice;
-    Dictionary<GameObject, GameObject> victims;
+    List<GameObject> victims;
     Vector2 movement;
     new Rigidbody2D rigidbody2D;
     float moveSpeed = 0.5f;
     int dir = 1;
+    float freezeTime = 5f;
     // Start is called before the first frame update
     void Start()
     {
         movement = transform.position - caster.transform.position;
         rigidbody2D = GetComponent<Rigidbody2D>();
         transform.position = caster.transform.position;
-        victims = new Dictionary<GameObject, GameObject>();
+        victims = new List<GameObject>();
         spriteRenderers = new List<SpriteRenderer>();
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -77,9 +79,8 @@ public class BlizzardSpell : SpellEffect
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger &&
         targetScript != null &&
         targetScript.GetCurrentState() != EnemyStatus.Staggered &&
-        !victims.ContainsKey(other.gameObject))
+        !victims.Contains(other.gameObject))
         {
-            Debug.Log("collision");
             FreezeVictim(other.gameObject);
         }
     }
@@ -87,11 +88,11 @@ public class BlizzardSpell : SpellEffect
     {
         if (Time.frameCount % 19 == 0)
         {
-            foreach ((GameObject key, GameObject value) in victims)
+            foreach (GameObject victim in victims)
             {
-                if (victims[key] == null)
+                if (BuffDebuffManager.Instance.GetActiveEffects(victim).Where(p => p.name == "BlizzardIce") == null)
                 {
-                    StartCoroutine(FreezeImmunityCooldown(key));
+                    StartCoroutine(FreezeImmunityCooldown(victim));
                 }
             }
         }
@@ -122,14 +123,8 @@ public class BlizzardSpell : SpellEffect
     }*/
     void FreezeVictim(GameObject victim)
     {
-        GameObject IceEffect = Instantiate(Ice, victim.transform.position, Quaternion.Euler(0, 0, 0));
-        IceEffect.GetComponent<IceCrystal>().SetVictim(victim);
-        victims.Add(victim, IceEffect);
-    }
-    void UnfreezeVictim(GameObject victim)
-    {
-        victims[victim].GetComponent<IceCrystal>().Unfreeze();
-        victims.Remove(victim);
+        BuffDebuffManager.Instance.ApplyBuffDebuff(victim, "BlizzardIce", BuffDebuffManager.BuffDebuffType.FreezeDebuff, freezeTime + fadeDuration * 3f / 4f, 1, false);
+        victims.Add(victim);
     }
     /*
     void OnDestroy()

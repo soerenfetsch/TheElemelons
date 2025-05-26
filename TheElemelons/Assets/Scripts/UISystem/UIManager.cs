@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     [Header("BuffDebuff Animation Management")]
     public Animator speedBuffAnimator;
     public GameObject questionMark;
+    public GameObject iceCrystal;
 
     [Header("UI Canvas Panels")]
     public GameObject pauseMenuPanel;
@@ -261,7 +262,6 @@ public class UIManager : MonoBehaviour
         if (isBuffed)
         {
 
-            Debug.Log("QuestionMark");
             Vector3 pos = target.transform.position;
             GameObject questionMarkEffect = Instantiate(questionMark, pos, Quaternion.Euler(0, 0, 0));
             questionMarkEffect.transform.parent = target.transform;
@@ -269,6 +269,20 @@ public class UIManager : MonoBehaviour
         else
         {
             Destroy(target.transform.Find("QuestionMark(Clone)").gameObject);
+        }
+    }
+    public void SetFreezeEffect(bool isBuffed, GameObject target)
+    {
+        if (isBuffed)
+        {
+
+            Vector3 pos = target.transform.position;
+            GameObject freezeEffect = Instantiate(iceCrystal, pos, Quaternion.Euler(0, 0, 0));
+            freezeEffect.GetComponent<IceCrystal>().SetVictim(target);
+        }
+        else
+        {
+            Destroy(target.transform.Find("IceCrystalEffect(Clone)").gameObject);
         }
     }
 

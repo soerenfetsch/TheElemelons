@@ -25,6 +25,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public Player player;
     protected Vector2 movement;
     protected bool isMovementBlocked = false;
+    protected int isMovementBlockedCounter = 0;
     protected bool isSightObstructed = false;
     protected int confusedCounter = 0;
     protected float obstructedSightRange = 2f;
@@ -199,6 +200,19 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
         }
         DoObstructSight(confusedCounter > 0);
         Debug.Log(isSightObstructed);
+    }
+    public void ModifyIsFrozen(float factor)
+    {
+        if (factor == 1)
+        {
+            isMovementBlockedCounter++;
+        }
+        else
+        {
+            isMovementBlockedCounter = (int)Mathf.Clamp(isMovementBlockedCounter - 1, 0f, Mathf.Infinity);
+        }
+        isMovementBlocked = isMovementBlockedCounter > 0;
+        DoFreezeUnFreeze(isMovementBlocked);
     }
     [ContextMenu("Freeze")]
     public void DoFreezeUnFreeze()

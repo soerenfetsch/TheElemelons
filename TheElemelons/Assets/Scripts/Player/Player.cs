@@ -155,4 +155,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     }
     public void ModifyIsConfused(float factor)
     { }
+    public void ModifyIsFrozen(float factor)
+    {
+    }
 }

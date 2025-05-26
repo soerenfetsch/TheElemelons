@@ -42,7 +42,8 @@ public class BuffDebuffManager : MonoBehaviour
         FragilityDebuff,
         ManaRegenDebuff,
         HiddenBuff,
-        ConfusedDebuff
+        ConfusedDebuff,
+        FreezeDebuff,
     }
 
     // Buff/Debuff data structure
@@ -152,10 +153,13 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetSpeedBuffAnimation(true);
                 }
-                if (effectType == BuffDebuffType.ConfusedDebuff)
+                else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
-                    Debug.Log("calling ui manager to apply question mark");
                     _uiManager?.SetConfusedEffect(true, target);
+                }
+                else if (effectType == BuffDebuffType.FreezeDebuff)
+                {
+                    _uiManager?.SetFreezeEffect(true, target);
                 }
             },
             OnExpire = effect =>
@@ -172,12 +176,15 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetSpeedBuffAnimation(false);
                 }
-
-                if (effectType == BuffDebuffType.ConfusedDebuff)
+                else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
 
                     Debug.Log("calling ui manager to remove question mark");
                     _uiManager?.SetConfusedEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.FreezeDebuff)
+                {
+                    _uiManager?.SetFreezeEffect(false, target);
                 }
             }
         };
@@ -251,10 +258,14 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetSpeedBuffAnimation(true);
                 }
-                if (effectType == BuffDebuffType.ConfusedDebuff)
+                else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
                     Debug.Log("calling ui manager to apply question mark");
                     _uiManager?.SetConfusedEffect(true, target);
+                }
+                else if (effectType == BuffDebuffType.FreezeDebuff)
+                {
+                    _uiManager?.SetFreezeEffect(true, target);
                 }
             },
             OnExpire = effect =>
@@ -271,11 +282,15 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetSpeedBuffAnimation(false);
                 }
-                if (effectType == BuffDebuffType.ConfusedDebuff)
+                else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
 
                     Debug.Log("calling ui manager to remove question mark");
                     _uiManager?.SetConfusedEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.FreezeDebuff)
+                {
+                    _uiManager?.SetFreezeEffect(false, target);
                 }
             }
         };
@@ -350,6 +365,11 @@ public class BuffDebuffManager : MonoBehaviour
                 factor = isApplying ? 1 : 0;
                 buffable.ModifyIsConfused(factor);
                 break;
+            case BuffDebuffType.FreezeDebuff:
+                factor = isApplying ? 1 : 0;
+                buffable.ModifyIsFrozen(factor);
+                break;
+
             default:
                 Debug.LogWarning($"Unhandled Buff/Debuff type: {effect.type}");
                 break;
@@ -388,7 +408,24 @@ public class BuffDebuffManager : MonoBehaviour
             }
         }
     }
-
+    public void ClearEffect(GameObject target, BuffDebuffType type, string effectName = "")
+    {
+        bool lookForName = effectName != "";
+        if (targets.ContainsKey(target))
+        {
+            TargetEntity entity = targets[target];
+            // Cannot directly remove from the list while iterating
+            // so we need to create a copy of the list
+            foreach (var effect in new List<BuffDebuff>(GetActiveEffects(target)))
+            {
+                if (effect.type == type || lookForName && effect.name == effectName)
+                {
+                    entity.RemoveEffect(effect);
+                    ApplyEffectToStats(target, effect, false);
+                }
+            }
+        }
+    }
 
     /// <summary>
     /// Get the active buffs and debuffs for a target.

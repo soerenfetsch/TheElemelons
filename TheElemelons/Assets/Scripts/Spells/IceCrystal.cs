@@ -33,7 +33,6 @@ public class IceCrystal : MonoBehaviour
         transform.position = target.transform.position + (Vector3)Vector2.down * 0.1f;
         transform.parent = target.transform;
         targetScript = victim.GetComponent<Enemy>();
-        targetScript.DoFreezeUnFreeze(true);
         target.transform.position = transform.position;
     }
     public void Unfreeze()
@@ -56,7 +55,7 @@ public class IceCrystal : MonoBehaviour
         {
             if (fadeTimer < fadeDuration / 4f)
             {
-                targetScript.DoFreezeUnFreeze(false);
+                BuffDebuffManager.Instance.ClearEffect(target, BuffDebuffManager.BuffDebuffType.FreezeDebuff, effectName: "BlizzardIce");
             }
             fadeTimer -= Time.deltaTime * chunkiness;
             float alpha = Mathf.Clamp01(fadeTimer / fadeDuration);

@@ -801,6 +801,8 @@ MonoBehaviour:
     sprite: {fileID: 194035212, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
   - type: 9
     sprite: {fileID: -1949625035, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 10
+    sprite: {fileID: -414274897, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
 --- !u!114 &6168585797730868514
 MonoBehaviour:
   m_ObjectHideFlags: 0
