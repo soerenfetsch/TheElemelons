@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Sprites;
 using UnityEngine;
+/// <summary>
+/// Visual effect for the confused debuff
+/// </summary>
 public class QuestionMark : MonoBehaviour
 {
     Collider2D parentCollider;

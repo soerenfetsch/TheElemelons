@@ -153,6 +153,10 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
             hiddenByThings = (int)Mathf.Clamp(hiddenByThings - 1, 0f, Mathf.Infinity);
         }
     }
+    /// <summary>
+    /// does nothing
+    /// </summary>
+    /// <param name="factor"></param>
     public void ModifyIsConfused(float factor)
     { }
     public void ModifyIsFrozen(float factor)

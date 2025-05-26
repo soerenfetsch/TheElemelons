@@ -24,6 +24,10 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public Transform playerTransform;
     public Player player;
     protected Vector2 movement;
+    /// <summary>
+    /// bools are automatically updated each time the corresponding int is
+    /// modified via ModifyFreeze/Confused
+    /// </summary>
     protected bool isMovementBlocked = false;
     protected int isMovementBlockedCounter = 0;
     protected bool isSightObstructed = false;
@@ -47,6 +51,9 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public float defenseFactor { get; set; }
     public bool isInvincible { get; set; }
     public ElementType elementType { get; set; }
+    /// <summary>
+    /// Performs checks before DoMovement() is called and alters or cancels the movement if necessary
+    /// </summary>
 
     public void DoMovementWithChecks()
     {
@@ -63,10 +70,19 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
             DoMovement();
         }
     }
+    /// <summary>
+    /// monster cant see player if sight is obstructed (confused debuff) and player out of sight
+    /// Or if the player is hidden
+    /// </summary>
+    /// <returns></returns>
     public virtual bool ObstructedSightCantSeePlayer()
     {
         return player.GetIsHidden() || isSightObstructed && (playerTransform.position - transform.position).magnitude > obstructedSightRange;
     }
+    /// <summary>
+    /// calculates movement for cant see player
+    /// random walking around
+    /// </summary>
     protected void RandomWalk()
     {
         float rayLength = 1f;
@@ -85,6 +101,10 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
             movement = movement.normalized;
         }
     }
+    /// <summary>
+    /// updates isSightObstructed bool and sets random movement if none was previously given
+    /// </summary>
+    /// <param name="onOff"></param>
     public void ObstructSight(bool onOff)
     {
         if (onOff && movement == Vector2.zero)
@@ -93,12 +113,32 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
         }
         isSightObstructed = onOff;
     }
+    /// <summary>
+    /// Abstract method
+    /// Should call ObstructSight(onOff)
+    /// </summary>
+    /// <param name="onOff"></param>
     public abstract void DoObstructSight(bool onOff);
+    /// <summary>
+    /// checks if monster can act normally
+    /// or if its frozen/confused etc
+    /// </summary>
+    /// <returns></returns>
     protected bool CanAct()
     {
         return !isMovementBlocked && !ObstructedSightCantSeePlayer();
     }
+    /// <summary>
+    /// Abstract Method
+    /// Performs movement given via the movement Vector (global variable)
+    /// </summary>
     public abstract void DoMovement();
+    /// <summary>
+    /// Abstract method 
+    /// determines behavior if frozen
+    /// the enemy sprite shouldnt change while frozen
+    /// </summary>
+    /// <param name="freezeOn"></param>
     public abstract void OnFreeze(bool freezeOn = true);
     /// <summary>
     /// Abstract method to enforce state transitions in derived classes.
@@ -199,7 +239,6 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
             confusedCounter = (int)Mathf.Clamp(confusedCounter - 1, 0f, Mathf.Infinity);
         }
         DoObstructSight(confusedCounter > 0);
-        Debug.Log(isSightObstructed);
     }
     public void ModifyIsFrozen(float factor)
     {

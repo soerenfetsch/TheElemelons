@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// icecrystal effect for freeze debuff
+/// </summary>
 public class IceCrystal : MonoBehaviour
 {
     bool unfreezing = false;
@@ -21,6 +23,7 @@ public class IceCrystal : MonoBehaviour
         maskDestination = transform.GetChild(2);
         StartCoroutine(Expire());
     }
+    // unfreeze after bufflifetime
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(freezeTime);
@@ -65,6 +68,10 @@ public class IceCrystal : MonoBehaviour
         }
         Destroy(gameObject);
     }
+    /// <summary>
+    /// fire spells can melt the ice prematurely
+    /// </summary>
+    /// <param name="other"></param>
     void OnTriggerEnter2D(Collider2D other)
     {
         SpellEffect spellEffect = other.gameObject.GetComponent<SpellEffect>();

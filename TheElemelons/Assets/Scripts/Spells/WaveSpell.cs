@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
-
+/// <summary>
+/// Wave
+/// deals some damage
+/// </summary>
 public class WaveSpell : SpellEffect
 {
     float spellLifeTime = 3f;
@@ -42,6 +45,9 @@ public class WaveSpell : SpellEffect
             rigidbody2D.MovePosition(rigidbody2D.position + movement * moveSpeed * Time.fixedDeltaTime);
         }
     }
+    /// <summary>
+    /// raycast to that wave doesnt move through walls
+    /// </summary>
     void DoRaycasts()
     {
 
@@ -62,6 +68,10 @@ public class WaveSpell : SpellEffect
         yield return new WaitForSeconds(1.1f);
         Destroy(transform.gameObject);
     }
+    /// <summary>
+    /// damage enemy, summon splash visual effect
+    /// </summary>
+    /// <param name="other"></param>
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger &&
@@ -77,7 +87,22 @@ public class WaveSpell : SpellEffect
             }
             CombatManager.ExecuteAttack(caster, other.GetComponent<Rigidbody2D>(), spellType, movement, damage, thrust, knockTime);
         }
+        else if (other.gameObject.CompareTag("Player") && other.isTrigger)
+        {
+            Rigidbody2D otherRb = other.gameObject.GetComponent<Rigidbody2D>();
+            if (!victims.ContainsKey(otherRb))
+            {
+                GameObject splash = Instantiate(splashEffect, other.transform.position + (Vector3)Vector3.down * 0.01f, Quaternion.Euler(0, 0, 0));
+                splash.transform.localScale = other.transform.localScale;
+                splash.transform.parent = other.transform;
+                victims.Add(otherRb, splash);
+            }
+        }
     }
+    /// <summary>
+    /// remove splash effect
+    /// </summary>
+    /// <param name="other"></param>
     void OnTriggerExit2D(Collider2D other)
     {
         Rigidbody2D otherRb = other.GetComponent<Rigidbody2D>();
@@ -86,6 +111,9 @@ public class WaveSpell : SpellEffect
             RemoveSplash(otherRb);
         }
     }
+    /// <summary>
+    /// remove splash effect
+    /// </summary>
     void OnDestroy()
     {
         foreach ((Rigidbody2D key, GameObject value) in victims)

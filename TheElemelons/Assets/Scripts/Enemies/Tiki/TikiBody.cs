@@ -71,6 +71,10 @@ public class TikiBody : Enemy
     public override void DoMovement()
     {
     }
+    /// <summary>
+    /// Delegate to tiki
+    /// </summary>
+    /// <returns></returns>
     public override bool ObstructedSightCantSeePlayer()
     {
         return tikiScript.ObstructedSightCantSeePlayer();

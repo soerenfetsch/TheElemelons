@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+/// <summary>
+/// cloud that obstructs the enemy's sight
+/// enemy will be inflicted with confusion if in the cloud
+/// player receives hidden buff if in the cloud
+/// </summary>
 public class WaterVaporSpell : SpellEffect
 {
 
@@ -42,6 +46,10 @@ public class WaterVaporSpell : SpellEffect
         }
         Destroy(gameObject);
     }
+    /// <summary>
+    /// switch collider on and off to reapply buffs/debuffs
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ColliderOnOff()
     {
         while (true)
@@ -50,6 +58,11 @@ public class WaterVaporSpell : SpellEffect
             circleCollider2D.enabled = !circleCollider2D.enabled;
         }
     }
+    /// <summary>
+    /// apply short buff/debuff
+    /// type depends on whether enemy or player
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         Enemy targetScript = other.GetComponent<Enemy>();
@@ -67,49 +80,4 @@ public class WaterVaporSpell : SpellEffect
             BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "WaterVaporHide", BuffDebuffManager.BuffDebuffType.HiddenBuff, 0.8f, 1, false);
         }
     }
-    void FixedUpdate()
-    {
-        Debug.Log("collider: " + circleCollider2D.enabled);
-    }
-    /*
-        void OnTriggerExit2D(Collider2D other)
-        {
-            if (victims.ContainsKey(other.gameObject))
-            {
-                UnConfuseVictim(other.gameObject);
-            }
-        }
-        void ConfuseVictim(GameObject victim)
-        {
-            Vector3 pos = victim.transform.position;
-            GameObject questionMarkEffect = Instantiate(questionMark, pos, Quaternion.Euler(0, 0, 0));
-            questionMarkEffect.transform.parent = victim.transform;
-            victims.Add(victim, questionMarkEffect);
-            victim.GetComponent<Enemy>().DoObstructSight(true);
-        }
-        void UnConfuseVictim(GameObject victim, bool removeFromList = true)
-        {
-            if (victim.GetComponent<Enemy>() == null)
-            {
-                Debug.Log(victim.gameObject.name + " has no enemy script");
-            }
-            victim.GetComponent<Enemy>().DoObstructSight(false);
-            Destroy(victims[victim]);
-            if (removeFromList)
-            {
-                victims.Remove(victim);
-            }
-        }
-
-        void OnDestroy()
-        {
-            foreach ((GameObject key, GameObject value) in victims)
-            {
-                if (victims[key] != null)
-                {
-                    UnConfuseVictim(key, removeFromList: false);
-                }
-            }
-        }
-    */
 }

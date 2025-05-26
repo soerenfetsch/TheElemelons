@@ -33,6 +33,11 @@ public class BlizzardSpell : SpellEffect
         StartCoroutine(Grow(transform.localScale.x));
         Debug.Log("start end");
     }
+    /// <summary>
+    /// grow cloud until reaches max scale
+    /// </summary>
+    /// <param name="maxScale"></param>
+    /// <returns></returns>
     IEnumerator Grow(float maxScale)
     {
         transform.localScale = new Vector2(0.1f * maxScale, 0.1f * maxScale);
@@ -49,6 +54,10 @@ public class BlizzardSpell : SpellEffect
         GetComponent<CircleCollider2D>().enabled = true;
         StartCoroutine(Expire());
     }
+    /// <summary>
+    /// self destruct after spelllifetime and fading
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
@@ -72,6 +81,11 @@ public class BlizzardSpell : SpellEffect
             yield return new WaitForSeconds(Time.deltaTime * chunkiness);
         }
     }
+    /// <summary>
+    /// freeze enemies
+    /// enemies are on a short cooldown before can be frozen again
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("some collision");
@@ -84,6 +98,10 @@ public class BlizzardSpell : SpellEffect
             FreezeVictim(other.gameObject);
         }
     }
+    /// <summary>
+    /// trigger cooldown on unfrozen enemies
+    /// cloud movement
+    /// </summary>
     void FixedUpdate()
     {
         if (Time.frameCount % 19 == 0)
@@ -113,29 +131,13 @@ public class BlizzardSpell : SpellEffect
         yield return new WaitForSeconds(freezeImmunitylength);
         victims.Remove(victim);
     }
-    /*
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (victims.ContainsKey(other.gameObject))
-        {
-            UnfreezeVictim(other.gameObject);
-        }
-    }*/
+    /// <summary>
+    /// inflict victim with freeze debuff and add to list
+    /// </summary>
+    /// <param name="victim"></param>
     void FreezeVictim(GameObject victim)
     {
         BuffDebuffManager.Instance.ApplyBuffDebuff(victim, "BlizzardIce", BuffDebuffManager.BuffDebuffType.FreezeDebuff, freezeTime + fadeDuration * 3f / 4f, 1, false);
         victims.Add(victim);
     }
-    /*
-    void OnDestroy()
-    {
-        foreach ((GameObject key, GameObject value) in victims)
-        {
-            if (victims[key] != null)
-            {
-                UnfreezeVictim(key);
-            }
-        }
-    }
-    */
 }
