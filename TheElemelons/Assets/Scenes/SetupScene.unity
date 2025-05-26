@@ -1024,7 +1024,7 @@ PrefabInstance:
       objectReference: {fileID: 204541841}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.size
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.data[0]
@@ -1069,7 +1069,7 @@ PrefabInstance:
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.data[10]
       value: 
-      objectReference: {fileID: 11400000, guid: 0ddff1ffd628eb54aa38f86db5fa14a9, type: 2}
+      objectReference: {fileID: 11400000, guid: c2b29567a7a79bf4da00895a8a70cbee, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1138,6 +1138,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainGame
       objectReference: {fileID: 0}
+    - target: {fileID: 6974335112375297748, guid: 498e39aebfdb7ad43a87d003226b5b79, type: 3}
+      propertyPath: earthElemelonCollectablePrefab
+      value: 
+      objectReference: {fileID: 5925793305830651594, guid: 96f2c35eabdf8aa4ea21715379505e96, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -44,10 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf72d72b5a8eafc4b8ea126e80ca94ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  earthElemelonPrefab: {fileID: 5925793305830651594, guid: 96f2c35eabdf8aa4ea21715379505e96, type: 3}
+  earthElemelonCollectablePrefab: {fileID: 5925793305830651594, guid: 96f2c35eabdf8aa4ea21715379505e96, type: 3}
   kingIntroDialoguesList:
   - {fileID: 11400000, guid: d5f9a9e21f863e44d93039b70f7669a6, type: 2}
   kingRepetitiveDialoguesList:
   - {fileID: 11400000, guid: d4d662d4a1c6159408fe2d9964627e65, type: 2}
   - {fileID: 11400000, guid: 0dd71fbecb8c87d408000340cbcff193, type: 2}
   - {fileID: 11400000, guid: 03891b7c81bc45640bf4b346968dc1b5, type: 2}
+  kingEndDialoguesList:
+  - {fileID: 11400000, guid: c2b29567a7a79bf4da00895a8a70cbee, type: 2}
