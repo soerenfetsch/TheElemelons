@@ -40,7 +40,9 @@ public class BuffDebuffManager : MonoBehaviour
         SlownessDebuff,
         WeaknessDebuff,
         FragilityDebuff,
-        ManaRegenDebuff
+        ManaRegenDebuff,
+        HiddenBuff,
+        ConfusedDebuff
     }
 
     // Buff/Debuff data structure
@@ -150,6 +152,11 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetSpeedBuffAnimation(true);
                 }
+                if (effectType == BuffDebuffType.ConfusedDebuff)
+                {
+                    Debug.Log("calling ui manager to apply question mark");
+                    _uiManager?.SetConfusedEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -164,6 +171,13 @@ public class BuffDebuffManager : MonoBehaviour
                     && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
                 {
                     _uiManager?.SetSpeedBuffAnimation(false);
+                }
+
+                if (effectType == BuffDebuffType.ConfusedDebuff)
+                {
+
+                    Debug.Log("calling ui manager to remove question mark");
+                    _uiManager?.SetConfusedEffect(false, target);
                 }
             }
         };
@@ -237,6 +251,11 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetSpeedBuffAnimation(true);
                 }
+                if (effectType == BuffDebuffType.ConfusedDebuff)
+                {
+                    Debug.Log("calling ui manager to apply question mark");
+                    _uiManager?.SetConfusedEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -251,6 +270,12 @@ public class BuffDebuffManager : MonoBehaviour
                     && !entity.ActiveEffects.Exists(e => e.type == BuffDebuffType.SpeedBuff))
                 {
                     _uiManager?.SetSpeedBuffAnimation(false);
+                }
+                if (effectType == BuffDebuffType.ConfusedDebuff)
+                {
+
+                    Debug.Log("calling ui manager to remove question mark");
+                    _uiManager?.SetConfusedEffect(false, target);
                 }
             }
         };
@@ -317,7 +342,14 @@ public class BuffDebuffManager : MonoBehaviour
             case BuffDebuffType.ManaRegenDebuff:
                 buffable.ModifyManaRegen(1 / factor); // Decrease mana regen
                 break;
-
+            case BuffDebuffType.HiddenBuff:
+                factor = isApplying ? 1 : 0;
+                buffable.ModifyIsHidden(factor);
+                break;
+            case BuffDebuffType.ConfusedDebuff:
+                factor = isApplying ? 1 : 0;
+                buffable.ModifyIsConfused(factor);
+                break;
             default:
                 Debug.LogWarning($"Unhandled Buff/Debuff type: {effect.type}");
                 break;

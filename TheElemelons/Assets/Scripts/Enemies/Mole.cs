@@ -51,6 +51,7 @@ public class Mole : Enemy
     public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
+        this.player = playerTransform.GetComponent<Player>();
         this.pathfinder = pathfinder;
 
         InitializeCombatComponents();
@@ -79,6 +80,7 @@ public class Mole : Enemy
         flashEffect = GetComponent<FlashEffect>();
         armFlashEffect = arm.GetComponent<FlashEffect>();
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
 
         if (arm == null)
@@ -510,5 +512,9 @@ public class Mole : Enemy
     {
         movement = movement.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

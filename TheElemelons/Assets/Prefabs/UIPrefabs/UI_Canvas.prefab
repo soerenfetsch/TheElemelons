@@ -133,6 +133,7 @@ MonoBehaviour:
   earthSprite: {fileID: -93482519, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   windSprite: {fileID: 46059240, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   speedBuffAnimator: {fileID: 0}
+  questionMark: {fileID: 4782941036331643559, guid: 9e9394a0ddd263e49a238dc48d3e990c, type: 3}
   pauseMenuPanel: {fileID: 2739715255320437623}
   startMenuPanel: {fileID: 9150693199017904779}
   settingsMenuPanel: {fileID: 1933944021799878360}

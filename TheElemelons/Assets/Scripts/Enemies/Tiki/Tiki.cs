@@ -106,6 +106,7 @@ public class Tiki : Enemy
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         if (playerTransform == null)
         {
@@ -718,8 +719,12 @@ public class Tiki : Enemy
     {
         headAttached = false;
     }
-    new protected bool ObstructedSightCantSeePlayer()
+    public override bool ObstructedSightCantSeePlayer()
     {
         return isSightObstructed && (playerTransform.position - bodyTransform.position).magnitude > obstructedSightRange;
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

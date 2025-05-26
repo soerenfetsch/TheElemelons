@@ -46,6 +46,7 @@ public class Snek : Enemy
         attackFactor = 1;
         defenseFactor = 1;
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         rb = GetComponent<Rigidbody2D>();
         movement = Vector2.zero;
@@ -215,7 +216,7 @@ public class Snek : Enemy
             {
                 currentSnekStatus = SnekStatus.Dash;
             }
-            if (canTongue && dist < tongueRange)
+            if (canTongue && dist < tongueRange && CanAct())
             {
                 StartCoroutine(DoTongue());
             }
@@ -374,10 +375,15 @@ public class Snek : Enemy
     {
         if (other.gameObject.CompareTag("Player") &&
             other.isTrigger &&
-            other.gameObject.GetComponent<Player>().GetCurrentState() != PlayerState.Stagger)
+            other.gameObject.GetComponent<Player>().GetCurrentState() != PlayerState.Stagger
+            && !isMovementBlocked)
         {
             Vector2 attackDirection = other.transform.position - transform.position;
             CombatManager.ExecuteAttack(gameObject, other.GetComponent<Rigidbody2D>(), elementType, attackDirection, baseDamage, thrust, knockTime);
         }
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

@@ -140,6 +140,7 @@ public class Witch : Enemy
     public void InitializeGivenPlayerPathfinder(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
+        this.player = playerTransform.GetComponent<Player>();
         this.pathfinder = pathfinder;
     }
     void InitializeFindPlayerPathfinder()
@@ -147,6 +148,7 @@ public class Witch : Enemy
         try
         {
             playerTransform = GameObject.Find("Player").transform;
+            player = playerTransform.GetComponent<Player>();
             pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         }
         catch (System.Exception)
@@ -1446,6 +1448,10 @@ public class Witch : Enemy
     {
         return moveSpeed * hoverSpeedFactor;
     }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
+    }
 }
 public class WitchMoveInfos
 {
@@ -1469,4 +1475,5 @@ public class WitchMoveInfos
         this.doMethod = doMethod;
         this.parentCategory = parentCategory;
     }
+
 }

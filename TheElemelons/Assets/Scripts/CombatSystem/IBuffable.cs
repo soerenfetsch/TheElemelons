@@ -23,4 +23,6 @@ public interface IBuffable
     /// </summary> 
     /// <param name="factor"></param>
     public void ModifyManaRegen(float factor);
+    public void ModifyIsHidden(float factor);
+    public void ModifyIsConfused(float factor);
 }

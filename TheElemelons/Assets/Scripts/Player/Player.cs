@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands.BranchExplorer.Layout;
+using PlasticGui.WorkspaceWindow;
 using UnityEngine;
 
 /// <summary>
@@ -19,6 +21,7 @@ public enum PlayerState
 /// </summary>
 public class Player : MonoBehaviour, ICombatant, IBuffable
 {
+    public int hiddenByThings = 0;
     /// <summary>
     /// Current state of the player (e.g., Walk, Attack, Idle).
     /// </summary>
@@ -135,4 +138,21 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
         var mana = GetComponent<Mana>();
         mana.SetManaPerRegen(mana.manaPerRegen * factor);
     }
+    public bool GetIsHidden()
+    {
+        return hiddenByThings > 0;
+    }
+    public void ModifyIsHidden(float factor)
+    {
+        if (factor == 1)
+        {
+            hiddenByThings++;
+        }
+        else
+        {
+            hiddenByThings = (int)Mathf.Clamp(hiddenByThings - 1, 0f, Mathf.Infinity);
+        }
+    }
+    public void ModifyIsConfused(float factor)
+    { }
 }

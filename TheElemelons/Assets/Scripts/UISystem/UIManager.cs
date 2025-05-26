@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     float lastHealth;
     [Header("BuffDebuff Animation Management")]
     public Animator speedBuffAnimator;
+    public GameObject questionMark;
 
     [Header("UI Canvas Panels")]
     public GameObject pauseMenuPanel;
@@ -254,6 +255,21 @@ public class UIManager : MonoBehaviour
     public void SetSpeedBuffAnimation(bool isBuffed)
     {
         speedBuffAnimator.SetBool("run", isBuffed);
+    }
+    public void SetConfusedEffect(bool isBuffed, GameObject target)
+    {
+        if (isBuffed)
+        {
+
+            Debug.Log("QuestionMark");
+            Vector3 pos = target.transform.position;
+            GameObject questionMarkEffect = Instantiate(questionMark, pos, Quaternion.Euler(0, 0, 0));
+            questionMarkEffect.transform.parent = target.transform;
+        }
+        else
+        {
+            Destroy(target.transform.Find("QuestionMark(Clone)").gameObject);
+        }
     }
 
     // BuffDebuff Icon Management

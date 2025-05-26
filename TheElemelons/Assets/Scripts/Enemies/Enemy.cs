@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 
 /// <summary>
@@ -21,10 +22,12 @@ public enum EnemyStatus
 public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
 {
     public Transform playerTransform;
+    public Player player;
     protected Vector2 movement;
     protected bool isMovementBlocked = false;
     protected bool isSightObstructed = false;
-    protected float obstructedSightRange = 2.5f;
+    protected int confusedCounter = 0;
+    protected float obstructedSightRange = 3f;
     /// <summary>
     /// Reference to the Health script for managing enemy health.
     /// </summary>
@@ -59,16 +62,24 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
             DoMovement();
         }
     }
-    protected bool ObstructedSightCantSeePlayer()
+    public virtual bool ObstructedSightCantSeePlayer()
     {
-        return isSightObstructed && (playerTransform.position - transform.position).magnitude > obstructedSightRange;
+        return player.GetIsHidden() || isSightObstructed && (playerTransform.position - transform.position).magnitude > obstructedSightRange;
     }
     protected void RandomWalk()
     {
-        Debug.Log("random walk");
-        if (Time.frameCount % 50 == 0)
+        float rayLength = 1f;
+        LayerMask mask = LayerMask.GetMask("Walls");
+        RaycastHit2D hitRandomWalk0 = Physics2D.Raycast(transform.position, movement, rayLength, mask);
+        RaycastHit2D hitRandomWalk1 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, 10f) * movement, rayLength, mask);
+        RaycastHit2D hitRandomWalk2 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, -10f) * movement, rayLength, mask);
+        RaycastHit2D hitRandomWalk = hitRandomWalk0 ? hitRandomWalk0 : (hitRandomWalk1 ? hitRandomWalk1 : (hitRandomWalk2 ? hitRandomWalk2 : hitRandomWalk0));
+        if (hitRandomWalk)
         {
-            Debug.Log("new dir: " + movement.ToString());
+            movement *= -1;
+        }
+        else if (Time.frameCount % 50 == 0)
+        {
             movement = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-90f, 90f)) * movement;
             movement = movement.normalized;
         }
@@ -81,6 +92,7 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
         }
         isSightObstructed = onOff;
     }
+    public abstract void DoObstructSight(bool onOff);
     protected bool CanAct()
     {
         return !isMovementBlocked && !ObstructedSightCantSeePlayer();
@@ -169,6 +181,25 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
         isMovementBlocked = freezeOn;
         OnFreeze(freezeOn: freezeOn);
     }
+    /// <summary>
+    /// does nothing, monsters cant hide
+    /// </summary>
+    /// <param name="factor"></param>
+    public void ModifyIsHidden(float factor)
+    { }
+    public void ModifyIsConfused(float factor)
+    {
+        if (factor == 1)
+        {
+            confusedCounter++;
+        }
+        else
+        {
+            confusedCounter = (int)Mathf.Clamp(confusedCounter - 1, 0f, Mathf.Infinity);
+        }
+        DoObstructSight(confusedCounter > 0);
+        Debug.Log(isSightObstructed);
+    }
     [ContextMenu("Freeze")]
     public void DoFreezeUnFreeze()
     {
@@ -177,7 +208,6 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     [ContextMenu("ObstructSight")]
     public void DoObstructSightOnOff()
     {
-        ObstructSight(!isSightObstructed);
+        DoObstructSight(!isSightObstructed);
     }
-
 }

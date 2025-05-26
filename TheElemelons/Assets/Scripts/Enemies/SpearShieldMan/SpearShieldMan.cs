@@ -565,4 +565,8 @@ public class SpearShieldMan : Enemy
     {
         // Do nothing
     }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
+    }
 }

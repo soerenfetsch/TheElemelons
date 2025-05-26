@@ -39,6 +39,7 @@ public class TreeLog : Enemy
         playerTransform = player;
         this.pathfinder = pathfinder;
         movement = Vector2.zero;
+        this.player = playerTransform.GetComponent<Player>();
         InitializeCombatComponents();
     }
 
@@ -53,6 +54,7 @@ public class TreeLog : Enemy
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         currentState = EnemyStatus.Idle;
         homePosition = transformComponent.position;
@@ -374,5 +376,9 @@ public class TreeLog : Enemy
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }
