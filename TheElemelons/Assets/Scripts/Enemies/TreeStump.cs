@@ -273,10 +273,6 @@ public class TreeLog : Enemy
 
         // Find the best direction to move toward the player using pathfinding (collision at feet level)
         Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
-        if ((playerTransform.position - transform.position).sqrMagnitude < 15)
-        {
-            Debug.Log(direction);
-        }
         if (direction == Vector2.zero)
         {
             direction = pathfinder.CheckPlayerReachable(GetFeetPosition(), chaseRadius);

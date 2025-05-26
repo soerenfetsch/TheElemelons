@@ -461,7 +461,6 @@ public class SpearShieldMan : Enemy
                                               animator.GetFloat("Vertical"));
         float dotProductDistance = Vector2.Dot(distanceVector.normalized, attackDirection.normalized);
         float regularDistance = Vector2.Distance(GetFeetPosition(), playerTransform.position);
-        Debug.Log(regularDistance);
         return (regularDistance <= attackRadius && dotProductDistance >= 0.8f) || (regularDistance <= 1);
     }
 

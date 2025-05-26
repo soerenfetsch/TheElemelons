@@ -114,8 +114,16 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             {
                 rooms[centerToRoomMapping[currentRoomCenter]].SetRoomType(Room.RoomType.END);
                 // Create a portal to the boss room
-                Transform endPortalTransform = GameObject.Find("EndPortal").transform;
-                endPortalTransform.position = new Vector3(currentRoomCenter.x, currentRoomCenter.y, 0);
+                GameObject endPortal = GameObject.Find("EndPortal");
+                if (endPortal != null)
+                {
+                    Transform endPortalTransform = endPortal.transform;
+                    endPortalTransform.position = new Vector3(currentRoomCenter.x, currentRoomCenter.y, 0);
+                }
+                else
+                {
+                    Debug.LogWarning("EndPortal not found in scene!");
+                }
             }
         }
 

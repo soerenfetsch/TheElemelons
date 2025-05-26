@@ -107,7 +107,8 @@ public class TreeStumpTests
         treeStump.playerTransform.position = treeStumpObject.transform.position + new Vector3(treeStump.attackRadius - 0.1f, 0);
         pathfinder.UpdateVisibilityGrid();
 
-        // Call ActOnStatus
+        // Call ActOnStatus twice to go to approaching then attacking
+        treeStump.ActOnStatus();
         treeStump.ActOnStatus();
 
         // Assert state transitioned to Attacking

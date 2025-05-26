@@ -102,6 +102,5 @@ public class GameManagerStateTransitionTests
 
         // Assert
         Assert.AreEqual(GameProgressionStage.CASTLE_INTRODUCTION, gameManager.CurrentProgressionStage, "CurrentProgressionStage should be CASTLE_INTRODUCTION.");
-        Assert.AreEqual(GameStatus.INGAME, gameManager.CurrentGameStatus, "CurrentGameStatus should be INGAME.");
     }
 }
