@@ -33,6 +33,7 @@ public class MoleTest
         moleObject.AddComponent<BoxCollider2D>(); // Add one collider
         moleObject.AddComponent<BoxCollider2D>(); // Add another collider for collisionBox
         mole.arm = new GameObject("Arm");
+        mole.arm.AddComponent<Animator>();
         mole.arm.AddComponent<FlashEffect>();
         mole.arm.SetActive(false);
 

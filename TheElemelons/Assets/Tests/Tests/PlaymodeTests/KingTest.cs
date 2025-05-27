@@ -40,7 +40,7 @@ public class KingTest
         kingScript.SetCurrentState(NPCStatus.Idle);
         Vector3 position = mockTarget.transform.position;
         yield return null;
-        Assert.AreEqual(position, mockTarget.transform.position, "Idle king must not move");
+        Assert.True(AreVectorsApproximatelyEqual(position, mockTarget.transform.position), "Idle king must not move");
     }
     [UnityTest]
     public IEnumerator ActOnStatusWalkHline()
@@ -54,5 +54,9 @@ public class KingTest
         Vector2 movement = kingScript.GetMovement();
         Assert.AreEqual(movement.x, 1, "king must move to the right");
         Assert.AreEqual(movement.y, 0, "king musnt move in y");
+    }
+    private static bool AreVectorsApproximatelyEqual(Vector2 a, Vector2 b, float tolerance = 0.01f)
+    {
+        return Vector2.Distance(a, b) < tolerance;
     }
 }

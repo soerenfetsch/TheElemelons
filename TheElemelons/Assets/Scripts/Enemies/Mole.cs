@@ -74,7 +74,7 @@ public class Mole : Enemy
         rb2d = GetComponent<Rigidbody2D>();
         colliderBox = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
-        armAnimators = transform.GetChild(0).GetComponent<Animator>();
+        armAnimators = arm.GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
