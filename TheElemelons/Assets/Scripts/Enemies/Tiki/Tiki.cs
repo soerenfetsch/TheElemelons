@@ -23,7 +23,6 @@ public enum RangeState
 public class Tiki : Enemy
 {
     public float noHeadVulnerabilityFactor = 2f;
-    public Transform playerTransform;
     public TikiState currentTikiState;
     Animator bodyAnimator;
     [Header("Spells")]
@@ -59,7 +58,6 @@ public class Tiki : Enemy
     RaycastHit2D hit;
     Transform bodyTransform;
     public int clockwiseFactor = 1;
-    Vector2 bodyMovement;
     public float moveSpeed = 1f;
     Rigidbody2D rbBody;
     int directionChangeCounter = 0;
@@ -108,6 +106,7 @@ public class Tiki : Enemy
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         if (playerTransform == null)
         {
@@ -140,9 +139,12 @@ public class Tiki : Enemy
     }
     void FixedUpdate()
     {
-        ActOnStatus();
+        if (CanAct())
+        {
+            ActOnStatus();
+        }
         HandleHead();
-        DoMovement();
+        DoMovementWithChecks();
     }
     /// <summary>
     /// if head is attached, should follow movement of body
@@ -216,10 +218,10 @@ public class Tiki : Enemy
     /// </summary>
     public void OnHealFriends()
     {
-        bodyMovement = friendsCenter - (Vector2)bodyTransform.position;
-        if (Mathf.Abs(bodyMovement.magnitude) < 0.2f)
+        movement = friendsCenter - (Vector2)bodyTransform.position;
+        if (Mathf.Abs(movement.magnitude) < 0.2f)
         {
-            bodyMovement = Vector2.zero;
+            movement = Vector2.zero;
             DoHeal();
             ChangeTikiState(TikiState.Circle);
         }
@@ -436,11 +438,11 @@ public class Tiki : Enemy
             range = Mathf.Clamp(range + Mathf.Sign(Random.Range(-1, 1)), minimalRange, maximalRange);
         }
         // handle movement
-        bodyMovement = Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - bodyTransform.position);
+        movement = Quaternion.Euler(0f, 0f, clockwiseFactor * 90f) * (playerTransform.position - bodyTransform.position);
         if (currentRangeState == RangeState.Far)
         {
-            bodyMovement.x += playerTransform.position.x - bodyTransform.position.x;
-            bodyMovement.y += playerTransform.position.y - bodyTransform.position.y;
+            movement.x += playerTransform.position.x - bodyTransform.position.x;
+            movement.y += playerTransform.position.y - bodyTransform.position.y;
             if (Mathf.Abs((bodyTransform.position - playerTransform.position).magnitude) > range * 1.5)
             {
                 ChangeTikiState(TikiState.ComeBack);
@@ -448,8 +450,8 @@ public class Tiki : Enemy
         }
         else if (currentRangeState == RangeState.Close)
         {
-            bodyMovement.x += -playerTransform.position.x + bodyTransform.position.x;
-            bodyMovement.y += -playerTransform.position.y + bodyTransform.position.y;
+            movement.x += -playerTransform.position.x + bodyTransform.position.x;
+            movement.y += -playerTransform.position.y + bodyTransform.position.y;
         }
 
     }
@@ -477,14 +479,14 @@ public class Tiki : Enemy
         Vector2 sight = pathfinder.CheckPlayerInSight(GetFeet(), aggroRange);
         if (sight != Vector2.zero)
         {
-            bodyMovement = sight;
+            movement = sight;
             return;
         }
 
         Vector2 reachable = pathfinder.CheckPlayerReachable(bodyTransform.position, aggroRange);
         if (reachable != Vector2.zero)
         {
-            bodyMovement = reachable;
+            movement = reachable;
         }
     }
     /// <summary>
@@ -498,22 +500,22 @@ public class Tiki : Enemy
     /// execute movement by reading the bodyMovement vector. also send aout a raycast in the movement direction
     /// checks if can switch into healfriends state and does so if possible
     /// </summary>
-    public void DoMovement()
+    public override void DoMovement()
     {
-        bodyMovement.Normalize();
+        movement.Normalize();
         // Moves the Rigidbody2D based on the current movement vector and speed.
         float comeBackFactor = 1f;
         if (currentTikiState == TikiState.ComeBack)
         {
             comeBackFactor = 1.25f;
         }
-        Vector2 moving_by = bodyMovement * GetWalkSpeed() * Time.fixedDeltaTime * comeBackFactor;
+        Vector2 moving_by = movement * GetWalkSpeed() * Time.fixedDeltaTime * comeBackFactor;
         rbBody.MovePosition(rbBody.position + moving_by);
 
         // check hit
         float rayLength = 0.5f;
         LayerMask mask = LayerMask.GetMask("Player", "Walls");
-        hit = Physics2D.Raycast(bodyTransform.position, bodyMovement, rayLength, mask);
+        hit = Physics2D.Raycast(bodyTransform.position, movement, rayLength, mask);
 
         if (moving_by.magnitude > 0.01)
         {
@@ -549,6 +551,20 @@ public class Tiki : Enemy
                 friendsCenter = goal;
                 ChangeTikiState(TikiState.HealFriends);
             }
+        }
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            bodyAnimator.speed = 0;
+            skirtAnimator.speed = 0;
+        }
+        else
+        {
+            bodyAnimator.speed = 1;
+            skirtAnimator.speed = 1;
         }
     }
     /// <summary>
@@ -662,7 +678,7 @@ public class Tiki : Enemy
     }
     public Vector2 GetMovement()
     {
-        return bodyMovement;
+        return movement;
     }
     public float GetWalkSpeed()
     {
@@ -702,5 +718,13 @@ public class Tiki : Enemy
     public void DetachHead()
     {
         headAttached = false;
+    }
+    public override bool ObstructedSightCantSeePlayer()
+    {
+        return isSightObstructed && (playerTransform.position - bodyTransform.position).magnitude > obstructedSightRange;
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

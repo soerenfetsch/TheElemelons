@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +21,18 @@ public enum EnemyStatus
 /// </summary>
 public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
 {
+    public Transform playerTransform;
+    public Player player;
+    protected Vector2 movement;
+    /// <summary>
+    /// bools are automatically updated each time the corresponding int is
+    /// modified via ModifyFreeze/Confused
+    /// </summary>
+    protected bool isMovementBlocked = false;
+    protected int isMovementBlockedCounter = 0;
+    protected bool isSightObstructed = false;
+    protected int confusedCounter = 0;
+    protected float obstructedSightRange = 2f;
     /// <summary>
     /// Reference to the Health script for managing enemy health.
     /// </summary>
@@ -38,8 +51,95 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public float defenseFactor { get; set; }
     public bool isInvincible { get; set; }
     public ElementType elementType { get; set; }
+    /// <summary>
+    /// Performs checks before DoMovement() is called and alters or cancels the movement if necessary
+    /// </summary>
 
-
+    public void DoMovementWithChecks()
+    {
+        if (isMovementBlocked)
+        {
+            OnFreeze();
+        }
+        else
+        {
+            if (ObstructedSightCantSeePlayer())
+            {
+                RandomWalk();
+            }
+            DoMovement();
+        }
+    }
+    /// <summary>
+    /// monster cant see player if sight is obstructed (confused debuff) and player out of sight
+    /// Or if the player is hidden
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool ObstructedSightCantSeePlayer()
+    {
+        return player.GetIsHidden() || isSightObstructed && (playerTransform.position - transform.position).magnitude > obstructedSightRange;
+    }
+    /// <summary>
+    /// calculates movement for cant see player
+    /// random walking around
+    /// </summary>
+    protected void RandomWalk()
+    {
+        float rayLength = 1f;
+        LayerMask mask = LayerMask.GetMask("Walls");
+        RaycastHit2D hitRandomWalk0 = Physics2D.Raycast(transform.position, movement, rayLength, mask);
+        RaycastHit2D hitRandomWalk1 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, 10f) * movement, rayLength, mask);
+        RaycastHit2D hitRandomWalk2 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, -10f) * movement, rayLength, mask);
+        RaycastHit2D hitRandomWalk = hitRandomWalk0 ? hitRandomWalk0 : (hitRandomWalk1 ? hitRandomWalk1 : (hitRandomWalk2 ? hitRandomWalk2 : hitRandomWalk0));
+        if (hitRandomWalk)
+        {
+            movement *= -1;
+        }
+        else if (Time.frameCount % 50 == 0)
+        {
+            movement = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-90f, 90f)) * movement;
+            movement = movement.normalized;
+        }
+    }
+    /// <summary>
+    /// updates isSightObstructed bool and sets random movement if none was previously given
+    /// </summary>
+    /// <param name="onOff"></param>
+    public void ObstructSight(bool onOff)
+    {
+        if (onOff && movement == Vector2.zero)
+        {
+            movement = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
+        }
+        isSightObstructed = onOff;
+    }
+    /// <summary>
+    /// Abstract method
+    /// Should call ObstructSight(onOff)
+    /// </summary>
+    /// <param name="onOff"></param>
+    public abstract void DoObstructSight(bool onOff);
+    /// <summary>
+    /// checks if monster can act normally
+    /// or if its frozen/confused etc
+    /// </summary>
+    /// <returns></returns>
+    protected bool CanAct()
+    {
+        return !isMovementBlocked && !ObstructedSightCantSeePlayer();
+    }
+    /// <summary>
+    /// Abstract Method
+    /// Performs movement given via the movement Vector (global variable)
+    /// </summary>
+    public abstract void DoMovement();
+    /// <summary>
+    /// Abstract method 
+    /// determines behavior if frozen
+    /// the enemy sprite shouldnt change while frozen
+    /// </summary>
+    /// <param name="freezeOn"></param>
+    public abstract void OnFreeze(bool freezeOn = true);
     /// <summary>
     /// Abstract method to enforce state transitions in derived classes.
     /// </summary>
@@ -111,4 +211,56 @@ public abstract class Enemy : MonoBehaviour, ICombatant, IBuffable
     public abstract void ModifyDamage(float factor);
     public abstract void ModifyDefense(float factor);
     public abstract void ModifyManaRegen(float factor);
+    public bool GetIsMovementBlocked()
+    { return isMovementBlocked; }
+    public void SetIsMovementBlocked(bool newIsMovementBlocked)
+    {
+        isMovementBlocked = newIsMovementBlocked;
+    }
+    public void DoFreezeUnFreeze(bool freezeOn)
+    {
+        isMovementBlocked = freezeOn;
+        OnFreeze(freezeOn: freezeOn);
+    }
+    /// <summary>
+    /// does nothing, monsters cant hide
+    /// </summary>
+    /// <param name="factor"></param>
+    public void ModifyIsHidden(float factor)
+    { }
+    public void ModifyIsConfused(float factor)
+    {
+        if (factor == 1)
+        {
+            confusedCounter++;
+        }
+        else
+        {
+            confusedCounter = (int)Mathf.Clamp(confusedCounter - 1, 0f, Mathf.Infinity);
+        }
+        DoObstructSight(confusedCounter > 0);
+    }
+    public void ModifyIsFrozen(float factor)
+    {
+        if (factor == 1)
+        {
+            isMovementBlockedCounter++;
+        }
+        else
+        {
+            isMovementBlockedCounter = (int)Mathf.Clamp(isMovementBlockedCounter - 1, 0f, Mathf.Infinity);
+        }
+        isMovementBlocked = isMovementBlockedCounter > 0;
+        DoFreezeUnFreeze(isMovementBlocked);
+    }
+    [ContextMenu("Freeze")]
+    public void DoFreezeUnFreeze()
+    {
+        DoFreezeUnFreeze(!isMovementBlocked);
+    }
+    [ContextMenu("ObstructSight")]
+    public void DoObstructSightOnOff()
+    {
+        DoObstructSight(!isSightObstructed);
+    }
 }

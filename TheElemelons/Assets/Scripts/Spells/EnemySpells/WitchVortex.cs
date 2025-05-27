@@ -21,7 +21,7 @@ public class WitchVortex : SpellEffect
     public GameObject redsparklesObject;
     List<GameObject> redSparkles;
     GameObject witch;
-    Rigidbody2D rigidbody2D;
+    new Rigidbody2D rigidbody2D;
     Vector3 startTarget;
     Vector3 startPoint;
     float moveSpeed = 3f;

@@ -15,7 +15,7 @@ public class Altar : InteractableObject
     Animator animator;
     PolygonCollider2D colliderNormal;
     PolygonCollider2D colliderDestroyed;
-    PolygonCollider2D collider2D;
+    new PolygonCollider2D collider2D;
     [Header("Flags")]
     public bool gold = false;
     public bool blood = false;

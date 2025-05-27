@@ -58,7 +58,6 @@ public class Witch : Enemy
     float circleProbability = 0.5f;
     Vector3 destination;
     List<Vector3> nodeCollection;
-    Vector2 movement { get; set; }
     float moveSpeed = 3f;
     float hoverSpeedFactor = 1.3f;
     [Header("Effects")]
@@ -69,7 +68,6 @@ public class Witch : Enemy
     FlashEffect flashEffectHair;
     public float flashDuration = 0.2f;
     [Header("Bound Components")]
-    Transform playerTransform;
     LineOfSightPathfinder pathfinder;
     Rigidbody2D rb;
     Animator bodyAnimator;
@@ -144,6 +142,7 @@ public class Witch : Enemy
     public void InitializeGivenPlayerPathfinder(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
+        this.player = playerTransform.GetComponent<Player>();
         this.pathfinder = pathfinder;
     }
     void InitializeFindPlayerPathfinder()
@@ -151,6 +150,7 @@ public class Witch : Enemy
         try
         {
             playerTransform = GameObject.Find("Player").transform;
+            player = playerTransform.GetComponent<Player>();
             pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         }
         catch (System.Exception)
@@ -482,7 +482,10 @@ public class Witch : Enemy
         ThrowDice();
         CalcRangeState();
         ActOnHealth();
-        ActOnStatus();
+        if (CanAct())
+        {
+            ActOnStatus();
+        }
         DoMovement();
     }
     void Update()
@@ -609,13 +612,29 @@ public class Witch : Enemy
     /// <summary>
     /// Executes chosen movement.
     /// </summary>
-    public void DoMovement()
+    public override void DoMovement()
     {
         if (!isCasting)
         {
             movement = movement.normalized;
             Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
             rb.MovePosition(rb.position + moving_by);
+        }
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            bodyAnimator.speed = 0;
+            hairAnimator.speed = 0;
+            wandAnimator.speed = 0;
+        }
+        else
+        {
+            bodyAnimator.speed = 1;
+            hairAnimator.speed = 1;
+            wandAnimator.speed = 1;
         }
     }
     public Vector2 CalcCircleDir()
@@ -1415,6 +1434,10 @@ public class Witch : Enemy
     {
         return moveSpeed * hoverSpeedFactor;
     }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
+    }
 }
 public class WitchMoveInfos
 {
@@ -1438,4 +1461,5 @@ public class WitchMoveInfos
         this.doMethod = doMethod;
         this.parentCategory = parentCategory;
     }
+
 }

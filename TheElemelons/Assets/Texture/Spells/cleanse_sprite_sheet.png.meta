@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: da875d035895e4c4d938dba855f9f3b7
+guid: 38f750fbe7165084aaec7bedddf7b4ce
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,505 +97,421 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: witchcloudSpritesheet_0
+      name: cleanse_sprite_sheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e14eaee6acd27449bf442d1bbbda9bb
-      internalID: 907975852
+      spriteID: 495935fa99d5fda4bab13bc53dd8327d
+      internalID: -1893256455
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_1
+      name: cleanse_sprite_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 989fbe014ac338e42b9669c2b778cc87
+      internalID: 27347992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 118138fc198ac6a4392a74c5a605f000
+      internalID: -1729016471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_3
       rect:
         serializedVersion: 2
         x: 288
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89461fe57a49e4a439fc3a081f520926
-      internalID: -1569819791
+      spriteID: 19e2bcd10912fbc4cae5dde0bf4a1611
+      internalID: -2002790022
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_2
+      name: cleanse_sprite_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e415e3f830c888e4dbc3fb944d9c3580
+      internalID: -875853816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91e2e2eae2630a94981b65c66c2be4e4
+      internalID: -547863192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_6
       rect:
         serializedVersion: 2
         x: 576
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a7554797229a12b4fbae5f31c08417e5
-      internalID: 721492271
+      spriteID: 498629b1f039c834bab3e1535e56e73b
+      internalID: -1087397839
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_3
+      name: cleanse_sprite_sheet_7
       rect:
         serializedVersion: 2
-        x: 864
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 672
+        y: 128
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a87b961550d2b2d4096a2e91d5c95f9d
-      internalID: -783390702
+      spriteID: e4df46dca2dd70e4983cb815afb4ad8c
+      internalID: 1353302555
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_4
-      rect:
-        serializedVersion: 2
-        x: 1152
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6102ac2ac375c7b4daabff74c8cb6752
-      internalID: 866789927
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_5
-      rect:
-        serializedVersion: 2
-        x: 1440
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 46af6e0fb4169e24fbfe960c20320939
-      internalID: -760926466
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_6
-      rect:
-        serializedVersion: 2
-        x: 1728
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6457ba78be1cdef4ea75ba01b0e147cd
-      internalID: -1008634808
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_7
-      rect:
-        serializedVersion: 2
-        x: 2016
-        y: 576
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d7a0503a260bf7949968acef270c206c
-      internalID: -1794653092
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_8
+      name: cleanse_sprite_sheet_8
       rect:
         serializedVersion: 2
         x: 0
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7481c7e711280544a8ebfae7267154bd
-      internalID: 689590794
+      spriteID: 655aa6260708f19448275c69c23a91d8
+      internalID: 1098056582
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_9
+      name: cleanse_sprite_sheet_9
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 465ee32f3ad012c48b1b34311ba8fe21
+      internalID: 349687270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_10
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26ef72d476379494caf9228ea037abb6
+      internalID: -1570800805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_11
       rect:
         serializedVersion: 2
         x: 288
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a1c5d6c210cea814b89d628e750ac8d0
-      internalID: -2125804965
+      spriteID: dcf824d13fe1ec74ca858f7ab46649c1
+      internalID: 2035835309
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_10
+      name: cleanse_sprite_sheet_12
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0709dbb0d60b55741ada8a732b6d0909
+      internalID: 1986124170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_13
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c39e7eb1dc0baae4db7c0679d34ddc5b
+      internalID: -2129602035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cleanse_sprite_sheet_14
       rect:
         serializedVersion: 2
         x: 576
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d74d1bbe8bd19584095c43277e8805bc
-      internalID: 259563454
+      spriteID: 03ae740ac153fc040bb5692df26b1f57
+      internalID: -764857997
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_11
+      name: cleanse_sprite_sheet_15
       rect:
         serializedVersion: 2
-        x: 864
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 672
+        y: 64
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 26b370d6fc86418438db17ece0fb9468
-      internalID: 26110468
+      spriteID: bd7ea819f07616040a17271f9b831f5b
+      internalID: -847426167
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_12
-      rect:
-        serializedVersion: 2
-        x: 1152
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8123000ce4505fa4ab513eb3dd1b8d89
-      internalID: 843473833
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_13
-      rect:
-        serializedVersion: 2
-        x: 1440
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 19451ac1f4333de4399e8914bdb127a6
-      internalID: -1052668418
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_14
-      rect:
-        serializedVersion: 2
-        x: 1728
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 51341c7cdc5e44a43b2eca7ea841acdf
-      internalID: 194053785
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_15
-      rect:
-        serializedVersion: 2
-        x: 2016
-        y: 288
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fe930d6959bdc7b479d4f425ceb6dc43
-      internalID: 683283065
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_16
+      name: cleanse_sprite_sheet_16
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bca671784b466f94dba0a71c39bc6c5c
-      internalID: -1319541623
+      spriteID: 5e3d5c5d79891c94a9e25d8c4ef34a5c
+      internalID: 682258352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_17
+      name: cleanse_sprite_sheet_17
       rect:
         serializedVersion: 2
-        x: 288
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb1cde2035ccb2d4494ca32178f77911
-      internalID: 1368712348
+      spriteID: 45a8dd2c138cf1c47afff99842e9706d
+      internalID: 1370980346
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_18
+      name: cleanse_sprite_sheet_18
       rect:
         serializedVersion: 2
-        x: 576
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5237abe4020a4d47b89cc7dd6532951
-      internalID: 423224030
+      spriteID: 6c937a8ed0d8678439de024a5106773d
+      internalID: 605751473
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: witchcloudSpritesheet_19
+      name: cleanse_sprite_sheet_19
       rect:
         serializedVersion: 2
-        x: 864
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 06b03fd0166af8044a6d804caf5f1988
-      internalID: 1811066095
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_20
-      rect:
-        serializedVersion: 2
-        x: 1152
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: df354b74a7a9dd646bfc2a537178b618
-      internalID: 1294133930
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_21
-      rect:
-        serializedVersion: 2
-        x: 1440
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0f8f23a1fbab4bc4a90ff4984baf4d2a
-      internalID: 380371889
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_22
-      rect:
-        serializedVersion: 2
-        x: 1728
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c522b9ca9952994499a447aa364d8d04
-      internalID: -1085164053
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: witchcloudSpritesheet_23
-      rect:
-        serializedVersion: 2
-        x: 2016
-        y: 0
-        width: 288
-        height: 288
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d6f1f8c3ee1622f48972e82bf09e7cf5
-      internalID: 1297169864
+      spriteID: f2f358b070816bd468685fb8e849bcf6
+      internalID: 1879745892
       vertices: []
       indices: 
       edges: []
@@ -611,30 +527,26 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      witchcloudSpritesheet_0: 907975852
-      witchcloudSpritesheet_1: -1569819791
-      witchcloudSpritesheet_10: 259563454
-      witchcloudSpritesheet_11: 26110468
-      witchcloudSpritesheet_12: 843473833
-      witchcloudSpritesheet_13: -1052668418
-      witchcloudSpritesheet_14: 194053785
-      witchcloudSpritesheet_15: 683283065
-      witchcloudSpritesheet_16: -1319541623
-      witchcloudSpritesheet_17: 1368712348
-      witchcloudSpritesheet_18: 423224030
-      witchcloudSpritesheet_19: 1811066095
-      witchcloudSpritesheet_2: 721492271
-      witchcloudSpritesheet_20: 1294133930
-      witchcloudSpritesheet_21: 380371889
-      witchcloudSpritesheet_22: -1085164053
-      witchcloudSpritesheet_23: 1297169864
-      witchcloudSpritesheet_3: -783390702
-      witchcloudSpritesheet_4: 866789927
-      witchcloudSpritesheet_5: -760926466
-      witchcloudSpritesheet_6: -1008634808
-      witchcloudSpritesheet_7: -1794653092
-      witchcloudSpritesheet_8: 689590794
-      witchcloudSpritesheet_9: -2125804965
+      cleanse_sprite_sheet_0: -1893256455
+      cleanse_sprite_sheet_1: 27347992
+      cleanse_sprite_sheet_10: -1570800805
+      cleanse_sprite_sheet_11: 2035835309
+      cleanse_sprite_sheet_12: 1986124170
+      cleanse_sprite_sheet_13: -2129602035
+      cleanse_sprite_sheet_14: -764857997
+      cleanse_sprite_sheet_15: -847426167
+      cleanse_sprite_sheet_16: 682258352
+      cleanse_sprite_sheet_17: 1370980346
+      cleanse_sprite_sheet_18: 605751473
+      cleanse_sprite_sheet_19: 1879745892
+      cleanse_sprite_sheet_2: -1729016471
+      cleanse_sprite_sheet_3: -2002790022
+      cleanse_sprite_sheet_4: -875853816
+      cleanse_sprite_sheet_5: -547863192
+      cleanse_sprite_sheet_6: -1087397839
+      cleanse_sprite_sheet_7: 1353302555
+      cleanse_sprite_sheet_8: 1098056582
+      cleanse_sprite_sheet_9: 349687270
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

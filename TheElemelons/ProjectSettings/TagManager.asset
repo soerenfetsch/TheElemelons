@@ -56,3 +56,9 @@ TagManager:
   - name: roof
     uniqueID: 993259095
     locked: 0
+  - name: halfShadow
+    uniqueID: 2932728979
+    locked: 0
+  - name: shadow
+    uniqueID: 1343241821
+    locked: 0

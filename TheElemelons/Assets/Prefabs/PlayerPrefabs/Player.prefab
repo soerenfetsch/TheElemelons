@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7aaaf5e25cccd84ba19a41cd25ea3c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hiddenByThings: 0
 --- !u!212 &708902967062599466
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -704,6 +705,11 @@ MonoBehaviour:
   earthSpell: {fileID: 909741432932913071, guid: fee8c13b5d90bb847a1fc3b9c07aa6d2, type: 3}
   earthearthSpell: {fileID: 898128783897314616, guid: 793d49ed943fd5844973750dbb12b07e, type: 3}
   windwindSpell: {fileID: 6040504040626901719, guid: d20debf585b893e43a22708e28602289, type: 3}
+  waterSpell: {fileID: 9083567590189717510, guid: f35b39d356741ee459df6e5778544c6b, type: 3}
+  waterWindSpell: {fileID: 8405760517886195913, guid: bdae81b0aa4d39b4190035a22abd2c11, type: 3}
+  waterWaterSpell: {fileID: 4193848349941833332, guid: 7cc9249eb9b6e054da54bd7e50fe5994, type: 3}
+  waterFireSpell: {fileID: 7429157226772309105, guid: c45a0f865b2eac746a869587c0425fc8, type: 3}
+  fireSpell: {fileID: 5105837267791552613, guid: 0fb86fc3dbf1961469c2167d4742f114, type: 3}
   manaCost: 1
   playerMovement: {fileID: 1581666591548288514}
   uiManager: {fileID: 0}
@@ -792,6 +798,12 @@ MonoBehaviour:
     sprite: {fileID: 1144984600, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
   - type: 7
     sprite: {fileID: 2011474405, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 8
+    sprite: {fileID: 194035212, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 9
+    sprite: {fileID: -1949625035, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
+  - type: 10
+    sprite: {fileID: -414274897, guid: 10ae1943d6664b242b51203b2df172e0, type: 3}
 --- !u!114 &6168585797730868514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,6 +833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5257bb8b2d31754cab286ba018d60c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gizmosEnabled: 0
   interactableLayer:
     serializedVersion: 2
     m_Bits: 512

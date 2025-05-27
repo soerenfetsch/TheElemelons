@@ -15,9 +15,9 @@ public class Mole : Enemy
     private Animator animator;
     private FlashEffect flashEffect;
     private FlashEffect armFlashEffect;
+    Animator armAnimators;
 
     [Header("Pathfinding")]
-    public Transform playerTransform; // To store the player's transform for pathfinding.
     public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
@@ -51,6 +51,7 @@ public class Mole : Enemy
     public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
+        this.player = playerTransform.GetComponent<Player>();
         this.pathfinder = pathfinder;
 
         InitializeCombatComponents();
@@ -73,11 +74,13 @@ public class Mole : Enemy
         rb2d = GetComponent<Rigidbody2D>();
         colliderBox = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
+        armAnimators = arm.GetComponent<Animator>();
         health = GetComponent<Health>();
         mana = GetComponent<Mana>();
         flashEffect = GetComponent<FlashEffect>();
         armFlashEffect = arm.GetComponent<FlashEffect>();
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
 
         if (arm == null)
@@ -136,7 +139,11 @@ public class Mole : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        ActOnStatus();
+        if (CanAct())
+        {
+            ActOnStatus();
+        }
+        DoMovementWithChecks();
         ActOnHealth();
         ActOnMana();
     }
@@ -144,7 +151,7 @@ public class Mole : Enemy
     public override void ChangeState(EnemyStatus newState)
     {
         if (currentState == newState) return;
-        Debug.Log($"Mole: Changing state from {currentState} to {newState}");
+        //        Debug.Log($"Mole: Changing state from {currentState} to {newState}");
         currentState = newState;
     }
 
@@ -164,6 +171,7 @@ public class Mole : Enemy
             case EnemyStatus.Idle:
                 if (isDugIn && CheckPlayerWithinRadius(chaseRadius))
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Approaching);
                     ChangeAnimationClip("Walking");
                     break;
@@ -341,7 +349,7 @@ public class Mole : Enemy
         if (direction == Vector2.zero) return;
 
         direction = direction.normalized;
-        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        movement = direction;
         ChangeWalkAnimation(direction);
     }
 
@@ -485,5 +493,28 @@ public class Mole : Enemy
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            animator.speed = 0;
+            armAnimators.speed = 0;
+        }
+        else
+        {
+            animator.speed = 1;
+            armAnimators.speed = 1;
+        }
+    }
+    public override void DoMovement()
+    {
+        movement = movement.normalized;
+        rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

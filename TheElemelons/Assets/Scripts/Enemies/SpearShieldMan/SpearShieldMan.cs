@@ -18,9 +18,7 @@ public class SpearShieldMan : Enemy
     private Animator animator;
     private FlashEffect flashEffect;
 
-    [Header("Pathfinding")]
-    public Transform playerTransform; // To store the player's transform for pathfinding.
-    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
+    [Header("Pathfinding")] public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
 
     [Header("Behavior")]
     public float moveSpeed = 1f;
@@ -56,7 +54,7 @@ public class SpearShieldMan : Enemy
     {
         playerTransform = player;
         this.pathfinder = pathfinder;
-
+        this.player = playerTransform.GetComponent<Player>();
         InitializeCombatComponents();
     }
 
@@ -144,6 +142,7 @@ public class SpearShieldMan : Enemy
         InitializeComponents();
         InitializeCombatComponents();
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         if (playerTransform == null)
         {
             Debug.Log("Tiki couldn't find the player at Start(), please fix");
@@ -154,7 +153,11 @@ public class SpearShieldMan : Enemy
     // Fixed update to handle physics and movements correctly
     private void FixedUpdate()
     {
-        ActOnStatus();
+        if (CanAct())
+        {
+            ActOnStatus();
+        }
+        DoMovementWithChecks();
         ActOnHealth();
         ActOnMana();
     }
@@ -181,6 +184,7 @@ public class SpearShieldMan : Enemy
             case EnemyStatus.Idle:
                 if (CheckPlayerWithinRadius(chaseRadius) && CheckPlayerReachableWithinRadius(chaseRadius))
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Approaching);
                     ChangeAnimationClip("Walking");
                     break;
@@ -503,10 +507,25 @@ public class SpearShieldMan : Enemy
         if (direction == Vector2.zero) return;
 
         direction = direction.normalized;
-        rb2d.MovePosition((Vector2)transformComponent.position + direction * moveSpeed * Time.deltaTime);
+        movement = direction;
         ChangeWalkAnimation(direction);
     }
-
+    public override void DoMovement()
+    {
+        rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            animator.speed = 0;
+        }
+        else
+        {
+            animator.speed = 1;
+        }
+    }
     private Vector2 GetFeetPosition()
     {
         return new Vector2(transformComponent.position.x, colliderBox.bounds.min.y);
@@ -548,5 +567,9 @@ public class SpearShieldMan : Enemy
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

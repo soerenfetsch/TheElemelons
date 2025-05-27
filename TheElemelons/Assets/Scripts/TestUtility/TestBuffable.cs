@@ -28,4 +28,7 @@ public class TestBuffable : MonoBehaviour, IBuffable
     {
         manaRegen *= factor;
     }
+    public void ModifyIsHidden(float factor) { }
+    public void ModifyIsConfused(float factor) { }
+    public void ModifyIsFrozen(float factor) { }
 }

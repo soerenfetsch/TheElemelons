@@ -15,7 +15,6 @@ public class Snek : Enemy
     float deathEffectDelay = 0.5f;
     public FlashEffect flashEffect;
     public float flashDuration = 0.2f;
-    Transform playerTransform;
     LineOfSightPathfinder pathfinder;
     Rigidbody2D rb;
     Animator animator;
@@ -36,7 +35,6 @@ public class Snek : Enemy
     float thrust = 5f;
     [Header("Movement")]
     RaycastHit2D hit;
-    Vector2 movement;
     float moveFactor = 1f;
     float dashSpeed = 7f;
     float attackSpeed = 10f;
@@ -48,6 +46,7 @@ public class Snek : Enemy
         attackFactor = 1;
         defenseFactor = 1;
         playerTransform = GameObject.Find("Player").transform;
+        player = playerTransform.GetComponent<Player>();
         pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
         rb = GetComponent<Rigidbody2D>();
         movement = Vector2.zero;
@@ -102,8 +101,11 @@ public class Snek : Enemy
             NewRayCast();
             ActOnHealth();
             ActOnRange();
-            ActOnStatus();
-            DoMovement();
+            if (CanAct())
+            {
+                ActOnStatus();
+            }
+            DoMovementWithChecks();
         }
     }
     /// <summary>
@@ -144,7 +146,7 @@ public class Snek : Enemy
     /// generated until the snake finds a free path or 
     /// that movement been rotated by 360 deg. Executes chosen movement.
     /// </summary>
-    public void DoMovement()
+    public override void DoMovement()
     {
         int turn = 15;
         for (int i = 0; i < 360f; i = i + turn)
@@ -158,6 +160,18 @@ public class Snek : Enemy
         movement.Normalize();
         Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + moving_by);
+    }
+    public override void OnFreeze(bool freezeOn = true)
+    {
+        if (freezeOn)
+        {
+            movement = Vector2.zero;
+            animator.speed = 0f;
+        }
+        else
+        {
+            animator.speed = 1;
+        }
     }
     public float GetMoveSpeed()
     {
@@ -202,7 +216,7 @@ public class Snek : Enemy
             {
                 currentSnekStatus = SnekStatus.Dash;
             }
-            if (canTongue && dist < tongueRange)
+            if (canTongue && dist < tongueRange && CanAct())
             {
                 StartCoroutine(DoTongue());
             }
@@ -361,10 +375,15 @@ public class Snek : Enemy
     {
         if (other.gameObject.CompareTag("Player") &&
             other.isTrigger &&
-            other.gameObject.GetComponent<Player>().GetCurrentState() != PlayerState.Stagger)
+            other.gameObject.GetComponent<Player>().GetCurrentState() != PlayerState.Stagger
+            && !isMovementBlocked)
         {
             Vector2 attackDirection = other.transform.position - transform.position;
             CombatManager.ExecuteAttack(gameObject, other.GetComponent<Rigidbody2D>(), elementType, attackDirection, baseDamage, thrust, knockTime);
         }
+    }
+    public override void DoObstructSight(bool onOff)
+    {
+        ObstructSight(onOff);
     }
 }

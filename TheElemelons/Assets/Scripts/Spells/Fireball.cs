@@ -132,4 +132,14 @@ public class Fireball : SpellEffect
             }
         }
     }
+    public void TurnLightOff()
+    {
+        StartCoroutine(TurnLightOffCoroutine());
+    }
+    IEnumerator TurnLightOffCoroutine()
+    {
+        transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        transform.Find("Light").gameObject.SetActive(false);
+    }
 }

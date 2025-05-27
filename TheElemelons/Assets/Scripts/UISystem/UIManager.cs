@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour
     float lastHealth;
     [Header("BuffDebuff Animation Management")]
     public Animator speedBuffAnimator;
+    public GameObject questionMark;
+    public GameObject iceCrystal;
 
     [Header("UI Canvas Panels")]
     public GameObject pauseMenuPanel;
@@ -286,6 +288,44 @@ public class UIManager : MonoBehaviour
     public void SetSpeedBuffAnimation(bool isBuffed)
     {
         speedBuffAnimator.SetBool("run", isBuffed);
+    }
+    /// <summary>
+    /// instantiate question mark as visual effect when confused
+    /// </summary>
+    /// <param name="isBuffed"></param>
+    /// <param name="target"></param>
+    public void SetConfusedEffect(bool isBuffed, GameObject target)
+    {
+        if (isBuffed)
+        {
+
+            Vector3 pos = target.transform.position;
+            GameObject questionMarkEffect = Instantiate(questionMark, pos, Quaternion.Euler(0, 0, 0));
+            questionMarkEffect.transform.parent = target.transform;
+        }
+        else
+        {
+            Destroy(target.transform.Find("QuestionMark(Clone)").gameObject);
+        }
+    }
+    /// <summary>
+    /// Initialize ice crystal effect when frozen
+    /// </summary>
+    /// <param name="isBuffed"></param>
+    /// <param name="target"></param>
+    public void SetFreezeEffect(bool isBuffed, GameObject target)
+    {
+        if (isBuffed)
+        {
+
+            Vector3 pos = target.transform.position;
+            GameObject freezeEffect = Instantiate(iceCrystal, pos, Quaternion.Euler(0, 0, 0));
+            freezeEffect.GetComponent<IceCrystal>().SetVictim(target);
+        }
+        else
+        {
+            Destroy(target.transform.Find("IceCrystalEffect(Clone)").gameObject);
+        }
     }
 
     // BuffDebuff Icon Management
