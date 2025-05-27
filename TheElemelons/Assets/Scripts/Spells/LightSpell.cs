@@ -26,19 +26,6 @@ public class LightSpell : SpellEffect
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(Expire());
         circlefactor = Random.Range(0, 2) > 0 ? -1 : 1;
-        try
-        {
-            Transform darknessLayers = GameObject.Find("DarknessLayers").transform;
-            if (darknessLayers != null)
-            {
-                transform.parent = GameObject.Find("DarknessLayers").transform;
-            }
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("no darkness layers found");
-            throw;
-        }
         currentRangeState = RangeState.InRange;
     }
     IEnumerator Expire()
