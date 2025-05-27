@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
+  m_Name: king_end
+  m_EditorClassIdentifier: 
+  speakerName: King
+  portraits:
+  - {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+  - {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+  dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
+  sentences:
+  - "Ah, brave champion! You have returned\u2026"
+  - and in your hands, the Earth Elemelon!
+  - Never did I think I would lay eyes on its verdant glow again...
+  - "Come! Let me place it back where it belongs\u2014in the throne room."
+  - The soil shall once again breathe life into our lands.
+  - The balance is one step closer to being restored.
+  - You, my valiant friend, are the bearer of light
+  - "in our kingdom\u2019s darkest hours."
+  - "Now go, hero. The journey is not yet over\u2014"
+  - but for this moment, let us bask in victory.
+  imageSprite: {fileID: 0}

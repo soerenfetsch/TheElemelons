@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     void Start()
     {
         Initialize();
+        DontDestroyOnLoad(gameObject); // Persist across scenes
     }
 
     /// <summary>

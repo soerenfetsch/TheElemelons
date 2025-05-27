@@ -11,6 +11,9 @@ public class BipartitioningMapGeneratorTests
     public void SetUp()
     {
         generator = new BipartitioningMapGenerator();
+        // Set up player in scene
+        GameObject player = new GameObject("Player");
+        player.AddComponent<Player>();
     }
 
     [Test]

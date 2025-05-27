@@ -13,9 +13,7 @@ public class CastingTests
 {
     private Casting casting;
     private Mana manaMock;
-    private Player playerMock;
     private PlayerMovement playerMovementMock;
-    private UIManager uiManagerMock;
     private Animator wandAnimatorMock;
 
     private GameObject gameObject;
@@ -28,14 +26,11 @@ public class CastingTests
         // Create mock objects using NSubstitute
         manaMock = Substitute.For<Mana>();
         playerMovementMock = Substitute.For<PlayerMovement>();
-        uiManagerMock = Substitute.For<UIManager>();
         wandAnimatorMock = Substitute.For<Animator>();
-        playerMock = Substitute.For<Player>();
         // Create the Casting instance and inject dependencies
         casting = gameObject.AddComponent<Casting>();
         casting.manaScript = manaMock;
         casting.playerMovement = playerMovementMock;
-        casting.uiManager = uiManagerMock;
         casting.wandAnimator = wandAnimatorMock;
     }
 

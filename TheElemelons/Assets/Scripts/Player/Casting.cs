@@ -59,7 +59,6 @@ public class Casting : MonoBehaviour
 
     [Header("Internal Stuff")]
     public PlayerMovement playerMovement;
-    public UIManager uiManager;
     private Player player;
 
     private void Start()
@@ -129,7 +128,7 @@ public class Casting : MonoBehaviour
         {
             currentCharges.Add(selectedCharge);
             wandAnimator.SetBool("Charge", true);
-            uiManager.loadChargeSprite(selectedCharge);
+            UIManager.Instance.loadChargeSprite(selectedCharge);
         }
     }
 
@@ -155,7 +154,7 @@ public class Casting : MonoBehaviour
             CombatManager.InstantiateSpell(newSpell, gameObject, castpoint.position, Quaternion.Euler(0, 0, 0));
             //clear chargetuple and according ui
             ClearCharges();
-            uiManager.ClearChargeSprites();
+            UIManager.Instance.ClearChargeSprites();
             manaScript.justCasted = true;
         }
         else
@@ -177,7 +176,7 @@ public class Casting : MonoBehaviour
     {
         wandAnimator.SetBool("Charge", true);
         currentCharges.Clear();
-        uiManager.ClearChargeSprites();
+        UIManager.Instance.ClearChargeSprites();
     }
 
     /// <summary>

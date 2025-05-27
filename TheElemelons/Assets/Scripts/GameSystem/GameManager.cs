@@ -1,16 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public GameProgressionStage CurrentProgressionStage { get; private set; }
-    public GameStatus CurrentGameStatus { get; private set; }
+    public GameProgressionStage CurrentProgressionStage { get; private set; } = GameProgressionStage.INVALID;
+    public GameProgressionStage PreviousProgressionStage { get; private set; } = GameProgressionStage.INVALID;
+    public GameStatus CurrentGameStatus { get; private set; } = GameStatus.MAIN_MENU;
+    public GameStatus PreviousGameStatus { get; private set; }
 
     public GameSaveProvider SaveProvider;
-    public UIManager uiManager;
 
     // Events for Game Status changes
     public static event Action<GameStatus> OnGameStatusChanged;
@@ -34,13 +36,29 @@ public class GameManager : MonoBehaviour
         {
             SaveProvider = new GameSaveProvider(); // Default
         }
+        // Check if a save file exists then enable the continue button
+        if (SaveProvider.SaveExists())
+        {
+            // Enable the continue button in the UI
+            UIManager.Instance?.ToggleContinueGameButton(true);
+        }
+        else
+        {
+            // Disable the continue button in the UI
+            UIManager.Instance?.ToggleContinueGameButton(false);
+        }
+        ChangeGameStatus(GameStatus.MAIN_MENU);
     }
 
     public void ChangeProgressionStage(GameProgressionStage newStage)
     {
+        Debug.Log($"Changing progression stage from {CurrentProgressionStage} to {newStage}");
+        PreviousProgressionStage = CurrentProgressionStage; // Store the previous stage
         CurrentProgressionStage = newStage;
-        if (newStage != GameProgressionStage.EARTH_EARLY && newStage != GameProgressionStage.EARTH_LATE)
+        if (newStage != GameProgressionStage.EARTH_EARLY && newStage != GameProgressionStage.EARTH_LATE
+            && newStage != GameProgressionStage.EARTH_EARLY_BOSS && newStage != GameProgressionStage.EARTH_LATE_BOSS)
         {
+            // Save the game if the stage is not EARTH_EARLY or EARTH_LATE
             SaveGame();
         }
         StartMainGameStage();
@@ -48,26 +66,31 @@ public class GameManager : MonoBehaviour
 
     public void ChangeGameStatus(GameStatus newStatus)
     {
+        Debug.Log($"Changing game status from {CurrentGameStatus} to {newStatus}");
+        PreviousGameStatus = CurrentGameStatus; // Store the previous status
         CurrentGameStatus = newStatus;
         OnGameStatusChanged?.Invoke(newStatus); // Invoke the event
 
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
+                // Time.timeScale = 0; // Pause the game
+                break;
+            case GameStatus.LOADING_SCREEN:
+                Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.MAIN_MENU:
-                SaveGame();
-                SceneManager.LoadScene("MainMenu"); // Replace with your main menu scene
+                ResetProgressionStage();
+                Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.PAUSE_MENU:
-                //uiManager.OpenPauseMenu(); // UIManager will handle this via the event
                 Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.DIALOGUE:
                 Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.SETTINGS_MENU:
-                //uiManager.OpenSettingsMenu(); // UIManager will handle this via the event
+                Time.timeScale = 0; // Pause the game
                 break;
             case GameStatus.INGAME:
                 Time.timeScale = 1; // Resume the game
@@ -75,12 +98,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ResetProgressionStage()
+    {
+        CurrentProgressionStage = GameProgressionStage.INVALID;
+        PreviousProgressionStage = GameProgressionStage.INVALID;
+    }
+
     public void NewGame()
     {
         SaveProvider.ResetSave();
-        CurrentProgressionStage = GameProgressionStage.CASTLE_INTRODUCTION;
-        ChangeGameStatus(GameStatus.INGAME);
-        StartMainGameStage();
+        // Reset the progression stage
+        ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
     }
 
     public void ContinueSavedGame()
@@ -88,15 +116,12 @@ public class GameManager : MonoBehaviour
         GameSaveData data = SaveProvider.LoadGame();
         if (data != null)
         {
-            CurrentProgressionStage = data.progressionStage;
-            // Load player stats, button settings, etc.
+            ChangeProgressionStage(data.progressionStage);
         }
         else
         {
             NewGame(); // If no save data, start a new game
         }
-        ChangeGameStatus(GameStatus.INGAME);
-        StartMainGameStage();
     }
 
     private void SaveGame()
@@ -107,12 +132,26 @@ public class GameManager : MonoBehaviour
             // Save player stats, button settings, etc.
         };
         SaveProvider.SaveGame(data);
+        if (File.Exists(SaveProvider.SavePath))
+        {
+            Debug.Log("Game saved successfully.");
+            UIManager.Instance?.ToggleContinueGameButton(true);
+        }
+        else
+        {
+            Debug.LogError("Failed to save game.");
+        }
     }
 
     private void StartMainGameStage()
     {
-        // Implement logic to load different scenes or enable/disable game objects
-        // based on the CurrentProgressionStage.
-        Debug.Log("Starting game stage: " + CurrentProgressionStage);
+        MainGame.Instance?.StartGameStage(CurrentProgressionStage);
     }
+
+    [ContextMenu("Change to Boss Stage")]
+    private void ChangeToBossStage()
+    {
+        ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
+    }
+    
 }

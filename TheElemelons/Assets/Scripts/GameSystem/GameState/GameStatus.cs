@@ -5,5 +5,6 @@ public enum GameStatus
     PAUSE_MENU,
     DIALOGUE,
     SETTINGS_MENU,
-    DEATH_SCREEN
+    DEATH_SCREEN,
+    LOADING_SCREEN
 }

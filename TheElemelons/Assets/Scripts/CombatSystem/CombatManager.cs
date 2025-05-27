@@ -66,6 +66,13 @@ public class CombatHelper : MonoBehaviour
 public static class CombatManager
 {
     public const float invincibilityDuration = 0.2f;
+
+    /// <summary>
+    /// Event triggered when the player dies.
+    /// This happens when the player is knocked and their health reaches zero.
+    /// </summary>
+    public static Action OnPlayerDeath;
+
     private static Dictionary<ElementType, Dictionary<ElementType, float>> damageTable = new Dictionary<ElementType, Dictionary<ElementType, float>>()
     {
         {ElementType.Fire, new Dictionary<ElementType, float>(){
@@ -278,7 +285,12 @@ public static class CombatManager
 
                 // Mark target as invincible for a short duration
                 CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
-                // TODO: If target is dead, game manager might need to act
+
+                // If player is dead, invoke the OnPlayerDeath event
+                if (target.gameObject.CompareTag("Player") && health.IsZero())
+                {
+                    OnPlayerDeath?.Invoke();
+                }
             }
             catch (ArgumentException e)
             {
@@ -336,7 +348,12 @@ public static class CombatManager
 
                 // Mark target as invincible for a short duration
                 CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
-                // TODO: If target is dead, game manager might need to act
+
+                // If player is dead, invoke the OnPlayerDeath event
+                if (target.gameObject.CompareTag("Player") && health.IsZero())
+                {
+                    OnPlayerDeath?.Invoke();
+                }
             }
             catch (ArgumentException e)
             {
@@ -394,7 +411,12 @@ public static class CombatManager
 
                 // Mark target as invincible for a short duration
                 CombatHelper.Instance.MakeInvincible(targetScript, invincibilityDuration);
-                // TODO: If target is dead, game manager might need to act
+
+                // If player is dead, invoke the OnPlayerDeath event
+                if (target.gameObject.CompareTag("Player") && health.IsZero())
+                {
+                    OnPlayerDeath?.Invoke();
+                }
             }
             catch (ArgumentException e)
             {

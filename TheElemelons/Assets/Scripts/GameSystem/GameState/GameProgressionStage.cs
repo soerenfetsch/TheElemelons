@@ -1,9 +1,12 @@
 public enum GameProgressionStage
 {
+    INVALID,
     CASTLE_INTRODUCTION,
     CASTLE_EARLY,
     EARTH_EARLY,
+    EARTH_EARLY_BOSS,
     CASTLE_END,
     CASTLE_LATE,
-    EARTH_LATE
+    EARTH_LATE,
+    EARTH_LATE_BOSS,
 }

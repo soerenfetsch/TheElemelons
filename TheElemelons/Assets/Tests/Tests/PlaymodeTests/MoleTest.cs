@@ -38,6 +38,10 @@ public class MoleTest
 
         // Mocking the player's transform
         var playerObject = new GameObject("Player");
+        playerObject.AddComponent<Player>();
+        var wandObject = new GameObject("Wand_Animation");
+        wandObject.transform.SetParent(playerObject.transform);
+        wandObject.AddComponent<Animator>();
         playerObject.transform.position = Vector3.zero + Vector3.up * 2f; // Set player position above the mole
 
         var pathfinderObject = new GameObject("Pathfinder");
