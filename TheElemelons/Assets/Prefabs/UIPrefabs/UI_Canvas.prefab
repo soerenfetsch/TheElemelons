@@ -134,6 +134,7 @@ MonoBehaviour:
   windSprite: {fileID: 46059240, guid: 4db143e84d0c39742938c6ef62851634, type: 3}
   speedBuffAnimator: {fileID: 0}
   questionMark: {fileID: 4782941036331643559, guid: 9e9394a0ddd263e49a238dc48d3e990c, type: 3}
+  iceCrystal: {fileID: 2074038266940160402, guid: bf28913a41d4c4144968e8b3f5de3d10, type: 3}
   pauseMenuPanel: {fileID: 2739715255320437623}
   startMenuPanel: {fileID: 9150693199017904779}
   settingsMenuPanel: {fileID: 1933944021799878360}
