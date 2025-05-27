@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaCost: 1
   spellObject: {fileID: 5105837267791552613}
+  spellLifeTime: 5
 --- !u!1001 &636170423995867440
 PrefabInstance:
   m_ObjectHideFlags: 0

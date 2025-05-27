@@ -86,8 +86,8 @@ public class WaterVaporSpell : SpellEffect
     }
     IEnumerator TurnLightOffCoroutine()
     {
-        transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+        transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.Find("Light").gameObject.SetActive(false);
     }
 }

@@ -37,8 +37,8 @@ public class Bomb_Spell : SpellEffect
     {
         spellType = new ChargeTuple(ChargeTypes.fire, ChargeTypes.earth);
         StartCoroutine(BlinkTime());
-        //only half shadow
-        transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
+        //dimmed light half shadow
+        transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
     }
     /// <summary>
     /// make bomb blink for set time, then trigger explosion
@@ -90,8 +90,8 @@ public class Bomb_Spell : SpellEffect
     }
     IEnumerator TurnLightOffCoroutine()
     {
-        transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+        transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
-        transform.GetChild(1).gameObject.SetActive(false);
+        transform.Find("Light").gameObject.SetActive(false);
     }
 }

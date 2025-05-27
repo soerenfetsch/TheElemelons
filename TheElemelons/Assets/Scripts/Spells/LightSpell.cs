@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LightSpell : SpellEffect
 {
-    float spellLifeTime = 60f;
+    public float spellLifeTime = 60f;
     float fadeDuration = 3f;
     SpriteRenderer spriteRenderer;
     Transform casterTransform;
@@ -31,11 +31,18 @@ public class LightSpell : SpellEffect
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
+        bool dimmed = false;
+        transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
         float fadeTimer = fadeDuration;
         Color c = spriteRenderer.color;
         float chunkiness = 30f;
         while (fadeTimer > 0f)
         {
+            if (!dimmed && fadeTimer < fadeDuration * 2 / 3)
+            {
+                transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
+                dimmed = true;
+            }
             fadeTimer -= Time.deltaTime * chunkiness;
             float alpha = Mathf.Clamp01(fadeTimer / fadeDuration);
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
