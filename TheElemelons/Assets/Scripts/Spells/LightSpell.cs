@@ -25,6 +25,7 @@ public class LightSpell : SpellEffect
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(Expire());
+        circlefactor = Random.Range(0, 2) > 0 ? -1 : 1;
         try
         {
             Transform darknessLayers = GameObject.Find("DarknessLayers").transform;
