@@ -709,6 +709,7 @@ MonoBehaviour:
   waterWindSpell: {fileID: 8405760517886195913, guid: bdae81b0aa4d39b4190035a22abd2c11, type: 3}
   waterWaterSpell: {fileID: 4193848349941833332, guid: 7cc9249eb9b6e054da54bd7e50fe5994, type: 3}
   waterFireSpell: {fileID: 7429157226772309105, guid: c45a0f865b2eac746a869587c0425fc8, type: 3}
+  fireSpell: {fileID: 5105837267791552613, guid: 0fb86fc3dbf1961469c2167d4742f114, type: 3}
   manaCost: 1
   playerMovement: {fileID: 1581666591548288514}
   uiManager: {fileID: 0}

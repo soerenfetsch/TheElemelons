@@ -25,7 +25,19 @@ public class LightSpell : SpellEffect
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(Expire());
-        transform.parent = GameObject.Find("DarknessLayers").transform;
+        try
+        {
+            Transform darknessLayers = GameObject.Find("DarknessLayers").transform;
+            if (darknessLayers != null)
+            {
+                transform.parent = GameObject.Find("DarknessLayers").transform;
+            }
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("no darkness layers found");
+            throw;
+        }
         currentRangeState = RangeState.InRange;
     }
     IEnumerator Expire()
