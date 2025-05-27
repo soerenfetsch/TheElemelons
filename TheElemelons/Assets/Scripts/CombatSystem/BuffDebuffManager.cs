@@ -402,14 +402,12 @@ public class BuffDebuffManager : MonoBehaviour
             TargetEntity entity = targets[target];
             // Cannot directly remove from the list while iterating
             // so we need to create a copy of the list
+
             foreach (var effect in new List<BuffDebuff>(GetActiveEffects(target)))
-                // Cannot directly remove from the list while iterating
-                // so we need to create a copy of the list
-                foreach (var effect in new List<BuffDebuff>(GetActiveEffects(target)))
-                {
-                    entity.RemoveEffect(effect);
-                    ApplyEffectToStats(target, effect, false);
-                }
+            {
+                entity.RemoveEffect(effect);
+                ApplyEffectToStats(target, effect, false);
+            }
         }
     }
     public void ClearEffect(GameObject target, BuffDebuffType type, string effectName = "")
