@@ -11642,17 +11642,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 961874467}
     m_Modifications:
+    - target: {fileID: 1956104170114914241, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2629525024190540524, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.23
+      objectReference: {fileID: 0}
     - target: {fileID: 3942334310516219014, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
       propertyPath: m_Name
       value: Darkness
       objectReference: {fileID: 0}
     - target: {fileID: 7823433834474796962, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823433834474796962, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823433834474796962, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7823433834474796962, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 7823433834474796962, guid: 554d8ba98455c3d499c7a7dd1d90fceb, type: 3}
       propertyPath: m_LocalPosition.z
