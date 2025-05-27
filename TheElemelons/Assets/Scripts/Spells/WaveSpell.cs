@@ -28,7 +28,7 @@ public class WaveSpell : SpellEffect
         transform.rotation = Quaternion.Euler(0, 0, 90) * castPoint.rotation;
         rigidbody2D = GetComponent<Rigidbody2D>();
         rayCastPoints = new List<Transform>();
-        for (int i = 0; i < transform.GetChild(1).childCount; i++)
+        for (int i = 0; i < 3; i++)
         {
             rayCastPoints.Add(transform.GetChild(1).GetChild(i).transform);
         }

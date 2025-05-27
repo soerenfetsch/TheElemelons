@@ -25,7 +25,7 @@ public class BlizzardSpell : SpellEffect
         transform.position = caster.transform.position;
         victims = new List<GameObject>();
         spriteRenderers = new List<SpriteRenderer>();
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < 4; i++)
         {
             spriteRenderers.Add(transform.GetChild(i).GetComponent<SpriteRenderer>());
         }
