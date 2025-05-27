@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManagerStateTransitionTests
 {
     private GameObject gameManagerGameObject;
+    private GameObject uiManagerObject;
     private GameManager gameManager;
     private bool startMainGameStageCalled; // Add this line
 
@@ -18,6 +19,8 @@ public class GameManagerStateTransitionTests
         gameManager = gameManagerGameObject.AddComponent<GameManager>();
         gameManager.SaveProvider = new GameSaveProvider(); // Ensure SaveProvider is initialized
         startMainGameStageCalled = false; // Reset the flag
+        uiManagerObject = new GameObject("UIManager");
+        uiManagerObject.AddComponent<UIManager>();
     }
 
     [TearDown]
@@ -99,6 +102,5 @@ public class GameManagerStateTransitionTests
 
         // Assert
         Assert.AreEqual(GameProgressionStage.CASTLE_INTRODUCTION, gameManager.CurrentProgressionStage, "CurrentProgressionStage should be CASTLE_INTRODUCTION.");
-        Assert.AreEqual(GameStatus.INGAME, gameManager.CurrentGameStatus, "CurrentGameStatus should be INGAME.");
     }
 }

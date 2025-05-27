@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }
     public GameObject playerObject;
     Health health;
     Mana mana;
@@ -41,6 +42,27 @@ public class UIManager : MonoBehaviour
     public GameObject settingsMenuPanel;
     public GameObject ingamePanel;
     public GameObject deathScreenPanel;
+    public GameObject loadPanel;
+
+    [Header("Bossbar")]
+    public GameObject bossBar;
+
+
+    /// <summary>
+    /// Singleton instance of UIManager.
+    /// </summary>
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -56,6 +78,8 @@ public class UIManager : MonoBehaviour
         castingScript = playerObject.GetComponent<Casting>();
         inputManager = playerObject.GetComponent<InputManager>();
         playerMovement = playerObject.GetComponent<PlayerMovement>();
+        bossBar = ingamePanel?.transform.Find("BossBar")?.gameObject;
+        ToggleBossBar(false, null);
     }
 
     /// <summary>
@@ -64,6 +88,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (GameManager.Instance.CurrentGameStatus != GameStatus.INGAME)
+        {
+            return;
+        }
         UpdateHealthBar();
         UpdateManaBar();
         UpdateBuffDebuffIcons();
@@ -82,6 +110,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        if (GameManager.Instance.CurrentGameStatus != GameStatus.INGAME)
+        {
+            return;
+        }
         UpdateAimingArrow();
     }
 
@@ -336,10 +368,14 @@ public class UIManager : MonoBehaviour
 
     private void HandleGameStatusChanged(GameStatus newStatus)
     {
+        Debug.Log($"UIManager: Game status changed to {newStatus}");
         switch (newStatus)
         {
             case GameStatus.DEATH_SCREEN:
-                EnablePanel("DeathScreen"); // Assuming you have a DeathScreen panel
+                EnablePanel("DeathScreen");
+                break;
+            case GameStatus.LOADING_SCREEN:
+                EnablePanel("LoadPanel");
                 break;
             case GameStatus.PAUSE_MENU:
                 EnablePanel("PauseMenu");
@@ -386,6 +422,12 @@ public class UIManager : MonoBehaviour
     public void EnableIngamePanel() => EnablePanel("Ingame");
 
     /// <summary>
+    /// Enables the load panel. Disables all other panels.
+    /// </summary>
+    [ContextMenu("Enable Load Panel")]
+    public void EnableLoadPanel() => EnablePanel("LoadPanel");
+
+    /// <summary>
     /// Enables the specified panel and disables all other panels.
     /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu","DeathScreen", and "Ingame".
     /// </summary>
@@ -413,6 +455,10 @@ public class UIManager : MonoBehaviour
         {
             panel = deathScreenPanel;
         }
+        else if (panelName == "LoadPanel")
+        {
+            panel = loadPanel;
+        }
 
         if (panel != null)
         {
@@ -432,5 +478,47 @@ public class UIManager : MonoBehaviour
         settingsMenuPanel?.SetActive(false);
         ingamePanel?.SetActive(false);
         deathScreenPanel?.SetActive(false);
+        loadPanel?.SetActive(false);
+    }
+
+    /// <summary>
+    /// Toggles the visibility of the continue game button in the start menu.
+    /// </summary>
+    /// <param name="isEnabled">True to enable the button, false to disable it.</param>
+    public void ToggleContinueGameButton(bool isEnabled)
+    {
+        if (isEnabled)
+        {
+            startMenuPanel?.GetComponent<StartMenuUI>()?.EnableContinueGame();
+        }
+        else
+        {
+            startMenuPanel?.GetComponent<StartMenuUI>()?.DisableContinueGame();
+        }
+
+    }
+    
+    /// <summary>
+    /// Toggles the visibility of the boss bar and locks its health content
+    /// to the boss's health.
+    /// </summary>
+    /// <param name="isEnabled">True to show the boss bar, false to hide it.</param>
+    public void ToggleBossBar(bool isEnabled, Health bossHealth)
+    {
+        if (bossBar == null)
+        {
+            Debug.LogError("Boss bar not found.");
+            return;
+        }
+        if (isEnabled)
+        {
+            bossBar.SetActive(true);
+            bossBar.GetComponent<BossHealthbar>().bossHealth = bossHealth;
+        }
+        else
+        {
+            bossBar.SetActive(false);
+            bossBar.GetComponent<BossHealthbar>().bossHealth = null;
+        }
     }
 }

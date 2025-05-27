@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            // Optionally, use DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // Persist across scenes
         }
         else
         {

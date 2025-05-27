@@ -8,6 +8,8 @@ TagManager:
   - Feet
   - Collidable
   - Spell
+  - King
+  - Elemelon
   layers:
   - Default
   - TransparentFX

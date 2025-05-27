@@ -6,12 +6,15 @@ public class GameStateTest
     [Test]
     public void GameProgressionStage_Enum_ContainsAllExpectedValues()
     {
-        Assert.AreEqual(0, (int)GameProgressionStage.CASTLE_INTRODUCTION);
-        Assert.AreEqual(1, (int)GameProgressionStage.CASTLE_EARLY);
-        Assert.AreEqual(2, (int)GameProgressionStage.EARTH_EARLY);
-        Assert.AreEqual(3, (int)GameProgressionStage.CASTLE_END);
-        Assert.AreEqual(4, (int)GameProgressionStage.CASTLE_LATE);
-        Assert.AreEqual(5, (int)GameProgressionStage.EARTH_LATE);
+        Assert.AreEqual(0, (int)GameProgressionStage.INVALID);
+        Assert.AreEqual(1, (int)GameProgressionStage.CASTLE_INTRODUCTION);
+        Assert.AreEqual(2, (int)GameProgressionStage.CASTLE_EARLY);
+        Assert.AreEqual(3, (int)GameProgressionStage.EARTH_EARLY);
+        Assert.AreEqual(4, (int)GameProgressionStage.EARTH_EARLY_BOSS);
+        Assert.AreEqual(5, (int)GameProgressionStage.CASTLE_END);
+        Assert.AreEqual(6, (int)GameProgressionStage.CASTLE_LATE);
+        Assert.AreEqual(7, (int)GameProgressionStage.EARTH_LATE);
+        Assert.AreEqual(8, (int)GameProgressionStage.EARTH_LATE_BOSS);
     }
 
     [Test]

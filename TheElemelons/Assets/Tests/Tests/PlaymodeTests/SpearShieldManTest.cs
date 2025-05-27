@@ -65,7 +65,11 @@ public class SpearShieldManTests
         testEnemy.GetComponent<Animator>().runtimeAnimatorController = animatorController;
 
         // Mock Pathfinder and Player
-        GameObject player = new GameObject("Player");
+        var playerObject = new GameObject("Player");
+        playerObject.AddComponent<Player>();
+        var wandObject = new GameObject("Wand_Animation");
+        wandObject.transform.SetParent(playerObject.transform);
+        wandObject.AddComponent<Animator>();
         GameObject pathfinderObject = new GameObject("Pathfinder");
         pathfinder = pathfinderObject.AddComponent<LineOfSightPathfinder>();
 
@@ -79,13 +83,13 @@ public class SpearShieldManTests
                 pathfinder.floorPositions.Add(new Vector2Int(x, y));
             }
         }
-        pathfinder.player = player.transform;
+        pathfinder.player = playerObject.transform;
         pathfinder.InitializeVisibilityGrid();
         pathfinder.obstacleLayer = LayerMask.GetMask("Walls");
         pathfinder.UpdateVisibilityGrid();
 
         // Initialize the SpearShieldMan
-        spearShieldMan.Initialize(player.transform, pathfinder);
+        spearShieldMan.Initialize(playerObject.transform, pathfinder);
     }
 
     [TearDown]

@@ -52,6 +52,7 @@ public class CameraMovement : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        DontDestroyOnLoad(gameObject); // Persist across scenes
         // Retrieve the Camera component from this GameObject
         mainCamera = GetComponent<Camera>();
 

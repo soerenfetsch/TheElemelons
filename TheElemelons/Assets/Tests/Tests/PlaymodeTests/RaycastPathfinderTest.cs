@@ -54,7 +54,7 @@ public class RaycastPathfinderPlayModeTests
         obstacle.layer = LayerMask.NameToLayer("Default");
 
         yield return new WaitForFixedUpdate(); // Wait for physics updates.
-
+        
         // Act
         Vector2 bestDirection = RaycastPathfinder.FindBestDirection(ownPosition, goalPosition);
 
