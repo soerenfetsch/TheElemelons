@@ -9,8 +9,8 @@ public class LightSpell : SpellEffect
     SpriteRenderer spriteRenderer;
     Transform casterTransform;
     Rigidbody2D rb;
-    float range = 3f;
-    float maxDistance = 7f;
+    float range = 2f;
+    float maxDistance = 5f;
     float tolerance = 2f;
     float normalSpeed = 3f;
     float hurrySpeed = 8f;
