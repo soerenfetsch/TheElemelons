@@ -257,6 +257,11 @@ public class UIManager : MonoBehaviour
     {
         speedBuffAnimator.SetBool("run", isBuffed);
     }
+    /// <summary>
+    /// instantiate question mark as visual effect when confused
+    /// </summary>
+    /// <param name="isBuffed"></param>
+    /// <param name="target"></param>
     public void SetConfusedEffect(bool isBuffed, GameObject target)
     {
         if (isBuffed)
@@ -271,6 +276,11 @@ public class UIManager : MonoBehaviour
             Destroy(target.transform.Find("QuestionMark(Clone)").gameObject);
         }
     }
+    /// <summary>
+    /// Initialize ice crystal effect when frozen
+    /// </summary>
+    /// <param name="isBuffed"></param>
+    /// <param name="target"></param>
     public void SetFreezeEffect(bool isBuffed, GameObject target)
     {
         if (isBuffed)
