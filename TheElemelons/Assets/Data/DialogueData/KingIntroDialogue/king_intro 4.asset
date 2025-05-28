@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
+  m_Name: king_intro 4
+  m_EditorClassIdentifier: 
+  speakerName: King
+  portraits:
+  - {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+  - {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
+  dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
+  sentences:
+  - Oh, Thank you! I haven't been able to sleep for days because of that wretched
+    thing.
+  - Now, off with you!
+  imageSprite: {fileID: 0}

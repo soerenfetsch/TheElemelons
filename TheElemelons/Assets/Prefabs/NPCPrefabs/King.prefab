@@ -198,6 +198,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d4d662d4a1c6159408fe2d9964627e65, type: 2}
   - {fileID: 11400000, guid: 0dd71fbecb8c87d408000340cbcff193, type: 2}
   - {fileID: 11400000, guid: 03891b7c81bc45640bf4b346968dc1b5, type: 2}
+  intro:
+  - {fileID: 11400000, guid: d5f9a9e21f863e44d93039b70f7669a6, type: 2}
+  - {fileID: 11400000, guid: ee4ddf2f7dfa9f742a6164a15a48b057, type: 2}
+  - {fileID: 11400000, guid: e9a491320dc8fb040897fb562076f0be, type: 2}
+  treeEnemy: {fileID: 0}
+  thankYou:
+  - {fileID: 11400000, guid: 7797b5c8a029cfd469c3ddde57f5d894, type: 2}
+  standardDialogue:
+  - {fileID: 11400000, guid: d4d662d4a1c6159408fe2d9964627e65, type: 2}
+  - {fileID: 11400000, guid: 0dd71fbecb8c87d408000340cbcff193, type: 2}
+  - {fileID: 11400000, guid: 03891b7c81bc45640bf4b346968dc1b5, type: 2}
+  endDialogue:
+  - {fileID: 11400000, guid: c2b29567a7a79bf4da00895a8a70cbee, type: 2}
   walkDist: 5
   walkSpeed: 1.5
   currentWalkPattern: 0

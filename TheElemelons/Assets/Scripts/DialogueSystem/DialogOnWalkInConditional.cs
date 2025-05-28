@@ -5,12 +5,12 @@ using UnityEngine;
 public class DialogOnWalkInConditional : DialogOnWalkInTrigger
 {
     public List<GameProgressionStage> canInteractCondition;
-    public float dialogueCooldown = 30f;
-    public void DoDialog()
+    public float dialogueCooldown = 60f;
+    /*public override void DoDialog()
     {
         base.Interact();
         StartCoroutine(DialogueCooldown());
-    }
+    }*/
     IEnumerator DialogueCooldown()
     {
         canInteract = false;

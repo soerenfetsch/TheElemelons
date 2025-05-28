@@ -1128,7 +1128,7 @@ PrefabInstance:
       objectReference: {fileID: 204541841}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.size
-      value: 12
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.data[0]
@@ -1178,6 +1178,22 @@ PrefabInstance:
       propertyPath: dialogueAssets.Array.data[11]
       value: 
       objectReference: {fileID: 11400000, guid: fc7d194727fa68f41b74c9fe32cc23c1, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4c21e0450c2c3ef43a9bdd6071a3ba41, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[13]
+      value: 
+      objectReference: {fileID: 11400000, guid: ee4ddf2f7dfa9f742a6164a15a48b057, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[14]
+      value: 
+      objectReference: {fileID: 11400000, guid: e9a491320dc8fb040897fb562076f0be, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[15]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7797b5c8a029cfd469c3ddde57f5d894, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

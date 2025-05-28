@@ -98,6 +98,7 @@ public class MainGame : MonoBehaviour
         // Make the earth elemelon inactive in the scene
         ToggleDisplayedEarthElemelon(false);
         // Make the initial king dialogue available and subscribe the stage change to it
+        /*
         EnableKingIntroDialogue();
         Action<string, Sprite, Sprite> onKingDialogueStarted = null;
         Action onKingDialogueEnded = null;
@@ -129,7 +130,7 @@ public class MainGame : MonoBehaviour
         // Subscribe both
         DialogueManager.OnDialogueStarted += onKingDialogueStarted;
         DialogueManager.OnDialogueEnded += onKingDialogueEnded;
-
+    */
     }
 
     private void HandleCastleEarlyStage()
@@ -401,7 +402,7 @@ public class MainGame : MonoBehaviour
         {
             Instance.earthElemelonDisplayable = GameObject.FindGameObjectWithTag("Elemelon");
         }
-        
+
         if (Instance.earthElemelonDisplayable != null)
         {
             Instance.earthElemelonDisplayable.SetActive(isActive);
@@ -456,7 +457,7 @@ public class MainGame : MonoBehaviour
         GameObject king = GameObject.FindGameObjectWithTag("King");
         if (king != null)
         {
-            king.GetComponent<King>().basic_dialogues_list = kingIntroDialoguesList;
+            //king.GetComponent<King>().basic_dialogues_list = kingIntroDialoguesList;
         }
         else
         {
@@ -470,7 +471,7 @@ public class MainGame : MonoBehaviour
         GameObject king = GameObject.FindGameObjectWithTag("King");
         if (king != null)
         {
-            king.GetComponent<King>().basic_dialogues_list = kingRepetitiveDialoguesList;
+            //king.GetComponent<King>().basic_dialogues_list = kingRepetitiveDialoguesList;
         }
         else
         {
@@ -484,7 +485,7 @@ public class MainGame : MonoBehaviour
         GameObject king = GameObject.FindGameObjectWithTag("King");
         if (king != null)
         {
-            king.GetComponent<King>().basic_dialogues_list = kingEndDialoguesList;
+            //king.GetComponent<King>().basic_dialogues_list = kingEndDialoguesList;
         }
         else
         {

@@ -5,6 +5,7 @@ using Castle.Components.DictionaryAdapter.Xml;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Debug = UnityEngine.Debug;
 
 public enum WalkPattern
 {
@@ -17,6 +18,14 @@ public enum WalkPattern
 }
 public class King : DialogueTrigger
 {
+    [Header("Dialogues")]
+    //intro request request said, dont loop
+    public List<DialogueData> intro;
+    public GameObject treeEnemy;
+    public List<DialogueData> thankYou;
+    public List<DialogueData> standardDialogue;
+    public List<DialogueData> endDialogue;
+    Dictionary<List<DialogueData>, bool> dialogueDictionary;
     [Header("Walk Patterns")]
     public float walkDist = 3f;
     float currentWalkProgress = 0f;
@@ -37,11 +46,67 @@ public class King : DialogueTrigger
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
         ChangeState(NPCStatus.Walking);
+        dialogueDictionary = new Dictionary<List<DialogueData>, bool>();
+        dialogueDictionary.Add(intro, false);
+        dialogueDictionary.Add(thankYou, false);
+        dialogueDictionary.Add(standardDialogue, true);
+        dialogueDictionary.Add(endDialogue, true);
+    }
+    void Update()
+    {
+        switch (GameManager.Instance.CurrentProgressionStage)
+        {
+            case GameProgressionStage.CASTLE_INTRODUCTION:
+                if (treeEnemy != null)
+                {
+                    basic_dialogues_list = intro;
+                }
+                else
+                {
+                    basic_dialogues_list = thankYou;
+                }
+                break;
+            case GameProgressionStage.CASTLE_END:
+                basic_dialogues_list = endDialogue;
+                break;
+            default:
+                basic_dialogues_list = standardDialogue;
+                break;
+        }
+    }
+    public override void Interact()
+    {
+        // This method is called by PlayerInteraction when the player presses E near this NPC
+        GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE);
+        if (DialogueManager.Instance.HasDialogue())
+        {
+            DialogueManager.Instance.AdvanceDialogue();
+        }
+        else
+        {
+            string dialogueKey = "";
+            if (basic_dialogues_list.Count > 1 && (dialogueDictionary[basic_dialogues_list] || nextDialogue < basic_dialogues_list.Count - 1))
+            {
+                dialogueKey = basic_dialogues_list[nextDialogue++].name;
+            }
+            else
+            {
+                dialogueKey = basic_dialogues_list[nextDialogue].name;
+            }
+            DialogueManager.Instance.StartDialogue(dialogueKey);
+            if (nextDialogue >= basic_dialogues_list.Count && dialogueDictionary[basic_dialogues_list])
+            {
+                nextDialogue = 0;
+            }
+            if (basic_dialogues_list == thankYou)
+            {
+                GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
+            }
+        }
     }
     void FixedUpdate()
     {
         ActOnStatus();
-
     }
     public override void ActOnStatus()
     {
