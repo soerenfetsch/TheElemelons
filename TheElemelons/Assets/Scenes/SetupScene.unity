@@ -392,6 +392,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 118.00001
       objectReference: {fileID: 0}
+    - target: {fileID: 1822590191809314426, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822590191809314426, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5db486b4a4ed7c34b9cc6a0cf8b91418, type: 3}
+    - target: {fileID: 1822590191809314426, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822590191809314426, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822590191809314426, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822590191809314426, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2305246718208910923, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_Name
       value: UI_Canvas
@@ -492,10 +516,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 163
       objectReference: {fileID: 0}
+    - target: {fileID: 4696530352937543054, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4696530352937543054, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4696530352937543054, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1707.1119
+      objectReference: {fileID: 0}
+    - target: {fileID: 4696530352937543054, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 574.1586
+      objectReference: {fileID: 0}
+    - target: {fileID: 4696530352937543054, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 412.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 4696530352937543054, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 162.92
+      objectReference: {fileID: 0}
     - target: {fileID: 7812056553072645481, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 1257439452}
+    - target: {fileID: 8074911129632855129, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8751825369183510325, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 117.99999
@@ -1076,7 +1128,7 @@ PrefabInstance:
       objectReference: {fileID: 204541841}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.data[0]
@@ -1122,6 +1174,10 @@ PrefabInstance:
       propertyPath: dialogueAssets.Array.data[10]
       value: 
       objectReference: {fileID: 11400000, guid: c2b29567a7a79bf4da00895a8a70cbee, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: fc7d194727fa68f41b74c9fe32cc23c1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

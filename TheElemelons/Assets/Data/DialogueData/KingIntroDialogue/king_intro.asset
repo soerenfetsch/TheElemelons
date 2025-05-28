@@ -19,7 +19,6 @@ MonoBehaviour:
   dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
   sentences:
   - "Ah... you\u2019ve come at last."
-  - I feared we had lost you to the shadows like the others.
   - Dark times have fallen upon the realm, my child.
   - "The Elemelons\u2014the sacred fruits of balance..."
   - have been stolen from my castle.
@@ -32,7 +31,6 @@ MonoBehaviour:
   - It was the first she took.
   - Hidden away beyond the South Room of this castle,
   - ' a portal is hidden.'
-  - One that pulses with the essence of earth... ancient and wild.
   - This portal will bring you to her hideout.
   - "But beware\u2014she has summoned monsters to guard her lair."
   - Beasts of soil and stone, fueled by her vile will.
@@ -40,5 +38,4 @@ MonoBehaviour:
   - "\u2026but as one who still believes in the light within you."
   - 'Venture forth. Enter the Earth Portal. '
   - "Face what lies beyond\u2014and return to us with the Elemelon."
-  - The fate of the realm rests in your hands.
   imageSprite: {fileID: 0}

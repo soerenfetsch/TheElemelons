@@ -497,7 +497,7 @@ public class UIManager : MonoBehaviour
         }
 
     }
-    
+
     /// <summary>
     /// Toggles the visibility of the boss bar and locks its health content
     /// to the boss's health.
