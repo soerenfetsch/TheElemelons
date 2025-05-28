@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameStatus.MAIN_MENU:
                 ResetProgressionStage();
-                Time.timeScale = 0; // Pause the game
+                Time.timeScale = 1; // no pause game for background image movement
                 break;
             case GameStatus.PAUSE_MENU:
                 Time.timeScale = 0; // Pause the game
@@ -153,5 +153,5 @@ public class GameManager : MonoBehaviour
     {
         ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
     }
-    
+
 }
