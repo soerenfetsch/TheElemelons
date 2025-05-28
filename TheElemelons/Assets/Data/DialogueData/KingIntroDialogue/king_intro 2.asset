@@ -20,7 +20,7 @@ MonoBehaviour:
   sentences:
   - "Before you go, I have a request\u2014I hope it\u2019s but a small burden."
   - An elemental beast has snuck into my chambers.
-  - 'I ask you, not as your king but as a tired old man: banish this thing from my
-    chambers.'
+  - 'I ask you, not as your king but as a tired old man: '
+  - banish this thing from my chambers.
   - Will you rid me of this Fiend?
   imageSprite: {fileID: 0}

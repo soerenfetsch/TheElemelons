@@ -133,33 +133,14 @@ GameObject:
   - component: {fileID: 150694918}
   - component: {fileID: 150694917}
   - component: {fileID: 150694916}
-  - component: {fileID: 150694915}
+  - component: {fileID: 150694919}
   m_Layer: 0
-  m_Name: Dialog_on_walk_in_Trigger (1)
+  m_Name: ShouldBeEasy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &150694915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 150694914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2053c0cade5378641927d351734a613c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionRadius: 2
-  basic_dialogues_list:
-  - {fileID: 11400000, guid: 4c21e0450c2c3ef43a9bdd6071a3ba41, type: 2}
-  canInteract: 1
-  canRepeat: 0
-  canInteractCondition: 01000000
-  dialogueCooldown: 60
 --- !u!61 &150694916
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -247,6 +228,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &150694919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150694914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa96a27ba6a3b604a98d6d10c1d87793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 2
+  basic_dialogues_list:
+  - {fileID: 11400000, guid: 4c21e0450c2c3ef43a9bdd6071a3ba41, type: 2}
+  canInteract: 1
+  canRepeat: 0
+  canInteractCondition: 01000000
+  dialogueCooldown: 0
+  otherCondition: 1
 --- !u!1 &228772614
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +327,132 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -23.82, y: 5.48, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &360866755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 360866759}
+  - component: {fileID: 360866758}
+  - component: {fileID: 360866757}
+  - component: {fileID: 360866756}
+  m_Layer: 0
+  m_Name: WayTooDark
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &360866756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360866755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa96a27ba6a3b604a98d6d10c1d87793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 2
+  basic_dialogues_list:
+  - {fileID: 11400000, guid: fc7d194727fa68f41b74c9fe32cc23c1, type: 2}
+  canInteract: 1
+  canRepeat: 1
+  canInteractCondition: 01000000
+  dialogueCooldown: 0
+  otherCondition: 1
+--- !u!61 &360866757
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360866755}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5324497, y: -6.701188}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 6.000223, y: 10.167639}
+  m_EdgeRadius: 0
+--- !u!50 &360866758
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360866755}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!4 &360866759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360866755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.9544532, y: -7.7081947, z: -0.039844945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1764,7 +1891,7 @@ GameObject:
   - component: {fileID: 580647605}
   - component: {fileID: 580647608}
   m_Layer: 0
-  m_Name: Dialog_on_walk_in_Trigger
+  m_Name: MustTalkToKing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1866,16 +1993,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 580647603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2053c0cade5378641927d351734a613c, type: 3}
+  m_Script: {fileID: 11500000, guid: aa96a27ba6a3b604a98d6d10c1d87793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionRadius: 2
   basic_dialogues_list:
-  - {fileID: 11400000, guid: fc7d194727fa68f41b74c9fe32cc23c1, type: 2}
+  - {fileID: 11400000, guid: 059c6a136d2282846982d503a51951b4, type: 2}
   canInteract: 1
   canRepeat: 1
   canInteractCondition: 01000000
-  dialogueCooldown: 60
+  dialogueCooldown: 0
+  otherCondition: 0
 --- !u!1001 &762446620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15365,6 +15493,10 @@ PrefabInstance:
       propertyPath: treeEnemy
       value: 
       objectReference: {fileID: 1724655963}
+    - target: {fileID: 1065160938224427797, guid: 4234119cb52e0db4f939be40c938164a, type: 3}
+      propertyPath: wayToPortal
+      value: 
+      objectReference: {fileID: 580647608}
     - target: {fileID: 4667324602112185550, guid: 4234119cb52e0db4f939be40c938164a, type: 3}
       propertyPath: m_Name
       value: King
@@ -15905,6 +16037,7 @@ SceneRoots:
   - {fileID: 791022460}
   - {fileID: 2899195719796636007}
   - {fileID: 580647607}
+  - {fileID: 360866759}
   - {fileID: 150694918}
   - {fileID: 1124955977}
   - {fileID: 1080322645}

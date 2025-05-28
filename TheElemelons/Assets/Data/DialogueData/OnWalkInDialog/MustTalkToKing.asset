@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
+  m_Name: MustTalkToKing
+  m_EditorClassIdentifier: 
+  speakerName: Merveille
+  portraits:
+  - {fileID: 21300000, guid: dc63288a2b6c9fc428eca7e30268210f, type: 3}
+  - {fileID: 21300000, guid: 6771d040a9df02b4482def7089eef6f4, type: 3}
+  dialogueBoxImage: {fileID: 1655039260, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
+  sentences:
+  - I should talk to the king first.
+  imageSprite: {fileID: 0}

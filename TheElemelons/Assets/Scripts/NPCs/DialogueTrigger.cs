@@ -22,6 +22,7 @@ public class DialogueTrigger : InteractableNPC
             if (nextDialogue >= basic_dialogues_list.Count)
             {
                 nextDialogue = 0;
+
             }
         }
     }

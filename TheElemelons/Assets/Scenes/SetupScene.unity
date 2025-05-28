@@ -1128,7 +1128,7 @@ PrefabInstance:
       objectReference: {fileID: 204541841}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.size
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
       propertyPath: dialogueAssets.Array.data[0]
@@ -1194,6 +1194,10 @@ PrefabInstance:
       propertyPath: dialogueAssets.Array.data[15]
       value: 
       objectReference: {fileID: 11400000, guid: 7797b5c8a029cfd469c3ddde57f5d894, type: 2}
+    - target: {fileID: 5067094533104882062, guid: 260d6def023475942b55d16f4d66a8d7, type: 3}
+      propertyPath: dialogueAssets.Array.data[16]
+      value: 
+      objectReference: {fileID: 11400000, guid: 059c6a136d2282846982d503a51951b4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

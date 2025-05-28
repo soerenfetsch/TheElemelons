@@ -26,6 +26,8 @@ public class King : DialogueTrigger
     public List<DialogueData> standardDialogue;
     public List<DialogueData> endDialogue;
     Dictionary<List<DialogueData>, bool> dialogueDictionary;
+    bool alreadyDone = false;
+    bool alreadyThanked = false;
     [Header("Walk Patterns")]
     public float walkDist = 3f;
     float currentWalkProgress = 0f;
@@ -64,6 +66,12 @@ public class King : DialogueTrigger
                 else
                 {
                     basic_dialogues_list = thankYou;
+                    if (!alreadyDone)
+                    {
+                        alreadyDone = true;
+                        GameObject.Find("MustTalkToKing").GetComponent<DialogOnWalkInTrigger>().otherCondition = true;
+                        GameObject.Find("WayTooDark").GetComponent<DialogOnWalkInTrigger>().otherCondition = false;
+                    }
                 }
                 break;
             case GameProgressionStage.CASTLE_END:
@@ -89,18 +97,23 @@ public class King : DialogueTrigger
             {
                 dialogueKey = basic_dialogues_list[nextDialogue++].name;
             }
-            else
+            else if (basic_dialogues_list.Count > 1)
             {
                 dialogueKey = basic_dialogues_list[nextDialogue].name;
+            }
+            else
+            {
+                dialogueKey = basic_dialogues_list[0].name;
             }
             DialogueManager.Instance.StartDialogue(dialogueKey);
             if (nextDialogue >= basic_dialogues_list.Count && dialogueDictionary[basic_dialogues_list])
             {
                 nextDialogue = 0;
             }
-            if (basic_dialogues_list == thankYou)
+            if (basic_dialogues_list == thankYou && !alreadyThanked)
             {
                 GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
+                alreadyThanked = true;
             }
         }
     }

@@ -18,7 +18,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
   dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
   sentences:
-  - Oh, Thank you! I haven't been able to sleep for days because of that wretched
-    thing.
+  - 'Oh, Thank you! I haven''t been able to sleep for days '
+  - because of that wretched thing.
   - Now, off with you!
   imageSprite: {fileID: 0}
