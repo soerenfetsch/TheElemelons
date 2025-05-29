@@ -12,7 +12,7 @@ public class SettingsMenuUI : MonoBehaviour
     public GameObject keyBindingEntryPrefab;
     public InputManager inputManager;
 
-
+    public TMP_FontAsset font;
     private Button backButton;
     private bool isRebinding = false;
     private Dictionary<string, GameObject> keyBindingEntries = new Dictionary<string, GameObject>();
@@ -79,7 +79,7 @@ public class SettingsMenuUI : MonoBehaviour
     private GameObject CreateKeyBindingEntry(string actionName, string keyName)
     {
         GameObject entry = Instantiate(keyBindingEntryPrefab, contentPanel);
-        
+
         // Navigate correctly through the hierarchy
         Transform actionTextTransform = entry.transform.Find("KeyBindingAction/ActionText");
         Transform buttonTextTransform = entry.transform.Find("KeyBindingButton/ButtonText");
@@ -132,7 +132,9 @@ public class SettingsMenuUI : MonoBehaviour
     {
         if (keyBindingEntries.TryGetValue(actionName, out GameObject entry))
         {
-            entry.transform.Find("KeyBindingButton/ButtonText").GetComponent<TMP_Text>().text = newKey;
+            TMP_Text txt = entry.transform.Find("KeyBindingButton/ButtonText").GetComponent<TMP_Text>();
+            txt.text = newKey;
+            txt.font = font;
         }
     }
 

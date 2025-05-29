@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
+    public float maxZoom = 8f;
+    public float minZoom = 3f;
     /// <summary>
     /// Dictionary of actions mapped to their key bindings.
     /// </summary>
@@ -215,11 +217,11 @@ public class InputManager : MonoBehaviour
         // Alternative: KeyBindings for Zoom-In and Zoom-Out
         if (Input.GetKeyDown(keyBindings["ZoomIn"]))
         {
-            cameraMovement?.SetCameraSize(3f); // Zoom in
+            cameraMovement?.SetCameraSize(minZoom); // Zoom in
         }
         if (Input.GetKeyDown(keyBindings["ZoomOut"]))
         {
-            cameraMovement?.SetCameraSize(8f); // Zoom out
+            cameraMovement?.SetCameraSize(maxZoom); // Zoom out
         }
     }
 

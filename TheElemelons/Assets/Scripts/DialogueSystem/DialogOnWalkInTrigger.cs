@@ -26,17 +26,11 @@ public class DialogOnWalkInTrigger : DialogueTrigger
     void OnTriggerEnter2D(Collider2D other)
     {
         if (canInteract && other.gameObject.CompareTag("Player") &&
-            other.isTrigger && (canRepeat || !wasTriggered) && otherCondition)
+            other.isTrigger && (canRepeat || !wasTriggered) && otherCondition &&
+            canInteractCondition.Contains(GameManager.Instance.CurrentProgressionStage))
         {
             DoDialog();
             wasTriggered = true;
-        }
-    }
-    void Update()
-    {
-        if (canInteractCondition != null)
-        {
-            canInteract = canInteractCondition.Contains(GameManager.Instance.CurrentProgressionStage);
         }
     }
 }
