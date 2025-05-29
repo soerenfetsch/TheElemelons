@@ -366,7 +366,9 @@ public class MainGame : MonoBehaviour
 
     private static IEnumerator LoadScene(string sceneToLoad)
     {
-        if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad)
+        if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad
+        || (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.CASTLE_INTRODUCTION &&
+        GameManager.Instance.CurrentProgressionStage == GameProgressionStage.CASTLE_INTRODUCTION && sceneToLoad == "Castle_Hub_Scene"))
         {
             GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
             Debug.Log("Waiting for loading screen to be displayed...");
@@ -387,9 +389,11 @@ public class MainGame : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+
         // Also reset the player position if Castle Hub scene already loaded or if the previous progression stage was invalid
-        if (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.INVALID &&
-            sceneToLoad == "Castle_Hub_Scene")
+        if (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.INVALID
+
+        && sceneToLoad == "Castle_Hub_Scene")
         {
             ResetPlayerPosition();
         }
