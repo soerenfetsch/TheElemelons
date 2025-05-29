@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Start a dialogue on collision
+/// can be set to not repeat, to only trigger during a certain game progression stage or to be enabled by external condition
+/// </summary>
 public class DialogOnWalkInTrigger : DialogueTrigger
 {
     public bool canInteract = true;

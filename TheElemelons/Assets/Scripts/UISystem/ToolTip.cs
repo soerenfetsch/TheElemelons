@@ -16,6 +16,15 @@ public enum TutorialTip
     CastElements,
     FieldOfView
 }
+/// <summary>
+/// Makes tooltips appear and disappear under certain conditions.
+/// If Tooltip receives a tutorial tip type from tooltiptrigger, the corresponding tip is displayed 
+/// (i.e. “Move: [W][A][S][D]”). The tooltip stays visible until the player inputs one of the described keys,  
+/// until a new tooltip is triggered or until he dies.
+/// The interact tip appears whenever the player can interact with an object and 
+/// isn't provided by tooltiptrigger. It only disappears if 
+/// the player can’t interact anymore or if another tutorial tip type has been set
+/// </summary>
 public class ToolTip : MonoBehaviour
 {
     Camera mainCamera;
@@ -33,7 +42,12 @@ public class ToolTip : MonoBehaviour
         toolTipAnchor = tooltip.transform.localPosition;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// if current tutorial tip is not none, display according tip
+    /// else if can interact, display corresponding tip
+    /// else no tip
+    /// scale and position text according to camera zoom and number of lines
+    /// </summary>
     void Update()
     {
         string text = "";
@@ -123,6 +137,10 @@ public class ToolTip : MonoBehaviour
             tooltip.fontSize = 2f;
         }
     }
+    /// <summary>
+    /// remove tip
+    /// </summary>
+    /// <returns></returns>
     string OnTutorialSuccess()
     {
         ChangeCurrentTip(TutorialTip.None);
@@ -133,6 +151,11 @@ public class ToolTip : MonoBehaviour
         currentTip = tip;
         Debug.Log(currentTip.ToString());
     }
+    /// <summary>
+    /// changes displayed string for certain keys, i.e Alpha0 -> 0
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     string GetKeyBind(string name)
     {
         KeyCode key = inputManager.keyBindings[name];
