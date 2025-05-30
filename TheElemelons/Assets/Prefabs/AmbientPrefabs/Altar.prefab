@@ -437,8 +437,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionRadius: 2
+  goldChance: 0.5
+  bloodChance: 0.5
   gold: 0
-  blood: 1
+  blood: 0
+  maxSpawnableHearts: 3
   collectableHeart: {fileID: 4760876517164744561, guid: 03afbd5f0bd03f141b220403a4e3392b, type: 3}
   collectableMaxHeart: {fileID: 4760876517164744561, guid: 0c9f274ae8adf334da81809ef98e48e4, type: 3}
   collectableMaxMana: {fileID: 4760876517164744561, guid: 7981992add6e6e941bd9f52f8a451cd1, type: 3}
