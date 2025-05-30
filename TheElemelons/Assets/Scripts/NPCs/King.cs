@@ -77,6 +77,15 @@ public class King : DialogueTrigger
             case GameProgressionStage.CASTLE_END:
                 basic_dialogues_list = endDialogue;
                 break;
+            case GameProgressionStage.CASTLE_LATE:
+                basic_dialogues_list = endDialogue;
+                break;
+            case GameProgressionStage.EARTH_LATE_BOSS:
+                basic_dialogues_list = endDialogue;
+                break;
+            case GameProgressionStage.EARTH_LATE:
+                basic_dialogues_list = endDialogue;
+                break;
             default:
                 basic_dialogues_list = standardDialogue;
                 break;
