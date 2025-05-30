@@ -10,7 +10,8 @@ public class BipartitioningMapGeneratorTests
     [SetUp]
     public void SetUp()
     {
-        generator = new BipartitioningMapGenerator();
+        GameObject generatorObject = new GameObject("MapGenerator");
+        generator = generatorObject.AddComponent<BipartitioningMapGenerator>();
         // Set up player in scene
         GameObject player = new GameObject("Player");
         player.AddComponent<Player>();
@@ -107,4 +108,44 @@ public class BipartitioningMapGeneratorTests
             $"Expected room door position: {expectedDoorPosition}\n" +
             $"Actual: {string.Join(", ", room.doorPositions)}");
     }
+
+    [Test]
+    public void CreateShrinePositions_ShouldPlaceShrineWithDistanceFromWallAndMonster()
+    {
+        // Arrange
+        MapData mapData = new MapData();
+        Room room = new Room();
+        room.roomType = Room.RoomType.NORMAL;
+
+        // Create a 7x8 room so that only two positions are far enough from walls
+        for (int x = 0; x < 7; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                Vector2Int pos = new Vector2Int(x, y);
+                room.AddFloorPosition(pos);
+                mapData.AddFloorPosition(pos);
+
+                // Fill upper part with monster spawn positions (y > 4)
+                if (y > 4)
+                {
+                    room.AddMonsterSpawnPosition(pos);
+                    mapData.AddMonsterSpawnPosition(pos);
+                }
+            }
+        }
+
+        mapData.AddRoom(room);
+        generator.roomShrineProbability = 1.0f; // Set probability to 100% for testing
+
+        // Act
+        generator.CreateShrinePositions(mapData); // 100% chance to spawn shrine
+
+        // Assert
+        Assert.AreEqual(1, room.shrinePositions.Count, "Expected one shrine in the room.");
+        Assert.AreEqual(1, mapData.shrinePositions.Count, "Expected one shrine in the map data.");
+        Assert.IsTrue(room.shrinePositions.Contains(new Vector2Int(3, 3)),
+            "Expected shrine position at (3, 3).");
+    }
+
 }
