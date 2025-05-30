@@ -2,7 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+public struct DialogueLineDisplayInfo
+{
+    public LineType Type;
+    public string Text;
+    public Sprite Portrait;
+    public Sprite SceneImage;
+    public string SpeakerName;
+    public Sprite DialogueBoxImage;
+    public bool IsFirstLineInDialogue;
+}
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,24 +21,20 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue Assets")]
     [SerializeField] public DialogueData[] dialogueAssets;
     [SerializeField] private bool autoPlay = false;
-    [SerializeField] private float autoPlayDelay = 3f; // Delay (in seconds) before auto-advancing a line
+    [SerializeField] private float autoPlayDelay = 3f;
     private Dictionary<string, DialogueData> dialogueDictionary = new Dictionary<string, DialogueData>();
+    
     public DialogueData currentDialogue;
     public int currentLineIndex = 0;
+    private int currentSceneImageIndex = 0;
     private Coroutine autoPlayCoroutine;
 
-    // Events for dialogue flow.
-    // OnDialogueStarted: speaker name, initial portrait, dialogue box image.
-    public static event Action<string, Sprite, Sprite> OnDialogueStarted;
-    // OnDialogueLineChanged: current line text, current portrait.
-    public static event Action<string, Sprite> OnDialogueLineChanged;
-    // OnDialogueEnded: dialogue finished.
+    public static event Action<DialogueLineDisplayInfo> OnDisplayUpdateRequest;
     public static event Action OnDialogueEnded;
-
-    public GameObject imageObject;
 
     private void Awake()
     {
+        Debug.Log("[DialogueManager] Awake called.");
         if (Instance == null)
         {
             Instance = this;
@@ -36,6 +42,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("[DialogueManager] Duplicate instance detected. Destroying this one.");
             Destroy(gameObject);
             return;
         }
@@ -44,125 +51,269 @@ public class DialogueManager : MonoBehaviour
 
     public void BuildDialogueDictionary()
     {
+        Debug.Log("[DialogueManager] BuildDialogueDictionary called.");
+        dialogueDictionary.Clear();
+        if (dialogueAssets == null)
+        {
+            Debug.LogWarning("[DialogueManager] dialogueAssets array is null.");
+            return;
+        }
+        Debug.Log($"[DialogueManager] dialogueAssets count: {dialogueAssets.Length}");
         foreach (var data in dialogueAssets)
         {
-            if (data != null && !dialogueDictionary.ContainsKey(data.name))
+            if (data == null)
+            {
+                Debug.LogWarning("[DialogueManager] Found a null DialogueData in dialogueAssets array.");
+                continue;
+            }
+            if (string.IsNullOrEmpty(data.name))
+            {
+                 Debug.LogWarning($"[DialogueManager] DialogueData asset has a null or empty name (filename). Skipping.");
+                 continue;
+            }
+            if (!dialogueDictionary.ContainsKey(data.name))
             {
                 dialogueDictionary.Add(data.name, data);
-                Debug.Log($"Added DialogueData with key: {data.name}");
+                Debug.Log($"[DialogueManager] Added DialogueData with key: {data.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"[DialogueManager] Duplicate DialogueData key found: {data.name}. Skipping.");
             }
         }
     }
 
-    /// <summary>
-    /// Starts the dialogue sequence using the provided dialogue key.
-    /// </summary>
     public void StartDialogue(string dialogueKey)
     {
+        Debug.Log($"[DialogueManager] StartDialogue called with key: '{dialogueKey}'");
         if (!dialogueDictionary.TryGetValue(dialogueKey, out currentDialogue))
         {
-            Debug.LogError($"Dialogue '{dialogueKey}' not found!");
+            Debug.LogError($"[DialogueManager] Dialogue '{dialogueKey}' not found in dictionary!");
             return;
         }
+        Debug.Log($"[DialogueManager] Found dialogue: {currentDialogue.name}");
 
         currentLineIndex = 0;
+        currentSceneImageIndex = 0;
 
-        // Get initial portrait (if available)
-        Sprite initialPortrait = GetPortrait(currentLineIndex);
+        if (GameManager.Instance != null)
+        {
+            Debug.Log("[DialogueManager] GameManager.Instance is available. Changing game status to DIALOGUE.");
+            GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE);
+        }
+        else
+        {
+            Debug.LogWarning("[DialogueManager] GameManager.Instance is NULL. Cannot change game status.");
+        }
 
-        // Fire event to start dialogue
-        OnDialogueStarted?.Invoke(currentDialogue.speakerName, initialPortrait, currentDialogue.dialogueBoxImage);
-
-        // Immediately show first line
-        AdvanceDialogue();
+        Debug.Log("[DialogueManager] Calling AdvanceDialogue(true) from StartDialogue.");
+        AdvanceDialogue(true);
     }
 
-    public Boolean HasDialogue()
+    public bool HasDialogue()
     {
-        if (currentDialogue == null)
-        { return false; }
-        return true;
+        return currentDialogue != null;
     }
 
-    /// <summary>
-    /// Advances the dialogue to the next line. If no more lines remain, ends the dialogue.
-    /// </summary>
-    public void AdvanceDialogue()
+    public void AdvanceDialogue(bool isFirstLine = false)
     {
-        // Cancel any existing auto-play coroutine.
+        Debug.Log($"[DialogueManager] AdvanceDialogue called. CurrentLineIdx: {currentLineIndex}, IsFirst: {isFirstLine}, CurrentDialogue: {(currentDialogue != null ? currentDialogue.name : "NULL")}, AutoPlayCor: {(autoPlayCoroutine != null)}");
+
         if (autoPlayCoroutine != null)
         {
+            Debug.Log("[DialogueManager] Stopping existing autoPlayCoroutine.");
             StopCoroutine(autoPlayCoroutine);
             autoPlayCoroutine = null;
         }
 
         if (currentDialogue == null)
         {
-            Debug.LogWarning("No active dialogue to advance.");
+            Debug.LogWarning("[DialogueManager] No active dialogue (currentDialogue is NULL) to advance.");
+            return;
+        }
+        if (currentDialogue.dialogueLines == null)
+        {
+            Debug.LogError($"[DialogueManager] currentDialogue '{currentDialogue.name}' has a NULL dialogueLines list! Cannot advance.");
+            EndDialogue(); // Or handle error appropriately
             return;
         }
 
-        if (currentLineIndex < currentDialogue.sentences.Length)
+        Debug.Log($"[DialogueManager] Checking line {currentLineIndex} against dialogueLines count {currentDialogue.dialogueLines.Count}");
+        if (currentLineIndex < currentDialogue.dialogueLines.Count)
         {
-            string line = currentDialogue.sentences[currentLineIndex];
-            Sprite currentPortrait = GetPortrait(currentLineIndex);
-            OnDialogueLineChanged?.Invoke(line, currentPortrait);
-            currentLineIndex++;
+            DialogueLineEntry currentEntry = currentDialogue.dialogueLines[currentLineIndex];
+            if (currentEntry == null)
+            {
+                Debug.LogError($"[DialogueManager] currentDialogue '{currentDialogue.name}' line {currentLineIndex} (DialogueLineEntry) is NULL! Cannot advance.");
+                currentLineIndex++; // Skip this null entry
+                AdvanceDialogue(isFirstLine); // Try to advance to next, or it might loop if many are null
+                return;
+            }
 
-            // Schedule auto-advance if enabled.
+            Debug.Log($"[DialogueManager] Processing Entry - Index: {currentLineIndex}, LineType: {currentEntry.lineType}, Sentence: \"{currentEntry.sentenceText}\", HasPortraitOverride: {currentEntry.portraitOverride != null}, DisplaySceneImageFlag: {currentEntry.displaySceneImage}");
+
+            DialogueLineDisplayInfo displayInfo = new DialogueLineDisplayInfo
+            {
+                SpeakerName = currentDialogue.speakerName,
+                DialogueBoxImage = currentDialogue.dialogueBoxImage,
+                IsFirstLineInDialogue = isFirstLine
+            };
+
+            if (currentEntry.displaySceneImage || currentEntry.lineType == LineType.SceneImage)
+            {
+                Debug.Log($"[DialogueManager] --- Scene Image Path Selected for line {currentLineIndex} ---");
+                displayInfo.Type = LineType.SceneImage;
+                displayInfo.Text = currentEntry.sentenceText;
+
+                Debug.Log($"[DialogueManager] currentDialogue.sceneImages is {(currentDialogue.sceneImages == null ? "NULL" : "Assigned (Count: " + currentDialogue.sceneImages.Count + ")")}");
+                Debug.Log($"[DialogueManager] currentSceneImageIndex: {currentSceneImageIndex}");
+
+                if (currentDialogue.sceneImages != null && currentSceneImageIndex < currentDialogue.sceneImages.Count)
+                {
+                    Sprite sceneSprite = currentDialogue.sceneImages[currentSceneImageIndex];
+                    displayInfo.SceneImage = sceneSprite;
+                    Debug.Log($"[DialogueManager] Assigning SceneImage: {(sceneSprite != null ? sceneSprite.name : "NULL SPRITE IN LIST")}");
+                    currentSceneImageIndex++;
+                }
+                else
+                {
+                    displayInfo.SceneImage = null;
+                    Debug.LogWarning($"[DialogueManager] Condition for assigning scene image FAILED for line {currentLineIndex}. sceneImages is null, or index out of bounds, or list empty. currentDialogue.sceneImages.Count: {(currentDialogue.sceneImages?.Count)}, currentSceneImageIndex: {currentSceneImageIndex}");
+                }
+                displayInfo.Portrait = null;
+            }
+            else // LineType.Text
+            {
+                Debug.Log($"[DialogueManager] --- Text Path Selected for line {currentLineIndex} ---");
+                displayInfo.Type = LineType.Text;
+                displayInfo.Text = currentEntry.sentenceText;
+                displayInfo.SceneImage = null;
+
+                if (currentEntry.portraitOverride != null)
+                {
+                    displayInfo.Portrait = currentEntry.portraitOverride;
+                    Debug.Log($"[DialogueManager] Using Portrait Override: {currentEntry.portraitOverride.name}");
+                }
+                else
+                {
+                    Debug.Log($"[DialogueManager] Attempting to get default portrait for line index {currentLineIndex}.");
+                    displayInfo.Portrait = GetPortraitForLine(currentLineIndex);
+                }
+            }
+            
+            string portraitName = displayInfo.Portrait != null ? displayInfo.Portrait.name : "None";
+            string sceneImageName = displayInfo.SceneImage != null ? displayInfo.SceneImage.name : "None";
+            Debug.Log($"[DialogueManager] Invoking OnDisplayUpdateRequest. Type: {displayInfo.Type}, Text: \"{displayInfo.Text}\", Portrait: {portraitName}, SceneImg: {sceneImageName}, Speaker: {displayInfo.SpeakerName}");
+            
+            OnDisplayUpdateRequest?.Invoke(displayInfo);
+            currentLineIndex++;
+            Debug.Log($"[DialogueManager] Incremented currentLineIndex to: {currentLineIndex}");
+
+            Debug.Log($"[DialogueManager] AutoPlay is {(autoPlay ? "ON" : "OFF")}.");
             if (autoPlay)
             {
-                autoPlayCoroutine = StartCoroutine(AutoAdvanceAfterDelay(autoPlayDelay));
+                if (currentLineIndex < currentDialogue.dialogueLines.Count)
+                {
+                    Debug.Log($"[DialogueManager] Scheduling AutoAdvanceAfterDelay for {autoPlayDelay}s.");
+                    autoPlayCoroutine = StartCoroutine(AutoAdvanceAfterDelay(autoPlayDelay));
+                }
+                else
+                {
+                    Debug.Log($"[DialogueManager] Last line processed with autoPlay. Scheduling AutoEndAfterDelay for {autoPlayDelay}s.");
+                    autoPlayCoroutine = StartCoroutine(AutoEndAfterDelay(autoPlayDelay));
+                }
             }
         }
         else
         {
+            Debug.Log($"[DialogueManager] No more lines (currentLineIndex {currentLineIndex} >= dialogueLines.Count {currentDialogue.dialogueLines.Count}). Calling EndDialogue.");
             EndDialogue();
         }
     }
-    /// <summary>
-    /// Ends the dialogue sequence.
-    /// </summary>
+
     private void EndDialogue()
     {
+        Debug.Log($"[DialogueManager] EndDialogue called. CurrentDialogue: {(currentDialogue != null ? currentDialogue.name : "NULL")}");
         if (autoPlayCoroutine != null)
         {
+            Debug.Log("[DialogueManager] Stopping autoPlayCoroutine in EndDialogue.");
             StopCoroutine(autoPlayCoroutine);
             autoPlayCoroutine = null;
         }
-        OnDialogueEnded?.Invoke();
 
-        if (currentDialogue.imageSprite != null && !imageObject.activeSelf)
+        OnDialogueEnded?.Invoke();
+        Debug.Log("[DialogueManager] OnDialogueEnded invoked.");
+
+        currentDialogue = null;
+        currentLineIndex = 0;
+        currentSceneImageIndex = 0;
+        Debug.Log("[DialogueManager] Cleared currentDialogue and reset indices.");
+
+        if (GameManager.Instance != null)
         {
-            imageObject.SetActive(true);
-            imageObject.GetComponent<Image>().sprite = currentDialogue.imageSprite;
+            Debug.Log("[DialogueManager] GameManager.Instance is available. Changing game status to INGAME.");
+            GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
         }
         else
         {
-            imageObject.SetActive(false);
-            currentDialogue = null;
+            Debug.LogWarning("[DialogueManager] GameManager.Instance is NULL in EndDialogue. Cannot change game status.");
         }
-
-        // Change the game status back to INGAME after the dialogue ends
-        GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
     }
 
-    private Sprite GetPortrait(int index)
+    private Sprite GetPortraitForLine(int lineIndex)
     {
-        if (currentDialogue != null && currentDialogue.portraits != null && currentDialogue.portraits.Count > 0)
+        Sprite portraitToReturn = null;
+        string logMsg = $"[DialogueManager] GetPortraitForLine({lineIndex}). ";
+        if (currentDialogue != null && currentDialogue.portraits != null)
         {
-            return index < currentDialogue.portraits.Count ? currentDialogue.portraits[index] : currentDialogue.portraits[currentDialogue.portraits.Count - 1];
+            logMsg += $"currentDialogue.portraits Count: {currentDialogue.portraits.Count}. ";
+            if (currentDialogue.portraits.Count > 0)
+            {
+                portraitToReturn = lineIndex < currentDialogue.portraits.Count ? currentDialogue.portraits[lineIndex] : currentDialogue.portraits[currentDialogue.portraits.Count - 1];
+                logMsg += $"Returning: {(portraitToReturn != null ? portraitToReturn.name : "NULL SPRITE")}";
+            }
+            else
+            {
+                logMsg += "Portraits list is empty.";
+            }
         }
-        return null;
+        else
+        {
+            logMsg += "currentDialogue or currentDialogue.portraits is NULL.";
+        }
+        Debug.Log(logMsg);
+        return portraitToReturn;
     }
 
     private IEnumerator AutoAdvanceAfterDelay(float delay)
     {
+        Debug.Log($"[DialogueManager] AutoAdvanceAfterDelay coroutine WAITING for {delay}s.");
         yield return new WaitForSecondsRealtime(delay);
-        // Advance dialogue automatically if still in progress.
-        if (currentDialogue != null && currentLineIndex < currentDialogue.sentences.Length)
+        Debug.Log($"[DialogueManager] AutoAdvanceAfterDelay coroutine AWAKE. CurrentDialogue: {(currentDialogue != null ? currentDialogue.name : "NULL")}");
+        if (currentDialogue != null)
         {
+            Debug.Log("[DialogueManager] AutoAdvanceAfterDelay calling AdvanceDialogue().");
             AdvanceDialogue();
+        }
+         else
+        {
+            Debug.LogWarning("[DialogueManager] AutoAdvanceAfterDelay: currentDialogue is null, will not advance.");
+        }
+    }
+
+    private IEnumerator AutoEndAfterDelay(float delay)
+    {
+        Debug.Log($"[DialogueManager] AutoEndAfterDelay coroutine WAITING for {delay}s.");
+        yield return new WaitForSecondsRealtime(delay);
+        Debug.Log($"[DialogueManager] AutoEndAfterDelay coroutine AWAKE. CurrentDialogue: {(currentDialogue != null ? currentDialogue.name : "NULL")}");
+        if (currentDialogue != null) // This check might be redundant if EndDialogue clears currentDialogue, but good for safety
+        {
+            Debug.Log("[DialogueManager] AutoEndAfterDelay calling EndDialogue().");
+            EndDialogue();
+        }
+        else
+        {
+            Debug.LogWarning("[DialogueManager] AutoEndAfterDelay: currentDialogue was already null, dialogue likely ended by other means.");
         }
     }
 }
