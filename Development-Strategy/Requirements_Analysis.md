@@ -228,7 +228,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - Check health status: If health is zero, the SpearShieldMan Dies and triggers the death animation
 - Get Enemy Element Type: SpearShieldMan should be of element type EARTH
 
-### 2.3.7 Snek (Enemy):
+#### 2.3.7 Snek (Enemy):
 
 - Attack coroutine: attack where it dashes towards the player. Conditions for this attack: Distance to player smaller than ~3 and cooldown from previous attack has run out.
 - Cooldown coroutine: (~6s) cooldown for attack. triggered after each attack.
