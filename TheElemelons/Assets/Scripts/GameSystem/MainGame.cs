@@ -400,6 +400,7 @@ public class MainGame : MonoBehaviour
 
     private static void ToggleDisplayedEarthElemelon(bool isActive)
     {
+        /*
         if (Instance.earthElemelonDisplayable == null)
         {
             Instance.earthElemelonDisplayable = GameObject.FindGameObjectWithTag("Elemelon");
@@ -413,6 +414,7 @@ public class MainGame : MonoBehaviour
         {
             Debug.LogError("EarthElemelon GameObject not found in the scene.");
         }
+        */
     }
 
     private static void ResetPlayerPosition()
