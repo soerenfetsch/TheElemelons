@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
-/// Represents a set of dialogue data including speaker name, a list of portraits, and sentences.
+/// Defines the type of dialogue line.
 /// </summary>
 [CreateAssetMenu(fileName = "NewDialogue", menuName = "Dialogue System/Dialogue")]
 public class DialogueData : ScriptableObject
