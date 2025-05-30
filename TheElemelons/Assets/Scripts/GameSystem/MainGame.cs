@@ -96,7 +96,7 @@ public class MainGame : MonoBehaviour
         // TODO: Start the king dialogue about stolen elemelons
 
         // Make the earth elemelon inactive in the scene
-        ToggleDisplayedEarthElemelon(false);
+        //ToggleDisplayedEarthElemelon(false);
         // Make the initial king dialogue available and subscribe the stage change to it
         /*
         EnableKingIntroDialogue();
