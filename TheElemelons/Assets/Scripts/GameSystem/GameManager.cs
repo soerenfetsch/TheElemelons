@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -86,7 +87,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameStatus.LOADING_SCREEN:
                 Time.timeScale = 0; // Pause the game
-                Debug.Log("[GameManager] Status: DEATH_SCREEN");
+                Debug.Log("[GameManager] Status: LOADING_SCREEN.");
                 break;
             case GameStatus.MAIN_MENU:
                 ResetProgressionStage();
@@ -138,16 +139,16 @@ public class GameManager : MonoBehaviour
     public void ContinueSavedGame()
     {
         GameSaveData data = SaveProvider.LoadGame();
-        if (data != null && data.keyBindings != null)
-        {
-            Debug.Log($"[GameManager] ContinueSavedGame: Passing {data.keyBindings.Count} keybindings to InputManager.");
-            InputManager.Instance.ImportKeyBindings(data.keyBindings);
-        } else {
-            Debug.LogWarning("[GameManager] ContinueSavedGame: No keybinding data to load (data or data.keyBindings is null).");
-        }
+        // if (data != null && data.keyBindings != null)
+        // {
+        //     Debug.Log($"[GameManager] ContinueSavedGame: Passing {data.keyBindings.Count} keybindings to InputManager.");
+        //     InputManager.Instance.ImportKeyBindings(data.keyBindings);
+        // } else {
+        //     Debug.LogWarning("[GameManager] ContinueSavedGame: No keybinding data to load (data or data.keyBindings is null).");
+        // }
         if (data != null)
         {
-            // CurrentProgressionStage = data.progressionStage;
+            CurrentProgressionStage = data.progressionStage;
             var health = FindObjectOfType<Health>();
             var mana = FindObjectOfType<Mana>();
             if (health != null) health.SetMaxHealth(data.maxHealth);
@@ -161,7 +162,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SaveGame()
+    public void SaveGame()
     {
         var health = FindObjectOfType<Health>();
         var mana = FindObjectOfType<Mana>();
