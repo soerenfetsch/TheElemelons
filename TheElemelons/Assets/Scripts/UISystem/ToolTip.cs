@@ -41,7 +41,10 @@ public class ToolTip : MonoBehaviour
         mainCamera = Camera.main;
         toolTipAnchor = tooltip.transform.localPosition;
     }
-
+    public void ToggleToolTipOnOff(bool onOff)
+    {
+        tooltip.transform.parent.gameObject.SetActive(onOff);
+    }
     /// <summary>
     /// if current tutorial tip is not none, display according tip
     /// else if can interact, display corresponding tip

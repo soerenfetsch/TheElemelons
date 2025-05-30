@@ -132,11 +132,9 @@ public class MainGame : MonoBehaviour
         DialogueManager.OnDialogueEnded += onKingDialogueEnded;
     */
     }
-
     private void HandleCastleEarlyStage()
     {
         // Make the earth elemelon inactive in the scene
-        ToggleDisplayedEarthElemelon(false);
         EnableKingRepetitiveDialogue();
 
         Portal portal = FindAnyObjectByType<Portal>();

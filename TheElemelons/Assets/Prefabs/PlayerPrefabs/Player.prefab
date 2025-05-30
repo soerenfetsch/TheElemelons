@@ -443,6 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hiddenByThings: 0
+  deathEffect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
 --- !u!212 &708902967062599466
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -817,6 +818,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb090e26a25e874d95890748e3fffbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxZoom: 8
+  minZoom: 3
   casting: {fileID: 8520900134945701756}
   playerInteraction: {fileID: 2704578572486526621}
   pivot: {fileID: 524286683018158904}
