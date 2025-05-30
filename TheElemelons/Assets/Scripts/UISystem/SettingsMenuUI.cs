@@ -104,8 +104,9 @@ public class SettingsMenuUI : MonoBehaviour
 
         // Set text values
         actionTextTransform.GetComponent<TMP_Text>().text = actionName;
+        actionTextTransform.GetComponent<TMP_Text>().font = font;
         buttonTextTransform.GetComponent<TMP_Text>().text = keyName;
-
+        buttonTextTransform.GetComponent<TMP_Text>().font = font;
         // Add click listener to the button
         keyBindButtonTransform.GetComponent<Button>().onClick.AddListener(() => OnKeyBindButtonClicked(actionName));
 
@@ -134,7 +135,6 @@ public class SettingsMenuUI : MonoBehaviour
         {
             TMP_Text txt = entry.transform.Find("KeyBindingButton/ButtonText").GetComponent<TMP_Text>();
             txt.text = newKey;
-            txt.font = font;
         }
     }
 
