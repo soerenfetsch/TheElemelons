@@ -115,7 +115,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - Given room positions and corridor positions the door position is in the middle of the corridor adjacent to a room
 - **Create monster spawnpoints**: For each room have a different pool of possible monsters depending on whether the room is of type NORMAL or ADVANCED, the ADVANCED rooms should have harder monsters. In each room select a random number of 0-5 floor positions, where the specific monster that is supposed to spawn there is denoted.
 - **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
--**Create shrine positions**: Per dungeon select on random NORMAL and one random ADVANCED room and in these rooms a random floor position where a shrine will be spawned.
+-**Create shrine positions**: With a variable probability between 0 and 40% for each room that is of type NORMAL or ADVANCED, spawn a shrine in the room at a random viable position if one is found. A position is viable if it is 3 tiles away from any wall and has a 3x3 field for the shrine without any monster positions.
 
 #### 2.2.4 Tilemap Visualization (abstract)
 
@@ -144,9 +144,9 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Spawn Altars**: Given the shrine spawn points, instantiate altars at the given position.
 - **On all monsters defeated**: Emits an event once all the monsters of the dungeon are cleared/defeated, this can be used by the **Main Game** to progress the game.
 
-#### 2.2.7 Altars:
+#### 2.2.7 Shrines:
 
-- **Types**: Altar can be golden or not, and can either contain blood or a pink fluid.
+- **Types**: Shrine can be golden or not, and can either contain blood or a pink fluid.
   - Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
   - Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
   - Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
