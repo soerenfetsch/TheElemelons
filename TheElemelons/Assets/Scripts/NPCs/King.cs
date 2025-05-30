@@ -123,6 +123,7 @@ public class King : DialogueTrigger
             {
                 GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
                 alreadyThanked = true;
+                GameObject.Find("CastElement").GetComponent<ToolTipTrigger>().otherCondition = true;
             }
         }
     }

@@ -3985,7 +3985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canRepeat: 0
   tutorialTip: 5
-  otherCondition: 1
+  otherCondition: 0
   gameProgressionConditions: 02000000
 --- !u!61 &1036220691
 BoxCollider2D:
