@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -75,10 +75,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Changing game status from {CurrentGameStatus} to {newStatus}");
         PreviousGameStatus = CurrentGameStatus; // Store the previous status
-        Debug.Log($"[GameManager] ChangeGameStatus called. Old: {CurrentGameStatus}, New: {newStatus}");
         CurrentGameStatus = newStatus;
         OnGameStatusChanged?.Invoke(newStatus); // Invoke the event
-        Debug.Log($"[GameManager] OnGameStatusChanged event invoked with {newStatus}.");
 
         switch (newStatus)
         {
@@ -132,20 +130,12 @@ public class GameManager : MonoBehaviour
         ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
         // CurrentProgressionStage = GameProgressionStage.CASTLE_INTRODUCTION;
         // CurrentGameStatus = GameStatus.INGAME; // Let ChangeGameStatus handle this if needed via StartMainGameStage
-        StartMainGameStage(); // This should probably set the status to INGAME
         // ChangeGameStatus(GameStatus.INGAME); // Explicitly set if StartMainGameStage doesn't
     }
 
     public void ContinueSavedGame()
     {
         GameSaveData data = SaveProvider.LoadGame();
-        // if (data != null && data.keyBindings != null)
-        // {
-        //     Debug.Log($"[GameManager] ContinueSavedGame: Passing {data.keyBindings.Count} keybindings to InputManager.");
-        //     InputManager.Instance.ImportKeyBindings(data.keyBindings);
-        // } else {
-        //     Debug.LogWarning("[GameManager] ContinueSavedGame: No keybinding data to load (data or data.keyBindings is null).");
-        // }
         if (data != null)
         {
             CurrentProgressionStage = data.progressionStage;
@@ -155,6 +145,7 @@ public class GameManager : MonoBehaviour
             if (mana != null) mana.SetMaxMana(data.maxMana);
             if (InputManager.Instance != null && data.keyBindings != null)
                 InputManager.Instance.ImportKeyBindings(data.keyBindings);
+            ChangeProgressionStage(data.progressionStage);
         }
         else
         {

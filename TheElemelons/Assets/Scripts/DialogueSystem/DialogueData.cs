@@ -16,18 +16,21 @@ public enum LineType
 [System.Serializable]
 public class DialogueLineEntry
 {
-    [Tooltip("Type of this dialogue entry (Text or SceneImage).")]
-    public LineType lineType = LineType.Text;
+    [Tooltip("Type of the dialogue line, either Text or SceneImage.")]
+    public LineType lineType;
 
-    [Tooltip("The dialogue text to display. Ignored if lineType is SceneImage and displaySceneImage is true, but can be used for notes.")]
+    [Tooltip("List of default portrait images for the speaker. Used if a DialogueLineEntry does not have a portraitOverride.")]
+    public Sprite linePortrait;
+
+    [Tooltip("The dialogue text to display.")]
     [TextArea(3, 10)]
-    public string sentenceText;
+    public string lineSentenceText;
 
-    [Tooltip("Optional: Override the default portrait for this specific line. If null, the system will try to use an indexed portrait from DialogueData.portraits.")]
-    public Sprite portraitOverride;
+    [Tooltip("List of scene images that can be displayed during the dialogue. Referenced by DialogueLineEntries marked to display a scene image.")]
+    public Sprite lineSceneImage;
 
-    [Tooltip("If true, and lineType is SceneImage (or if you want to force a scene image even with text), display the next available scene image from DialogueData.sceneImages. The sentenceText might be used as a caption or ignored depending on UI setup.")]
-    public bool displaySceneImage = false;
+    [Tooltip("Override Options for character interaction.")]
+    public Sprite overrideDialogueBoxImage;
 }
 
 /// <summary>
@@ -36,18 +39,15 @@ public class DialogueLineEntry
 [CreateAssetMenu(fileName = "NewDialogue", menuName = "Dialogue System/Dialogue")]
 public class DialogueData : ScriptableObject
 {
-    [Tooltip("Name of the speaker.")]
-    public string speakerName;
-
-    [Tooltip("List of default portrait images for the speaker. Used if a DialogueLineEntry does not have a portraitOverride.")]
-    public List<Sprite> portraits = new List<Sprite>(); // Initialized
-
     [Tooltip("Dialogue Box image.")]
     public Sprite dialogueBoxImage;
 
+    [Tooltip("Name of the speaker.")]
+    public string speakerName;
+
+    [Tooltip("List of default portraits for the speaker. Used if a DialogueLineEntry does not have a portraitOverride.")]
+    public Sprite portraitImage;
+
     [Tooltip("List of dialogue line entries. Each entry defines text, potential portrait overrides, and scene image triggers.")]
     public List<DialogueLineEntry> dialogueLines = new List<DialogueLineEntry>(); // Initialized
-
-    [Tooltip("List of scene images that can be displayed during the dialogue. Referenced by DialogueLineEntries marked to display a scene image.")]
-    public List<Sprite> sceneImages = new List<Sprite>(); // Initialized
 }

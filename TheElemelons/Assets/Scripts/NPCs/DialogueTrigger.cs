@@ -62,9 +62,7 @@ public class DialogueTrigger : InteractableNPC
                 return;
             }
 
-            //string dialogueKey = dataToStart.name;
-            Debug.Log($"[DialogueTrigger] Attempting to start dialogue with key: '{dialogueKey}' from asset {dataToStart.name} on {gameObject.name}");
-            DialogueManager.Instance.StartDialogue(dialogueKey);
+            DialogueManager.Instance.StartDialogue(dataToStart);
 
             nextDialogue++;
             if (nextDialogue >= basic_dialogues_list.Count)

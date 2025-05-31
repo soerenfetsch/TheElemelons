@@ -99,12 +99,12 @@ public class MainGame : MonoBehaviour
         ToggleDisplayedEarthElemelon(false);
         // Make the initial king dialogue available and subscribe the stage change to it
         EnableKingIntroDialogue();
-        Action<DialogueLineDisplayInfo> onKingDialogueStarted = null;
+        Action<DialogueData> onKingDialogueStarted = null;
         Action onKingDialogueEnded = null;
 
-        onKingDialogueStarted = (DialogueLineDisplayInfo info) =>
+        onKingDialogueStarted = (DialogueData dialogueData) =>
         {
-            if (info.SpeakerName == "King")
+            if (dialogueData.speakerName == "King")
             {
                 Debug.Log("King dialogue started");
                 kingDialogueActive = true;
@@ -119,7 +119,7 @@ public class MainGame : MonoBehaviour
                 kingDialogueActive = false;
 
                 // Unsubscribe both handlers
-                DialogueManager.OnDisplayUpdateRequest -= onKingDialogueStarted;
+                DialogueManager.OnDialogueStart -= onKingDialogueStarted;
                 DialogueManager.OnDialogueEnded -= onKingDialogueEnded;
 
                 GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
@@ -127,7 +127,7 @@ public class MainGame : MonoBehaviour
         };
 
         // Subscribe both
-        DialogueManager.OnDisplayUpdateRequest += onKingDialogueStarted;
+        DialogueManager.OnDialogueStart += onKingDialogueStarted;
         DialogueManager.OnDialogueEnded += onKingDialogueEnded;
 
     }
@@ -242,12 +242,12 @@ public class MainGame : MonoBehaviour
         // Make the earth elemelon inactive in the scene
         ToggleDisplayedEarthElemelon(false);
         EnableKingEndDialogue();
-        Action<DialogueLineDisplayInfo> onKingDialogueStarted = null;
+        Action<DialogueData> onKingDialogueStarted = null;
         Action onKingDialogueEnded = null;
 
-        onKingDialogueStarted = (DialogueLineDisplayInfo info) =>
+        onKingDialogueStarted = (DialogueData dialogueData) =>
         {
-            if (info.SpeakerName == "King")
+            if (dialogueData.speakerName == "King")
             {
                 Debug.Log("King dialogue started");
                 kingDialogueActive = true;
@@ -262,7 +262,7 @@ public class MainGame : MonoBehaviour
                 kingDialogueActive = false;
 
                 // Unsubscribe both handlers
-                DialogueManager.OnDisplayUpdateRequest -= onKingDialogueStarted;
+                DialogueManager.OnDialogueStart -= onKingDialogueStarted;
                 DialogueManager.OnDialogueEnded -= onKingDialogueEnded;
 
                 GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_LATE);
@@ -270,7 +270,7 @@ public class MainGame : MonoBehaviour
         };
 
         // Subscribe both
-        DialogueManager.OnDisplayUpdateRequest += onKingDialogueStarted;
+        DialogueManager.OnDialogueStart += onKingDialogueStarted;
         DialogueManager.OnDialogueEnded += onKingDialogueEnded;
     }
 
