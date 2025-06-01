@@ -45,6 +45,7 @@ public class PauseMenuUI : MonoBehaviour
         Debug.Log("Continue Game Clicked");
         // Resume the game and update the game state
         GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
+        GameManager.Instance.SaveGame();
         //GameManager.Instance.ContinueSavedGame();
     }
 

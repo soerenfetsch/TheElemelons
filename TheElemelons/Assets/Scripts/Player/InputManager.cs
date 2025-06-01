@@ -150,7 +150,7 @@ public class InputManager : MonoBehaviour
         {
             keyBindings[action] = newKey; // Update the key binding in the dictionary
             Debug.Log($"Key binding for '{action}' updated to: {newKey}");
-            GameManager.Instance.SaveGame(); // ADD THIS to save immediately after rebinding
+            // GameManager.Instance.SaveGame(); // ADD THIS to save immediately after rebinding
         }
         else
         {
