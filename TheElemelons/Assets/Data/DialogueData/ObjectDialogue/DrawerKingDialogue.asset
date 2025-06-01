@@ -12,11 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: DrawerKingDialogue
   m_EditorClassIdentifier: 
-  speakerName: 
-  portraits: []
   dialogueBoxImage: {fileID: -253876386, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
-  sentences:
-  - A bedside table, adorned with intricate details
-  - There's something on it.
-  - It's a photograph of the king with his daughter.
-  imageSprite: {fileID: 0}
+  speakerName: 
+  portraitImage: {fileID: 0}
+  dialogueLines:
+  - lineType: 0
+    linePortrait: {fileID: 0}
+    lineSentenceText: A bedside table, adorned with intricate details.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 0}
+    lineSentenceText: There's something on it.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 0}
+    lineSentenceText: It's a photograph of the king with his daughter.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
