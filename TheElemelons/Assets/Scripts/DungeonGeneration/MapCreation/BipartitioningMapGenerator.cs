@@ -16,6 +16,14 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     // Define how wide the corridors are
     public int corridorWidth = 2;
 
+    // For spawning shrines in rooms
+    public float roomShrineProbability = 0.2f;
+    public GameObject shrinePrefab;
+
+    // For making rooms dark
+    public float darkRoomProbability = 0.1f;
+    public GameObject darknessEffectPrefab;
+
     public override MapData GenerateMap()
     {
         mapData = new MapData();
@@ -24,7 +32,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         CreateDecorationPositions(mapData);
         CreateMonsterSpawnPoints(mapData);
         CreateDoorPositions(mapData);
-        createShrinePositions(mapData);
+        CreateShrinePositions(mapData);
         createTrapPositions(mapData);
         monsterManager.mapData = mapData;
         if (monsterManager.allMonsters == null)
@@ -32,6 +40,8 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             monsterManager.allMonsters = new List<GameObject>();
         }
         monsterManager.SpawnMonsters();
+        SpawnShrines(mapData);
+        SpawnDarknessInRooms(mapData);
         return mapData;
     }
 
@@ -66,6 +76,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         {
             Room room = new Room();
             room.AddFloorPositions(CreateRandomRoomInSpace(roomSpace));
+            RandomlySetRoomDarkness(room);
             roomList.Add(room);
         }
 
@@ -386,9 +397,82 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
-    public void createShrinePositions(MapData mapData)
+    /// <summary>
+    /// Creates shrine positions in the rooms of the map data.
+    /// This method iterates through the rooms and randomly selects positions for shrines
+    /// with a certain probability. It checks if the position is at least 3 tiles away from walls
+    /// and if there is a clear 3x3 area centered on the position before placing a shrine.
+    /// The shrine positions are added to both the room and the map data.
+    /// </summary>
+    /// <param name="mapData"></param>
+    public void CreateShrinePositions(MapData mapData)
     {
-        // TODO: Implement this
+        System.Random rng = new System.Random();
+
+        foreach (var room in mapData.rooms)
+        {
+            if (room.roomType != Room.RoomType.NORMAL && room.roomType != Room.RoomType.ADVANCED)
+                continue;
+
+            // Roll the dice to see if this room gets a shrine
+            if (rng.NextDouble() > roomShrineProbability)
+                continue;
+
+            HashSet<Vector2Int> candidates = new HashSet<Vector2Int>();
+
+            foreach (var pos in room.floorPositions)
+            {
+                // Check if the position is at least 3 tiles from the wall
+                if (!IsShrineFarFromWall(pos, room.floorPositions))
+                    continue;
+
+                // Check for a clear 3x3 area centered on this tile
+                if (IsShrineSpaceAvailable(pos, room))
+                    candidates.Add(pos);
+            }
+
+            // If any candidate positions were found, pick one at random and add shrine
+            if (candidates.Count > 0)
+            {
+                Vector2Int[] candidateArray = candidates.ToArray();
+                Vector2Int shrinePos = candidateArray[rng.Next(candidateArray.Length)];
+
+                room.AddShrinePosition(shrinePos);
+                mapData.AddShrinePosition(shrinePos);
+            }
+        }
+    }
+
+    private bool IsShrineFarFromWall(Vector2Int pos, HashSet<Vector2Int> floorPositions)
+    {
+        for (int dx = -3; dx <= 3; dx++)
+        {
+            for (int dy = -3; dy <= 3; dy++)
+            {
+                Vector2Int checkPos = pos + new Vector2Int(dx, dy);
+                if (!floorPositions.Contains(checkPos))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private bool IsShrineSpaceAvailable(Vector2Int pos, Room room)
+    {
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                Vector2Int checkPos = pos + new Vector2Int(dx, dy);
+                if (!room.floorPositions.Contains(checkPos) || room.monsterSpawnPositions.Contains(checkPos))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void createTrapPositions(MapData mapData)
@@ -480,5 +564,62 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
 
         return roomPositions;
     }
+
+    /// <summary>
+    /// Spawns shrines in the rooms of the map data.
+    /// This method iterates through the rooms and instantiates shrine prefabs at the specified positions.
+    /// The shrine prefab should be assigned in the inspector.
+    /// </summary>
+    public void SpawnShrines(MapData mapData)
+    {
+        foreach (var room in mapData.rooms)
+        {
+            foreach (var shrinePosition in room.shrinePositions)
+            {
+                GameObject shrine = Instantiate(shrinePrefab, new Vector3(shrinePosition.x, shrinePosition.y, 0), Quaternion.identity);
+            }
+        }
+    }
+
+    public void RandomlySetRoomDarkness(Room room)
+    {
+        // Randomly set the room to be dark with a certain probability
+        if (Random.value < darkRoomProbability)
+        {
+            room.isDark = true;
+        }
+        else
+        {
+            room.isDark = false;
+        }
+    }
+
+    public void SpawnDarknessInRooms(MapData mapData)
+    {
+        if (darknessEffectPrefab == null)
+        {
+            Debug.LogError("Darkness effect prefab is not assigned!");
+            return;
+        }
+
+        foreach (var room in mapData.rooms)
+        {
+            if (!room.isDark)
+                continue;
+
+            // Instantiate darkness effect in the room
+            // Position has to be in the center at the bottom of the room
+            float centerX = (room.floorPositions.Min(pos => pos.x) + room.floorPositions.Max(pos => pos.x)) / 2f + 0.5f;
+            float bottomY = room.floorPositions.Min(pos => pos.y) + 0.5f;
+            Vector3 darknessPosition = new Vector3(centerX, bottomY, 0);
+            Debug.Log($"Spawning darkness effect at position: {darknessPosition}");
+            GameObject darknessEffect = Instantiate(darknessEffectPrefab, darknessPosition, Quaternion.identity);
+            // Adjust the transform scale to the room size
+            Vector2 roomSize = new Vector2(room.floorPositions.Max(pos => pos.x) - room.floorPositions.Min(pos => pos.x) + 1,
+                                           room.floorPositions.Max(pos => pos.y) - room.floorPositions.Min(pos => pos.y) + 1);
+            darknessEffect.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1);
+        }
+    }
+
 }
 

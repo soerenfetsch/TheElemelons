@@ -115,7 +115,9 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - Given room positions and corridor positions the door position is in the middle of the corridor adjacent to a room
 - **Create monster spawnpoints**: For each room have a different pool of possible monsters depending on whether the room is of type NORMAL or ADVANCED, the ADVANCED rooms should have harder monsters. In each room select a random number of 0-5 floor positions, where the specific monster that is supposed to spawn there is denoted.
 - **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
--**Create shrine positions**: With a variable probability between 0 and 40% for each room that is of type NORMAL or ADVANCED, spawn a shrine in the room at a random viable position if one is found. A position is viable if it is 3 tiles away from any wall and has a 3x3 field for the shrine without any monster positions.
+- **Create shrine positions**: With a variable probability between 0 and 40% for each room that is of type NORMAL or ADVANCED, spawn a shrine in the room at a random viable position if one is found. A position is viable if it is 3 tiles away from any wall and has a 3x3 field for the shrine without any monster positions.
+- **Spawn Altars**: Given the shrine spawn points, instantiate altars at the given position.
+- **Create dark rooms**: With a variable probability between 0 and 20% for each room that is of type NORMAL or ADVANCED, select rooms to be a dark room in which the player cannot see anything except darkness. The only way for the player to see, is to spawn the fire light around him using the according spell.
 
 #### 2.2.4 Tilemap Visualization (abstract)
 
@@ -141,7 +143,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 - **Manage monsters** Keep references of all monsters in the dungeon
 - **Spawn Monsters**: Given the monster spawn points with monster names of the map data, instantiate the respective monster prefabs with health = max health and mana = max mana, and initialize pathfinding and other dependencies on the player. Save references to the monsters, so the manager knows when all are defeated.
-- **Spawn Altars**: Given the shrine spawn points, instantiate altars at the given position.
 - **On all monsters defeated**: Emits an event once all the monsters of the dungeon are cleared/defeated, this can be used by the **Main Game** to progress the game.
 
 #### 2.2.7 Shrines:
@@ -154,6 +155,11 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **On Interact**: Plays self-destruct animation and spawns loot depending on altar type. The “Collectable”-script component of the collectables is deactivated first.
 - **DoMovement()**: Moves each spawned collectable around in a parabola shaped trajectory. The distance each collectable travels is measured and after a short random distance, the movement is interupted and their collectable scripts become enabled.
 - After all spawned collectables have travelled their desired distance and their collectable scripts have been activated, Update() deactivates the altar’s altar script.
+
+#### 2.2.8 Dark Rooms:
+
+- **Shroud in Darkness**: The player should not be able to see anything except darkness inside a dark room, monsters and tiles are hidden like a dark filter above the room.
+- **Allow light**: Using the fire light spell, the player has to be able to light a dark room around the circular light cone which exposes the actual contents of the room.
 
 ### 2.3 Enemy System
 
