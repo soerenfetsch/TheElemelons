@@ -10,6 +10,10 @@ using UnityEngine;
 /// </summary>
 public class Altar : InteractableObject
 {
+    [Header("Altar Type Probabilities")]
+    public float goldChance = 0.5f;
+    public float bloodChance = 0.5f;
+
     [Header("Bound Components")]
     Animator fluidAnimator;
     Animator animator;
@@ -41,6 +45,7 @@ public class Altar : InteractableObject
     // Start is called before the first frame update
     void Start()
     {
+        InitializeRandomProperties();
         InitializeGeneral();
         InitializeLists();
         InitializeCollider();
@@ -71,6 +76,19 @@ public class Altar : InteractableObject
         xsign = new List<int>();
         ysign = new List<int>();
     }
+
+    private void InitializeRandomProperties()
+    {
+        if (Random.Range(0f, 1f) < goldChance)
+        {
+            gold = true;
+        }
+        if (Random.Range(0f, 1f) < bloodChance)
+        {
+            blood = true;
+        }
+    }
+
     /// <summary>
     /// Plays self-destruct animation and spawns loot depending on altar type. 
     /// The “Collectable”-script component of the collectables is deactivated first.

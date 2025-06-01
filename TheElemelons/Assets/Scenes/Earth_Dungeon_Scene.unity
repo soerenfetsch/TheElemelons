@@ -1986644,6 +1986644,8 @@ MonoBehaviour:
   dungeonHeight: 200
   offset: 8
   corridorWidth: 3
+  roomShrineProbability: 0.2
+  shrinePrefab: {fileID: 8855732805074474602, guid: 511b400c676b34b4fbc34be15ac4f5ab, type: 3}
 --- !u!114 &1792289321
 MonoBehaviour:
   m_ObjectHideFlags: 0
