@@ -148,4 +148,18 @@ public class BipartitioningMapGeneratorTests
             "Expected shrine position at (3, 3).");
     }
 
+    [Test]
+    public void CreateDarkRooms_ShouldCreateDarkRoomsWithCorrectProperties()
+    {
+        Room room = new Room();
+
+        generator.darkRoomProbability = 1.0f; // Set probability to 100% for testing
+        generator.RandomlySetRoomDarkness(room);
+        Assert.IsTrue(room.isDark, "Expected room to be dark.");
+
+        generator.darkRoomProbability = 0.0f; // Reset probability to 0% for next tests
+        generator.RandomlySetRoomDarkness(room);
+        Assert.IsFalse(room.isDark, "Expected room to not be dark.");
+    }
+
 }
