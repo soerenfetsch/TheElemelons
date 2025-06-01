@@ -48,6 +48,9 @@ public class DialogueData : ScriptableObject
     [Tooltip("List of default portraits for the speaker. Used if a DialogueLineEntry does not have a portraitOverride.")]
     public Sprite portraitImage;
 
+    [Tooltip("List of scene images for the dialogue.")]
+    public Sprite sceneImage;
+
     [Tooltip("List of dialogue line entries. Each entry defines text, potential portrait overrides, and scene image triggers.")]
     public List<DialogueLineEntry> dialogueLines = new List<DialogueLineEntry>(); // Initialized
 }

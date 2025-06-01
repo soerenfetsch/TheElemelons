@@ -67,6 +67,11 @@ public class DialogueUI : MonoBehaviour
             dialogueBoxBackgroundImage.sprite = dialogueData.dialogueBoxImage;
             // Visibility of dialogueBoxBackgroundImage will be handled by HandleDialogueUpdate
         }
+        if (sceneImageDisplay != null)
+        {
+            sceneImageDisplay.sprite = dialogueData.sceneImage;
+            // Visibility of sceneImageDisplay will be handled by HandleDialogueUpdate
+        }
 
         // Ensure panels are in a known state before the first line update
         if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(false);
@@ -99,7 +104,11 @@ public class DialogueUI : MonoBehaviour
                 dialogueBoxBackgroundImage.sprite = currentLine.overrideDialogueBoxImage;
             }
         }
-        // else: dialogueBoxBackgroundImage keeps its current sprite
+        else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null)
+        {
+            // fallback to global dialogue box image
+            dialogueBoxBackgroundImage.sprite = DialogueManager.Instance.currentDialogue.dialogueBoxImage;
+        }
 
         // Portrait Override
         if (currentLine.linePortrait != null)
@@ -109,8 +118,20 @@ public class DialogueUI : MonoBehaviour
                 portraitImage.sprite = currentLine.linePortrait;
             }
         }
-        // else: portraitImage keeps its current sprite
-
+        else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null)
+        {
+            // fallback to global portrait
+            portraitImage.sprite = DialogueManager.Instance.currentDialogue.portraitImage;
+        }
+        if (sceneImageDisplay != null)
+        {
+            sceneImageDisplay.sprite = currentLine.lineSceneImage; // Scene image is set directly from the line entry
+        }
+        else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null)
+        {
+            // fallback to global scene image
+            sceneImageDisplay.sprite = DialogueManager.Instance.currentDialogue.sceneImage;
+        }
 
         // Handle display based on LineType
         if (currentLine.lineType == LineType.Text)
@@ -146,6 +167,13 @@ public class DialogueUI : MonoBehaviour
                 if (currentLine.lineSceneImage != null)
                 {
                     sceneImageDisplay.sprite = currentLine.lineSceneImage;
+                    sceneImageDisplay.gameObject.SetActive(true);
+                }
+                else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null
+                        && DialogueManager.Instance.currentDialogue.sceneImage != null)
+                {
+                    // Fallback to global scene image
+                    sceneImageDisplay.sprite = DialogueManager.Instance.currentDialogue.sceneImage;
                     sceneImageDisplay.gameObject.SetActive(true);
                 }
                 else

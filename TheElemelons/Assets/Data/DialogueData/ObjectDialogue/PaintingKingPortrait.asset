@@ -12,13 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: PaintingKingPortrait
   m_EditorClassIdentifier: 
-  speakerName: 
-  portraits: []
   dialogueBoxImage: {fileID: -253876386, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
+  speakerName: 
+  portraitImage: {fileID: 0}
   dialogueLines:
   - lineType: 0
-    sentenceText: King Joseh the Generous
-    portraitOverride: {fileID: 0}
-    displaySceneImage: 0
-  sceneImages:
-  - {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    linePortrait: {fileID: 0}
+    lineSentenceText: King Joseh the Generous
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 1
+    linePortrait: {fileID: 0}
+    lineSentenceText: 
+    lineSceneImage: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    overrideDialogueBoxImage: {fileID: 0}

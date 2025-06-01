@@ -17,7 +17,7 @@ MonoBehaviour:
   portraitImage: {fileID: 0}
   dialogueLines:
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: basic3
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: Do not trust the void witch.
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
