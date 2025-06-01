@@ -112,10 +112,6 @@ public class TreeLog : Enemy
     /// </summary>
     public override void ActOnStatus()
     {
-        if ((playerTransform.position - transform.position).sqrMagnitude < 15)
-        {
-            Debug.Log("current status: " + currentState);
-        }
         switch (currentState)
         {
             case EnemyStatus.Idle:

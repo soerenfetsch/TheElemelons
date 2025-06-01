@@ -20,6 +20,10 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     public float roomShrineProbability = 0.2f;
     public GameObject shrinePrefab;
 
+    // For making rooms dark
+    public float darkRoomProbability = 0.1f;
+    public GameObject darknessEffectPrefab;
+
     public override MapData GenerateMap()
     {
         mapData = new MapData();
@@ -37,6 +41,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
         monsterManager.SpawnMonsters();
         SpawnShrines(mapData);
+        SpawnDarknessInRooms(mapData);
         return mapData;
     }
 
@@ -71,6 +76,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         {
             Room room = new Room();
             room.AddFloorPositions(CreateRandomRoomInSpace(roomSpace));
+            RandomlySetRoomDarkness(room);
             roomList.Add(room);
         }
 
@@ -574,5 +580,46 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             }
         }
     }
+
+    public void RandomlySetRoomDarkness(Room room)
+    {
+        // Randomly set the room to be dark with a certain probability
+        if (Random.value < darkRoomProbability)
+        {
+            room.isDark = true;
+        }
+        else
+        {
+            room.isDark = false;
+        }
+    }
+
+    public void SpawnDarknessInRooms(MapData mapData)
+    {
+        if (darknessEffectPrefab == null)
+        {
+            Debug.LogError("Darkness effect prefab is not assigned!");
+            return;
+        }
+
+        foreach (var room in mapData.rooms)
+        {
+            if (!room.isDark)
+                continue;
+
+            // Instantiate darkness effect in the room
+            // Position has to be in the center at the bottom of the room
+            float centerX = (room.floorPositions.Min(pos => pos.x) + room.floorPositions.Max(pos => pos.x)) / 2f + 0.5f;
+            float bottomY = room.floorPositions.Min(pos => pos.y) + 0.5f;
+            Vector3 darknessPosition = new Vector3(centerX, bottomY, 0);
+            Debug.Log($"Spawning darkness effect at position: {darknessPosition}");
+            GameObject darknessEffect = Instantiate(darknessEffectPrefab, darknessPosition, Quaternion.identity);
+            // Adjust the transform scale to the room size
+            Vector2 roomSize = new Vector2(room.floorPositions.Max(pos => pos.x) - room.floorPositions.Min(pos => pos.x) + 1,
+                                           room.floorPositions.Max(pos => pos.y) - room.floorPositions.Min(pos => pos.y) + 1);
+            darknessEffect.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1);
+        }
+    }
+
 }
 
