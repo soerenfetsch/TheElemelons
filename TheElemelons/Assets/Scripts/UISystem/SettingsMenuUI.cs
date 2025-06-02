@@ -12,7 +12,6 @@ public class SettingsMenuUI : MonoBehaviour
     public GameObject keyBindingEntryPrefab;
     public InputManager inputManager;
 
-
     private Button backButton;
     private bool isRebinding = false;
     private Dictionary<string, GameObject> keyBindingEntries = new Dictionary<string, GameObject>();

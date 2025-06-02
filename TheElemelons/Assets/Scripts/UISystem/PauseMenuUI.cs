@@ -51,11 +51,7 @@ public class PauseMenuUI : MonoBehaviour
     {
         Debug.Log("Save Game Clicked");
         // Save the game state
-        GameManager.Instance.SaveProvider.SaveGame(new GameSaveData
-        {
-            progressionStage = GameManager.Instance.CurrentProgressionStage,
-            // Add other relevant data to save here
-        });
+        GameManager.Instance.SaveGame();
     }
 
     public void OnOptionsClicked()

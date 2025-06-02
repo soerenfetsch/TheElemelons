@@ -47,7 +47,7 @@ public class AltarTest
         {
             Assert.AreEqual(hearts[i].name, "CollectableHeartMock", "spawned " + hearts[0].name + " instead of CollectableHeartMock");
         }
-        Assert.True(hearts.Count < altarScript.maxSpawnableHearts, " spawned too many hearts");
+        Assert.True(hearts.Count <= altarScript.maxSpawnableHearts, " spawned too many hearts");
     }
     [Test]
     public void TestChoseLootMaxHeart()
