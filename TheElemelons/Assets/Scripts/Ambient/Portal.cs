@@ -12,7 +12,7 @@ public class Portal : MonoBehaviour
     Transform glow1;
     Transform glow2;
     GameObject blueLight;
-    GameObject light;
+    GameObject lightObject;
     public float glowMoveSpeed = 5f;
     public float activationRadius = 4f;
     void Start()
@@ -23,7 +23,7 @@ public class Portal : MonoBehaviour
         glow2 = blueLight.transform.Find("Glow2");
         pointA = blueLight.transform.Find("PointA");
         pointB = blueLight.transform.Find("PointB");
-        light = transform.Find("Light").gameObject;
+        lightObject = transform.Find("Light").gameObject;
     }
     void DoGlowMovement()
     {
@@ -45,13 +45,13 @@ public class Portal : MonoBehaviour
         if ((playerTransform.position - transform.position).magnitude < activationRadius)
         {
             blueLight.SetActive(true);
-            light.SetActive(true);
+            lightObject.SetActive(true);
             DoGlowMovement();
         }
         else
         {
             blueLight.SetActive(false);
-            light.SetActive(false);
+            lightObject.SetActive(false);
         }
     }
     /// <summary>

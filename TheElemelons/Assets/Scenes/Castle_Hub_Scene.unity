@@ -2371,7 +2371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f06fde38738e03241b446633ae7edc75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowedGameProgressionStages: 05000000060000000700000008000000
+  allowedGameProgressionStages: 060000000700000008000000
 --- !u!1 &835002881
 GameObject:
   m_ObjectHideFlags: 0

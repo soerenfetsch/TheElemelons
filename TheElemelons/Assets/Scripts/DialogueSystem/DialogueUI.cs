@@ -48,9 +48,6 @@ public class DialogueUI : MonoBehaviour
 
     private void HandleDialogueStart(DialogueData dialogueData)
     {
-        Debug.Log($"[DialogueUI] HandleDialogueStart: Setting up global elements for {dialogueData.name}");
-        // gameObject.SetActive(true); // Ensure this UI container is active
-
         // Set global/default UI elements from DialogueData
         if (nameText != null)
         {
@@ -90,7 +87,6 @@ public class DialogueUI : MonoBehaviour
 
     private void HandleDialogueUpdate(DialogueLineEntry currentLine)
     {
-        Debug.Log($"[DialogueUI] HandleDialogueUpdate: Processing lineType '{currentLine.lineType}'. Text: '{currentLine.lineSentenceText}'");
         StopExistingTyping();
 
         // Apply overrides from currentLine if they exist
@@ -211,7 +207,7 @@ public class DialogueUI : MonoBehaviour
         if (dialogueText != null) dialogueText.text = ""; else { Debug.LogError("[DialogueUI] TypeLine: dialogueText is NULL!"); yield break; }
 
 
-        foreach (char letter in line.ToCharArray())
+        foreach (char letter in line)
         {
             if (isSkipping)
             {

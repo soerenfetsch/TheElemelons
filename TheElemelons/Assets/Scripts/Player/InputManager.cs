@@ -394,7 +394,6 @@ public class InputManager : MonoBehaviour
         var list = new List<GameSaveData.KeyBindingEntry>();
         foreach (var kvp in keyBindings)
         {
-            Debug.Log($"  - EXPORTING: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
             list.Add(new GameSaveData.KeyBindingEntry { action = kvp.Key, keyCode = (int)kvp.Value });
         }
         return list;
@@ -406,7 +405,6 @@ public class InputManager : MonoBehaviour
         Debug.Log($"[InputManager] ImportKeyBindings: Receiving {entries.Count} entries. Current Instance ID: {GetInstanceID()}");
         foreach (var entry in entries)
         {
-            Debug.Log($"  - IMPORTING: Action: {entry.action}, keyCode: {(KeyCode)entry.keyCode} ({(int)entry.keyCode})");
             keyBindings[entry.action] = (KeyCode)entry.keyCode;
         }
         Debug.Log("[InputManager] Import complete. Final bindings in InputManager:");

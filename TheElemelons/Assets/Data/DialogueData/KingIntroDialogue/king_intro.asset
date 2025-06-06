@@ -72,8 +72,12 @@ MonoBehaviour:
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
     linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
-    lineSentenceText: "The Elemelon of endurance and stability.\r\nIt was the first
-      she took.\r"
+    lineSentenceText: "The Elemelon of endurance and stability.\r\r"
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: It was the first she took.
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
