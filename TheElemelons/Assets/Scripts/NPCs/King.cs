@@ -101,20 +101,23 @@ public class King : DialogueTrigger
         }
         else
         {
+
             string dialogueKey = "";
             if (basic_dialogues_list.Count > 1 && (dialogueDictionary[basic_dialogues_list] || nextDialogue < basic_dialogues_list.Count - 1))
             {
-                dialogueKey = basic_dialogues_list[nextDialogue++].name;
+                //dialogueKey = basic_dialogues_list[nextDialogue++].name;
+                nextDialogue++;
             }
             else if (basic_dialogues_list.Count > 1)
             {
-                dialogueKey = basic_dialogues_list[nextDialogue].name;
+                //dialogueKey = basic_dialogues_list[nextDialogue].name;
             }
             else
             {
-                dialogueKey = basic_dialogues_list[0].name;
+                //dialogueKey = basic_dialogues_list[0].name;
+                nextDialogue = 0;
             }
-            DialogueManager.Instance.StartDialogue(dialogueKey);
+            DialogueData dataToStart = basic_dialogues_list[nextDialogue];
             if (nextDialogue >= basic_dialogues_list.Count && dialogueDictionary[basic_dialogues_list])
             {
                 nextDialogue = 0;
