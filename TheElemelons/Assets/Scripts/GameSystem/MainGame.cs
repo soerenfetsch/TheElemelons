@@ -14,7 +14,6 @@ public class MainGame : MonoBehaviour
     public List<DialogueData> kingEndDialoguesList;
 
     private static bool kingDialogueActive = false;
-    private GameObject earthElemelonDisplayable;
 
     private void Awake()
     {
@@ -26,16 +25,6 @@ public class MainGame : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // Persist across scenes
-    }
-
-    private void Start()
-    {
-        // Add event when the player is defeated
-        CombatManager.OnPlayerDeath += () =>
-        {
-            GameManager.Instance.ChangeGameStatus(GameStatus.DEATH_SCREEN);
-            UIManager.Instance.ToggleBossBar(false, null);
-        };
     }
 
     public void StartGameStage(GameProgressionStage stage, bool isStartScene = false)
@@ -58,6 +47,9 @@ public class MainGame : MonoBehaviour
         // Scene is now loaded
         switch (stage)
         {
+            case GameProgressionStage.INVALID:
+                HandleInvalidStage();
+                break;
             case GameProgressionStage.CASTLE_INTRODUCTION:
                 HandleCastleIntroStage();
                 break;
@@ -89,54 +81,17 @@ public class MainGame : MonoBehaviour
         yield return null;
     }
 
+    private void HandleInvalidStage()
+    {
+        Debug.Log("Main Menu Stage started.");
+    }
+
     private void HandleCastleIntroStage()
     {
         // TODO: Play the castle intro cutscene
-
-        // TODO: Start the king dialogue about stolen elemelons
-
-        // Make the earth elemelon inactive in the scene
-        ToggleDisplayedEarthElemelon(false);
-        // Make the initial king dialogue available and subscribe the stage change to it
-        EnableKingIntroDialogue();
-        Action<DialogueData> onKingDialogueStarted = null;
-        Action onKingDialogueEnded = null;
-
-        onKingDialogueStarted = (DialogueData dialogueData) =>
-        {
-            if (dialogueData.speakerName == "King")
-            {
-                Debug.Log("King dialogue started");
-                kingDialogueActive = true;
-            }
-        };
-
-        onKingDialogueEnded = () =>
-        {
-            if (kingDialogueActive)
-            {
-                Debug.Log("King dialogue ended");
-                kingDialogueActive = false;
-
-                // Unsubscribe both handlers
-                DialogueManager.OnDialogueStart -= onKingDialogueStarted;
-                DialogueManager.OnDialogueEnded -= onKingDialogueEnded;
-
-                GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
-            }
-        };
-
-        // Subscribe both
-        DialogueManager.OnDialogueStart += onKingDialogueStarted;
-        DialogueManager.OnDialogueEnded += onKingDialogueEnded;
-
     }
-
     private void HandleCastleEarlyStage()
     {
-        // Make the earth elemelon inactive in the scene
-        ToggleDisplayedEarthElemelon(false);
-        EnableKingRepetitiveDialogue();
 
         Portal portal = FindAnyObjectByType<Portal>();
         if (portal != null)
@@ -239,9 +194,6 @@ public class MainGame : MonoBehaviour
 
     private void HandleCastleEndStage()
     {
-        // Make the earth elemelon inactive in the scene
-        ToggleDisplayedEarthElemelon(false);
-        EnableKingEndDialogue();
         Action<DialogueData> onKingDialogueStarted = null;
         Action onKingDialogueEnded = null;
 
@@ -276,12 +228,6 @@ public class MainGame : MonoBehaviour
 
     private void HandleCastleLateStage()
     {
-        // Make the earth elemelon active in the scene
-        ToggleDisplayedEarthElemelon(true);
-
-        // Add the repetitive king dialogue to the king
-        EnableKingRepetitiveDialogue();
-
         // Add the event to the earth portal to start the earth late stage
         Portal portal = FindAnyObjectByType<Portal>();
         if (portal != null)
@@ -365,7 +311,9 @@ public class MainGame : MonoBehaviour
 
     private static IEnumerator LoadScene(string sceneToLoad)
     {
-        if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad)
+        if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad
+        || (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.CASTLE_INTRODUCTION &&
+        GameManager.Instance.CurrentProgressionStage == GameProgressionStage.CASTLE_INTRODUCTION && sceneToLoad == "Castle_Hub_Scene"))
         {
             GameManager.Instance.ChangeGameStatus(GameStatus.LOADING_SCREEN);
             Debug.Log("Waiting for loading screen to be displayed...");
@@ -386,30 +334,15 @@ public class MainGame : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+
         // Also reset the player position if Castle Hub scene already loaded or if the previous progression stage was invalid
-        if (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.INVALID &&
-            sceneToLoad == "Castle_Hub_Scene")
+        if (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.INVALID
+
+        && sceneToLoad == "Castle_Hub_Scene")
         {
             ResetPlayerPosition();
         }
         yield return null;
-    }
-
-    private static void ToggleDisplayedEarthElemelon(bool isActive)
-    {
-        if (Instance.earthElemelonDisplayable == null)
-        {
-            Instance.earthElemelonDisplayable = GameObject.FindGameObjectWithTag("Elemelon");
-        }
-        
-        if (Instance.earthElemelonDisplayable != null)
-        {
-            Instance.earthElemelonDisplayable.SetActive(isActive);
-        }
-        else
-        {
-            Debug.LogError("EarthElemelon GameObject not found in the scene.");
-        }
     }
 
     private static void ResetPlayerPosition()
@@ -429,6 +362,8 @@ public class MainGame : MonoBehaviour
     {
         switch (stage)
         {
+            case GameProgressionStage.INVALID:
+                return "MainMenuScene";
             case GameProgressionStage.CASTLE_INTRODUCTION:
                 return "Castle_Hub_Scene";
             case GameProgressionStage.CASTLE_EARLY:
@@ -447,48 +382,6 @@ public class MainGame : MonoBehaviour
                 return "BossRoom_Earth";
             default:
                 return null;
-        }
-    }
-
-    private void EnableKingIntroDialogue()
-    {
-        // Find king in the scene and add the dialogue
-        GameObject king = GameObject.FindGameObjectWithTag("King");
-        if (king != null)
-        {
-            king.GetComponent<King>().basic_dialogues_list = kingIntroDialoguesList;
-        }
-        else
-        {
-            Debug.LogError("King GameObject not found in the scene.");
-        }
-    }
-
-    private void EnableKingRepetitiveDialogue()
-    {
-        // Find king in the scene and add the dialogue
-        GameObject king = GameObject.FindGameObjectWithTag("King");
-        if (king != null)
-        {
-            king.GetComponent<King>().basic_dialogues_list = kingRepetitiveDialoguesList;
-        }
-        else
-        {
-            Debug.LogError("King GameObject not found in the scene.");
-        }
-    }
-
-    private void EnableKingEndDialogue()
-    {
-        // Find king in the scene and add the dialogue
-        GameObject king = GameObject.FindGameObjectWithTag("King");
-        if (king != null)
-        {
-            king.GetComponent<King>().basic_dialogues_list = kingEndDialoguesList;
-        }
-        else
-        {
-            Debug.LogError("King GameObject not found in the scene.");
         }
     }
 

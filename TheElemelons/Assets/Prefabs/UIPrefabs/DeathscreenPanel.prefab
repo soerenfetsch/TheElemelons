@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51819e9b21ad5f746b965cf41aced7d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathEffect: {fileID: -5112853280975952864, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
   amplitude: 20
   frequency: 0.25
 --- !u!114 &265346945770303442

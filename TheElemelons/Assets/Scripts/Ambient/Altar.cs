@@ -177,11 +177,9 @@ public class Altar : InteractableObject
             if (distances[i] > 0f)
             {
                 Vector2 dir = new Vector2(xsign[i], ysign[i] * 2 * amplitudes[i] * (maxDistances[i] - distances[i] - xOffset[i]));
-                Debug.Log(dir);
                 Vector2 moveby = dir.normalized * moveSpeed * Time.fixedDeltaTime;
                 rbLootList[i].MovePosition(rbLootList[i].position + moveby);
                 distances[i] -= moveby.magnitude;
-                Debug.Log(distances[i]);
             }
             else
             {

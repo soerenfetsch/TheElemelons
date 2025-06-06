@@ -10,6 +10,11 @@ public class GameSaveProvider : IGameSaveProvider
 
     public void SaveGame(GameSaveData data)
     {
+        if (data.progressionStage == GameProgressionStage.INVALID)
+        {
+            Debug.LogError("[GameSaveProvider] Cannot save game with INVALID progression stage.");
+            return;
+        }
         // Handle EARTH_EARLY and EARTH_LATE saving logic
         GameProgressionStage stageToSave = data.progressionStage;
         if (data.progressionStage == GameProgressionStage.EARTH_EARLY ||
@@ -32,12 +37,6 @@ public class GameSaveProvider : IGameSaveProvider
             saveDate = DateTime.Now,
             keyBindings = data.keyBindings
         };
-        Debug.Log($"[GameSaveProvider] Preparing to save {saveData.keyBindings?.Count ?? 0} keybindings.");
-
-        foreach(var entry in saveData.keyBindings ?? new List<GameSaveData.KeyBindingEntry>())
-        {
-            Debug.Log($"  - SAVING TO JSON: Action: {entry.action}, keyCode: {entry.keyCode}");
-        }
 
         string jsonData = JsonUtility.ToJson(saveData);
         Debug.Log("[GameSaveProvider] JSON to be saved: " + jsonData);
@@ -66,10 +65,6 @@ public class GameSaveProvider : IGameSaveProvider
                 else if (loadedData.keyBindings == null) Debug.LogError("[GameSaveProvider] loadedData.keyBindings is NULL after FromJson.");
                 else {
                     Debug.Log($"[GameSaveProvider] Parsed {loadedData.keyBindings.Count} keybindings from JSON.");
-                    foreach(var entry in loadedData.keyBindings)
-                    {
-                        Debug.Log($"  - PARSED FROM JSON: Action: {entry.action}, keyCode: {entry.keyCode}");
-                    }
                 }
                 Debug.Log("Loaded from " + SavePath);
                 return loadedData;

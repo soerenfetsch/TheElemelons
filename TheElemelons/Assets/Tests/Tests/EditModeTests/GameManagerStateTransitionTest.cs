@@ -10,7 +10,6 @@ public class GameManagerStateTransitionTests
     private GameObject gameManagerGameObject;
     private GameObject uiManagerObject;
     private GameManager gameManager;
-    private bool startMainGameStageCalled; // Add this line
 
     [SetUp]
     public void Setup()
@@ -18,7 +17,6 @@ public class GameManagerStateTransitionTests
         gameManagerGameObject = new GameObject("GameManager");
         gameManager = gameManagerGameObject.AddComponent<GameManager>();
         gameManager.SaveProvider = new GameSaveProvider(); // Ensure SaveProvider is initialized
-        startMainGameStageCalled = false; // Reset the flag
         uiManagerObject = new GameObject("UIManager");
         uiManagerObject.AddComponent<UIManager>();
     }
