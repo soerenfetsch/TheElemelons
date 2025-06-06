@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using Ionic.BZip2;
 using UnityEngine;
+
 /// <summary>
 /// delegate tip to tooltip of player on collision
 /// can be set to not repeat, to only trigger during a certain game progression stage or to be enabled by external condition
