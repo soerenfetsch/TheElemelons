@@ -15,119 +15,112 @@ MonoBehaviour:
   dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
   speakerName: King
   portraitImage: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+  sceneImage: {fileID: 0}
   dialogueLines:
   - lineType: 0
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: "Ah... you\u2019ve come at last.\r\n"
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
     linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
-    lineSentenceText: Ah... you've come at last.
+    lineSentenceText: "\rDark times have fallen upon the realm, my child.\r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: I feared we had lost you to the shadows like the others.
+    linePortrait: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+    lineSentenceText: "The Elemelons\u2014the sacred fruits of balance...\r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Dark times have fallen upon the realm, my child.
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: 'have been stolen from my castle.
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: The Elemelonrs-the sacred fruits of balance...
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: "It was her\u2026 The Void Witch.\r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: have been stolen from my castle.
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: 'Once a guardian of the arcane, now twisted by greed.
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: it was her... The Void Witch.
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: "She\u2019s turned against us\u2026 and cloaked herself in
+      darkness.\r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Once a guardian of the arcane, now twisted by greed.
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: 'You, alone, may stand against her.
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: She's turned against us... and cloaked herself in darkness.
+    linePortrait: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+    lineSentenceText: "To restore balance, you must retrieve the Earth Elemelon.\r\n
+      \r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: You, alone, may stand against her.
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: "The Elemelon of endurance and stability.\r\nIt was the first
+      she took.\r"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: To reclaim balance, you must retrieve the Earth Elemelon.
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: 'Hidden away beyond the South Room of this castle,
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: The Elemelon of endurance and stability.
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: ' a portal is hidden.
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: It was the first she took.
+    linePortrait: {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
+    lineSentenceText: 'It will bring you to her hideout.
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Hidden away beyond the South Room of this castle,
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: "But beware\u2014she has summoned monsters to guard her lair.\r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: a portal is hidden.
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: 'Beasts of soil and stone, fueled by her vile will.
+
+'
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: One that pulses with the essence of earth... ancient and wild.
+    linePortrait: {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
+    lineSentenceText: "Venture forth. Enter the Earth Portal. \r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: This portal will bring you to her hideout.
+    linePortrait: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+    lineSentenceText: "Face what lies beyond\u2014and return to us with the Elemelon.\r\n"
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}
   - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: But beware-she has summoned monsters to guard her lair.
-    lineSceneImage: {fileID: 0}
-    overrideDialogueBoxImage: {fileID: 0}
-  - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Beasts of soil and stone, fueled by her vile will.
-    lineSceneImage: {fileID: 0}
-    overrideDialogueBoxImage: {fileID: 0}
-  - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: ...but as one who still believes in the light within you.
-    lineSceneImage: {fileID: 0}
-    overrideDialogueBoxImage: {fileID: 0}
-  - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Venture forth. Enter the Earth Portal.
-    lineSceneImage: {fileID: 0}
-    overrideDialogueBoxImage: {fileID: 0}
-  - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Venture forth. Enter the Earth Portal.
-    lineSceneImage: {fileID: 0}
-    overrideDialogueBoxImage: {fileID: 0}
-  - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: Face what lies beyond-and return to us with the Elemelons.
-    lineSceneImage: {fileID: 0}
-    overrideDialogueBoxImage: {fileID: 0}
-  - lineType: 0
-    linePortrait: {fileID: 0}
-    lineSentenceText: The fate of the realm rests in your hands.
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: The fate of the realm rests in your hands
     lineSceneImage: {fileID: 0}
     overrideDialogueBoxImage: {fileID: 0}

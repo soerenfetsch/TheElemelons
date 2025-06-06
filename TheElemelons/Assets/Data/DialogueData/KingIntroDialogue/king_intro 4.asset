@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: king_intro 4
   m_EditorClassIdentifier: 
-  speakerName: King
-  portraits:
-  - {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
-  - {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
   dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
-  sentences:
-  - 'Oh, Thank you! I haven''t been able to sleep for days '
-  - because of that wretched thing.
-  - Now, off with you!
-  imageSprite: {fileID: 0}
+  speakerName: King
+  portraitImage: {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
+  sceneImage: {fileID: 0}
+  dialogueLines:
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: 3ef0004880c3ef246ad561f6f2780fa0, type: 3}
+    lineSentenceText: Thank you!
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+    lineSentenceText: Now, I can finally sleep.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}

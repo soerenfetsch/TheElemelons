@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: WalkToPortalBlocked
   m_EditorClassIdentifier: 
-  speakerName: Merveille
-  portraits:
-  - {fileID: 21300000, guid: dc63288a2b6c9fc428eca7e30268210f, type: 3}
-  - {fileID: 21300000, guid: 6771d040a9df02b4482def7089eef6f4, type: 3}
   dialogueBoxImage: {fileID: 1655039260, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
-  sentences:
-  - It's way too dark down here!
-  - 'I can''t see a thing.
-
-'
-  imageSprite: {fileID: 0}
+  speakerName: Merveille
+  portraitImage: {fileID: 21300000, guid: dc63288a2b6c9fc428eca7e30268210f, type: 3}
+  sceneImage: {fileID: 0}
+  dialogueLines:
+  - lineType: 0
+    linePortrait: {fileID: 0}
+    lineSentenceText: It's way too dark down here! I can't see a thing.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}

@@ -12,15 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: king_intro 2
   m_EditorClassIdentifier: 
-  speakerName: King
-  portraits:
-  - {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
-  - {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
   dialogueBoxImage: {fileID: 1301518215, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
-  sentences:
-  - "Before you go, I have a request\u2014I hope it\u2019s but a small burden."
-  - An elemental beast has snuck into my chambers.
-  - 'I ask you, not as your king but as a tired old man: '
-  - banish this thing from my chambers.
-  - Will you rid me of this Fiend?
-  imageSprite: {fileID: 0}
+  speakerName: King
+  portraitImage: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+  sceneImage: {fileID: 0}
+  dialogueLines:
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+    lineSentenceText: "Before you go, I have a request\u2014I hope it\u2019s but
+      a small burden."
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: An elemental beast has snuck into my chambers.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: cb0c139a2486cf641af0c4c170cff6e7, type: 3}
+    lineSentenceText: 'I ask you, not as your king but as a tired old man:'
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: cd2252702510e1b4283947f32e751599, type: 3}
+    lineSentenceText: ' banish this thing from my chambers.
+
+'
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
+  - lineType: 0
+    linePortrait: {fileID: 21300000, guid: d320fdd41be1b5f43bf717b53e913aa4, type: 3}
+    lineSentenceText: Will you rid me of this Fiend?
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}
