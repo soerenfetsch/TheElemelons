@@ -93,40 +93,26 @@ public class King : DialogueTrigger
     }
     public override void Interact()
     {
-        // This method is called by PlayerInteraction when the player presses E near this NPC
-        GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE);
-        if (DialogueManager.Instance.HasDialogue())
+        base.Interact();
+        if (basic_dialogues_list == thankYou && !alreadyThanked)
         {
-            DialogueManager.Instance.AdvanceDialogue();
+            GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
+            alreadyThanked = true;
+            GameObject.Find("CastElement").GetComponent<ToolTipTrigger>().otherCondition = true;
         }
-        else
+    }
+    public override void IncNextDialogue()
+    {
+        nextDialogue++;
+        if (nextDialogue >= basic_dialogues_list.Count)
         {
-
-            string dialogueKey = "";
-            if (basic_dialogues_list.Count > 1 && (dialogueDictionary[basic_dialogues_list] || nextDialogue < basic_dialogues_list.Count - 1))
+            if (dialogueDictionary[basic_dialogues_list])
             {
-                //dialogueKey = basic_dialogues_list[nextDialogue++].name;
-                nextDialogue++;
-            }
-            else if (basic_dialogues_list.Count > 1)
-            {
-                //dialogueKey = basic_dialogues_list[nextDialogue].name;
+                nextDialogue = 0;
             }
             else
             {
-                //dialogueKey = basic_dialogues_list[0].name;
-                nextDialogue = 0;
-            }
-            DialogueData dataToStart = basic_dialogues_list[nextDialogue];
-            if (nextDialogue >= basic_dialogues_list.Count && dialogueDictionary[basic_dialogues_list])
-            {
-                nextDialogue = 0;
-            }
-            if (basic_dialogues_list == thankYou && !alreadyThanked)
-            {
-                GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
-                alreadyThanked = true;
-                GameObject.Find("CastElement").GetComponent<ToolTipTrigger>().otherCondition = true;
+                nextDialogue = Mathf.Max(0, basic_dialogues_list.Count - 1);
             }
         }
     }
