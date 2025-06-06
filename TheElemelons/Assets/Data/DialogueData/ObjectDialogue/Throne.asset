@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb405cef0dba10f498390b365ac5b3f4, type: 3}
   m_Name: Throne
   m_EditorClassIdentifier: 
-  speakerName: 
-  portraits: []
   dialogueBoxImage: {fileID: -253876386, guid: dfc348bf49832804086a1e00827d2ec2, type: 3}
-  sentences:
-  - A throne for the king to sit on.
-  imageSprite: {fileID: 0}
+  speakerName: 
+  portraitImage: {fileID: 0}
+  sceneImage: {fileID: 0}
+  dialogueLines:
+  - lineType: 0
+    linePortrait: {fileID: 0}
+    lineSentenceText: A throne for the king to sit on.
+    lineSceneImage: {fileID: 0}
+    overrideDialogueBoxImage: {fileID: 0}

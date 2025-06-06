@@ -10,6 +10,8 @@ public class InputManager : MonoBehaviour
 {
     public float maxZoom = 8f;
     public float minZoom = 3f;
+    public static InputManager Instance { get; private set; }
+
     /// <summary>
     /// Dictionary of actions mapped to their key bindings.
     /// </summary>
@@ -39,7 +41,16 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         InitializeKeyBindings();
+
         playerMovement = GetComponent<PlayerMovement>();
         casting = GetComponent<Casting>();
         playerInteraction = GetComponent<PlayerInteraction>();
@@ -141,6 +152,7 @@ public class InputManager : MonoBehaviour
         {
             keyBindings[action] = newKey; // Update the key binding in the dictionary
             Debug.Log($"Key binding for '{action}' updated to: {newKey}");
+            // GameManager.Instance.SaveGame(); // ADD THIS to save immediately after rebinding
         }
         else
         {
@@ -282,7 +294,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(keyBindings["Interact"]))
         {
             DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
-            dialogueUI?.SkipTyping();
+            dialogueUI?.SkipOrAdvance();
         }
     }
 
@@ -373,6 +385,34 @@ public class InputManager : MonoBehaviour
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
                 Debug.Log("Game Resumed.");
             }
+        }
+    }
+
+    public List<GameSaveData.KeyBindingEntry> ExportKeyBindings()
+    {
+        Debug.Log($"[InputManager] Exporting {keyBindings.Count} keybindings.");
+        var list = new List<GameSaveData.KeyBindingEntry>();
+        foreach (var kvp in keyBindings)
+        {
+            Debug.Log($"  - EXPORTING: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
+            list.Add(new GameSaveData.KeyBindingEntry { action = kvp.Key, keyCode = (int)kvp.Value });
+        }
+        return list;
+    }
+
+    public void ImportKeyBindings(List<GameSaveData.KeyBindingEntry> entries)
+    {
+        if (entries == null) { Debug.LogWarning("[InputManager] ImportKeyBindings: entries list is NULL."); return; }
+        Debug.Log($"[InputManager] ImportKeyBindings: Receiving {entries.Count} entries. Current Instance ID: {GetInstanceID()}");
+        foreach (var entry in entries)
+        {
+            Debug.Log($"  - IMPORTING: Action: {entry.action}, keyCode: {(KeyCode)entry.keyCode} ({(int)entry.keyCode})");
+            keyBindings[entry.action] = (KeyCode)entry.keyCode;
+        }
+        Debug.Log("[InputManager] Import complete. Final bindings in InputManager:");
+        foreach (var kvp in keyBindings)
+        {
+            Debug.Log($"  - FINAL: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
         }
     }
 }

@@ -504,6 +504,10 @@ PrefabInstance:
       propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2102948238805240296, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: sceneImageDisplay
+      value: 
+      objectReference: {fileID: 204541842}
     - target: {fileID: 2305246718208910923, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: m_Name
       value: UI_Canvas
@@ -692,6 +696,10 @@ PrefabInstance:
       propertyPath: font
       value: 
       objectReference: {fileID: 11400000, guid: 99e528e4f6fb3b64fbdedd0c27028c58, type: 2}
+    - target: {fileID: 6796149993391354465, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: m_Name
+      value: SceneImage
+      objectReference: {fileID: 0}
     - target: {fileID: 7812056553072645481, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: inputManager
       value: 
@@ -751,6 +759,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6796149993391354465, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
   m_PrefabInstance: {fileID: 204541840}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &204541842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7870015453151134034, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+  m_PrefabInstance: {fileID: 204541840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &240982768 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 65251873200044142, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}

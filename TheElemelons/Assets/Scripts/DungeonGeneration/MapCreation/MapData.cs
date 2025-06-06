@@ -10,6 +10,8 @@ using UnityEngine;
 public class Room
 {
     public bool areDoorsOpen = false;
+    public bool isDark = false;
+    
     /// <summary>
     /// Floor positions within the room.
     /// </summary>
