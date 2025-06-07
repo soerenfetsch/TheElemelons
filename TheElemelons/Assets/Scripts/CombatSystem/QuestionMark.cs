@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Sprites;
 using UnityEngine;
+
 /// <summary>
 /// Visual effect for the confused debuff
 /// </summary>
 public class QuestionMark : MonoBehaviour
 {
     Collider2D parentCollider;
-    SpriteRenderer parentSpriteRenderer;
     Transform parent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +21,6 @@ public class QuestionMark : MonoBehaviour
             FindVictim();
         }
         parent = transform.parent;
-        parentSpriteRenderer = parent.GetComponent<SpriteRenderer>();
         Collider2D[] colliders = parent.GetComponents<Collider2D>();
         for (int i = 0; i < colliders.Length; i++)
         {

@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Callbacks;
 using UnityEngine;
-using UnityEngine.Assertions;
+
 /// <summary>
 /// Boulder that free falls ~20 units and then shatters (on the ground) , dealing damage (~1heart) to the 
 /// player on collision when it is ~2 units or closer to its shattering point.

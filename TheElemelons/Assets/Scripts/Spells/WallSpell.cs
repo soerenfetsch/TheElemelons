@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+
 /// <summary>
 /// WallSpell inherits from SpellEffect
 /// Spawns Wall for given time

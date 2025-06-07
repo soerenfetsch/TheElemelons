@@ -2,10 +2,6 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System;
-using System.Diagnostics;
-using PlasticPipe.PlasticProtocol.Messages;
-using System.Collections;
-using UnityEngine;
 
 /// <summary>
 /// Helper class to manage elemental charges.

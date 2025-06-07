@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
-using UnityEngine.UIElements;
+
 /// <summary>
 /// Shard class inherits from Spell Effect
 /// Shard rotates around player and itself

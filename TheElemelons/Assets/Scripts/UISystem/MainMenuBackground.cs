@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Codice.CM.Client.Gui;
-using UnityEditor;
 using UnityEngine;
 
 public class MainMenuBackground : MonoBehaviour

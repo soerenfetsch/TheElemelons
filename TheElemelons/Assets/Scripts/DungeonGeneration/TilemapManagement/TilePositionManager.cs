@@ -24,10 +24,14 @@ public class TilePositionManager : MonoBehaviour
             }
         }
 
+#if UNITY_EDITOR
         // Save the asset to make changes persistent
         EditorUtility.SetDirty(tilePositionData);
         AssetDatabase.SaveAssets();
         Debug.Log("Tilemap data saved successfully.");
+#else
+        Debug.LogWarning("Tile position data save is only available in the Unity Editor.");
+#endif
     }
 
     [ContextMenu("Print tile positions")]
