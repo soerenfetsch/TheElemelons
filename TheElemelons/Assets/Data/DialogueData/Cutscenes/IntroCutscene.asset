@@ -43,10 +43,6 @@ MonoBehaviour:
     lineSceneImage: {fileID: 21300000, guid: 3de239d5db1d1264cad1bbddd8cbe3fe, type: 3}
     overrideDialogueBoxImage: {fileID: 0}
   - linePortrait: {fileID: 0}
-    lineSentenceText: 'took form as the Elemelons. '
-    lineSceneImage: {fileID: 21300000, guid: 3de239d5db1d1264cad1bbddd8cbe3fe, type: 3}
-    overrideDialogueBoxImage: {fileID: 0}
-  - linePortrait: {fileID: 0}
     lineSentenceText: 
     lineSceneImage: {fileID: 21300000, guid: 3de239d5db1d1264cad1bbddd8cbe3fe, type: 3}
     overrideDialogueBoxImage: {fileID: 0}
