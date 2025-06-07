@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Sprites;
 using UnityEngine;
+
 /// <summary>
-/// Visual effect for the confused debuff
+/// Visual effect for the confused debuff. Attaches a question mark above the affected entity's head.
 /// </summary>
 public class QuestionMark : MonoBehaviour
 {
     Collider2D parentCollider;
     SpriteRenderer parentSpriteRenderer;
     Transform parent;
+
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("question mark");
         InitializeParent();
     }
+
     void InitializeParent()
     {
         if (transform.parent == null)
@@ -34,6 +37,7 @@ public class QuestionMark : MonoBehaviour
             }
         }
     }
+
     void FindVictim()
     {
         LayerMask victimMask = LayerMask.GetMask("Enemies", "Player");
@@ -58,6 +62,7 @@ public class QuestionMark : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     void FixedUpdate()
     {
         if (parent == null)

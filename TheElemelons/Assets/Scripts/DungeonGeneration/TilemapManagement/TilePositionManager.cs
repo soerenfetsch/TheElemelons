@@ -1,15 +1,20 @@
-
-
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Manages saving and printing tile positions from a Tilemap to a TilePositionData ScriptableObject.
+/// Used for storing and debugging specific tile positions in the dungeon.
+/// </summary>
 public class TilePositionManager : MonoBehaviour
 {
     public Tilemap tilemap;
     public TilePositionData tilePositionData;
 
+    /// <summary>
+    /// Saves the positions of all non-null tiles in the tilemap to the tilePositionData object.
+    /// </summary>
     [ContextMenu("Save Tile Positions")]
     public void SaveTilePositions()
     {
@@ -30,6 +35,9 @@ public class TilePositionManager : MonoBehaviour
         Debug.Log("Tilemap data saved successfully.");
     }
 
+    /// <summary>
+    /// Prints all saved tile positions to the console for debugging.
+    /// </summary>
     [ContextMenu("Print tile positions")]
     public void PrintTilePositions()
     {

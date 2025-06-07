@@ -7,27 +7,32 @@ public class CollectablePinkPotion : Collectable
     public List<BuffDebuffManager.BuffDebuffType> buffDebuffchoices;
     public float factor = 1.5f;
     public float duration = 120f;
-    // Start is called before the first frame update
+
     void Start()
     {
         InitializeGeneral();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         Movement();
     }
+
+    /// <summary>
+    /// Applies a random buff or debuff to the player and starts the pickup animation when collected.
+    /// </summary>
     protected override void OnCollect()
     {
         BuffDebuffManager.Instance.ApplyBuffDebuff(playerTransform.gameObject, "PinkPotion", ChoseBuff(), duration, factor, true);
         StartCoroutine(Expire());
     }
+
     BuffDebuffManager.BuffDebuffType ChoseBuff()
     {
         int i = UnityEngine.Random.Range(0, buffDebuffchoices.Count);
         return buffDebuffchoices[i];
     }
+
     IEnumerator Expire()
     {
         animator.SetTrigger("heal");
@@ -38,5 +43,4 @@ public class CollectablePinkPotion : Collectable
         yield return new WaitForSeconds(0.6f);
         Destroy(gameObject);
     }
-
 }

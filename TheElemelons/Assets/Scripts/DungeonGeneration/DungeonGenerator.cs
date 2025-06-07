@@ -5,6 +5,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Controls the procedural generation and visualization of the dungeon.
+/// Handles clearing previous dungeons, generating new maps, and initializing pathfinding and monster management.
+/// </summary>
 public class DungeonGenerator : MonoBehaviour
 {
     [SerializeField] protected Vector2Int startPosition;  // Starting position for dungeon generation
@@ -14,6 +18,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] public MapData mapData;
     [SerializeField] public TilePositionData tilePositionData;
     [SerializeField] public LineOfSightPathfinder pathfinder;
+
     /// <summary>
     /// Public method to generate the dungeon.
     /// This method clears the previous dungeon visualization and then calls the procedural generation algorithm
@@ -35,6 +40,13 @@ public class DungeonGenerator : MonoBehaviour
         pathfinder.InitializeFloorPositions();
         pathfinder.InitializeVisibilityGrid();
     }
+
+    /// <summary>
+    /// Public method to generate the dungeon.
+    /// This method clears the previous dungeon visualization and then calls the procedural generation algorithm
+    /// to create a new dungeon. It can be triggered from the Unity editor using the context menu.
+    /// </summary>
+    [ContextMenu("Generate Dungeon")]
     public void GenerateDungeon()
     {
         Debug.Log("Called the Dungeon Generator");
@@ -45,7 +57,7 @@ public class DungeonGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// Procedural generation of the map and then painting the tiles
+    /// Procedural generation of the map and then painting the tiles.
     /// </summary>
     private void RunProceduralGeneration()
     {
@@ -54,6 +66,10 @@ public class DungeonGenerator : MonoBehaviour
         tilemapVisualizer.PaintTiles(mapData);
         tilePositionData.tilePositions = mapData.floorPositions.ToList();
     }
+
+    /// <summary>
+    /// Clears tile positions on application quit.
+    /// </summary>
     void OnApplicationQuit()
     {
         tilePositionData.tilePositions.Clear();

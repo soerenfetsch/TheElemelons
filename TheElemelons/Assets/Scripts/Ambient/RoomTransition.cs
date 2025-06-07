@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles teleporting the player to a specified destination when entering the trigger area.
+/// </summary>
 public class RoomTransition : MonoBehaviour
 {
     public Vector2 destination;

@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Collectable item that increases the player's maximum mana when collected.
+/// </summary>
 public class CollectableMaxMana : Collectable
 {
-
-    // Start is called before the first frame update
     void Start()
     {
         shadowScale = 1.5f;
@@ -13,16 +14,20 @@ public class CollectableMaxMana : Collectable
         playerMana = player.GetComponent<Mana>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         Movement();
     }
+
+    /// <summary>
+    /// Increases the player's max mana when collected.
+    /// </summary>
     protected override void OnCollect()
     {
         playerMana.SetMaxMana(playerMana.GetMaxMana() + 1);
         StartCoroutine(Expire());
     }
+
     IEnumerator Expire()
     {
         animator.SetTrigger("heal");

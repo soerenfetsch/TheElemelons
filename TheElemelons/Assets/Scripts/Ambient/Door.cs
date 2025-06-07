@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for doors that can be opened or closed by the player or game logic.
+/// Handles sprite and collider state changes when interacted with.
+/// </summary>
 public class Door : InteractableObject
 {
     public Sprite closedSprite;
@@ -9,10 +13,15 @@ public class Door : InteractableObject
     SpriteRenderer spriteRenderer;
     public bool canOpen = true;
     BoxCollider2D boxCollider2D;
+
     void Start()
     {
         Initialize();
     }
+
+    /// <summary>
+    /// Initializes the door's sprite renderer and finds the non-trigger collider.
+    /// </summary>
     protected void Initialize()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,6 +34,10 @@ public class Door : InteractableObject
             }
         }
     }
+
+    /// <summary>
+    /// Toggles the door's open/closed state if it can be opened.
+    /// </summary>
     public override void Interact()
     {
         if (canOpen)

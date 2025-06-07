@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Abstract base class for collectable items. Handles general initialization, movement, and player interaction logic.
+/// Derived classes implement specific OnCollect behavior.
+/// </summary>
 public abstract class Collectable : MonoBehaviour
 {
     protected float force = 10f;
@@ -24,6 +28,9 @@ public abstract class Collectable : MonoBehaviour
     protected float shadowOffset = 0.7f;
     protected float shadowScale = 1f;
 
+    /// <summary>
+    /// Initializes references to player, rigidbody, shadow, animator, and other components.
+    /// </summary>
     public void InitializeGeneral()
     {
         player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
@@ -37,6 +44,7 @@ public abstract class Collectable : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
     /// <summary>
     /// Object is pulled towards player in in range (~2 units), else performs a hovering motion on a fixed location.
     /// If already collected follow the player
@@ -63,10 +71,11 @@ public abstract class Collectable : MonoBehaviour
             transform.position = player.position;
         }
     }
+
     /// <summary>
     /// Calls the abstract method OnCollect() if collision with the player detected.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">Collider that entered the trigger.</param>
     protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&
@@ -75,5 +84,9 @@ public abstract class Collectable : MonoBehaviour
             OnCollect();
         }
     }
+
+    /// <summary>
+    /// Abstract method to define collectable-specific behavior when collected by the player.
+    /// </summary>
     protected abstract void OnCollect();
 }

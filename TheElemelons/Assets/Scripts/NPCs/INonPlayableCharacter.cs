@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
-/// Enum defining common NPC states
+/// Enum defining common NPC states.
 /// </summary>
 public enum NPCStatus
 {
@@ -12,23 +11,26 @@ public enum NPCStatus
     Walking
 }
 
-
+/// <summary>
+/// Interface for non-playable characters (NPCs) in the game.
+/// Provides methods for changing state, retrieving current state, and acting based on status.
+/// </summary>
 public interface INonPlayableCharacter
 {
     /// <summary>
-    /// Method to change the NPC's state
+    /// Method to change the NPC's state.
     /// </summary>
-    /// <param name="newState"></param>
+    /// <param name="newState">The new state to set for the NPC.</param>
     public void ChangeState(NPCStatus newState);
 
     /// <summary>
-    /// Get the current state of the NPC
+    /// Get the current state of the NPC.
     /// </summary>
     /// <returns>NPCStatus current status</returns>
     public NPCStatus GetCurrentState();
 
     /// <summary>
-    /// Method to act based on the current status
+    /// Method to act based on the current status.
     /// </summary>
     public void ActOnStatus();
 }

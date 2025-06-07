@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the flow and state of dialogues, including starting, advancing, and ending dialogue sequences.
+/// Manages dialogue events and communicates with the GameManager to update game status during dialogues.
+/// </summary>
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
@@ -18,6 +22,9 @@ public class DialogueManager : MonoBehaviour
     public static event Action<DialogueLineEntry> OnDialogueUpdate;
     public static event Action OnDialogueEnded;
 
+    /// <summary>
+    /// Initializes the singleton instance and ensures persistence across scenes.
+    /// </summary>
     private void Awake()
     {
         if (Instance == null)
@@ -31,6 +38,11 @@ public class DialogueManager : MonoBehaviour
             return;
         }
     }
+
+    /// <summary>
+    /// Starts a new dialogue sequence with the provided dialogue data.
+    /// </summary>
+    /// <param name="dialogueToStart">The dialogue data to start.</param>
     public void StartDialogue(DialogueData dialogueToStart)
     {
         if (dialogueToStart == null || dialogueToStart.dialogueLines == null || dialogueToStart.dialogueLines.Count == 0)
@@ -54,11 +66,18 @@ public class DialogueManager : MonoBehaviour
         OnDialogueStart?.Invoke(currentDialogue);
     }
 
+    /// <summary>
+    /// Checks if a dialogue is currently active.
+    /// </summary>
+    /// <returns>True if a dialogue is active, false otherwise.</returns>
     public bool HasDialogue()
     {
         return currentDialogue != null;
     }
 
+    /// <summary>
+    /// Advances the dialogue to the next line or ends the dialogue if finished.
+    /// </summary>
     public void AdvanceDialogue()
     {
         if (currentDialogue == null) return;
@@ -81,6 +100,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Processes the current dialogue line and triggers update events.
+    /// </summary>
     private void ProcessCurrentLine()
     {
         DialogueLineEntry currentEntry = currentDialogue.dialogueLines[currentLineIndex];
@@ -101,7 +123,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ends the dialogue sequence.
+    /// Ends the dialogue sequence and resets dialogue state.
     /// </summary>
     private void EndDialogue()
     {
@@ -115,7 +137,7 @@ public class DialogueManager : MonoBehaviour
         currentDialogue = null;
         currentLineIndex = -1; // Reset line index for next dialogue
         
-        if (GameManager.Instance != null) // ----------------------- change to previous status -> have to update gamemanager for that
+        if (GameManager.Instance != null)
         {
             GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
         }
@@ -125,6 +147,10 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine to automatically advance or end the dialogue after a delay.
+    /// </summary>
+    /// <param name="delay">The delay in seconds before advancing or ending.</param>
     private IEnumerator AutoAdvanceOrEndAfterDelay(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);

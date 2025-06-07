@@ -3,11 +3,25 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// Provides functionality to save, load, and reset the player's game data to and from disk.
+/// Handles special logic for progression stages and manages the save file location.
+/// </summary>
 public class GameSaveProvider : IGameSaveProvider
 {
+    // The filename for the save file.
     private const string SaveKey = "save.json"; // Now used as the filename
+
+    /// <summary>
+    /// Gets the full path to the save file in the persistent data directory.
+    /// </summary>
     public string SavePath => Path.Combine(Application.persistentDataPath, SaveKey);
 
+    /// <summary>
+    /// Saves the provided game data to disk as JSON.
+    /// Handles special logic for EARTH_EARLY and EARTH_LATE progression stages.
+    /// </summary>
+    /// <param name="data">The game data to save.</param>
     public void SaveGame(GameSaveData data)
     {
         if (data.progressionStage == GameProgressionStage.INVALID)
@@ -52,6 +66,10 @@ public class GameSaveProvider : IGameSaveProvider
         }
     }
 
+    /// <summary>
+    /// Loads the game data from disk if a save file exists.
+    /// </summary>
+    /// <returns>The loaded <see cref="GameSaveData"/> if successful; otherwise, null.</returns>
     public GameSaveData LoadGame()
     {
         if (File.Exists(SavePath))
@@ -82,6 +100,9 @@ public class GameSaveProvider : IGameSaveProvider
         }
     }
 
+    /// <summary>
+    /// Deletes the save file from disk if it exists.
+    /// </summary>
     public void ResetSave()
     {
         if (File.Exists(SavePath))
@@ -102,6 +123,10 @@ public class GameSaveProvider : IGameSaveProvider
         }
     }
 
+    /// <summary>
+    /// Checks if a save file exists on disk.
+    /// </summary>
+    /// <returns>True if the save file exists; otherwise, false.</returns>
     public bool SaveExists()
     {
         return File.Exists(SavePath);

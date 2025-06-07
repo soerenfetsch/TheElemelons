@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// ScriptableObject that stores a list of tile positions as Vector2Int values.
+/// Used for saving and loading specific tile positions in the dungeon.
+/// </summary>
 [CreateAssetMenu(fileName = "TilePositionData", menuName = "ScriptableObjects/TilePositionData", order = 1)]
 public class TilePositionData : ScriptableObject
 {

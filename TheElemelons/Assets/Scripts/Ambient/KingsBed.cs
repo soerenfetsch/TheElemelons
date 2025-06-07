@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Handles the transparency of the King's Bed roof sprite when the player moves behind or away from it.
+/// </summary>
 public class KingsBed : MonoBehaviour
 {
     public float opacityPlayerBehind = 0.35f;

@@ -1,6 +1,9 @@
 using UnityEngine;
 
-
+/// <summary>
+/// Abstract base class for interactable non-playable characters (NPCs).
+/// Implements INonPlayableCharacter and provides state management for NPCs.
+/// </summary>
 public abstract class InteractableNPC : InteractableObject, INonPlayableCharacter
 {
     // Current status of the NPC
@@ -28,6 +31,11 @@ public abstract class InteractableNPC : InteractableObject, INonPlayableCharacte
     /// Defines how the NPC behaves based on its current state.
     /// </summary>
     public abstract void ActOnStatus();
+
+    /// <summary>
+    /// Sets the current state of the NPC.
+    /// </summary>
+    /// <param name="newState">The new state to set.</param>
     public void SetCurrentState(NPCStatus newState)
     {
         currentState = newState;

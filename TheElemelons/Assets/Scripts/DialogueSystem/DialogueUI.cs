@@ -3,6 +3,10 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Handles the display and animation of dialogue UI elements, including text, portraits, dialogue box backgrounds, and scene images.
+/// Subscribes to dialogue events and manages typing effects and user input for advancing or skipping dialogue.
+/// </summary>
 public class DialogueUI : MonoBehaviour
 {
     [Header("UI References - Dialogue Box")]
@@ -27,6 +31,9 @@ public class DialogueUI : MonoBehaviour
     private bool isSkipping;
     private Coroutine typingCoroutine;
 
+    /// <summary>
+    /// Subscribes to dialogue events and initializes UI state.
+    /// </summary>
     private void Awake()
     {
         DialogueManager.OnDialogueStart += HandleDialogueStart;
@@ -39,6 +46,9 @@ public class DialogueUI : MonoBehaviour
         if (sceneImageDisplay != null) sceneImageDisplay.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Unsubscribes from dialogue events.
+    /// </summary>
     private void OnDestroy()
     {
         DialogueManager.OnDialogueStart -= HandleDialogueStart;
@@ -46,6 +56,10 @@ public class DialogueUI : MonoBehaviour
         DialogueManager.OnDialogueEnded -= HandleDialogueEnded;
     }
 
+    /// <summary>
+    /// Handles the start of a dialogue sequence, setting up UI elements for the new dialogue.
+    /// </summary>
+    /// <param name="dialogueData">The dialogue data to display.</param>
     private void HandleDialogueStart(DialogueData dialogueData)
     {
         // Set global/default UI elements from DialogueData
@@ -85,6 +99,10 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the UI to display the current dialogue line, including text, images, and overrides.
+    /// </summary>
+    /// <param name="currentLine">The current dialogue line entry.</param>
     private void HandleDialogueUpdate(DialogueLineEntry currentLine)
     {
         StopExistingTyping();
@@ -182,6 +200,9 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the end of a dialogue sequence, hiding UI elements and stopping typing effects.
+    /// </summary>
     private void HandleDialogueEnded()
     {
         StopExistingTyping();
@@ -189,6 +210,9 @@ public class DialogueUI : MonoBehaviour
         if (sceneImageDisplay != null) sceneImageDisplay.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Stops any ongoing typing coroutine and resets typing state.
+    /// </summary>
     private void StopExistingTyping()
     {
         if (typingCoroutine != null)
@@ -200,6 +224,11 @@ public class DialogueUI : MonoBehaviour
         isSkipping = false;
     }
 
+    /// <summary>
+    /// Coroutine that animates the typing of a dialogue line character by character, with optional skipping.
+    /// </summary>
+    /// <param name="line">The line of text to type out.</param>
+    /// <returns>IEnumerator for coroutine.</returns>
     private IEnumerator TypeLine(string line)
     {
         isTyping = true;
@@ -229,7 +258,10 @@ public class DialogueUI : MonoBehaviour
         yield return new WaitForSecondsRealtime(linePauseAfterTyping);
     }
 
-    public void SkipOrAdvance() // -------------- move this functionality to DialogueManager? note: this might be deprecated if DialogueManager handles skipping/advancing
+    /// <summary>
+    /// Skips the current typing animation or advances to the next dialogue line if not typing.
+    /// </summary>
+    public void SkipOrAdvance()
     {
         if (isTyping && !isSkipping)
         {

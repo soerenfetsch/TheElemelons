@@ -5,19 +5,50 @@ using UnityEngine.Events;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the UI for the settings menu, primarily focusing on key rebinding functionality.
+/// </summary>
 public class SettingsMenuUI : MonoBehaviour
 {
+    /// <summary>
+    /// The parent transform under which key binding entries will be instantiated.
+    /// </summary>
     public Transform contentPanel;
+    /// <summary>
+    /// The GameObject containing the back button UI element.
+    /// </summary>
     public GameObject backButtonObject;
+    /// <summary>
+    /// The prefab used to create individual key binding entries in the UI.
+    /// </summary>
     public GameObject keyBindingEntryPrefab;
+    /// <summary>
+    /// Reference to the InputManager to handle key binding logic.
+    /// </summary>
     public InputManager inputManager;
 
+    /// <summary>
+    /// The font asset to be used for text elements within the settings menu.
+    /// </summary>
     public TMP_FontAsset font;
+    /// <summary>
+    /// Reference to the UI Button component for the back button.
+    /// </summary>
     private Button backButton;
+    /// <summary>
+    /// Flag to indicate if a key rebinding process is currently active.
+    /// </summary>
     private bool isRebinding = false;
+    /// <summary>
+    /// A dictionary mapping action names to their corresponding UI GameObject entries.
+    /// </summary>
     private Dictionary<string, GameObject> keyBindingEntries = new Dictionary<string, GameObject>();
 
     // TODO: Get actions from InputManager
+    /// <summary>
+    /// List of action names for which key bindings can be configured.
+    /// Note: This is currently a hardcoded list and marked with a TODO to fetch from InputManager.
+    /// </summary>
     private List<string> actions = new List<string> {
         "MoveLeft", "MoveRight", "MoveUp", "MoveDown",
         "CastSpell", "ClearCharges",
@@ -26,6 +57,10 @@ public class SettingsMenuUI : MonoBehaviour
         "Interact"
     };
 
+    /// <summary>
+    /// Called when the script instance is being loaded.
+    /// Validates required references and initializes the key bindings and back button.
+    /// </summary>
     public void Start()
     {
         if (inputManager == null)
@@ -48,6 +83,9 @@ public class SettingsMenuUI : MonoBehaviour
         InitializeBackButton();
     }
 
+    /// <summary>
+    /// Initializes the back button, retrieving its component and adding a listener for click events.
+    /// </summary>
     private void InitializeBackButton()
     {
         backButton = backButtonObject.GetComponent<Button>();
@@ -60,12 +98,20 @@ public class SettingsMenuUI : MonoBehaviour
         backButton.onClick.AddListener(() => OnBackButtonClicked());
     }
 
+    /// <summary>
+    /// Handles the click event for the back button.
+    /// Returns to the previous game state if no rebinding process is active.
+    /// </summary>
     private void OnBackButtonClicked()
     {
         if (isRebinding) return;
         GameManager.Instance.ChangeGameStatus(GameManager.Instance.PreviousGameStatus);
     }
 
+    /// <summary>
+    /// Initializes the UI for all key bindings defined in the 'actions' list.
+    /// Creates a UI entry for each action.
+    /// </summary>
     private void InitializeKeyBindings()
     {
         foreach (string action in actions)
@@ -76,6 +122,12 @@ public class SettingsMenuUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates and configures a UI entry for a specific key binding.
+    /// </summary>
+    /// <param name="actionName">The name of the action to bind.</param>
+    /// <param name="keyName">The current key bound to the action.</param>
+    /// <returns>The GameObject representing the created UI entry, or null if an error occurred.</returns>
     private GameObject CreateKeyBindingEntry(string actionName, string keyName)
     {
         GameObject entry = Instantiate(keyBindingEntryPrefab, contentPanel);
@@ -113,6 +165,11 @@ public class SettingsMenuUI : MonoBehaviour
         return entry;
     }
 
+    /// <summary>
+    /// Handles the click event for a key binding button.
+    /// Initiates the rebinding process for the specified action.
+    /// </summary>
+    /// <param name="actionName">The name of the action to rebind.</param>
     private void OnKeyBindButtonClicked(string actionName)
     {
         if (isRebinding) return; // Prevent multiple rebinding at the same time
@@ -129,6 +186,11 @@ public class SettingsMenuUI : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Updates the displayed key for a specific action in the UI.
+    /// </summary>
+    /// <param name="actionName">The name of the action whose UI entry needs updating.</param>
+    /// <param name="newKey">The new key to display.</param>
     public void UpdateKeyBindingEntry(string actionName, string newKey)
     {
         if (keyBindingEntries.TryGetValue(actionName, out GameObject entry))

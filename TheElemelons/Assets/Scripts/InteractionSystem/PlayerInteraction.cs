@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Handles player interaction with nearby interactable objects in the game world.
+/// Finds the closest interactable within range and triggers its interaction logic.
+/// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
     ToolTip toolTip;
@@ -18,11 +22,16 @@ public class PlayerInteraction : MonoBehaviour
     Vector2 interactionBoxSize;
     Vector2 interactionBoxSizeVertical;
     Vector2 interactionBoxSizeHorizontal;
+
     void Start()
     {
         InitializeInteractionBoxes();
         toolTip = GetComponent<ToolTip>();
     }
+
+    /// <summary>
+    /// Initializes the offsets and sizes for the interaction boxes in each direction.
+    /// </summary>
     public void InitializeInteractionBoxes()
     {
         interactionBoxOffSetDown = new Vector2(-0.076f, -0.245f);
@@ -32,6 +41,7 @@ public class PlayerInteraction : MonoBehaviour
         interactionBoxSizeVertical = new Vector2(0.63f, 1.25f);
         interactionBoxSizeHorizontal = new Vector2(1f, 0.63f);
     }
+
     /// <summary>
     /// Finds the closest interactable object to the player within interactionRange
     /// of the player which can be interacted with and interacts with it.
@@ -45,6 +55,11 @@ public class PlayerInteraction : MonoBehaviour
             closestInteractable.Interact();
         }
     }
+
+    /// <summary>
+    /// Calculates the direction offset for the interaction box based on player movement.
+    /// </summary>
+    /// <returns>The offset vector for the interaction box.</returns>
     Vector2 CalcDir()
     {
         Vector2 movement = new Vector2(playerAnimator.GetFloat("Horizontal"), playerAnimator.GetFloat("Vertical"));
@@ -63,6 +78,11 @@ public class PlayerInteraction : MonoBehaviour
         }
         return interactionBoxOffSet;
     }
+
+    /// <summary>
+    /// Calculates the size of the interaction box based on the current direction.
+    /// </summary>
+    /// <returns>The size vector for the interaction box.</returns>
     Vector2 CalcSize()
     {
         interactionBoxSize = interactionBoxSizeHorizontal;
@@ -72,6 +92,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         return interactionBoxSize;
     }
+
     void OnDrawGizmos()
     {
         if (gizmosEnabled)
@@ -79,6 +100,7 @@ public class PlayerInteraction : MonoBehaviour
             Gizmos.DrawCube(transform.position + (Vector3)CalcDir(), size: CalcSize());
         }
     }
+
     /// <summary>
     /// Finds the closest interactable object to the player within interactionRange
     /// of the player which can be interacted with.
@@ -105,6 +127,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         return closestInteractable;
     }
+
     void Update()
     {
         if (true)

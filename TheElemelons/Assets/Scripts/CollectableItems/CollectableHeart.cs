@@ -2,27 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Collectable item that restores health to the player when collected.
+/// </summary>
 public class CollectableHeart : Collectable
 {
     float healValue = 1f;
 
-    // Start is called before the first frame update
     void Start()
     {
         InitializeGeneral();
         playerHealth = player.GetComponent<Health>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         Movement();
     }
+
+    /// <summary>
+    /// Restores health to the player and starts the pickup animation when collected.
+    /// </summary>
     protected override void OnCollect()
     {
         playerHealth.AddHealth(healValue);
         StartCoroutine(Expire());
     }
+
     IEnumerator Expire()
     {
         animator.SetTrigger("heal");

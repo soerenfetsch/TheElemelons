@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
-/// Defines the type of dialogue line.
+/// Defines the type of dialogue line (e.g., text or scene image).
 /// </summary>
 public enum LineType
 {
@@ -34,7 +34,8 @@ public class DialogueLineEntry
 }
 
 /// <summary>
-/// Represents a set of dialogue data including speaker name, a list of portraits, sentences (now line entries), scene images, and dialogue box image.
+/// Represents a set of dialogue data including speaker name, portraits, dialogue lines, scene images, and dialogue box image.
+/// Used as a ScriptableObject for dialogue sequences.
 /// </summary>
 [CreateAssetMenu(fileName = "NewDialogue", menuName = "Dialogue System/Dialogue")]
 public class DialogueData : ScriptableObject
@@ -52,5 +53,5 @@ public class DialogueData : ScriptableObject
     public Sprite sceneImage;
 
     [Tooltip("List of dialogue line entries. Each entry defines text, potential portrait overrides, and scene image triggers.")]
-    public List<DialogueLineEntry> dialogueLines = new List<DialogueLineEntry>(); // Initialized
+    public List<DialogueLineEntry> dialogueLines = new List<DialogueLineEntry>();
 }

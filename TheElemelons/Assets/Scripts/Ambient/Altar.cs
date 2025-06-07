@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
 /// Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
 ///Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
@@ -20,10 +21,12 @@ public class Altar : InteractableObject
     PolygonCollider2D colliderNormal;
     PolygonCollider2D colliderDestroyed;
     new PolygonCollider2D collider2D;
+
     [Header("Flags")]
     public bool gold = false;
     public bool blood = false;
     bool spawned;
+
     [Header("Loot")]
     public int maxSpawnableHearts = 3;
     public GameObject collectableHeart;
@@ -32,6 +35,7 @@ public class Altar : InteractableObject
     public GameObject collectablePinkPotion;
     List<GameObject> lootList;
     List<Rigidbody2D> rbLootList;
+
     [Header("Movement")]
     float maxDistance = 4f;
     List<float> maxDistances;
@@ -42,6 +46,7 @@ public class Altar : InteractableObject
     List<int> ysign;
     List<Vector2> dirs;
     float moveSpeed = 3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +55,7 @@ public class Altar : InteractableObject
         InitializeLists();
         InitializeCollider();
     }
+
     public void InitializeGeneral()
     {
         animator = GetComponent<Animator>();
@@ -59,11 +65,13 @@ public class Altar : InteractableObject
         animator.SetBool("Gold", gold);
         fluidAnimator.SetBool("Blood", blood);
     }
+
     void InitializeCollider()
     {
         collider2D = GetComponent<PolygonCollider2D>();
         collider2D.points = colliderNormal.points;
     }
+
     public void InitializeLists()
     {
         lootList = new List<GameObject>();
@@ -98,6 +106,7 @@ public class Altar : InteractableObject
         Debug.Log("interact altar");
         StartCoroutine(Destruction());
     }
+
     IEnumerator Destruction()
     {
         fluidAnimator.SetTrigger("Bleed");
@@ -107,6 +116,12 @@ public class Altar : InteractableObject
         collider2D.points = colliderDestroyed.points;
         ChoseLoot();
     }
+
+    /// <summary>
+    /// Determines which loot to spawn based on altar type and spawns it if requested.
+    /// </summary>
+    /// <param name="spawn">If true, spawns the loot immediately.</param>
+    /// <returns>List of loot GameObjects.</returns>
     public List<GameObject> ChoseLoot(bool spawn = true)
     {
         // add small debuff chance
@@ -136,9 +151,9 @@ public class Altar : InteractableObject
         }
         return lootList;
     }
+
     void SpawnLoot()
     {
-
         for (int i = 0; i < lootList.Count; i++)
         {
             GameObject current = Instantiate(lootList[i], transform.position, Quaternion.Euler(0, 0, 0));
@@ -155,6 +170,7 @@ public class Altar : InteractableObject
         }
         spawned = true;
     }
+
     /// <summary>
     ///  if the collectables have spawned, calls DoMovement().
     /// </summary>
@@ -165,10 +181,11 @@ public class Altar : InteractableObject
             DoMovement();
         }
     }
+
     /// <summary>
     /// Moves each collectable around in a parabola shaped trajectory. 
     /// The distance each collectable travels is measured and after a short random distance, 
-    /// the movement is interupted and their collectable scripts become enabled.
+    /// the movement is interrupted and their collectable scripts become enabled.
     /// </summary>
     void DoMovement()
     {
@@ -196,6 +213,7 @@ public class Altar : InteractableObject
 
         }
     }
+
     /// <summary>
     /// After all spawned collectables have travelled their desired distance and their collectable 
     /// scripts have been activated, Update() deactivates the altar’s altar script.

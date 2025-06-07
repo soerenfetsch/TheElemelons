@@ -7,6 +7,10 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Debug = UnityEngine.Debug;
 
+/// <summary>
+/// Represents the King NPC, which can walk in various patterns, interact with the player, and trigger dialogues.
+/// Implements both walking and idle behaviors, and manages dialogue progression based on game state.
+/// </summary>
 public enum WalkPattern
 {
     Circle,
@@ -16,10 +20,10 @@ public enum WalkPattern
     Destination,
     MultipleDestinations
 }
+
 public class King : DialogueTrigger
 {
     [Header("Dialogues")]
-    //intro request request said, dont loop
     public List<DialogueData> intro;
     public GameObject treeEnemy;
     public List<DialogueData> thankYou;
@@ -28,6 +32,7 @@ public class King : DialogueTrigger
     Dictionary<List<DialogueData>, bool> dialogueDictionary;
     bool alreadyDone = false;
     bool alreadyThanked = false;
+
     [Header("Walk Patterns")]
     public float walkDist = 3f;
     float currentWalkProgress = 0f;
@@ -39,10 +44,15 @@ public class King : DialogueTrigger
     public Vector2 walkMaxLimit;
     public Vector2 walkMinLimit;
     public Vector2 homePosition;
+
     [Header("Movement")]
     private Rigidbody2D rb;
     private Animator animator;
     public Vector2 movement;
+
+    /// <summary>
+    /// Unity Start method. Initializes components, sets initial state, and prepares dialogue dictionary.
+    /// </summary>
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -54,6 +64,10 @@ public class King : DialogueTrigger
         dialogueDictionary.Add(standardDialogue, true);
         dialogueDictionary.Add(endDialogue, true);
     }
+
+    /// <summary>
+    /// Unity Update method. Updates the King's dialogue list based on the current game progression stage.
+    /// </summary>
     void Update()
     {
         switch (GameManager.Instance.CurrentProgressionStage)
@@ -91,6 +105,10 @@ public class King : DialogueTrigger
                 break;
         }
     }
+
+    /// <summary>
+    /// Handles player interaction with the King. Triggers dialogue and progression changes as needed.
+    /// </summary>
     public override void Interact()
     {
         base.Interact();
@@ -101,6 +119,10 @@ public class King : DialogueTrigger
             GameObject.Find("CastElement").GetComponent<ToolTipTrigger>().otherCondition = true;
         }
     }
+
+    /// <summary>
+    /// Advances to the next dialogue in the list, looping or clamping as appropriate.
+    /// </summary>
     public override void IncNextDialogue()
     {
         nextDialogue++;
@@ -116,10 +138,18 @@ public class King : DialogueTrigger
             }
         }
     }
+
+    /// <summary>
+    /// Unity FixedUpdate method. Handles the King's status and movement logic.
+    /// </summary>
     void FixedUpdate()
     {
         ActOnStatus();
     }
+
+    /// <summary>
+    /// Handles the King's behavior based on current state (idle or walking).
+    /// </summary>
     public override void ActOnStatus()
     {
         float rayLength = 1.5f;
@@ -139,7 +169,7 @@ public class King : DialogueTrigger
             animator.SetBool("Blocked", false);
         }
         if (currentState == NPCStatus.Walking && hit &&
-        hit.transform.gameObject.layer == LayerMask.NameToLayer("Walls"))
+            hit.transform.gameObject.layer == LayerMask.NameToLayer("Walls"))
         {
             currentWalkProgress += walkDist;
         }
@@ -154,6 +184,10 @@ public class King : DialogueTrigger
             DoMovement();
         }
     }
+
+    /// <summary>
+    /// Handles the King's walking logic and selects the appropriate walk pattern.
+    /// </summary>
     public void OnWalkStatus()
     {
         if (movement.sqrMagnitude < 0.1f)
@@ -161,7 +195,7 @@ public class King : DialogueTrigger
             SetWalkPattern(currentWalkPattern);
         }
 
-        //Walk patterns Behaviour
+        // Walk patterns Behaviour
         if (currentWalkPattern == WalkPattern.VLine)
         {
             OnWalkVline();
@@ -187,6 +221,10 @@ public class King : DialogueTrigger
             OnWalkMultipleDestinations();
         }
     }
+
+    /// <summary>
+    /// Handles walking to multiple destinations in sequence.
+    /// </summary>
     public void OnWalkMultipleDestinations()
     {
         MovementToDestination(destinations[destinationsIndex]);
@@ -199,6 +237,10 @@ public class King : DialogueTrigger
             }
         }
     }
+
+    /// <summary>
+    /// Handles horizontal line walking pattern.
+    /// </summary>
     public void OnWalkHline()
     {
         if (movement.x == 0)
@@ -215,9 +257,12 @@ public class King : DialogueTrigger
             movement.x *= -1;
         }
     }
+
+    /// <summary>
+    /// Handles vertical line walking pattern.
+    /// </summary>
     public void OnWalkVline()
     {
-
         if (movement.y == 0)
         {
             movement.y = 1;
@@ -232,6 +277,10 @@ public class King : DialogueTrigger
             movement.y *= -1;
         }
     }
+
+    /// <summary>
+    /// Handles circular walking pattern.
+    /// </summary>
     public void OnWalkCircle()
     {
         if ((movement.x == 0f && movement.y == 0f) || (Mathf.Abs(movement.x) > 0.1f && Mathf.Abs(movement.y) > 0.1f))
@@ -247,6 +296,10 @@ public class King : DialogueTrigger
             movement.y = Mathf.Round(movement.y);
         }
     }
+
+    /// <summary>
+    /// Handles walking to a single destination.
+    /// </summary>
     public void OnWalkDestination()
     {
         MovementToDestination(destination);
@@ -256,10 +309,16 @@ public class King : DialogueTrigger
             currentWalkProgress = 0f;
         }
     }
+
+    /// <summary>
+    /// Handles random walking pattern, including bounds checking.
+    /// </summary>
     public void OnWalkRandom()
     {
-        //Check if goes out of bounds
-        if (currentWalkPattern != WalkPattern.Destination && (transform.position.x > walkMaxLimit.x || transform.position.y > walkMaxLimit.y || transform.position.x < walkMinLimit.x || transform.position.y < walkMinLimit.y))
+        // Check if goes out of bounds
+        if (currentWalkPattern != WalkPattern.Destination &&
+            (transform.position.x > walkMaxLimit.x || transform.position.y > walkMaxLimit.y ||
+             transform.position.x < walkMinLimit.x || transform.position.y < walkMinLimit.y))
         {
             movement.x = homePosition.x - transform.position.x;
             movement.y = homePosition.y - transform.position.y;
@@ -286,6 +345,10 @@ public class King : DialogueTrigger
             }
         }
     }
+
+    /// <summary>
+    /// Moves the King based on the current movement vector and speed.
+    /// </summary>
     public void DoMovement()
     {
         animator.SetFloat("Horizontal", movement.x);
@@ -299,69 +362,126 @@ public class King : DialogueTrigger
         rb.MovePosition(rb.position + moving_by);
         currentWalkProgress += moving_by.magnitude;
     }
+
+    /// <summary>
+    /// Handles idle status by stopping walking animation.
+    /// </summary>
     public void OnIdleStatus()
     {
         animator.SetBool("Walking", false);
     }
+
+    /// <summary>
+    /// Calculates the movement vector towards a goal position.
+    /// </summary>
+    /// <param name="goal">The target position.</param>
     public void MovementToDestination(Vector2 goal)
     {
         movement = goal - new Vector2(transform.position.x, transform.position.y);
     }
+
+    /// <summary>
+    /// Gets the current movement vector.
+    /// </summary>
+    /// <returns>The current movement vector.</returns>
     public Vector2 GetMovement()
     {
         return movement;
     }
+
+    /// <summary>
+    /// Sets the current walk pattern and resets progress.
+    /// </summary>
+    /// <param name="newpattern">The new walk pattern.</param>
     public void SetWalkPattern(WalkPattern newpattern)
     {
         currentWalkProgress = 0f;
         currentWalkPattern = newpattern;
     }
+
+    /// <summary>
+    /// Sets the destination and switches to walking state.
+    /// </summary>
+    /// <param name="newDestination">The new destination.</param>
     public void SetDestination(Vector2 newDestination)
     {
         destination = newDestination;
         ChangeState(NPCStatus.Walking);
     }
+
+    /// <summary>
+    /// Sets the walk speed.
+    /// </summary>
+    /// <param name="newSpeed">The new walk speed.</param>
     public void SetWalkSpeed(float newSpeed)
     {
         walkSpeed = newSpeed;
     }
+
+    /// <summary>
+    /// Sets the walk distance.
+    /// </summary>
+    /// <param name="newDist">The new walk distance.</param>
     public void SetWalkDist(float newDist)
     {
         walkDist = newDist;
     }
+
+    /// <summary>
+    /// Gets the walk speed.
+    /// </summary>
+    /// <returns>The walk speed.</returns>
     public float GetWalkSpeed()
     {
         return walkSpeed;
     }
+
+    /// <summary>
+    /// Gets the walk distance.
+    /// </summary>
+    /// <returns>The walk distance.</returns>
     public float GetWalkDist()
     {
         return walkDist;
     }
+
+    /// <summary>
+    /// Sets the movement vector.
+    /// </summary>
+    /// <param name="newMovement">The new movement vector.</param>
     public void SetMovement(Vector2 newMovement)
     {
         movement = newMovement;
     }
-
 
     [ContextMenu("Currentstate Walk")]
     void switchWalk()
     {
         ChangeState(NPCStatus.Walking);
     }
+
     [ContextMenu("Currentstate Idle")]
     void switchIdle()
     {
         ChangeState(NPCStatus.Idle);
     }
 
+    // The following methods are for testing and are not part of the gameplay logic.
+    // They do not require Doxygen comments, but a simple C# docstring is helpful for clarity.
 
+    /// <summary>
+    /// For testing: calls Start().
+    /// </summary>
     public void TestCallStart()
     {
         Start();
     }
+
+    /// <summary>
+    /// For testing: calls FixedUpdate().
+    /// </summary>
     public void TestCallFixedUpdate()
     {
         FixedUpdate();
     }
-
 }

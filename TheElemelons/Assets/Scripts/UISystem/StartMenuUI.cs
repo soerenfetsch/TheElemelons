@@ -3,13 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the UI elements and functionality of the main start menu.
+/// </summary>
 public class StartMenuUI : MonoBehaviour
 {
+    /// <summary>
+    /// Button to start a new game.
+    /// </summary>
     private Button newGameButton;
+    /// <summary>
+    /// Button to continue a previously saved game.
+    /// </summary>
     private Button continueGameButton;
+    /// <summary>
+    /// Button to open the options/settings menu.
+    /// </summary>
     private Button optionsButton;
+    /// <summary>
+    /// Button to quit the game application.
+    /// </summary>
     private Button quitGameButton;
 
+    /// <summary>
+    /// Called when the script instance is being loaded.
+    /// Initializes button components and sets the initial state of the continue button.
+    /// </summary>
     private void Awake()
     {
         // Initialize button components
@@ -18,6 +37,11 @@ public class StartMenuUI : MonoBehaviour
         DisableContinueGame();
     }
 
+    /// <summary>
+    /// Finds and initializes the UI button components and attaches their listeners.
+    /// Assumes buttons are named "NewGameButton", "ContinueGameButton", "OptionsButton", and "QuitGameButton"
+    /// as children of this GameObject.
+    /// </summary>
     public void InitializeButtons()
     {
         // Get button components
@@ -33,6 +57,10 @@ public class StartMenuUI : MonoBehaviour
         quitGameButton.onClick.AddListener(OnQuitGameClicked);
     }
 
+    /// <summary>
+    /// Called when the MonoBehaviour will be destroyed.
+    /// Removes listeners from buttons to prevent memory leaks.
+    /// </summary>
     private void OnDestroy()
     {
         // Remove listeners to prevent memory leaks
@@ -42,24 +70,40 @@ public class StartMenuUI : MonoBehaviour
         quitGameButton.onClick.RemoveListener(OnQuitGameClicked);
     }
 
+    /// <summary>
+    /// Handles the click event for the "New Game" button.
+    /// Initiates a new game session via the GameManager.
+    /// </summary>
     public void OnNewGameClicked()
     {
         Debug.Log("New Game Clicked");
         GameManager.Instance.NewGame();
     }
 
+    /// <summary>
+    /// Handles the click event for the "Continue Game" button.
+    /// Loads a saved game session via the GameManager.
+    /// </summary>
     public void OnContinueGameClicked()
     {
         Debug.Log("Continue Game Clicked");
         GameManager.Instance.ContinueSavedGame();
     }
 
+    /// <summary>
+    /// Handles the click event for the "Options" button.
+    /// Changes the game state to open the settings menu.
+    /// </summary>
     public void OnOptionsClicked()
     {
         Debug.Log("Options Clicked");
         GameManager.Instance.ChangeGameStatus(GameStatus.SETTINGS_MENU);
     }
 
+    /// <summary>
+    /// Handles the click event for the "Quit Game" button.
+    /// Exits the application or stops play mode in the editor.
+    /// </summary>
     public void OnQuitGameClicked()
     {
         Debug.Log("Quit Game Clicked");
@@ -73,7 +117,8 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Enables the Continue Game button (when a saved game is detected).
+    /// Enables the Continue Game button, making it interactable.
+    /// This is typically called when a saved game is detected.
     /// </summary>
     public void EnableContinueGame()
     {
@@ -81,7 +126,8 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Disables the Continue Game button (if no save data is found).
+    /// Disables the Continue Game button, making it non-interactable.
+    /// This is typically called if no save data is found.
     /// </summary>
     public void DisableContinueGame()
     {

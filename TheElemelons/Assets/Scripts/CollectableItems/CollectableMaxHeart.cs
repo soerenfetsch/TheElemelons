@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Collectable item that increases the player's maximum health when collected.
+/// </summary>
 public class CollectableMaxHeart : Collectable
 {
-
-    // Start is called before the first frame update
     void Start()
     {
         shadowScale = 1.5f;
@@ -13,17 +14,21 @@ public class CollectableMaxHeart : Collectable
         playerHealth = player.GetComponent<Health>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         Movement();
     }
+
+    /// <summary>
+    /// Increases the player's max health and fully heals them when collected.
+    /// </summary>
     protected override void OnCollect()
     {
         playerHealth.SetMaxHealth(playerHealth.GetMaxHealth() + 1);
         playerHealth.SetHealth(playerHealth.GetMaxHealth());
         StartCoroutine(Expire());
     }
+
     IEnumerator Expire()
     {
         animator.SetTrigger("heal");

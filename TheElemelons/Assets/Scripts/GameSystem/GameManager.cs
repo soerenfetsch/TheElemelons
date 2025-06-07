@@ -4,24 +4,56 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
+/// <summary>
+/// Central manager for game state, progression, and save/load operations.
+/// Handles transitions between progression stages, game statuses, and manages saving/loading player data.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
+    /// <summary>
+    /// Singleton instance of the GameManager.
+    /// </summary>
     public static GameManager Instance { get; private set; }
 
+    /// <summary>
+    /// The current progression stage of the game.
+    /// </summary>
     public GameProgressionStage CurrentProgressionStage { get; private set; } = GameProgressionStage.INVALID;
+
+    /// <summary>
+    /// The previous progression stage before the last change.
+    /// </summary>
     public GameProgressionStage PreviousProgressionStage { get; private set; } = GameProgressionStage.INVALID;
+
+    /// <summary>
+    /// The current status of the game (e.g., in-game, menu, paused).
+    /// </summary>
     public GameStatus CurrentGameStatus { get; private set; } = GameStatus.MAIN_MENU;
+
+    /// <summary>
+    /// The previous game status before the last change.
+    /// </summary>
     public GameStatus PreviousGameStatus { get; private set; }
 
+    /// <summary>
+    /// Provider for saving and loading game data.
+    /// </summary>
     public GameSaveProvider SaveProvider;
-    public UIManager uiManager; // Assuming this exists
 
-    // Events for Game Status changes
+    /// <summary>
+    /// Reference to the UIManager for UI updates.
+    /// </summary>
+    public UIManager uiManager;
+
+    /// <summary>
+    /// Event triggered when the game status changes.
+    /// </summary>
     public static event Action<GameStatus> OnGameStatusChanged;
 
-    // Reference to the player GameObject, for saving/loading player state
+    // Reference to the player GameObject, for saving/loading player state.
     private GameObject player;
 
+    // Unity Awake callback. Initializes the singleton instance and finds the player GameObject.
     private void Awake()
     {
         Debug.Log($"[GameManager] Awake on {gameObject.name}");
@@ -40,6 +72,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
+    // Unity Start callback. Initializes the save provider, registers player death event, and sets up UI.
     private void Start()
     {
         Debug.Log("[GameManager] Start called.");
@@ -69,6 +102,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changes the current progression stage and starts the corresponding game stage.
+    /// </summary>
+    /// <param name="newStage">The new progression stage to switch to.</param>
+    /// <param name="isStartScene">Whether this is the start scene (optional).</param>
     public void ChangeProgressionStage(GameProgressionStage newStage, bool isStartScene = false)
     {
         Debug.Log($"Changing progression stage from {CurrentProgressionStage} to {newStage}");
@@ -80,6 +118,10 @@ public class GameManager : MonoBehaviour
         StartMainGameStage(isStartScene);
     }
 
+    /// <summary>
+    /// Changes the current game status (e.g., in-game, menu, paused) and triggers related events and time scaling.
+    /// </summary>
+    /// <param name="newStatus">The new game status to switch to.</param>
     public void ChangeGameStatus(GameStatus newStatus)
     {
         Debug.Log($"Changing game status from {CurrentGameStatus} to {newStatus}");
@@ -122,12 +164,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Resets the progression stage to INVALID.
     private void ResetProgressionStage()
     {
         CurrentProgressionStage = GameProgressionStage.INVALID;
         PreviousProgressionStage = GameProgressionStage.INVALID;
     }
 
+    /// <summary>
+    /// Starts a new game, resetting save data and setting the progression stage to the introduction.
+    /// </summary>
     public void NewGame()
     {
         Debug.Log("[GameManager] NewGame called.");
@@ -137,6 +183,9 @@ public class GameManager : MonoBehaviour
         ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
     }
 
+    /// <summary>
+    /// Continues the game from saved data, restoring progression stage, player stats, and key bindings.
+    /// </summary>
     public void ContinueSavedGame()
     {
         GameSaveData data = SaveProvider.LoadGame();
@@ -157,11 +206,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns to the main menu and resets the progression stage.
+    /// </summary>
     public void GoMainMenu()
     {
         ChangeProgressionStage(GameProgressionStage.INVALID, true);
     }
 
+    /// <summary>
+    /// Saves the current game state, including progression, player stats, and key bindings.
+    /// </summary>
     public void SaveGame()
     {
         if (CurrentProgressionStage == GameProgressionStage.INVALID)
@@ -192,17 +247,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Starts the main game stage for the current progression stage.
     private void StartMainGameStage(bool isStartScene = false)
     {
         MainGame.Instance?.StartGameStage(CurrentProgressionStage, isStartScene);
     }
 
+    /// <summary>
+    /// Changes the progression stage to the early earth boss stage (for debugging).
+    /// </summary>
     [ContextMenu("Change to Boss Stage")]
     private void ChangeToBossStage()
     {
         ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
     }
 
+    // Handles player death: saves the game, changes status, and hides the boss bar.
     private void HandlePlayerDeath()
     {
         SaveGame(); // Save the game and the player stats so that

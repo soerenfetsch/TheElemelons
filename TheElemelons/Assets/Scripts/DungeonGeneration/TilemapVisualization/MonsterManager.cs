@@ -14,6 +14,7 @@ public class MonsterManager : MonoBehaviour
     public List<GameObject> advancedEnemySelection;
     public List<GameObject> endEnemySelection;
     public List<GameObject> bossEnemySelection;
+
     [Header("Difficulty Settings")]
     public int startEnemyCount = 1;
     public int startEnemyCountVariability = 0;
@@ -25,6 +26,7 @@ public class MonsterManager : MonoBehaviour
     public int endEnemyCountVariability = 0;
     public int bossEnemyCount = 6;
     public int bossEnemyCountVariability = 1;
+
     [Header("Bound Components")]
     public MapData mapData;
     public Transform playerTransform;
@@ -32,6 +34,7 @@ public class MonsterManager : MonoBehaviour
     Dictionary<Room.RoomType, List<GameObject>> roomTypeSelections;
     public List<GameObject> allMonsters;
     public EarthDungeonTileVizualizer earthDungeonTileVizualizer;
+
     [Header("Optimize Performance")]
     bool deactivateEnemiesOutOfReach = false;
     float reachSetActive = 80f;
@@ -42,12 +45,13 @@ public class MonsterManager : MonoBehaviour
     public bool endRoomEnemiesDefeated = false;
 
     /// <summary>
-    /// find player at start
+    /// Finds player at start and initializes monster list.
     /// </summary>
     void Start()
     {
         InitializeParams();
     }
+
     public void InitializeParams()
     {
         playerTransform = GameObject.Find("Player").transform;
@@ -59,10 +63,10 @@ public class MonsterManager : MonoBehaviour
         {
             allMonsters = new List<GameObject>();
         }
-
     }
+
     /// <summary>
-    /// initialize dictionary that contains all settings for each roomtype
+    /// Initializes dictionaries for room type settings and enemy selections.
     /// </summary>
     public void InitializeRoomTypeSettings()
     {
@@ -79,6 +83,7 @@ public class MonsterManager : MonoBehaviour
         roomTypeSelections.Add(Room.RoomType.END, endEnemySelection);
         roomTypeSelections.Add(Room.RoomType.BOSS, bossEnemySelection);
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -120,9 +125,8 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-    /// yet unused method to open and close doors depending on whether the player is close to enemies
+    /// Opens or closes doors depending on whether the player is close to enemies.
     /// </summary>
-    /// <param name="room"></param>
     public void OpenCloseDoor(Room room)
     {
         bool playerIsInRoom = IsInRoom(playerTransform.position, room);
@@ -130,10 +134,9 @@ public class MonsterManager : MonoBehaviour
         {
             if (!room.areDoorsOpen)
             {
-                //open doors
+                // Open doors
                 foreach (Vector2Int door in room.doorPositions)
                 {
-                    //paint open door
                     earthDungeonTileVizualizer.PaintOpenDoor(door, GetDoorDir(room, door), room);
                 }
             }
@@ -143,12 +146,13 @@ public class MonsterManager : MonoBehaviour
         {
             if (room.areDoorsOpen)
             {
-                //close doors
+                // Close doors
                 StartCoroutine(CloseDoors(room));
             }
             room.areDoorsOpen = false;
         }
     }
+
     public IEnumerator CloseDoors(Room room)
     {
         while (IsInDoor(playerTransform.position, room))
@@ -161,6 +165,7 @@ public class MonsterManager : MonoBehaviour
             earthDungeonTileVizualizer.PaintDoor(door, GetDoorDir(room, door), room);
         }
     }
+
     public bool IsInDoor(Vector3 position, Room room)
     {
         foreach (Vector2Int door in room.doorPositions)
@@ -175,7 +180,7 @@ public class MonsterManager : MonoBehaviour
             }
             else if (doorDirection == Vector2Int.left || doorDirection == Vector2Int.right)
             {
-                if (IsInBounds(playerTransform.position, door + +4 * Vector2Int.down + Vector2Int.left, door + Vector2Int.right))
+                if (IsInBounds(playerTransform.position, door + 4 * Vector2Int.down + Vector2Int.left, door + Vector2Int.right))
                 {
                     return true;
                 }
@@ -183,15 +188,17 @@ public class MonsterManager : MonoBehaviour
         }
         return false;
     }
+
     public bool IsInBounds(Vector2 position, Vector2 minBound, Vector2 maxBound)
     {
         if (position.x > minBound.x && position.y > minBound.y
-        && position.x < maxBound.x && position.y < maxBound.y)
+            && position.x < maxBound.x && position.y < maxBound.y)
         {
             return true;
         }
         return false;
     }
+
     public bool AreMonstersInRoom(Room room)
     {
         List<Vector2> bounds = GetRoomBounds(room);
@@ -207,9 +214,10 @@ public class MonsterManager : MonoBehaviour
         }
         return false;
     }
+
     public Vector2Int GetDoorDir(Room room, Vector2Int door)
     {
-        Vector2Int doorDirection; // right for top, down for right, left for bottom, up for left
+        Vector2Int doorDirection;
         if (room.floorPositions.Contains(door + Vector2Int.down))
         {
             // Top door
@@ -232,8 +240,9 @@ public class MonsterManager : MonoBehaviour
         }
         return doorDirection;
     }
+
     /// <summary>
-    /// uses mapdata to spawn monsters in each room, amount depends on rng and settings
+    /// Spawns monsters in each room based on settings and random selection.
     /// </summary>
     public void SpawnMonsters()
     {
@@ -251,8 +260,10 @@ public class MonsterManager : MonoBehaviour
             }
         }
     }
+
     /// <summary>
-    /// returns a list of enemies containing a random batch of those in the selection choice. amount is random and regulated by params
+    /// Returns a list of enemies containing a random batch from the selection choice.
+    /// Amount is random and regulated by parameters.
     /// </summary>
     /// <param name="SelectionChoice"></param>
     /// <param name="count"></param>
@@ -269,8 +280,9 @@ public class MonsterManager : MonoBehaviour
         }
         return Selection;
     }
+
     /// <summary>
-    ///  returns a list of random spawn positions inside the room bounds
+    /// Returns a list of random spawn positions inside the room bounds.
     /// </summary>
     /// <param name="count"></param>
     /// <param name="room"></param>
@@ -287,8 +299,9 @@ public class MonsterManager : MonoBehaviour
         }
         return positions;
     }
+
     /// <summary>
-    /// checks if certain position is within room bounds
+    /// Checks if a position is within room bounds.
     /// </summary>
     /// <param name="position"></param>
     /// <param name="room"></param>
@@ -297,14 +310,15 @@ public class MonsterManager : MonoBehaviour
     {
         List<Vector2> bounds = GetRoomBounds(room);
         if (position.x < bounds[0].x || position.y < bounds[0].y ||
-        position.x > bounds[1].x || position.y > bounds[1].y)
+            position.x > bounds[1].x || position.y > bounds[1].y)
         {
             return false;
         }
         return true;
     }
+
     /// <summary>
-    /// returns list{Vector2 minBounds, Vector2 maxBounds} of walls
+    /// Returns a list {Vector2 minBounds, Vector2 maxBounds} of room walls.
     /// </summary>
     /// <param name="room"></param>
     /// <returns></returns>
@@ -322,7 +336,7 @@ public class MonsterManager : MonoBehaviour
 
     [ContextMenu("Clear all enemies")]
     /// <summary>
-    /// clear all enemies from scene
+    /// Clears all enemies from the scene.
     /// </summary>
     public void ClearAllEnemies()
     {

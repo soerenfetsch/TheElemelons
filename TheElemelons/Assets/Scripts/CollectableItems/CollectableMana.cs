@@ -2,26 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Collectable item that restores mana to the player when collected.
+/// </summary>
 public class CollectableMana : Collectable
 {
-
-    // Start is called before the first frame update
     void Start()
     {
         InitializeGeneral();
         playerMana = player.GetComponent<Mana>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         Movement();
     }
+
+    /// <summary>
+    /// Restores mana to the player and starts the pickup animation when collected.
+    /// </summary>
     protected override void OnCollect()
     {
         playerMana.AddMana(1);
         StartCoroutine(Expire());
     }
+
     IEnumerator Expire()
     {
         animator.SetTrigger("heal");

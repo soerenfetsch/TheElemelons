@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles flashing a SpriteRenderer by swapping its material for a short duration.
+/// </summary>
 public class FlashEffect : MonoBehaviour
 {
     /// <summary>

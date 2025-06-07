@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the UI icon bar for displaying active buffs and debuffs on the player.
+/// Handles adding, removing, and updating buff/debuff icons, supporting duplicate instances.
+/// </summary>
 public class BuffDebuffIconBar : MonoBehaviour
 {
     [SerializeField]

@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Generates dungeon maps using a bipartitioning algorithm. Handles room creation, corridors, walls, decorations,
+/// monster spawns, shrines, and darkness effects. Integrates with MonsterManager for monster placement.
+/// </summary>
 public class BipartitioningMapGenerator : AbstractMapGenerator
 {
     MapData mapData;
@@ -24,6 +28,10 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     public float darkRoomProbability = 0.1f;
     public GameObject darknessEffectPrefab;
 
+    /// <summary>
+    /// Generates the dungeon map and spawns monsters, shrines, and darkness effects.
+    /// </summary>
+    /// <returns>The generated MapData object containing all map information.</returns>
     public override MapData GenerateMap()
     {
         mapData = new MapData();
