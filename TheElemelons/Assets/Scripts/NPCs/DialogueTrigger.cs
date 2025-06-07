@@ -17,6 +17,8 @@ public class DialogueTrigger : InteractableNPC
         }
         else
         {
+            //string dialogueKey = basic_dialogues_list[nextDialogue++].name;
+            Debug.Log($"[DialogueTrigger] Starting new dialogue sequence from {gameObject.name}.");
             if (basic_dialogues_list == null || basic_dialogues_list.Count == 0)
             {
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME); // Revert status if dialogue can't start
@@ -27,18 +29,18 @@ public class DialogueTrigger : InteractableNPC
             if (dataToStart == null)
             {
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-                nextDialogue = (nextDialogue + 1) % basic_dialogues_list.Count; // Try to advance for next time, or clamp
+                IncNextDialogue(); // Try to advance for next time, or clamp
                 return;
             }
 
             DialogueManager.Instance.StartDialogue(dataToStart);
 
-            nextDialogue++;
-            if (nextDialogue >= basic_dialogues_list.Count)
-            {
-                nextDialogue = 0;
-            }
+            IncNextDialogue();
         }
+    }
+    public virtual void IncNextDialogue()
+    {
+        nextDialogue = (nextDialogue + 1) % basic_dialogues_list.Count;
     }
 
     public override void ActOnStatus()

@@ -33,6 +33,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         CreateMonsterSpawnPoints(mapData);
         CreateDoorPositions(mapData);
         CreateShrinePositions(mapData);
+        CreateDarkRooms(mapData);
         createTrapPositions(mapData);
         monsterManager.mapData = mapData;
         if (monsterManager.allMonsters == null)
@@ -43,6 +44,16 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         SpawnShrines(mapData);
         SpawnDarknessInRooms(mapData);
         return mapData;
+    }
+
+    private void CreateDarkRooms(MapData mapData)
+    {
+        foreach (var room in mapData.rooms)
+        {
+            if (room.roomType != Room.RoomType.NORMAL && room.roomType != Room.RoomType.ADVANCED)
+                continue;
+            RandomlySetRoomDarkness(room);
+        }
     }
 
     /// <summary>
@@ -76,7 +87,6 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         {
             Room room = new Room();
             room.AddFloorPositions(CreateRandomRoomInSpace(roomSpace));
-            RandomlySetRoomDarkness(room);
             roomList.Add(room);
         }
 
@@ -146,37 +156,6 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
         var position = currentRoomCenter;
-
-        // TODO: Evaluate if this is necessary since we restrict door placement now
-        // // First fix corridors that cross room borders by offsetting the starting point
-
-        // // Corridor overlaps with left border of the room
-        // if (Mathf.Abs(xDestMin - position.x) <= (corridorWidth / 2 + 1))
-        // {
-        //     // Corridor overlaps more inside the room
-        //     if (xDestMin <= position.x)
-        //     {
-        //         position += new Vector2Int(corridorWidth / 2 + 1 - xDestMin - position.x, 0);
-        //     }
-        //     // Corridor overlaps more outside the room
-        //     else
-        //     {
-        //         position += new Vector2Int(xDestMin - position.x - corridorWidth / 2 - 2, 0);
-        //     }
-        // }
-        // else if (Mathf.Abs(xDestMax - position.x) <= (corridorWidth / 2 + 1))
-        // {
-        //     // Corridor overlaps more inside the room
-        //     if (xDestMax >= position.x)
-        //     {
-        //         position += new Vector2Int(xDestMax - position.x - corridorWidth / 2 - 1, 0);
-        //     }
-        //     // Corridor overlaps more outside the room
-        //     else
-        //     {
-        //         position += new Vector2Int(corridorWidth / 2 + 2 - xDestMax - position.x, 0);
-        //     }
-        // }
 
         // Start a corridor of the given corridorWidth
         for (int i = 0; i < corridorWidth; ++i)

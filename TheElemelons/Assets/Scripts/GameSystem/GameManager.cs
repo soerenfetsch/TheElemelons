@@ -19,13 +19,16 @@ public class GameManager : MonoBehaviour
     // Events for Game Status changes
     public static event Action<GameStatus> OnGameStatusChanged;
 
+    // Reference to the player GameObject, for saving/loading player state
+    private GameObject player;
+
     private void Awake()
     {
         Debug.Log($"[GameManager] Awake on {gameObject.name}");
         if (Instance != null && Instance != this)
         {
             Debug.LogWarning("[GameManager] Duplicate GameManager instance. Destroying this one.");
-            Destroy(this.gameObject); // Destroy the GameObject this script is attached to
+            Destroy(gameObject); // Destroy the GameObject this script is attached to
         }
         else
         {
@@ -33,6 +36,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("[GameManager] GameManager Instance assigned.");
             DontDestroyOnLoad(gameObject);
         }
+
+        player = GameObject.FindWithTag("Player");
     }
 
     private void Start()
@@ -43,6 +48,14 @@ public class GameManager : MonoBehaviour
             SaveProvider = new GameSaveProvider(); // Default
             Debug.LogWarning("[GameManager] SaveProvider is null, creating default GameSaveProvider.");
         }
+
+        // Add event when the player is defeated
+        CombatManager.OnPlayerDeath += () =>
+        {
+            HandlePlayerDeath();
+        };
+        ChangeProgressionStage(GameProgressionStage.INVALID, true);
+
         // Check if a save file exists then enable the continue button
         if (SaveProvider.SaveExists())
         {
@@ -54,21 +67,17 @@ public class GameManager : MonoBehaviour
             // Disable the continue button in the UI
             UIManager.Instance?.ToggleContinueGameButton(false);
         }
-        ChangeGameStatus(GameStatus.MAIN_MENU);
     }
 
-    public void ChangeProgressionStage(GameProgressionStage newStage)
+    public void ChangeProgressionStage(GameProgressionStage newStage, bool isStartScene = false)
     {
         Debug.Log($"Changing progression stage from {CurrentProgressionStage} to {newStage}");
+        // Save the current game state if transitioning from an ingame stage
+        if (CurrentProgressionStage != GameProgressionStage.INVALID)
+            SaveGame();
         PreviousProgressionStage = CurrentProgressionStage; // Store the previous stage
         CurrentProgressionStage = newStage;
-        if (newStage != GameProgressionStage.EARTH_EARLY && newStage != GameProgressionStage.EARTH_LATE
-            && newStage != GameProgressionStage.EARTH_EARLY_BOSS && newStage != GameProgressionStage.EARTH_LATE_BOSS)
-        {
-            // Save the game if the stage is not EARTH_EARLY or EARTH_LATE
-            SaveGame();
-        }
-        StartMainGameStage();
+        StartMainGameStage(isStartScene);
     }
 
     public void ChangeGameStatus(GameStatus newStatus)
@@ -89,9 +98,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameStatus.MAIN_MENU:
                 ResetProgressionStage();
-                Time.timeScale = 0; // Pause the game
-                Debug.Log("[GameManager] Status: MAIN_MENU. Saving game and loading MainMenu scene.");
-                //SaveGame();
+                Time.timeScale = 1; // no pause game for background image movement
                 break;
             case GameStatus.PAUSE_MENU:
                 Time.timeScale = 0; // Pause the game
@@ -124,13 +131,10 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         Debug.Log("[GameManager] NewGame called.");
-        if(SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in NewGame!"); return; }
+        if (SaveProvider == null) { Debug.LogError("[GameManager] SaveProvider is NULL in NewGame!"); return; }
         SaveProvider.ResetSave();
         // Reset the progression stage
         ChangeProgressionStage(GameProgressionStage.CASTLE_INTRODUCTION);
-        // CurrentProgressionStage = GameProgressionStage.CASTLE_INTRODUCTION;
-        // CurrentGameStatus = GameStatus.INGAME; // Let ChangeGameStatus handle this if needed via StartMainGameStage
-        // ChangeGameStatus(GameStatus.INGAME); // Explicitly set if StartMainGameStage doesn't
     }
 
     public void ContinueSavedGame()
@@ -139,8 +143,8 @@ public class GameManager : MonoBehaviour
         if (data != null)
         {
             CurrentProgressionStage = data.progressionStage;
-            var health = FindObjectOfType<Health>();
-            var mana = FindObjectOfType<Mana>();
+            var health = player.GetComponent<Health>();
+            var mana = player.GetComponent<Mana>();
             if (health != null) health.SetMaxHealth(data.maxHealth);
             if (mana != null) mana.SetMaxMana(data.maxMana);
             if (InputManager.Instance != null && data.keyBindings != null)
@@ -153,10 +157,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GoMainMenu()
+    {
+        ChangeProgressionStage(GameProgressionStage.INVALID, true);
+    }
+
     public void SaveGame()
     {
-        var health = FindObjectOfType<Health>();
-        var mana = FindObjectOfType<Mana>();
+        if (CurrentProgressionStage == GameProgressionStage.INVALID)
+            return; // Do not save if still in the main menu
+
+        var health = player.GetComponent<Health>();
+        var mana = player.GetComponent<Mana>();
         var inputManager = InputManager.Instance;
 
         GameSaveData data = new GameSaveData
@@ -180,9 +192,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void StartMainGameStage()
+    private void StartMainGameStage(bool isStartScene = false)
     {
-        MainGame.Instance?.StartGameStage(CurrentProgressionStage);
+        MainGame.Instance?.StartGameStage(CurrentProgressionStage, isStartScene);
     }
 
     [ContextMenu("Change to Boss Stage")]
@@ -190,5 +202,11 @@ public class GameManager : MonoBehaviour
     {
         ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
     }
-    
+
+    private void HandlePlayerDeath()
+    {
+        SaveGame(); // Save the game and the player stats so that
+        ChangeGameStatus(GameStatus.DEATH_SCREEN);
+        UIManager.Instance.ToggleBossBar(false, null);
+    }
 }

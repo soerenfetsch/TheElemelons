@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
+    public float maxZoom = 8f;
+    public float minZoom = 3f;
     public static InputManager Instance { get; private set; }
 
     /// <summary>
@@ -46,7 +48,7 @@ public class InputManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    
+
         InitializeKeyBindings();
 
         playerMovement = GetComponent<PlayerMovement>();
@@ -227,11 +229,11 @@ public class InputManager : MonoBehaviour
         // Alternative: KeyBindings for Zoom-In and Zoom-Out
         if (Input.GetKeyDown(keyBindings["ZoomIn"]))
         {
-            cameraMovement?.SetCameraSize(3f); // Zoom in
+            cameraMovement?.SetCameraSize(minZoom); // Zoom in
         }
         if (Input.GetKeyDown(keyBindings["ZoomOut"]))
         {
-            cameraMovement?.SetCameraSize(8f); // Zoom out
+            cameraMovement?.SetCameraSize(maxZoom); // Zoom out
         }
     }
 
@@ -392,7 +394,6 @@ public class InputManager : MonoBehaviour
         var list = new List<GameSaveData.KeyBindingEntry>();
         foreach (var kvp in keyBindings)
         {
-            Debug.Log($"  - EXPORTING: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
             list.Add(new GameSaveData.KeyBindingEntry { action = kvp.Key, keyCode = (int)kvp.Value });
         }
         return list;
@@ -404,11 +405,10 @@ public class InputManager : MonoBehaviour
         Debug.Log($"[InputManager] ImportKeyBindings: Receiving {entries.Count} entries. Current Instance ID: {GetInstanceID()}");
         foreach (var entry in entries)
         {
-            Debug.Log($"  - IMPORTING: Action: {entry.action}, keyCode: {(KeyCode)entry.keyCode} ({(int)entry.keyCode})");
             keyBindings[entry.action] = (KeyCode)entry.keyCode;
         }
         Debug.Log("[InputManager] Import complete. Final bindings in InputManager:");
-        foreach(var kvp in keyBindings)
+        foreach (var kvp in keyBindings)
         {
             Debug.Log($"  - FINAL: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
         }

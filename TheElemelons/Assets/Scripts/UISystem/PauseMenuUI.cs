@@ -65,6 +65,6 @@ public class PauseMenuUI : MonoBehaviour
     {
         Debug.Log("Main Menu Clicked");
         // Return to the main menu and save the game
-        GameManager.Instance.ChangeGameStatus(GameStatus.MAIN_MENU);
+        GameManager.Instance.GoMainMenu();
     }
 }

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    ToolTip toolTip;
     // Radius within which the player can interact
     public bool gizmosEnabled = false;
     public LayerMask interactableLayer; // Ensure interactable objects have this layer
@@ -19,6 +21,7 @@ public class PlayerInteraction : MonoBehaviour
     void Start()
     {
         InitializeInteractionBoxes();
+        toolTip = GetComponent<ToolTip>();
     }
     public void InitializeInteractionBoxes()
     {
@@ -101,5 +104,29 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
         return closestInteractable;
+    }
+    void Update()
+    {
+        if (true)
+        {
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)CalcDir(),
+        size: CalcSize(), angle: 0, layerMask: interactableLayer);
+            InteractableObject closestInteractable = null;
+            float minDistance = Mathf.Infinity;
+            foreach (Collider2D collider in colliders)
+            {
+                InteractableObject interactable = collider.GetComponent<InteractableObject>();
+                if (interactable != null && interactable.CanInteract(transform))
+                {
+                    float distance = Vector2.Distance(transform.position, collider.transform.position);
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        closestInteractable = interactable;
+                    }
+                }
+            }
+            toolTip.canInteract = closestInteractable != null;
+        }
     }
 }

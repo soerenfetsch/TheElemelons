@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ResurrectionButton : MonoBehaviour
 {
+    public DeathEffect deathEffect;
+    Transform playerTransform;
     [Header("Hovering Motion")]
     public float amplitude = 20f;
     public float frequency = 0.25f;
@@ -13,6 +15,7 @@ public class ResurrectionButton : MonoBehaviour
     void Awake()
     {
         InititializeResurrectButton();
+        playerTransform = GameObject.Find("Player").transform;
     }
 
     // Start is called before the first frame update
@@ -20,7 +23,10 @@ public class ResurrectionButton : MonoBehaviour
     {
         fixpoint = transform.position;
     }
-
+    void OnEnable()
+    {
+        playerOnOff(false);
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -39,9 +45,29 @@ public class ResurrectionButton : MonoBehaviour
         // Add on click listener to return to last menu
         button.onClick.AddListener(() => OnResurrectButtonClicked());
     }
-
-    private static void OnResurrectButtonClicked()
+    void playerOnOff(bool onOff)
+    {
+        playerTransform.GetComponent<SpriteRenderer>().enabled = onOff;
+        foreach (BoxCollider2D boxCollider2D in playerTransform.GetComponents<BoxCollider2D>())
+        {
+            boxCollider2D.enabled = onOff;
+        }
+        playerTransform.GetComponent<ToolTip>().ToggleToolTipOnOff(onOff);
+        playerTransform.GetComponent<Player>().ModifyIsHidden(onOff ? -1 : 1);
+        playerTransform.Find("Wand_Animation").gameObject.SetActive(onOff);
+        if (!onOff)
+        {
+            Instantiate(deathEffect, playerTransform.position, Quaternion.Euler(0, 0, 0));
+            playerTransform.GetComponent<Casting>().ClearCharges();
+            BuffDebuffManager.Instance.ClearEffects(playerTransform.gameObject);
+        }
+    }
+    private void OnResurrectButtonClicked()
     {
         GameManager.Instance.ContinueSavedGame();
+        if (playerTransform != null)
+        {
+            playerOnOff(true);
+        }
     }
 }
