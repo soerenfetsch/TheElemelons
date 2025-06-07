@@ -409,7 +409,7 @@ public class BuffDebuffManager : MonoBehaviour
     private System.Collections.IEnumerator EffectTimer(GameObject target, BuffDebuff effect)
     {
         yield return new WaitForSeconds(effect.duration);
-        
+
         // Check that the target still exists and the effect is still active
         if (target == null || !targets.ContainsKey(target))
         {

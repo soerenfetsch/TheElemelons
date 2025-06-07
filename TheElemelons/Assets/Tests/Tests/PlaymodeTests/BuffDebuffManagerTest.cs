@@ -55,4 +55,19 @@ public class BuffDebuffManagerTests
         var effects = manager.GetActiveEffects(mockTarget);
         Assert.AreEqual(2, effects.Count);
     }
+
+    [UnityTest]
+    public IEnumerator BuffExpire_DoesNotThrow_WhenTargetDestroyed()
+    {
+        manager.ApplyBuffDebuff(mockTarget, BuffDebuffManager.BuffDebuffType.SpeedBuff, 1f, 1.5f);
+
+        // Destroy the target before the buff expires
+        Object.DestroyImmediate(mockTarget);
+
+        // Wait for the buff duration to pass
+        yield return new WaitForSeconds(1.1f);
+
+        // If we reach here without exception, the test passes
+        Assert.Pass("No exception thrown when buff expires on destroyed GameObject.");
+    }
 }
