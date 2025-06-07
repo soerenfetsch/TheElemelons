@@ -16,6 +16,8 @@ public enum LineType
 [System.Serializable]
 public class DialogueLineEntry
 {
+    [Tooltip("Type of the dialogue line, either Text or SceneImage.")]
+    public LineType lineType;
 
     [Tooltip("List of default portrait images for the speaker. Used if a DialogueLineEntry does not have a portraitOverride.")]
     public Sprite linePortrait;
@@ -37,7 +39,6 @@ public class DialogueLineEntry
 [CreateAssetMenu(fileName = "NewDialogue", menuName = "Dialogue System/Dialogue")]
 public class DialogueData : ScriptableObject
 {
-    public bool isSlideShow;
     [Tooltip("Dialogue Box image.")]
     public Sprite dialogueBoxImage;
 
