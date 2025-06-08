@@ -517,8 +517,8 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            bossBar.SetActive(false);
             bossBar.GetComponent<BossHealthbar>().bossHealth = null;
+            bossBar.SetActive(false);
         }
     }
 }

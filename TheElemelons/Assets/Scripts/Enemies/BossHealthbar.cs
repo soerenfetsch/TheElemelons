@@ -9,18 +9,36 @@ public class BossHealthbar : MonoBehaviour
     public RectTransform bloodMarker;
     public RectTransform endOfLife;
     public Health bossHealth;
+    Vector2 startPos;
     float dist;
     float destination;
     void Start()
     {
-        dist = bloodMarker.position.x - endOfLife.position.x;
-        destination = bloodMarker.position.y;
+        Initialize();
     }
     // Update is called once per frame
     void Update()
     {
         CalcDestination();
         MoveToDestination();
+        if (bossHealth == null || bossHealth.gameObject == null)
+        {
+            ResetBloodMarker();
+        }
+    }
+    void OnEnable()
+    {
+        ResetBloodMarker();
+    }
+    public void ResetBloodMarker()
+    {
+        bloodMarker.localPosition = new Vector3(435, 19, 0);
+    }
+    void Initialize()
+    {
+        startPos = bloodMarker.position;
+        dist = bloodMarker.position.x - endOfLife.position.x;
+        destination = bloodMarker.position.y;
     }
     void CalcDestination()
     {
