@@ -25,6 +25,7 @@ public class Altar : InteractableObject
     public bool blood = false;
     bool spawned;
     [Header("Loot")]
+    bool interacted = false;
     public int maxSpawnableHearts = 3;
     public GameObject collectableHeart;
     public GameObject collectableMaxHeart;
@@ -95,8 +96,11 @@ public class Altar : InteractableObject
     /// </summary>
     public override void Interact()
     {
-        Debug.Log("interact altar");
-        StartCoroutine(Destruction());
+        if (!interacted)
+        {
+            interacted = true;
+            StartCoroutine(Destruction());
+        }
     }
     IEnumerator Destruction()
     {
