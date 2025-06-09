@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     public GameObject questionMark;
     public GameObject iceCrystal;
     public GameObject earthSkinEffect;
-
+    public GameObject petrifiedPlayerEffect;
     [Header("UI Canvas Panels")]
     public GameObject pauseMenuPanel;
     public GameObject startMenuPanel;
@@ -341,7 +341,20 @@ public class UIManager : MonoBehaviour
                 StartCoroutine(playerObject.transform.Find("EarthSkinEffect(Clone)").GetComponent<EarthSkinBuffEffect>().Expire());
             }
         }
-
+    }
+    public void SetPetrifiedEffect(bool isBuffed, GameObject target)
+    {
+        if (target.CompareTag("Player"))
+        {
+            if (isBuffed)
+            {
+                Instantiate(petrifiedPlayerEffect, playerObject.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            else
+            {
+                StartCoroutine(playerObject.transform.Find("StonedPlayerEffect(Clone)").GetComponent<Petrified_Player>().Expire());
+            }
+        }
     }
     // BuffDebuff Icon Management
 

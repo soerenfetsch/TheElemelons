@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1849893351647987030}
   - component: {fileID: 8278404534554601553}
   - component: {fileID: 5578024237932285171}
-  - component: {fileID: 5086780461902805442}
+  - component: {fileID: 385853856603901913}
   m_Layer: 0
   m_Name: StonedPlayerEffect
   m_TagString: Untagged
@@ -107,7 +107,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5086780461902805442
+--- !u!114 &385853856603901913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,6 +116,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 983988655983635023}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a02408f6a1a3b464db27a45867ea2e6a, type: 3}
+  m_Script: {fileID: 11500000, guid: c460534c67d96b447b9398ad55cae573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

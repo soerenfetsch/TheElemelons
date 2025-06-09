@@ -44,6 +44,7 @@ public class BuffDebuffManager : MonoBehaviour
         HiddenBuff,
         ConfusedDebuff,
         FreezeDebuff,
+        PetrifiedDebuff
     }
 
     // Buff/Debuff data structure
@@ -165,6 +166,10 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetEarthSkinEffect(true, target);
                 }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -193,6 +198,10 @@ public class BuffDebuffManager : MonoBehaviour
                 else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
                 {
                     _uiManager?.SetEarthSkinEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(false, target);
                 }
             }
         };
@@ -279,6 +288,10 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetEarthSkinEffect(true, target);
                 }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -307,6 +320,10 @@ public class BuffDebuffManager : MonoBehaviour
                 else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
                 {
                     _uiManager?.SetEarthSkinEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(false, target);
                 }
             }
         };
@@ -382,6 +399,10 @@ public class BuffDebuffManager : MonoBehaviour
                 buffable.ModifyIsConfused(factor);
                 break;
             case BuffDebuffType.FreezeDebuff:
+                factor = isApplying ? 1 : 0;
+                buffable.ModifyIsFrozen(factor);
+                break;
+            case BuffDebuffType.PetrifiedDebuff:
                 factor = isApplying ? 1 : 0;
                 buffable.ModifyIsFrozen(factor);
                 break;

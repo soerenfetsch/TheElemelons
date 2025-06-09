@@ -50,7 +50,6 @@ public class EarthSkinBuffEffect : MonoBehaviour
     }
     public IEnumerator Expire()
     {
-        Debug.Log("earth expiring");
         playerAnimator.runtimeAnimatorController = playerRuntimeAnimator;
         gameObject.GetComponent<Animator>().SetTrigger("Shatter");
         yield return new WaitForSeconds(0.4f);
