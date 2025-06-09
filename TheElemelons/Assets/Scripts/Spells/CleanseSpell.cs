@@ -51,20 +51,6 @@ public class CleanseSpell : SpellEffect
     }
     void RemoveBuffs()
     {
-        List<BuffDebuffManager.BuffDebuff> buffs = BuffDebuffManager.Instance.GetActiveEffects(caster);
-        foreach (BuffDebuffManager.BuffDebuff buff in buffs)
-        {
-            switch (buff.name)
-            {
-                case "EarthSkin":
-                    Debug.Log("earthskin effect");
-                    GameObject earthSpell = GameObject.Find("DefenseSpell(Clone)");
-                    Debug.Log("spell object not null " + (earthSpell != null).ToString());
-                    DefenseBuffSpell earthSpellScript = earthSpell.GetComponent<DefenseBuffSpell>();
-                    earthSpellScript.InterruptSpell();
-                    break;
-            }
-        }
         BuffDebuffManager.Instance.ClearEffects(caster);
     }
 }

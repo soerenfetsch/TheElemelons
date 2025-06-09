@@ -513,6 +513,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1170273859}
     - target: {fileID: 1252819038612249598, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
+      propertyPath: earthSkinEffect
+      value: 
+      objectReference: {fileID: 909741432932913071, guid: fee8c13b5d90bb847a1fc3b9c07aa6d2, type: 3}
+    - target: {fileID: 1252819038612249598, guid: 2aa3ce4229120714b862b3b51295d126, type: 3}
       propertyPath: speedBuffAnimator
       value: 
       objectReference: {fileID: 1044055151}

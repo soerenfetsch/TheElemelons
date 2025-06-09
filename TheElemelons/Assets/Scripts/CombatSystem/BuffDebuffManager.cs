@@ -161,6 +161,10 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetFreezeEffect(true, target);
                 }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -185,6 +189,10 @@ public class BuffDebuffManager : MonoBehaviour
                 else if (effectType == BuffDebuffType.FreezeDebuff)
                 {
                     _uiManager?.SetFreezeEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(false, target);
                 }
             }
         };
@@ -267,6 +275,10 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetFreezeEffect(true, target);
                 }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -291,6 +303,10 @@ public class BuffDebuffManager : MonoBehaviour
                 else if (effectType == BuffDebuffType.FreezeDebuff)
                 {
                     _uiManager?.SetFreezeEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(false, target);
                 }
             }
         };
