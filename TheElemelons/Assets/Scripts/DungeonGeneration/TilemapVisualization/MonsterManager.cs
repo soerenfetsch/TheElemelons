@@ -279,12 +279,23 @@ public class MonsterManager : MonoBehaviour
     {
         List<Vector2Int> positions = new();
         List<Vector2> bounds = GetRoomBounds(room);
-        for (int i = 0; i < count; i++)
+        int x = 0;
+        int y = 0;
+        if (room.roomType != Room.RoomType.START)
         {
-            int x = (int)Random.Range(bounds[0].x + 2, bounds[1].x - 2);
-            int y = (int)Random.Range(bounds[0].y + 2, bounds[1].y - 2);
-            positions.Add(new Vector2Int(x, y));
+            for (int i = 0; i < count; i++)
+            {
+                x = (int)Random.Range(bounds[0].x + 2, bounds[1].x - 2);
+                y = (int)Random.Range(bounds[0].y + 2, bounds[1].y - 2);
+
+            }
         }
+        else
+        {
+            x = (int)Random.Range(bounds[0].x + 2, ((bounds[1].x - bounds[0].x) / 2) + bounds[0].x - 2);
+            y = (int)Random.Range(bounds[0].y + 2, bounds[1].y - 2);
+        }
+        positions.Add(new Vector2Int(x, y));
         return positions;
     }
     /// <summary>
