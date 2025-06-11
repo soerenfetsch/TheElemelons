@@ -165,7 +165,6 @@ public class SpearShieldMan : Enemy
     public override void ChangeState(EnemyStatus newState)
     {
         if (currentState == newState) return;
-        Debug.Log($"SpearShieldMan: Changing state from {currentState} to {newState}");
         currentState = newState;
     }
 

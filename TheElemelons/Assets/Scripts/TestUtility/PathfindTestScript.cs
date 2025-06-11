@@ -61,7 +61,7 @@ public class PathfindTestScript : MonoBehaviour
             wallPositions.Add(pos);
         }
 
-        pathfinder.floorPositions = floorPositions;
+        pathfinder.floorPositions = new HashSet<Vector2>((IEnumerable<Vector2>)floorPositions);
         Debug.Log("Tilemaps populated with sample data.");
 
     }

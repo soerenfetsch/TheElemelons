@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -34,9 +32,9 @@ public class MonsterManager : MonoBehaviour
     public EarthDungeonTileVizualizer earthDungeonTileVizualizer;
     [Header("Optimize Performance")]
     bool deactivateEnemiesOutOfReach = false;
-    float reachSetActive = 80f;
-    int intervalDeactivateEnemiesOutOfReach = 120;
-    int intervalOpenCloseDoors = 60;
+    readonly float reachSetActive = 80f;
+    readonly int intervalDeactivateEnemiesOutOfReach = 120;
+    readonly int intervalOpenCloseDoors = 60;
 
     [Header("Dungeon Progression")]
     public bool endRoomEnemiesDefeated = false;
@@ -120,7 +118,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-    /// yet unused method to open and close doors depending on whether the player is close to enemies
+    /// Method to open and close doors depending on whether the player is close to enemies
     /// </summary>
     /// <param name="room"></param>
     public void OpenCloseDoor(Room room)
@@ -161,29 +159,25 @@ public class MonsterManager : MonoBehaviour
             earthDungeonTileVizualizer.PaintDoor(door, GetDoorDir(room, door), room);
         }
     }
-    public bool IsInDoor(Vector3 position, Room room)
+    public static bool IsInDoor(Vector3 position, Room room)
     {
         foreach (Vector2Int door in room.doorPositions)
         {
             Vector2Int doorDirection = GetDoorDir(room, door);
-            if (doorDirection == Vector2Int.up || doorDirection == Vector2Int.down)
+            if ((doorDirection == Vector2Int.up || doorDirection == Vector2Int.down)
+             && IsInBounds(position, door + Vector2Int.left * 2, door + Vector2Int.right * 2 + Vector2Int.up * 2))
             {
-                if (IsInBounds(playerTransform.position, door + Vector2Int.left * 2, door + Vector2Int.right * 2 + Vector2Int.up * 2))
-                {
-                    return true;
-                }
+                return true;
             }
-            else if (doorDirection == Vector2Int.left || doorDirection == Vector2Int.right)
+            else if ((doorDirection == Vector2Int.left || doorDirection == Vector2Int.right)
+                  && IsInBounds(position, door + 4 * Vector2Int.down + Vector2Int.left, door + Vector2Int.right))
             {
-                if (IsInBounds(playerTransform.position, door + +4 * Vector2Int.down + Vector2Int.left, door + Vector2Int.right))
-                {
-                    return true;
-                }
+                return true;
             }
         }
         return false;
     }
-    public bool IsInBounds(Vector2 position, Vector2 minBound, Vector2 maxBound)
+    public static bool IsInBounds(Vector2 position, Vector2 minBound, Vector2 maxBound)
     {
         if (position.x > minBound.x && position.y > minBound.y
         && position.x < maxBound.x && position.y < maxBound.y)
@@ -192,12 +186,16 @@ public class MonsterManager : MonoBehaviour
         }
         return false;
     }
-    public bool AreMonstersInRoom(Room room)
+    public  static bool AreMonstersInRoom(Room room)
     {
         List<Vector2> bounds = GetRoomBounds(room);
         Vector2 size = bounds[1] - bounds[0];
         Vector2 center = bounds[0] + size / 2;
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(center, size + new Vector2(1f, 1f), 0f);
+
+        // Only use the very insides of the room to prevent door closing too early
+        Vector2 roomSize = size - new Vector2(1f, 1f);
+
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(center, roomSize, 0f);
         foreach (Collider2D collider in colliders)
         {
             if (collider.GetComponent<Enemy>() != null)
@@ -207,7 +205,8 @@ public class MonsterManager : MonoBehaviour
         }
         return false;
     }
-    public Vector2Int GetDoorDir(Room room, Vector2Int door)
+
+    public static Vector2Int GetDoorDir(Room room, Vector2Int door)
     {
         Vector2Int doorDirection; // right for top, down for right, left for bottom, up for left
         if (room.floorPositions.Contains(door + Vector2Int.down))
@@ -232,6 +231,7 @@ public class MonsterManager : MonoBehaviour
         }
         return doorDirection;
     }
+
     /// <summary>
     /// uses mapdata to spawn monsters in each room, amount depends on rng and settings
     /// </summary>
@@ -258,13 +258,13 @@ public class MonsterManager : MonoBehaviour
     /// <param name="count"></param>
     /// <param name="variance"></param>
     /// <returns></returns>
-    public List<GameObject> SelectRandomEnemies(List<GameObject> SelectionChoice, int count, int variance)
+    public static List<GameObject> SelectRandomEnemies(List<GameObject> SelectionChoice, int count, int variance)
     {
-        int amount = count + (int)UnityEngine.Random.Range(-variance, variance + 1);
+        int amount = count + Random.Range(-variance, variance + 1);
         List<GameObject> Selection = new();
         for (int i = 0; i < amount; i++)
         {
-            int choice = (int)UnityEngine.Random.Range(0, SelectionChoice.Count);
+            int choice = Random.Range(0, SelectionChoice.Count);
             Selection.Add(SelectionChoice[choice]);
         }
         return Selection;
@@ -275,7 +275,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="count"></param>
     /// <param name="room"></param>
     /// <returns></returns>
-    public List<Vector2Int> SelectSpawnPositions(int count, Room room)
+    public static List<Vector2Int> SelectSpawnPositions(int count, Room room)
     {
         List<Vector2Int> positions = new();
         List<Vector2> bounds = GetRoomBounds(room);
@@ -293,7 +293,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="room"></param>
     /// <returns></returns>
-    public bool IsInRoom(Vector2 position, Room room)
+    public static bool IsInRoom(Vector2 position, Room room)
     {
         List<Vector2> bounds = GetRoomBounds(room);
         if (position.x < bounds[0].x || position.y < bounds[0].y ||
@@ -308,15 +308,24 @@ public class MonsterManager : MonoBehaviour
     /// </summary>
     /// <param name="room"></param>
     /// <returns></returns>
-    public List<Vector2> GetRoomBounds(Room room)
+    public static List<Vector2> GetRoomBounds(Room room)
     {
-        float maxX = (room.wallPositions.Aggregate((point, point1) => point.x > point1.x ? point : point1)).x;
-        float maxY = (room.wallPositions.Aggregate((point, point1) => point.y > point1.y ? point : point1)).y;
-        float minX = (room.wallPositions.Aggregate((point, point1) => point.x < point1.x ? point : point1)).x;
-        float minY = (room.wallPositions.Aggregate((point, point1) => point.y < point1.y ? point : point1)).y;
-        List<Vector2> bounds = new();
-        bounds.Add(new Vector2(minX, minY));
-        bounds.Add(new Vector2(maxX, maxY));
+        float maxX = room.wallPositions.Aggregate((point, point1) => point.x > point1.x ? point : point1).x;
+        float maxY = room.wallPositions.Aggregate((point, point1) => point.y > point1.y ? point : point1).y;
+        float minX = room.wallPositions.Aggregate((point, point1) => point.x < point1.x ? point : point1).x;
+        float minY = room.wallPositions.Aggregate((point, point1) => point.y < point1.y ? point : point1).y;
+
+        // Add an offset corresponding to center of tiles for better positioning
+        minX += 0.5f;
+        minY += 1f;
+        maxX += 0.5f;
+        maxY += 1f;
+
+        List<Vector2> bounds = new()
+        {
+            new Vector2(minX, minY),
+            new Vector2(maxX, maxY)
+        };
         return bounds;
     }
 

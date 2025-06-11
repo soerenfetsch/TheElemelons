@@ -1,14 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class MonsterManagerTest
 {
     private BipartitioningMapGenerator generator;
-    private EarthDungeonTileVizualizer visualizer;
     private MapData mapData;
     private Room room;
     private MonsterManager monsterManager;
@@ -47,8 +43,9 @@ public class MonsterManagerTest
         monsterManager.startEnemySelection = new List<GameObject> { monster1, monster2 };
         monsterManager.normalEnemySelection = new List<GameObject> { monster1, monster2 };
         monsterManager.InitializeRoomTypeSettings();
-        Assert.AreEqual(monsterManager.allMonsters.Count, 0, "enemylist not empty");
+        Assert.AreEqual(0, monsterManager.allMonsters.Count, "enemylist not empty");
     }
+
     [Test]
     public void TestSpawnEnemies()
     {
@@ -67,10 +64,10 @@ public class MonsterManagerTest
     public void TestSelectRandomSpawnPositions()
     {
         int count = 3;
-        List<Vector2Int> spawnPositions = monsterManager.SelectSpawnPositions(count, room);
+        List<Vector2Int> spawnPositions = MonsterManager.SelectSpawnPositions(count, room);
         for (int i = 0; i < count; i++)
         {
-            Assert.True(monsterManager.IsInRoom(spawnPositions[i], room), "Spawnposition out of bounds");
+            Assert.True(MonsterManager.IsInRoom(spawnPositions[i], room), "Spawnposition out of bounds");
         }
     }
 }

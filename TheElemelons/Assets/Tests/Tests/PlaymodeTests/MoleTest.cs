@@ -51,12 +51,12 @@ public class MoleTest
 
         // Initialize visibility grid for pathfinder
         pathfinder.playerSightRange = 3f;
-        pathfinder.floorPositions = new HashSet<Vector2Int>();
+        pathfinder.floorPositions = new HashSet<Vector2>();
         for (int x = 0; x < 10; x++)
         {
             for (int y = 0; y < 10; y++)
             {
-                pathfinder.floorPositions.Add(new Vector2Int(x, y));
+                pathfinder.floorPositions.Add(new Vector2(x, y));
             }
         }
         pathfinder.player = playerObject.transform;
