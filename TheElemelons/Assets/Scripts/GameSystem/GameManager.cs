@@ -207,6 +207,7 @@ public class GameManager : MonoBehaviour
     {
         SaveGame(); // Save the game and the player stats so that
         ChangeGameStatus(GameStatus.DEATH_SCREEN);
+        player.GetComponent<PlayerMovement>().SetMovement(Vector2.zero);
         UIManager.Instance.ToggleBossBar(false, null);
     }
 }

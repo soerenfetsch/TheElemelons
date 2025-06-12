@@ -150,6 +150,7 @@ public class TreeLog : Enemy
                 }
                 else if (CheckAtHome())
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Idle);
                     animator.SetBool("wakeUp", false);
                 }
