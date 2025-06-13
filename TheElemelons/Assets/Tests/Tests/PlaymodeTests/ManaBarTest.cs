@@ -83,16 +83,16 @@ public class ManaBarTest
 
 
     [UnityTest]
-    public IEnumerator HealthBar_UpdatesHeartSpritesBasedOnHealth()
+    public IEnumerator ManaBar_UpdatesStarSpritesBasedOnMana()
     {
         yield return null; // Wait for Start to initialize
-        
-        manaBar.UpdateStarFullness(3.5f,5f);
+
+        manaBar.UpdateStarFullness(3.5f, 5f);
         // Act
         yield return null;
 
         // Assert
-        for (int i = 0; i <manaBar.manaStars.Length; i++)
+        for (int i = 0; i < manaBar.manaStars.Length; i++)
         {
             if (i < 3)
             {
@@ -100,12 +100,51 @@ public class ManaBarTest
             }
             else if (i == 3)
             {
-                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0.5f ,$"Heart {i} sprite should be half full.");
+                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0.5f, $"Heart {i} sprite should be half full.");
             }
             else
             {
                 Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0f, $"Heart {i} sprite should be empty.");
             }
+        }
+    }
+    [UnityTest]
+    public IEnumerator ManaBar_UpdatesStarSpritesBasedOnMana_lowMana()
+    {
+        yield return null; // Wait for Start to initialize
+
+        manaBar.UpdateStarFullness(0.125f, 5f);
+        // Act
+        yield return null;
+
+        // Assert
+        for (int i = 0; i < manaBar.manaStars.Length; i++)
+        {
+            if (i == 0)
+            {
+                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0.25f, $"Star {i} sprite should be quarter full.");
+            }
+            else
+            {
+                Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0f, $"Star {i} sprite should be empty.");
+            }
+        }
+    }
+    [UnityTest]
+    public IEnumerator ManaBar_UpdatesStarSpritesBasedOnMana_zero()
+    {
+        yield return null; // Wait for Start to initialize
+
+        manaBar.UpdateStarFullness(0.0f, 5f);
+        // Act
+        yield return null;
+
+        // Assert
+        for (int i = 0; i < manaBar.manaStars.Length; i++)
+        {
+
+            Assert.AreEqual(manaBar.manaStars[i].GetComponent<Animator>().GetFloat("fullness"), 0.0f, $"Star {i} sprite should be empty.");
+
         }
     }
 }

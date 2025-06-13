@@ -71,7 +71,7 @@ public class HealthBarTests
     [Test]
     public void HealthBar_Heal_TriggersHealAnimation()
     {
-        
+
         healthBar.Heal();
 
         // Assert
@@ -82,14 +82,14 @@ public class HealthBarTests
         }
     }
 
-    
+
 
     [UnityTest]
     public IEnumerator HealthBar_UpdatesHeartSpritesBasedOnHealth()
     {
         yield return null; // Wait for Start to initialize
-        
-        healthBar.UpdateHeartFullness(3.5f,5f);
+
+        healthBar.UpdateHeartFullness(3.5f, 5f);
         // Act
         yield return null;
 
@@ -102,12 +102,51 @@ public class HealthBarTests
             }
             else if (i == 3)
             {
-                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0.5f ,$"Heart {i} sprite should be half full.");
+                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0.5f, $"Heart {i} sprite should be half full.");
             }
             else
             {
                 Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0f, $"Heart {i} sprite should be empty.");
             }
+        }
+    }
+    [UnityTest]
+    public IEnumerator HealthBar_UpdatesHeartSpritesBasedOnHealt_LowHealth()
+    {
+        yield return null; // Wait for Start to initialize
+
+        healthBar.UpdateHeartFullness(0.125f, 5f);
+        // Act
+        yield return null;
+
+        // Assert
+        for (int i = 0; i < healthBar.hearts.Length; i++)
+        {
+            if (i == 0)
+            {
+                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0.25f, $"Heart {i} sprite should be quarter full.");
+            }
+            else
+            {
+                Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0f, $"Heart {i} sprite should be empty.");
+            }
+        }
+    }
+    [UnityTest]
+    public IEnumerator HealthBar_UpdatesHeartSpritesBasedOnHealt_zero()
+    {
+        yield return null; // Wait for Start to initialize
+
+        healthBar.UpdateHeartFullness(0.0f, 5f);
+        // Act
+        yield return null;
+
+        // Assert
+        for (int i = 0; i < healthBar.hearts.Length; i++)
+        {
+
+            Assert.AreEqual(healthBar.hearts[i].GetComponent<Animator>().GetFloat("fullness"), 0.0f, $"Heart {i} sprite should be empty.");
+
         }
     }
 }
