@@ -198,6 +198,7 @@ public class SpearShieldMan : Enemy
                 }
                 else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Idle);
                     ChangeAnimationClip("Idle");
                     break;

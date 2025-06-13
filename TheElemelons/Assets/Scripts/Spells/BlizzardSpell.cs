@@ -108,6 +108,10 @@ public class BlizzardSpell : SpellEffect
         {
             foreach (GameObject victim in victims)
             {
+                if (victim == null)
+                {
+                    continue;
+                }
                 if (BuffDebuffManager.Instance.GetActiveEffects(victim).Where(p => p.name == "BlizzardIce") == null)
                 {
                     StartCoroutine(FreezeImmunityCooldown(victim));

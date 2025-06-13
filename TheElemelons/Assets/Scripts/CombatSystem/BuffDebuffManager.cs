@@ -264,6 +264,12 @@ public class BuffDebuffManager : MonoBehaviour
         {
             OnApply = effect =>
             {
+                if (target == null)
+                {
+                    Debug.LogWarning("Target is null. Cannot apply buff/debuff.");
+                    return;
+                }
+
                 // Add buff/debuff icon to UI
                 if (target.CompareTag("Player"))
                 {
@@ -295,6 +301,12 @@ public class BuffDebuffManager : MonoBehaviour
             },
             OnExpire = effect =>
             {
+                if (target == null)
+                {
+                    Debug.LogWarning("Target is null. Cannot remove buff/debuff.");
+                    return;
+                }
+
                 // Remove buff/debuff icon from UI
                 if (target.CompareTag("Player"))
                 {
@@ -309,8 +321,6 @@ public class BuffDebuffManager : MonoBehaviour
                 }
                 else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
-
-                    Debug.Log("calling ui manager to remove question mark");
                     _uiManager?.SetConfusedEffect(false, target);
                 }
                 else if (effectType == BuffDebuffType.FreezeDebuff)
@@ -327,9 +337,7 @@ public class BuffDebuffManager : MonoBehaviour
                 }
             }
         };
-
-        // TODO: Add more OnApply and OnExpire delegates for other effects
-
+        
         // Apply effect to target stats
         ApplyEffectToStats(target, effect, true);
 
@@ -340,6 +348,12 @@ public class BuffDebuffManager : MonoBehaviour
     }
     private void ApplyEffectToStats(GameObject target, BuffDebuff effect, bool isApplying)
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot apply buff/debuff.");
+            return;
+        }
+
         var buffable = target.GetComponent<IBuffable>();
 
         if (buffable == null)
@@ -351,7 +365,7 @@ public class BuffDebuffManager : MonoBehaviour
         // Check that effect factor is greater or equal to 1
         if (effect.effectValue < 1)
         {
-            Debug.LogWarning($"Effect value must be greater or equal 1. Effect: {effect.type}");
+            Debug.LogError($"Effect value must be greater or equal 1. Effect: {effect.type}");
             return;
         }
         // Determine effect direction
@@ -434,6 +448,12 @@ public class BuffDebuffManager : MonoBehaviour
     /// <param name="target">The target GameObject.</param>
     public void ClearEffects(GameObject target)
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot clear effects.");
+            return;
+        }
+
         if (targets.ContainsKey(target))
         {
             TargetEntity entity = targets[target];
@@ -449,7 +469,14 @@ public class BuffDebuffManager : MonoBehaviour
     }
     public void ClearEffect(GameObject target, BuffDebuffType type, string effectName = "")
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot clear effect.");
+            return;
+        }
+
         bool lookForName = effectName != "";
+
         if (targets.ContainsKey(target))
         {
             TargetEntity entity = targets[target];
@@ -471,6 +498,12 @@ public class BuffDebuffManager : MonoBehaviour
     /// </summary>
     public List<BuffDebuff> GetActiveEffects(GameObject target)
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot get active effects.");
+            return new List<BuffDebuff>();
+        }
+        
         if (targets.ContainsKey(target))
         {
             return targets[target].ActiveEffects;
