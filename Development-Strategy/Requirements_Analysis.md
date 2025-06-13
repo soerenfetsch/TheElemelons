@@ -433,13 +433,13 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.6.2 HealthBar
 
-- **Update health UI using player health**: display max health amount of (red) hearts of which player health are filled and rest are empty
+- **Update health UI using player health**: display max health amount of (red) hearts of which player health are filled using steps of 0.25 of one full heart and rest are empty; the 0.25 of one heart is filled up if the according value is more than half or the required, e.g a health value of 1.127 has one full heart and as 0.127 is more than half of 0.25 we see one full heart and one quarter of a filled heart displayed; special case is for health values between 0 and 0.126 (exluding 0), here still the 0.25 of the first heart should be filled, and the fullness should only be zero when the player's health have reached zero.
 - **Execute hurt animation**: If method is called this starts an animation where all hearts shortly light up white
 - **Execute heal animation**: If method is called this starts an animation where all hearts shortly light up blue
 
 #### 2.6.3 ManaBar
 
-- **Update mana UI using player mana**: display max mana amount of (blue) stars of which player mana are filled and rest are empty
+- **Update mana UI using player mana**: display max mana amount of (blue) stars of which player mana are filled using steps of 0.25 of one full mana star and rest are empty; the 0.25 of one star is filled up if the according value is more than half or the required, e.g a mana value of 1.127 has one full star and as 0.127 is more than half of 0.25 we see one full star and one quarter of a filled star displayed; special case is for mana values between 0 and 0.126 (exluding 0), here still the 0.25 of the first star should be filled, and the fullness should only be zero when the player's mana have reached zero.
 - **Execute hurt animation**: If method is called this starts an animation where all stars shortly light up white
 - **Execute heal animation**: If method is called this starts an animation where all stars shortly light up violet
 
@@ -552,15 +552,13 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 1. **Starting the Game and Selecting New Game**
 2. **Receiving the Mission from the King**
 3. **Learning Controls and Spell-Casting**
-4. **First Encounter with Obstacles**
+4. **First Encounter with Enemies**
 5. **Entering an Elemental Dungeon**
-6. **Navigating Dungeon Traps and Hazards**
+6. **Navigating Dungeon and Hazards**
 7. **Combat with Elemental Enemies**
-8. **Elemental Dungeon Boss Battle**
+8. **Elemental Final Dungeon Boss Battle**
 9. **Collecting the Elemental Elemelon and Returning to the King**
-10. **Exploring Other Elemental Dungeons**
-11. **Final Retrieval of All Four Elemelons**
-12. **Entering the Final Battle**
+10. **Redoing the Dungeon**
 
 ## 6. Use Case Model
 
