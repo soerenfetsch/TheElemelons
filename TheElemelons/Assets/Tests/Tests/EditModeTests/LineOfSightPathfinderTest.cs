@@ -23,7 +23,7 @@ public class LineOfSightPathfinderTests
         pathfinder = enemy.AddComponent<LineOfSightPathfinder>();
         pathfinder.player = player.transform;
         pathfinder.playerSightRange = 10f;
-        pathfinder.floorPositions = new HashSet<Vector2Int>();
+        pathfinder.floorPositions = new HashSet<Vector2>();
 
         // Create the floor tilemap
         floorTilemap = new GameObject("FloorTilemap");
@@ -31,10 +31,10 @@ public class LineOfSightPathfinderTests
         var floorCollider = floorTilemap.AddComponent<TilemapCollider2D>();
 
         // Add floor positions
-        pathfinder.floorPositions.Add(new Vector2Int(0, 0)); // Player position
-        pathfinder.floorPositions.Add(new Vector2Int(1, 0)); // Nearby position
-        pathfinder.floorPositions.Add(new Vector2Int(1, 1)); // Position around the wall
-        pathfinder.floorPositions.Add(new Vector2Int(2, 0)); // Farther away
+        pathfinder.floorPositions.Add(new Vector2(0, 0)); // Player position
+        pathfinder.floorPositions.Add(new Vector2(1, 0)); // Nearby position
+        pathfinder.floorPositions.Add(new Vector2(1, 1)); // Position around the wall
+        pathfinder.floorPositions.Add(new Vector2(2, 0)); // Farther away
 
         // Create the wall tilemap
         wallTilemap = new GameObject("WallTilemap");

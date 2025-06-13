@@ -11,10 +11,10 @@ public class LineOfSightPathfinder : MonoBehaviour
     public Transform player; // Reference to the player.
     public LayerMask obstacleLayer; // Layer mask for obstacles.
     public TilePositionData tilePositionData; // Optional data to get floor positions.
-    public HashSet<Vector2Int> floorPositions; // The possible map floor positions.
+    public HashSet<Vector2> floorPositions; // The possible map floor positions.
     public float playerSightRange = 10f; // Maximum range for reachable path for player.
     public bool drawDebugGizmos = false; // Toggle for drawing debug gizmos.
-    private Dictionary<Vector2Int, bool> visibilityGrid; // Grid to track reachable positions to the player.
+    private Dictionary<Vector2, bool> visibilityGrid; // Grid to track reachable positions to the player.
     private bool isGridInitialized = false; // Tracks if the visibility grid has been initialized.
 
     /// <summary>
@@ -29,7 +29,7 @@ public class LineOfSightPathfinder : MonoBehaviour
             Debug.LogWarning("TilePositionData object is not set.");
             return;
         }
-        floorPositions = new HashSet<Vector2Int>(tilePositionData.tilePositions);
+        floorPositions = new HashSet<Vector2>(tilePositionData.tilePositions);
     }
 
     /// <summary>
@@ -43,8 +43,8 @@ public class LineOfSightPathfinder : MonoBehaviour
             Debug.LogWarning("Floor position HashSet object is not set.");
             return;
         }
-        visibilityGrid = new Dictionary<Vector2Int, bool>();
-        foreach (Vector2Int position in floorPositions)
+        visibilityGrid = new Dictionary<Vector2, bool>();
+        foreach (Vector2 position in floorPositions)
         {
             visibilityGrid[position] = false; // Initialize all positions as not visible.
         }
@@ -63,7 +63,7 @@ public class LineOfSightPathfinder : MonoBehaviour
             return;
         }
 
-        Vector2 playerPos = player.position;
+        Vector2 playerPos = GetPlayerPosition();
 
         foreach (var position in visibilityGrid.Keys.ToList())
         {
@@ -123,16 +123,16 @@ public class LineOfSightPathfinder : MonoBehaviour
         var visibleTiles = visibilityGrid
             .Where(pair => pair.Value) // Only consider visible tiles.
             .Select(pair => pair.Key)
-            .OrderBy(pos => Vector2.Distance(player.position, pos)); // Sort by distance to the player.
+            .OrderBy(pos => Vector2.Distance(GetPlayerPosition(), pos)); // Sort by distance to the player.
 
-        foreach (Vector2Int tilePos in visibleTiles)
+        foreach (Vector2 tilePos in visibleTiles)
         {
             // The remaining path range is pathRange minus the distance of player to the tile.
-            float remainingPathRange = pathRange - Vector2.Distance(player.position, tilePos);
+            float remainingPathRange = pathRange - Vector2.Distance(GetPlayerPosition(), tilePos);
             // Check if the path to the tile is clear using raycasting.
             if (remainingPathRange >= 0 && IsPositionInSight(startPosition, tilePos, remainingPathRange))
             {
-                return ((Vector2)tilePos - startPosition).normalized; // Return the direction to the tile.
+                return (tilePos - startPosition).normalized; // Return the direction to the tile.
             }
         }
 
@@ -153,7 +153,7 @@ public class LineOfSightPathfinder : MonoBehaviour
             return Vector2.zero;
         }
 
-        Vector2 playerPos = player.position;
+        Vector2 playerPos = GetPlayerPosition();
 
         // Check if the player is within range first to avoid unnecessary raycasting.
         if (IsPositionInSight(startPosition, playerPos, sightRange))
@@ -177,7 +177,7 @@ public class LineOfSightPathfinder : MonoBehaviour
 
         foreach (var pair in visibilityGrid)
         {
-            Vector3 position = new Vector3(pair.Key.x, pair.Key.y, 0); // Convert Vector2Int to Vector3 for drawing.
+            Vector3 position = new Vector3(pair.Key.x, pair.Key.y, 0); // Convert Vector2 to Vector3 for drawing.
             Gizmos.color = pair.Value ? Color.red : Color.white; // Red if visible, white if not.
             Gizmos.DrawWireSphere(position, 0.1f); // Draw a circle with a small radius.
         }
@@ -198,6 +198,23 @@ public class LineOfSightPathfinder : MonoBehaviour
         obstacleLayer = LayerMask.GetMask("Obstacles", "Walls", "Interactable");
         InitializeFloorPositions();
         InitializeVisibilityGrid();
+    }
+
+    /// <summary>
+    /// Retrieves the current position of the player.
+    /// To fix the issue of the rays getting stuck in the wall, we use a
+    /// position slightly offset in the y direction of the player.
+    /// </summary>
+    /// <returns>The current position of the player as a Vector2.</returns>
+    private Vector2 GetPlayerPosition()
+    {
+        if (player == null)
+        {
+            Debug.LogWarning("Player reference is not set.");
+            return Vector2.zero;
+        }
+        // Return the player's position with a slight offset in the y direction to avoid raycast issues.
+        return new Vector2(player.position.x, player.position.y + 0.3f);
     }
 }
 
