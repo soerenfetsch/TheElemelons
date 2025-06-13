@@ -597,7 +597,7 @@ public class Witch : Enemy
         }
         bodyAnimator.SetBool("Walk", walking);
         bodyAnimator.SetBool("Hover", hovering);
-        wandAnimator.SetBool("Hover", hovering);
+        wandAnimator.SetBool("Hover", hovering || baldy);
         bodyAnimator.SetBool("Bald", baldy);
         sparkleEffect1.SetBool("Hover", hovering || baldy);
         sparkleEffect2.SetBool("Hover", hovering || baldy);

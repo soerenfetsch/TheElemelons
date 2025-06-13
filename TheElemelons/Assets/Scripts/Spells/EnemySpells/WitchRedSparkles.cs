@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 /// <summary>
 /// Red sparkle effect. Gameobject is destroyed after spelllifetime runs out ~2s. 
@@ -19,6 +20,13 @@ public class WitchRedSparkles : SpellEffect
         spellType = new ChargeTuple(ChargeTypes.notype, ChargeTypes.notype);
         affecteds = new List<Collider2D>();
         StartCoroutine(Expire());
+    }
+    void FixedUpdate()
+    {
+        if (caster == null)
+        {
+            Destroy(gameObject);
+        }
     }
     IEnumerator Expire()
     {
@@ -40,13 +48,11 @@ public class WitchRedSparkles : SpellEffect
     {
         if (other.gameObject != null &&
             other.gameObject.CompareTag("Player") &&
-            other.isTrigger && !affecteds.Contains(other) &&
-            other.gameObject.GetComponent<Player>() != null)
+            other.isTrigger && !affecteds.Contains(other))
         {
             if (UnityEngine.Random.Range(0f, 1f) < 0.5)
             {
                 BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "Weakness", BuffDebuffManager.BuffDebuffType.WeaknessDebuff, debuffTime, debuffFactor, false);
-
             }
             else
             {

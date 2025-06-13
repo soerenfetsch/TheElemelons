@@ -50,7 +50,8 @@ public class HealthBar : MonoBehaviour
                 }
                 else
                 {
-                    hearts[i].GetComponent<Animator>().SetFloat("fullness", health % 1);
+                    float life = (health <= 0.125f && health != 0) ? 0.25f : health;
+                    hearts[i].GetComponent<Animator>().SetFloat("fullness", life % 1);
                 }
             }
         }
