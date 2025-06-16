@@ -24,7 +24,10 @@ public class CollectableMaxMana : Collectable
     /// </summary>
     protected override void OnCollect()
     {
-        playerMana.SetMaxMana(playerMana.GetMaxMana() + 1);
+        if (playerMana.GetMaxMana() < 9)
+        {
+            playerMana.SetMaxMana(playerMana.GetMaxMana() + 1);
+        }
         StartCoroutine(Expire());
     }
 
