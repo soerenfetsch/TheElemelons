@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Elemental types used for combat interactions.
+/// </summary>
 public enum ElementType
 {
     Fire,
@@ -13,8 +16,13 @@ public enum ElementType
 }
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Manages combat interactions, including damage calculations, attack execution, 
 /// and spell instantiation in the game.
+=======
+/// Helper class for combat-related utilities such as temporary invincibility.
+/// Implements a singleton pattern.
+>>>>>>> Stashed changes
 /// </summary>
 public class CombatHelper : MonoBehaviour
 {
@@ -69,6 +77,9 @@ public class CombatHelper : MonoBehaviour
 /// </summary>
 public static class CombatManager
 {
+    /// <summary>
+    /// Duration (in seconds) for which a target is invincible after being hit.
+    /// </summary>
     public const float invincibilityDuration = 0.2f;
 
     /// <summary>
@@ -77,6 +88,7 @@ public static class CombatManager
     /// </summary>
     public static Action OnPlayerDeath;
 
+    // Lookup table for elemental damage multipliers.
     private static Dictionary<ElementType, Dictionary<ElementType, float>> damageTable = new Dictionary<ElementType, Dictionary<ElementType, float>>()
     {
         {ElementType.Fire, new Dictionary<ElementType, float>(){
@@ -243,7 +255,6 @@ public static class CombatManager
 
         hit.GetComponent<ICombatant>()?.GetKnocked(knockTime);
     }
-
 
     /// <summary>
     /// Executes an attack with elemental attributes (ChargeTuple attack types).

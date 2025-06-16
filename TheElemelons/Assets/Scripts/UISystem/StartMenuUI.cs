@@ -1,14 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Manages the UI elements and functionality of the main start menu.
+=======
+/// Controls the start menu UI, including button initialization and event handling.
+/// Provides methods for starting a new game, continuing a saved game, opening options, and quitting the application.
+>>>>>>> Stashed changes
 /// </summary>
 public class StartMenuUI : MonoBehaviour
 {
     /// <summary>
+<<<<<<< Updated upstream
     /// Button to start a new game.
     /// </summary>
     private Button newGameButton;
@@ -22,12 +26,34 @@ public class StartMenuUI : MonoBehaviour
     private Button optionsButton;
     /// <summary>
     /// Button to quit the game application.
+=======
+    /// Reference to the New Game button.
+    /// </summary>
+    private Button newGameButton;
+
+    /// <summary>
+    /// Reference to the Continue Game button.
+    /// </summary>
+    private Button continueGameButton;
+
+    /// <summary>
+    /// Reference to the Options button.
+    /// </summary>
+    private Button optionsButton;
+
+    /// <summary>
+    /// Reference to the Quit Game button.
+>>>>>>> Stashed changes
     /// </summary>
     private Button quitGameButton;
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called when the script instance is being loaded.
     /// Initializes button components and sets the initial state of the continue button.
+=======
+    /// Unity Awake method. Initializes button components and disables the continue button by default.
+>>>>>>> Stashed changes
     /// </summary>
     private void Awake()
     {
@@ -38,9 +64,13 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Finds and initializes the UI button components and attaches their listeners.
     /// Assumes buttons are named "NewGameButton", "ContinueGameButton", "OptionsButton", and "QuitGameButton"
     /// as children of this GameObject.
+=======
+    /// Finds and assigns button components, and attaches their listeners.
+>>>>>>> Stashed changes
     /// </summary>
     public void InitializeButtons()
     {
@@ -58,8 +88,12 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called when the MonoBehaviour will be destroyed.
     /// Removes listeners from buttons to prevent memory leaks.
+=======
+    /// Unity OnDestroy method. Removes button listeners to prevent memory leaks.
+>>>>>>> Stashed changes
     /// </summary>
     private void OnDestroy()
     {
@@ -71,8 +105,12 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "New Game" button.
     /// Initiates a new game session via the GameManager.
+=======
+    /// Handles the New Game button click. Starts a new game via the GameManager.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnNewGameClicked()
     {
@@ -81,8 +119,12 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Continue Game" button.
     /// Loads a saved game session via the GameManager.
+=======
+    /// Handles the Continue Game button click. Continues a saved game via the GameManager.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnContinueGameClicked()
     {
@@ -91,8 +133,12 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Options" button.
     /// Changes the game state to open the settings menu.
+=======
+    /// Handles the Options button click. Opens the settings menu via the GameManager.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnOptionsClicked()
     {
@@ -101,8 +147,12 @@ public class StartMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Quit Game" button.
     /// Exits the application or stops play mode in the editor.
+=======
+    /// Handles the Quit Game button click. Quits the application or stops play mode in the editor.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnQuitGameClicked()
     {

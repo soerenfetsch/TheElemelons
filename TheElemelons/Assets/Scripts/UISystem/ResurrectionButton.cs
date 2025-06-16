@@ -1,15 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Manages the functionality of the resurrection button, including its appearance,
 /// interaction, and the effects of resurrecting the player.
+=======
+/// Controls the resurrection button UI on the death screen.
+/// Handles player resurrection, death effect, and player visibility/interactivity.
+>>>>>>> Stashed changes
 /// </summary>
 public class ResurrectionButton : MonoBehaviour
 {
     /// <summary>
+<<<<<<< Updated upstream
     /// Prefab for the visual effect played when the player dies.
     /// This is instantiated when the resurrection UI is enabled.
     /// </summary>
@@ -17,10 +21,18 @@ public class ResurrectionButton : MonoBehaviour
     /// <summary>
     /// Reference to the player's Transform component.
     /// </summary>
+=======
+    /// Reference to the death effect prefab to spawn when resurrecting.
+    /// </summary>
+    public DeathEffect deathEffect;
+
+    // Reference to the player's transform.
+>>>>>>> Stashed changes
     Transform playerTransform;
 
     [Header("Hovering Motion")]
     /// <summary>
+<<<<<<< Updated upstream
     /// The maximum vertical distance the button will move from its starting point.
     /// </summary>
     public float amplitude = 20f;
@@ -36,6 +48,22 @@ public class ResurrectionButton : MonoBehaviour
     /// <summary>
     /// Called when the script instance is being loaded.
     /// Initializes the button and finds the player's transform.
+=======
+    /// Amplitude of the button's hovering animation.
+    /// </summary>
+    public float amplitude = 20f;
+
+    /// <summary>
+    /// Frequency of the button's hovering animation.
+    /// </summary>
+    public float frequency = 0.25f;
+
+    // The fixed anchor position for the button's hovering animation.
+    Vector2 fixpoint;
+
+    /// <summary>
+    /// Unity Awake method. Initializes the button and finds the player transform.
+>>>>>>> Stashed changes
     /// </summary>
     void Awake()
     {
@@ -44,8 +72,12 @@ public class ResurrectionButton : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called before the first frame update.
     /// Sets the initial position for the hovering motion.
+=======
+    /// Unity Start method. Stores the button's initial position for hovering.
+>>>>>>> Stashed changes
     /// </summary>
     void Start()
     {
@@ -53,8 +85,12 @@ public class ResurrectionButton : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called when the GameObject becomes enabled and active.
     /// Hides the player and triggers death-related effects.
+=======
+    /// Unity OnEnable method. Hides the player and disables interaction when the button appears.
+>>>>>>> Stashed changes
     /// </summary>
     void OnEnable()
     {
@@ -62,8 +98,12 @@ public class ResurrectionButton : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called every fixed framerate frame.
     /// Updates the button's position to create a hovering effect.
+=======
+    /// Unity FixedUpdate method. Animates the button with a hovering motion.
+>>>>>>> Stashed changes
     /// </summary>
     void FixedUpdate()
     {
@@ -72,7 +112,11 @@ public class ResurrectionButton : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Initializes the resurrection button component and attaches its click listener.
+=======
+    /// Initializes the resurrection button and attaches the click event.
+>>>>>>> Stashed changes
     /// </summary>
     private void InititializeResurrectButton()
     {
@@ -82,15 +126,22 @@ public class ResurrectionButton : MonoBehaviour
             Debug.LogError("ResurrectionButton not found in SettingsMenuUI.");
             return;
         }
-        // Add on click listener to return to last menu
+        // Add on click listener to handle resurrection
         button.onClick.AddListener(() => OnResurrectButtonClicked());
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Toggles the player's visibility and interactive components.
     /// Also handles instantiation of death effects and clearing buffs/charges when hiding the player.
     /// </summary>
     /// <param name="onOff">True to make the player visible and active, false to hide.</param>
+=======
+    /// Enables or disables the player sprite, colliders, tooltip, and wand animation.
+    /// Also spawns the death effect and clears buffs/debuffs when disabling.
+    /// </summary>
+    /// <param name="onOff">True to enable player, false to disable.</param>
+>>>>>>> Stashed changes
     void playerOnOff(bool onOff)
     {
         playerTransform.GetComponent<SpriteRenderer>().enabled = onOff;
@@ -110,8 +161,12 @@ public class ResurrectionButton : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the resurrection button.
     /// Continues the saved game and makes the player visible and active.
+=======
+    /// Handles the resurrection button click: continues the saved game and restores player visibility.
+>>>>>>> Stashed changes
     /// </summary>
     private void OnResurrectButtonClicked()
     {

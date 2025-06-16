@@ -2,22 +2,49 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Boulder that free falls ~20 units and then shatters (on the ground) , dealing damage (~1heart) to the 
+/// Boulder that free falls ~20 units and then shatters (on the ground), dealing damage (~1 heart) to the 
 /// player on collision when it is ~2 units or closer to its shattering point.
 /// Drop shadow indicates where it will hit the ground. GameObject is destroyed after shatter animation.
 /// </summary>
 public class WitchBoulder : SpellEffect
 {
+    // Transform of the falling boulder.
     Transform boulderTransform;
+
+    /// <summary>
+    /// Height above the ground from which the boulder is dropped.
+    /// </summary>
     public float dropHeight = 20;
+
+    // Animator for the boulder shatter animation.
     Animator boulderAnimator;
+    // Collider for detecting collisions when the boulder lands.
     CircleCollider2D circleCollider2D;
+    // Rigidbody2D for boulder physics.
     Rigidbody2D boulderRb;
+
+    /// <summary>
+    /// Damage dealt to the player on impact.
+    /// </summary>
     public float baseDamage = 0f;
+
+    /// <summary>
+    /// Knockback force applied to the player on impact.
+    /// </summary>
     public float thrust = 0f;
+
+    /// <summary>
+    /// Duration of knockback applied to the player.
+    /// </summary>
     public float knockTime = 0f;
+
+    // Tracks whether the boulder has smashed.
     bool smash = false;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes the boulder's position, animator, collider, and physics.
+    /// Sets damage and knockback values from the Witch caster if available.
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.earth, ChargeTypes.notype);
@@ -35,7 +62,9 @@ public class WitchBoulder : SpellEffect
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Handles the boulder's falling logic and triggers the smash sequence when it lands.
+    /// </summary>
     void FixedUpdate()
     {
         float distance = (boulderTransform.position - transform.position).magnitude;
@@ -51,11 +80,14 @@ public class WitchBoulder : SpellEffect
             StartCoroutine(Expire());
         }
     }
+
+    /// <summary>
+    /// Plays the smash animation and destroys the boulder after the animation completes.
+    /// </summary>
     IEnumerator Expire()
     {
         boulderAnimator.SetTrigger("Smash");
         yield return new WaitForSeconds(0.9f);
         Destroy(gameObject);
     }
-
 }

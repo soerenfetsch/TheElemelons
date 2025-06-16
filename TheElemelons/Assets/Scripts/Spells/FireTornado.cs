@@ -1,46 +1,78 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// FireTornado class inherits from Spell Effect
-/// FireTornado first moves in casting direction and can randomly change direction or bounce off walls
+/// FireTornado class inherits from SpellEffect.
+/// FireTornado first moves in casting direction and can randomly change direction or bounce off walls.
 /// </summary>
 public class FireTornado : SpellEffect
 {
     [Header("Movement")]
-    public float spellLifeTime = 3f;
-    public float spellDeathTime = 0.3f;
-    public float moveSpeed = 1f;
     /// <summary>
-    /// direction correction factor if direction is changed
+    /// Lifetime of the spell before it expires.
+    /// </summary>
+    public float spellLifeTime = 3f;
+
+    /// <summary>
+    /// Time for the disappear animation before destruction.
+    /// </summary>
+    public float spellDeathTime = 0.3f;
+
+    /// <summary>
+    /// Movement speed of the tornado.
+    /// </summary>
+    public float moveSpeed = 1f;
+
+    /// <summary>
+    /// Direction correction factor if direction is changed.
     /// </summary>
     public float correction = 0.1f;
+
     /// <summary>
-    /// time between random direction switch
+    /// Time between random direction switches.
     /// </summary>
     public float switchTime = 1f;
+
     /// <summary>
-    /// constraints of time between random direction switch
+    /// Constraints for the random direction switch interval.
     /// </summary>
     public Vector2 switchTimeConstraints = new Vector2(1f, 3f);
+
     [Header("Hit")]
+    /// <summary>
+    /// Force applied to targets when hit by the tornado.
+    /// </summary>
     public float thrust = 7f;
+
+    /// <summary>
+    /// Duration of the knockback effect on targets.
+    /// </summary>
     public float knockTime = 0.4f;
+
+    /// <summary>
+    /// Damage dealt by the tornado to targets.
+    /// </summary>
     public float damage = 2f;
+
     [Header("Linked Components")]
+    /// <summary>
+    /// Rigidbody2D component for movement.
+    /// </summary>
     public Rigidbody2D myRigidbody;
+
+    // Reference to the casting point transform.
     Transform castPoint;
 
     [Header("Internal Stuff")]
     /// <summary>
-    /// current movement direction
+    /// Current movement direction.
     /// </summary>
     Vector2 direction;
+
+    // Animator for tornado animations.
     Animator animator;
+
     /// <summary>
-    /// set spelltype (fire wind), initial direction
-    /// start expiration timer
-    /// start random direction switching coroutine
+    /// Sets spell type (fire wind), initial direction, starts expiration timer, and random direction switching coroutine.
     /// </summary>
     void Start()
     {
@@ -51,10 +83,10 @@ public class FireTornado : SpellEffect
         direction = castPoint.transform.up;
         StartCoroutine(Expire());
         StartCoroutine(SwitchDirection());
-
     }
+
     /// <summary>
-    /// random direction switching coroutine
+    /// Coroutine for random direction switching.
     /// </summary>
     IEnumerator SwitchDirection()
     {
@@ -67,16 +99,18 @@ public class FireTornado : SpellEffect
             direction.Normalize();
         }
     }
+
     /// <summary>
-    /// start expiration timer and self destruct at the end
+    /// Starts expiration timer and self-destructs at the end.
     /// </summary>
     private IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
         StartCoroutine(SelfDestroy());
     }
+
     /// <summary>
-    /// add force in current direction 
+    /// Adds force in the current direction.
     /// </summary>
     void FixedUpdate()
     {
@@ -87,8 +121,9 @@ public class FireTornado : SpellEffect
         direction.y *= moveSpeed;
         myRigidbody.velocity = direction;
     }
+
     /// <summary>
-    /// expire animation and then self destruct
+    /// Plays the disappear animation and then self-destructs.
     /// </summary>
     public IEnumerator SelfDestroy()
     {
@@ -96,9 +131,11 @@ public class FireTornado : SpellEffect
         Destroy(gameObject, spellDeathTime);
         yield return null;
     }
+
     /// <summary>
-    /// deal damage to enimies that collide with tornado
+    /// Deals damage to enemies that collide with the tornado.
     /// </summary>
+    /// <param name="other">The collider of the object that the spell collides with.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)

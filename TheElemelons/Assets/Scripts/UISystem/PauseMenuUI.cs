@@ -1,14 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Manages the UI elements and functionality of the pause menu.
+=======
+/// Controls the pause menu UI, including button initialization and event handling.
+/// Provides methods for continuing the game, saving, opening options, and returning to the main menu.
+>>>>>>> Stashed changes
 /// </summary>
 public class PauseMenuUI : MonoBehaviour
 {
     /// <summary>
+<<<<<<< Updated upstream
     /// Button to resume the game.
     /// </summary>
     private Button continueButton;
@@ -22,12 +26,34 @@ public class PauseMenuUI : MonoBehaviour
     private Button optionsButton;
     /// <summary>
     /// Button to return to the main menu.
+=======
+    /// Reference to the Continue Game button.
+    /// </summary>
+    private Button continueButton;
+
+    /// <summary>
+    /// Reference to the Save Game button.
+    /// </summary>
+    private Button saveGameButton;
+
+    /// <summary>
+    /// Reference to the Options button.
+    /// </summary>
+    private Button optionsButton;
+
+    /// <summary>
+    /// Reference to the Main Menu button.
+>>>>>>> Stashed changes
     /// </summary>
     private Button mainMenuButton;
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called when the script instance is being loaded.
     /// Initializes the button components.
+=======
+    /// Unity Start method. Initializes button references and listeners.
+>>>>>>> Stashed changes
     /// </summary>
     private void Start()
     {
@@ -36,9 +62,13 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Finds and initializes the UI button components and attaches their listeners.
     /// Assumes buttons are named "ContinueGameButton", "SaveGameButton", "OptionsButton", and "MainMenuButton"
     /// as children of this GameObject.
+=======
+    /// Finds and assigns button components, and attaches their listeners.
+>>>>>>> Stashed changes
     /// </summary>
     public void InitializeButtons()
     {
@@ -56,8 +86,12 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called when the MonoBehaviour will be destroyed.
     /// Removes listeners from buttons to prevent memory leaks.
+=======
+    /// Unity OnDestroy method. Removes button listeners to prevent memory leaks.
+>>>>>>> Stashed changes
     /// </summary>
     private void OnDestroy()
     {
@@ -69,8 +103,12 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Continue" button.
     /// Resumes the game by changing the game status.
+=======
+    /// Handles the Continue button click. Resumes the game and updates the game state.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnContinueClicked()
     {
@@ -80,8 +118,12 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Save Game" button.
     /// Saves the current game state.
+=======
+    /// Handles the Save Game button click. Saves the current game state.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnSaveGameClicked()
     {
@@ -91,8 +133,12 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Options" button.
     /// Opens the settings menu by changing the game status.
+=======
+    /// Handles the Options button click. Opens the options menu and updates the game state.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnOptionsClicked()
     {
@@ -102,8 +148,12 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Handles the click event for the "Main Menu" button.
     /// Returns the player to the main menu.
+=======
+    /// Handles the Main Menu button click. Returns to the main menu and saves the game.
+>>>>>>> Stashed changes
     /// </summary>
     public void OnMainMenuClicked()
     {

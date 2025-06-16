@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -65,8 +63,9 @@ public class TikiGreenAttack : SpellEffect
     // Collider for detecting hits.
     BoxCollider2D boxCollider2D;
 
-    // Start is called before the first frame update
-    // Initializes components, calculates direction, and begins the charge-up coroutine.
+    /// <summary>
+    /// Initializes spell components, calculates direction, and begins the charge-up coroutine.
+    /// </summary>
     void Start()
     {
         //components

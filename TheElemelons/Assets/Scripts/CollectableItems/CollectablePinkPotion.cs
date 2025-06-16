@@ -2,24 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Collectable item that grants the player a random buff (damage, defense, or speed) for a limited duration when collected.
+/// </summary>
 public class CollectablePinkPotion : Collectable
 {
+    /// <summary>
+    /// List of possible buffs or debuffs that can be granted by the potion.
+    /// </summary>
     public List<BuffDebuffManager.BuffDebuffType> buffDebuffchoices;
+
+    /// <summary>
+    /// The factor by which the buff/debuff modifies the player's stats.
+    /// </summary>
     public float factor = 1.5f;
+
+    /// <summary>
+    /// Duration in seconds for which the buff/debuff is applied.
+    /// </summary>
     public float duration = 120f;
 
+<<<<<<< Updated upstream
+=======
+    // Start is called before the first frame update.
+    // Initializes general collectable properties.
+>>>>>>> Stashed changes
     void Start()
     {
         InitializeGeneral();
     }
 
+<<<<<<< Updated upstream
+=======
+    // FixedUpdate is called once per physics frame.
+    // Handles collectable movement logic.
+>>>>>>> Stashed changes
     void FixedUpdate()
     {
         Movement();
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Applies a random buff or debuff to the player and starts the pickup animation when collected.
+=======
+    /// Called when the player collects the pink potion.
+    /// Applies a random buff/debuff to the player and starts the pickup animation and destruction sequence.
+>>>>>>> Stashed changes
     /// </summary>
     protected override void OnCollect()
     {
@@ -27,12 +56,21 @@ public class CollectablePinkPotion : Collectable
         StartCoroutine(Expire());
     }
 
+<<<<<<< Updated upstream
+=======
+    // Randomly selects a buff/debuff type from the available choices.
+>>>>>>> Stashed changes
     BuffDebuffManager.BuffDebuffType ChoseBuff()
     {
         int i = UnityEngine.Random.Range(0, buffDebuffchoices.Count);
         return buffDebuffchoices[i];
     }
 
+<<<<<<< Updated upstream
+=======
+    // Plays the pickup animation, disables the collider, destroys the shadow,
+    // and destroys the collectable after a short delay.
+>>>>>>> Stashed changes
     IEnumerator Expire()
     {
         animator.SetTrigger("heal");

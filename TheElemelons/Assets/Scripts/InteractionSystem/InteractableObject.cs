@@ -1,18 +1,26 @@
 using UnityEngine;
 
+/// <summary>
+/// Abstract base class for all interactable objects in the game.
+/// Provides an interface for interaction logic and proximity checks.
+/// </summary>
 public abstract class InteractableObject : MonoBehaviour
 {
-    // Radius within which the player can interact
+    /// <summary>
+    /// The radius within which the player can interact with this object.
+    /// </summary>
     public float interactionRadius = 2f;
 
-    // Abstract method that must be implemented by child classes
+    /// <summary>
+    /// Abstract method that must be implemented by child classes to define interaction behavior.
+    /// </summary>
     public abstract void Interact();
 
     /// <summary>
-    /// Returns true if the player is within interaction range
+    /// Checks if the player is within interaction range of this object.
     /// </summary>
-    /// <param name="player"></param>
-    /// <returns>bool: true if player within interaction range</returns>
+    /// <param name="player">The player's transform.</param>
+    /// <returns>True if the player is within <see cref="interactionRadius"/>; otherwise, false.</returns>
     public virtual bool CanInteract(Transform player)
     {
         return Vector2.Distance(transform.position, player.position) <= interactionRadius;

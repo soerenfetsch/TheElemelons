@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// DefenseBuffSpell inherits SpellEffect
-/// Gives Player a defense buff
+/// DefenseBuffSpell inherits SpellEffect.
+/// Gives Player a defense buff for a set duration and factor.
 /// </summary>
 public class DefenseBuffSpell : SpellEffect
 {
-    public float defenseTime = 15f;
-    public float defenseFactor = 2f;
-    GameObject player;
     /// <summary>
-    /// Initializes spelltype (Earth Notype), starts coroutine to expire, applies defense buff
+    /// Duration of the defense buff in seconds.
+    /// </summary>
+    public float defenseTime = 15f;
+
+    /// <summary>
+    /// Multiplier applied to the player's defense while buff is active.
+    /// </summary>
+    public float defenseFactor = 2f;
+
+    // Reference to the player GameObject.
+    GameObject player;
+
+    /// <summary>
+    /// Unity Start method. Applies the defense buff to the player and destroys the spell object.
     /// </summary>
     void Start()
     {

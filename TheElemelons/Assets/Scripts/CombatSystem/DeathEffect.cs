@@ -1,13 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Handles the visual and timing logic for death effects (e.g., enemy death animations).
 /// Can be spawned with a delay and self-destructs after the delay.
+=======
+/// Handles the visual and timing logic for death effects (e.g., particle effects, animations) when an entity dies.
+/// Can be spawned at a given position and destroyed after a specified delay.
+>>>>>>> Stashed changes
 /// </summary>
 public class DeathEffect : MonoBehaviour
 {
+    /// <summary>
+    /// The delay (in seconds) before the death effect is destroyed.
+    /// </summary>
     public float deathEffectDelay = 1f;
 
     /// <summary>

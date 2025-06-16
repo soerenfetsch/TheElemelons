@@ -1,14 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Handles the transparency of the King's Bed roof sprite when the player moves behind or away from it.
+=======
+/// Handles the visual effect of the King's Bed roof becoming transparent when the player is behind it.
+/// Adjusts the alpha of the roof sprite based on player trigger events.
+>>>>>>> Stashed changes
 /// </summary>
 public class KingsBed : MonoBehaviour
 {
+    /// <summary>
+    /// The alpha value to use for the roof sprite when the player is behind the bed.
+    /// </summary>
     public float opacityPlayerBehind = 0.35f;
+
+    // Reference to the SpriteRenderer for the roof.
     SpriteRenderer spriteRendererRoof;
 
     /// <summary>

@@ -1,30 +1,69 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Handles the flow and state of dialogues, including starting, advancing, and ending dialogue sequences.
 /// Manages dialogue events and communicates with the GameManager to update game status during dialogues.
+=======
+/// Manages the flow of dialogue sequences, including starting, advancing, and ending dialogues.
+/// Handles broadcasting dialogue events to the UI and other systems.
+>>>>>>> Stashed changes
 /// </summary>
 public class DialogueManager : MonoBehaviour
 {
+    /// <summary>
+    /// Singleton instance of the DialogueManager.
+    /// </summary>
     public static DialogueManager Instance { get; private set; }
 
     [Header("Dialogue Assets")]
+    /// <summary>
+    /// If true, dialogue will auto-advance after a delay.
+    /// </summary>
     [SerializeField] private bool autoPlay = false;
+
+    /// <summary>
+    /// Delay (in seconds) before auto-advancing to the next dialogue line.
+    /// </summary>
     [SerializeField] private float autoPlayDelay = 5f;
+
+    /// <summary>
+    /// The currently active dialogue data.
+    /// </summary>
     public DialogueData currentDialogue;
+
+    /// <summary>
+    /// The index of the current line in the dialogue.
+    /// </summary>
     public int currentLineIndex = 0;
+
+    // Reference to the currently running auto-play coroutine.
     private Coroutine autoPlayCoroutine;
 
+    /// <summary>
+    /// Event fired when a new dialogue sequence starts.
+    /// </summary>
     public static event Action<DialogueData> OnDialogueStart;
+
+    /// <summary>
+    /// Event fired when the current dialogue line changes.
+    /// </summary>
     public static event Action<DialogueLineEntry> OnDialogueUpdate;
+
+    /// <summary>
+    /// Event fired when the dialogue sequence ends.
+    /// </summary>
     public static event Action OnDialogueEnded;
 
+<<<<<<< Updated upstream
     /// <summary>
     /// Initializes the singleton instance and ensures persistence across scenes.
     /// </summary>
+=======
+    // Unity Awake callback. Sets up the singleton instance.
+>>>>>>> Stashed changes
     private void Awake()
     {
         if (Instance == null)
@@ -40,9 +79,15 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Starts a new dialogue sequence with the provided dialogue data.
     /// </summary>
     /// <param name="dialogueToStart">The dialogue data to start.</param>
+=======
+    /// Starts a new dialogue sequence.
+    /// </summary>
+    /// <param name="dialogueToStart">The DialogueData asset to start.</param>
+>>>>>>> Stashed changes
     public void StartDialogue(DialogueData dialogueToStart)
     {
         if (dialogueToStart == null || dialogueToStart.dialogueLines == null || dialogueToStart.dialogueLines.Count == 0)
@@ -67,16 +112,26 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Checks if a dialogue is currently active.
     /// </summary>
     /// <returns>True if a dialogue is active, false otherwise.</returns>
+=======
+    /// Returns true if a dialogue is currently active.
+    /// </summary>
+>>>>>>> Stashed changes
     public bool HasDialogue()
     {
         return currentDialogue != null;
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Advances the dialogue to the next line or ends the dialogue if finished.
+=======
+    /// Advances to the next line in the current dialogue sequence.
+    /// Ends the dialogue if there are no more lines.
+>>>>>>> Stashed changes
     /// </summary>
     public void AdvanceDialogue()
     {
@@ -100,9 +155,13 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
     /// <summary>
     /// Processes the current dialogue line and triggers update events.
     /// </summary>
+=======
+    // Processes the current dialogue line, invokes update events, and handles auto-play if enabled.
+>>>>>>> Stashed changes
     private void ProcessCurrentLine()
     {
         DialogueLineEntry currentEntry = currentDialogue.dialogueLines[currentLineIndex];
@@ -123,7 +182,11 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Ends the dialogue sequence and resets dialogue state.
+=======
+    /// Ends the dialogue sequence and resets state.
+>>>>>>> Stashed changes
     /// </summary>
     private void EndDialogue()
     {
@@ -147,10 +210,14 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
     /// <summary>
     /// Coroutine to automatically advance or end the dialogue after a delay.
     /// </summary>
     /// <param name="delay">The delay in seconds before advancing or ending.</param>
+=======
+    // Coroutine to auto-advance or end the dialogue after a delay.
+>>>>>>> Stashed changes
     private IEnumerator AutoAdvanceOrEndAfterDelay(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);

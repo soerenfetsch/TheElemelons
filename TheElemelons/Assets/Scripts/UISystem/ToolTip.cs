@@ -5,7 +5,11 @@ using UnityEngine;
 using Regex = System.Text.RegularExpressions.Regex;
 
 /// <summary>
+<<<<<<< Updated upstream
 /// Defines the different types of tutorial tips that can be displayed.
+=======
+/// Enum representing the different types of tutorial tips that can be shown in the tooltip.
+>>>>>>> Stashed changes
 /// </summary>
 public enum TutorialTip
 {
@@ -46,6 +50,7 @@ public enum TutorialTip
     /// </summary>
     FieldOfView
 }
+
 /// <summary>
 /// Makes tooltips appear and disappear under certain conditions.
 /// If Tooltip receives a tutorial tip type from tooltiptrigger, the corresponding tip is displayed
@@ -57,6 +62,7 @@ public enum TutorialTip
 /// </summary>
 public class ToolTip : MonoBehaviour
 {
+<<<<<<< Updated upstream
     /// <summary>
     /// Reference to the main camera in the scene.
     /// </summary>
@@ -89,6 +95,29 @@ public class ToolTip : MonoBehaviour
     /// <summary>
     /// Called before the first frame update.
     /// Initializes references to the InputManager, main camera, and the tooltip's anchor position.
+=======
+    // Reference to the main camera.
+    Camera mainCamera;
+    // Anchor position for the tooltip.
+    Vector3 toolTipAnchor;
+    // List of keys the player must press to clear the current tip.
+    List<KeyCode> keyToPress;
+    /// <summary>
+    /// Whether the player can currently interact with something.
+    /// </summary>
+    public bool canInteract;
+    // The current tutorial tip being displayed.
+    TutorialTip currentTip;
+    /// <summary>
+    /// Reference to the TMP_Text component used for displaying the tooltip.
+    /// </summary>
+    public TMP_Text tooltip;
+    // Reference to the InputManager for key binding lookups.
+    InputManager inputManager;
+
+    /// <summary>
+    /// Unity Start method. Initializes references and anchor position.
+>>>>>>> Stashed changes
     /// </summary>
     void Start()
     {
@@ -98,19 +127,29 @@ public class ToolTip : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Toggles the visibility of the tooltip's parent GameObject.
     /// </summary>
     /// <param name="onOff">True to activate the tooltip GameObject, false to deactivate it.</param>
+=======
+    /// Enables or disables the tooltip display.
+    /// </summary>
+    /// <param name="onOff">True to show the tooltip, false to hide it.</param>
+>>>>>>> Stashed changes
     public void ToggleToolTipOnOff(bool onOff)
     {
         tooltip.transform.parent.gameObject.SetActive(onOff);
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called every frame.
     /// Manages the display of tooltips based on the current tutorial tip or interaction state.
     /// Updates the tooltip text, position, and font size dynamically.
     /// Checks for player input to dismiss tutorial tips.
+=======
+    /// Updates the tooltip each frame based on the current tutorial tip, interaction state, and camera zoom.
+>>>>>>> Stashed changes
     /// </summary>
     void Update()
     {
@@ -203,10 +242,16 @@ public class ToolTip : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Called when a tutorial tip's condition for dismissal is met (e.g., correct key press).
     /// Resets the current tip to None.
     /// </summary>
     /// <returns>An empty string, effectively clearing the tooltip text for the current frame.</returns>
+=======
+    /// Removes the current tutorial tip.
+    /// </summary>
+    /// <returns>Empty string (for clearing the tooltip).</returns>
+>>>>>>> Stashed changes
     string OnTutorialSuccess()
     {
         ChangeCurrentTip(TutorialTip.None);
@@ -214,9 +259,15 @@ public class ToolTip : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Changes the currently active tutorial tip.
     /// </summary>
     /// <param name="tip">The new TutorialTip to set as active.</param>
+=======
+    /// Changes the current tutorial tip being displayed.
+    /// </summary>
+    /// <param name="tip">The new tutorial tip to display.</param>
+>>>>>>> Stashed changes
     public void ChangeCurrentTip(TutorialTip tip)
     {
         currentTip = tip;
@@ -224,11 +275,18 @@ public class ToolTip : MonoBehaviour
     }
 
     /// <summary>
+<<<<<<< Updated upstream
     /// Retrieves the string representation of a keybinding for a given action name.
     /// Formats certain KeyCode names for better readability (e.g., "Alpha0" to "0", "Mouse0" to "left mouse button").
     /// </summary>
     /// <param name="name">The name of the action to get the keybinding string for (e.g., "CastSpell").</param>
     /// <returns>A user-friendly string representing the key bound to the action.</returns>
+=======
+    /// Returns a user-friendly string for the key binding of a given action.
+    /// </summary>
+    /// <param name="name">The action name.</param>
+    /// <returns>Formatted key binding string.</returns>
+>>>>>>> Stashed changes
     string GetKeyBind(string name)
     {
         KeyCode key = inputManager.keyBindings[name];

@@ -1,23 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 /// <summary>
-/// cloud that obstructs the enemy's sight
-/// enemy will be inflicted with confusion if in the cloud
-/// player receives hidden buff if in the cloud
+/// Cloud that obstructs the enemy's sight.
+/// Enemy will be inflicted with confusion if in the cloud.
+/// Player receives hidden buff if in the cloud.
 /// </summary>
 public class WaterVaporSpell : SpellEffect
 {
-
+    // Lifetime of the spell before it fades out and is destroyed.
     float spellLifeTime = 10f;
+    // Duration of the fade-out effect.
     float fadeDuration = 2f;
+    // SpriteRenderer for fading the cloud.
     SpriteRenderer spriteRenderer;
+    /// <summary>
+    /// Prefab for the question mark effect (confusion).
+    /// </summary>
     public GameObject questionMark;
+    // Tracks which victims have been affected (for possible future use).
     Dictionary<GameObject, GameObject> victims;
+    // Collider for applying buffs/debuffs.
     CircleCollider2D circleCollider2D;
+    // Reference to the player.
     Player player;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes the cloud's position, disables collider, and starts expiration coroutine.
+    /// </summary>
     void Start()
     {
         circleCollider2D = GetComponent<CircleCollider2D>();
@@ -28,6 +38,10 @@ public class WaterVaporSpell : SpellEffect
         circleCollider2D.enabled = false;
         StartCoroutine(Expire());
     }
+
+    /// <summary>
+    /// Handles the spell's lifetime, enables collider, fades out, and destroys the object.
+    /// </summary>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(2.6f);
@@ -46,10 +60,10 @@ public class WaterVaporSpell : SpellEffect
         }
         Destroy(gameObject);
     }
+
     /// <summary>
-    /// switch collider on and off to reapply buffs/debuffs
+    /// Switches collider on and off to reapply buffs/debuffs.
     /// </summary>
-    /// <returns></returns>
     IEnumerator ColliderOnOff()
     {
         while (true)
@@ -58,32 +72,37 @@ public class WaterVaporSpell : SpellEffect
             circleCollider2D.enabled = !circleCollider2D.enabled;
         }
     }
+
     /// <summary>
-    /// apply short buff/debuff
-    /// type depends on whether enemy or player
+    /// Applies a short confusion debuff to enemies or a hidden buff to the player when entering the cloud.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">The collider entering the cloud.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         Enemy targetScript = other.GetComponent<Enemy>();
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger &&
-        targetScript != null && other.GetComponent<Health>() != null &&
-        targetScript.GetCurrentState() != EnemyStatus.Staggered)
+            targetScript != null && other.GetComponent<Health>() != null &&
+            targetScript.GetCurrentState() != EnemyStatus.Staggered)
         {
-            //ConfuseVictim(other.gameObject); iif !victims.ContainsKey(other.gameObject)
+            //ConfuseVictim(other.gameObject); if !victims.ContainsKey(other.gameObject)
             Debug.Log("Confusing : " + other.gameObject.name);
             BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "WaterVaporConfuse", BuffDebuffManager.BuffDebuffType.ConfusedDebuff, 0.8f, 1, false);
-
         }
         if (other.gameObject.CompareTag("Player") && other.GetComponent<Player>() != null)
         {
             BuffDebuffManager.Instance.ApplyBuffDebuff(other.gameObject, "WaterVaporHide", BuffDebuffManager.BuffDebuffType.HiddenBuff, 0.8f, 1, false);
         }
     }
+
+    /// <summary>
+    /// Turns off the cloud's light effect after a short delay.
+    /// </summary>
     public void TurnLightOff()
     {
         StartCoroutine(TurnLightOffCoroutine());
     }
+
+    // Coroutine to turn off the light effect.
     IEnumerator TurnLightOffCoroutine()
     {
         transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);

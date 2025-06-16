@@ -2,18 +2,30 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// WallSpell inherits from SpellEffect
-/// Spawns Wall for given time
+/// WallSpell inherits from SpellEffect.
+/// Spawns a wall for a given time, oriented based on the player's position.
 /// </summary>
 public class WallSpell : SpellEffect
 {
-    public float spellLifeTime = 7f;
-    public float distance = 3f;
-    Transform playerTransform;
-    BoxCollider2D boxCollider2D;
-    Animator animator;
     /// <summary>
-    /// Initialize spelltype (earth, earth), call method to orientate wall and start expiration coroutine
+    /// Duration the wall remains before sinking.
+    /// </summary>
+    public float spellLifeTime = 7f;
+
+    /// <summary>
+    /// Distance from the player to spawn the wall.
+    /// </summary>
+    public float distance = 3f;
+
+    // Reference to the player's transform.
+    Transform playerTransform;
+    // Reference to the wall's BoxCollider2D.
+    BoxCollider2D boxCollider2D;
+    // Reference to the wall's Animator.
+    Animator animator;
+
+    /// <summary>
+    /// Sets spell type (earth, earth), orients the wall, and starts the expiration coroutine.
     /// </summary>
     void Start()
     {
@@ -24,8 +36,10 @@ public class WallSpell : SpellEffect
         Orientate();
         StartCoroutine(Expire());
     }
+
     /// <summary>
-    /// orientate wall in correct direction according to where player is and adapt the collider accordingly, as well as animations
+    /// Orients the wall in the correct direction according to the player's position,
+    /// adapts the collider and triggers the correct animation.
     /// </summary>
     void Orientate()
     {
@@ -34,23 +48,23 @@ public class WallSpell : SpellEffect
 
         if (direction.x < -0.707 && direction.y > -0.707 && direction.y < 0.707)
         {
-            //Left
+            // Left
             animator.SetInteger("Direction", -1);
             boxCollider2D.offset = new Vector2(0.01683933f, 0.9102298f);
             boxCollider2D.size = new Vector2(0.5423633f, 1.82007f);
         }
         else if (direction.x > 0.707 && direction.y > -0.707 && direction.y < 0.707)
         {
-            //Right
+            // Right
             animator.SetInteger("Direction", 1);
             boxCollider2D.offset = new Vector2(-0.09968555f, 0.9684917f);
             boxCollider2D.size = new Vector2(0.513232f, 1.878331f);
         }
         boxCollider2D.enabled = true;
-
     }
+
     /// <summary>
-    /// Trigger sink animation after spelllifetime and destroy gameobject
+    /// Triggers the sink animation after spellLifeTime and destroys the wall GameObject.
     /// </summary>
     IEnumerator Expire()
     {
