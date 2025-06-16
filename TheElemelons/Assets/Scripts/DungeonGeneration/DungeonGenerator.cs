@@ -64,8 +64,19 @@ public class DungeonGenerator : MonoBehaviour
         mapData = mapGenerator.GenerateMap();
         Debug.Log(mapData == null);
         tilemapVisualizer.PaintTiles(mapData);
-        tilePositionData.tilePositions = mapData.floorPositions.ToList();
+        tilePositionData.tilePositions = ConvertTilePositionsToCenter(mapData.floorPositions.ToList());
     }
+
+    private static List<Vector2> ConvertTilePositionsToCenter(List<Vector2Int> tilePositions)
+    {
+        List<Vector2> centerPositions = new List<Vector2>();
+        foreach (Vector2Int position in tilePositions)
+        {
+            centerPositions.Add(new Vector2(position.x + 0.5f, position.y + 1f));
+        }
+        return centerPositions;
+    }
+
 
     /// <summary>
     /// Clears tile positions on application quit.

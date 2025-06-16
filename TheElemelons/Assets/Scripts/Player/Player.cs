@@ -1,8 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Codice.Client.BaseCommands.BranchExplorer.Layout;
-using PlasticGui.WorkspaceWindow;
 using UnityEngine;
 
 /// <summary>
@@ -23,6 +19,8 @@ public enum PlayerState
 public class Player : MonoBehaviour, ICombatant, IBuffable
 {
     public int hiddenByThings = 0;
+    public int frozenByThings = 0;
+    InputManager inputManager;
     /// <summary>
     /// Current state of the player (e.g., Walk, Attack, Idle).
     /// </summary>
@@ -54,6 +52,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
 
         animator = GetComponent<Animator>();
         wandAnimator = transform.Find("Wand_Animation").GetComponent<Animator>();
+        inputManager = GetComponent<InputManager>();
     }
 
     /// <summary>
@@ -71,6 +70,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     void Update()
     {
         // Placeholder for player-specific update logic.
+        inputManager.canInput = frozenByThings <= 0;
     }
 
     /// <summary>
@@ -163,5 +163,13 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     { }
     public void ModifyIsFrozen(float factor)
     {
+        if (factor == 1)
+        {
+            frozenByThings++;
+        }
+        else
+        {
+            frozenByThings = (int)Mathf.Clamp(frozenByThings - 1, 0f, Mathf.Infinity);
+        }
     }
 }

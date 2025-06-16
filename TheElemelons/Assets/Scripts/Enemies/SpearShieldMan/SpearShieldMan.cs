@@ -165,7 +165,6 @@ public class SpearShieldMan : Enemy
     public override void ChangeState(EnemyStatus newState)
     {
         if (currentState == newState) return;
-        Debug.Log($"SpearShieldMan: Changing state from {currentState} to {newState}");
         currentState = newState;
     }
 
@@ -199,6 +198,7 @@ public class SpearShieldMan : Enemy
                 }
                 else if (CheckPlayerUnreachableWithinRadius(chaseRadius))
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Idle);
                     ChangeAnimationClip("Idle");
                     break;

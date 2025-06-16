@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue Assets")]
     [SerializeField] private bool autoPlay = false;
-    [SerializeField] private float autoPlayDelay = 3f;    
+    [SerializeField] private float autoPlayDelay = 5f;
     public DialogueData currentDialogue;
     public int currentLineIndex = 0;
     private Coroutine autoPlayCoroutine;
@@ -62,7 +62,7 @@ public class DialogueManager : MonoBehaviour
         {
             Debug.LogWarning("[DialogueManager] GameManager.Instance is NULL. Cannot change game status.");
         }
-        
+
         OnDialogueStart?.Invoke(currentDialogue);
     }
 

@@ -101,7 +101,8 @@ public class UIManager : MonoBehaviour
     /// Prefab for the ice crystal effect shown when the player is frozen.
     /// </summary>
     public GameObject iceCrystal;
-
+    public GameObject earthSkinEffect;
+    public GameObject petrifiedPlayerEffect;
     [Header("UI Canvas Panels")]
     /// <summary>
     /// Panel for the pause menu UI.
@@ -402,8 +403,39 @@ public class UIManager : MonoBehaviour
             Destroy(target.transform.Find("IceCrystalEffect(Clone)").gameObject);
         }
     }
+    public void SetEarthSkinEffect(bool isBuffed, GameObject target)
+    {
+        if (target.CompareTag("Player"))
+        {
+            if (isBuffed)
+            {
+                Instantiate(earthSkinEffect, playerObject.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            else
+            {
+                StartCoroutine(playerObject.transform.Find("EarthSkinEffect(Clone)").GetComponent<EarthSkinBuffEffect>().Expire());
+            }
+        }
+    }
+    public void SetPetrifiedEffect(bool isBuffed, GameObject target)
+    {
+        if (target.CompareTag("Player"))
+        {
+            if (isBuffed)
+            {
+                Instantiate(petrifiedPlayerEffect, playerObject.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            else
+            {
+                StartCoroutine(playerObject.transform.Find("StonedPlayerEffect(Clone)").GetComponent<Petrified_Player>().Expire());
+            }
+        }
+    }
+    // BuffDebuff Icon Management
 
-    // Updates the buff/debuff icons in the UI.
+    /// <summary>
+    /// Updates the buff/debuff icons in the UI.
+    /// </summary>
     private void UpdateBuffDebuffIcons()
     {
         buffDebuffIconBar.UpdateIconBar();
@@ -592,8 +624,8 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            bossBar.SetActive(false);
             bossBar.GetComponent<BossHealthbar>().bossHealth = null;
+            bossBar.SetActive(false);
         }
     }
 }

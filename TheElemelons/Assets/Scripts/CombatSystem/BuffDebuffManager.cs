@@ -49,6 +49,7 @@ public class BuffDebuffManager : MonoBehaviour
         HiddenBuff,
         ConfusedDebuff,
         FreezeDebuff,
+        PetrifiedDebuff
     }
 
     /// <summary>
@@ -171,6 +172,14 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetFreezeEffect(true, target);
                 }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(true, target);
+                }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
@@ -195,6 +204,14 @@ public class BuffDebuffManager : MonoBehaviour
                 else if (effectType == BuffDebuffType.FreezeDebuff)
                 {
                     _uiManager?.SetFreezeEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(false, target);
                 }
             }
         };
@@ -266,6 +283,12 @@ public class BuffDebuffManager : MonoBehaviour
         {
             OnApply = effect =>
             {
+                if (target == null)
+                {
+                    Debug.LogWarning("Target is null. Cannot apply buff/debuff.");
+                    return;
+                }
+
                 // Add buff/debuff icon to UI
                 if (target.CompareTag("Player"))
                 {
@@ -286,9 +309,23 @@ public class BuffDebuffManager : MonoBehaviour
                 {
                     _uiManager?.SetFreezeEffect(true, target);
                 }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(true, target);
+                }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(true, target);
+                }
             },
             OnExpire = effect =>
             {
+                if (target == null)
+                {
+                    Debug.LogWarning("Target is null. Cannot remove buff/debuff.");
+                    return;
+                }
+
                 // Remove buff/debuff icon from UI
                 if (target.CompareTag("Player"))
                 {
@@ -303,19 +340,23 @@ public class BuffDebuffManager : MonoBehaviour
                 }
                 else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
-
-                    Debug.Log("calling ui manager to remove question mark");
                     _uiManager?.SetConfusedEffect(false, target);
                 }
                 else if (effectType == BuffDebuffType.FreezeDebuff)
                 {
                     _uiManager?.SetFreezeEffect(false, target);
                 }
+                else if (effectType == BuffDebuffType.DefenseBuff && effect.name == "EarthSkin" && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetEarthSkinEffect(false, target);
+                }
+                else if (effectType == BuffDebuffType.PetrifiedDebuff && target.CompareTag("Player"))
+                {
+                    _uiManager?.SetPetrifiedEffect(false, target);
+                }
             }
         };
-
-        // TODO: Add more OnApply and OnExpire delegates for other effects
-
+        
         // Apply effect to target stats
         ApplyEffectToStats(target, effect, true);
 
@@ -332,6 +373,12 @@ public class BuffDebuffManager : MonoBehaviour
     /// <param name="isApplying">True to apply, false to remove the effect.</param>
     private void ApplyEffectToStats(GameObject target, BuffDebuff effect, bool isApplying)
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot apply buff/debuff.");
+            return;
+        }
+
         var buffable = target.GetComponent<IBuffable>();
 
         if (buffable == null)
@@ -343,7 +390,7 @@ public class BuffDebuffManager : MonoBehaviour
         // Check that effect factor is greater or equal to 1
         if (effect.effectValue < 1)
         {
-            Debug.LogWarning($"Effect value must be greater or equal 1. Effect: {effect.type}");
+            Debug.LogError($"Effect value must be greater or equal 1. Effect: {effect.type}");
             return;
         }
         // Determine effect direction
@@ -394,6 +441,10 @@ public class BuffDebuffManager : MonoBehaviour
                 factor = isApplying ? 1 : 0;
                 buffable.ModifyIsFrozen(factor);
                 break;
+            case BuffDebuffType.PetrifiedDebuff:
+                factor = isApplying ? 1 : 0;
+                buffable.ModifyIsFrozen(factor);
+                break;
 
             default:
                 Debug.LogWarning($"Unhandled Buff/Debuff type: {effect.type}");
@@ -431,6 +482,12 @@ public class BuffDebuffManager : MonoBehaviour
     /// <param name="target">The target GameObject.</param>
     public void ClearEffects(GameObject target)
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot clear effects.");
+            return;
+        }
+
         if (targets.ContainsKey(target))
         {
             TargetEntity entity = targets[target];
@@ -452,7 +509,14 @@ public class BuffDebuffManager : MonoBehaviour
     /// <param name="effectName">Optional effect name to match.</param>
     public void ClearEffect(GameObject target, BuffDebuffType type, string effectName = "")
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot clear effect.");
+            return;
+        }
+
         bool lookForName = effectName != "";
+
         if (targets.ContainsKey(target))
         {
             TargetEntity entity = targets[target];
@@ -476,6 +540,12 @@ public class BuffDebuffManager : MonoBehaviour
     /// <returns>List of active BuffDebuff effects.</returns>
     public List<BuffDebuff> GetActiveEffects(GameObject target)
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot get active effects.");
+            return new List<BuffDebuff>();
+        }
+        
         if (targets.ContainsKey(target))
         {
             return targets[target].ActiveEffects;

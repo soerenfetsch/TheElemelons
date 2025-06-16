@@ -56,18 +56,7 @@ public class Mole : Enemy
 
         InitializeCombatComponents();
     }
-    /*
-        IEnumerator FindPlayerPathfinder()
-        {
-            while (playerTransform == null || pathfinder == null)
-            {
-                playerTransform = GameObject.Find("Player").transform;
-                pathfinder = GameObject.Find("Pathfinder").GetComponent<LineOfSightPathfinder>();
-                yield return new WaitForSeconds(0.01f);
-            }
 
-        }
-    */
     public void InitializeComponents()
     {
         transformComponent = GetComponent<Transform>();
@@ -151,7 +140,6 @@ public class Mole : Enemy
     public override void ChangeState(EnemyStatus newState)
     {
         if (currentState == newState) return;
-        //        Debug.Log($"Mole: Changing state from {currentState} to {newState}");
         currentState = newState;
     }
 
@@ -190,6 +178,7 @@ public class Mole : Enemy
                 }
                 else if (CheckPlayerUnreachableWithinRadius(chaseRadius) && !isDiggingUp)
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Idle);
                     ChangeAnimationClip("Idle");
                 }
@@ -444,6 +433,7 @@ public class Mole : Enemy
         if (currentState == EnemyStatus.Approaching)
         {
             arm.SetActive(true); // Enable the arm when digging up
+            movement = Vector2.zero; // Stop movement
             ChangeState(EnemyStatus.Attacking);
             ChangeAnimationClip("Up");
         }
@@ -472,6 +462,7 @@ public class Mole : Enemy
         MakeInvincible();
         isDugIn = true;
         ChangeAnimationClip("Idle");
+        movement = Vector2.zero; // Stop movement
         ChangeState(EnemyStatus.Idle);
     }
 
@@ -494,6 +485,7 @@ public class Mole : Enemy
     {
         // Do nothing
     }
+
     public override void OnFreeze(bool freezeOn = true)
     {
         if (freezeOn)
@@ -508,11 +500,13 @@ public class Mole : Enemy
             armAnimators.speed = 1;
         }
     }
+
     public override void DoMovement()
     {
         movement = movement.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
     }
+
     public override void DoObstructSight(bool onOff)
     {
         ObstructSight(onOff);

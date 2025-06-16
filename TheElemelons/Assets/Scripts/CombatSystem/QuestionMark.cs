@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Sprites;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +6,6 @@ using UnityEngine;
 public class QuestionMark : MonoBehaviour
 {
     Collider2D parentCollider;
-    SpriteRenderer parentSpriteRenderer;
     Transform parent;
 
     // Start is called before the first frame update
@@ -27,7 +22,6 @@ public class QuestionMark : MonoBehaviour
             FindVictim();
         }
         parent = transform.parent;
-        parentSpriteRenderer = parent.GetComponent<SpriteRenderer>();
         Collider2D[] colliders = parent.GetComponents<Collider2D>();
         for (int i = 0; i < colliders.Length; i++)
         {

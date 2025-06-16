@@ -18,6 +18,7 @@ public class DialogueUI : MonoBehaviour
 
     [Header("UI References - Scene Image")]
     [SerializeField] private Image sceneImageDisplay;
+    [SerializeField] private GameObject blackBg;
 
     [Header("Typing Settings")]
     [SerializeField] private float baseTypingSpeed = 0.03f;
@@ -146,57 +147,64 @@ public class DialogueUI : MonoBehaviour
             // fallback to global scene image
             sceneImageDisplay.sprite = DialogueManager.Instance.currentDialogue.sceneImage;
         }
-
         // Handle display based on LineType
-        if (currentLine.lineType == LineType.Text)
+        ToggleDialogueOnOff(currentLine.lineSentenceText != null && currentLine.lineSentenceText.Trim() != "", currentLine);
+        ToggleImageOnOff(currentLine.lineSceneImage != null, currentLine);
+        blackBg.SetActive(DialogueManager.Instance.currentDialogue.isSlideShow);
+    }
+    void ToggleDialogueOnOff(bool onOff, DialogueLineEntry currentLine)
+    {
+        if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(onOff);
+        Debug.Log("dialog box panel" + dialogueBoxPanel.activeSelf.ToString() + dialogueBoxPanel.gameObject.name);
+        // Ensure visibility of potentially updated/retained elements
+        if (nameText != null) nameText.gameObject.SetActive(!string.IsNullOrEmpty(nameText.text));
+        if (portraitImage != null) portraitImage.gameObject.SetActive(portraitImage.sprite != null && onOff);
+        if (dialogueBoxBackgroundImage != null) dialogueBoxBackgroundImage.gameObject.SetActive(dialogueBoxBackgroundImage.sprite != null && onOff);
+        dialogueText.gameObject.SetActive(onOff);
+        if (dialogueText != null)
         {
-            if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(true);
-            if (sceneImageDisplay != null) sceneImageDisplay.gameObject.SetActive(false);
-
-            // Ensure visibility of potentially updated/retained elements
-            if (nameText != null) nameText.gameObject.SetActive(!string.IsNullOrEmpty(nameText.text));
-            if (portraitImage != null) portraitImage.gameObject.SetActive(portraitImage.sprite != null);
-            if (dialogueBoxBackgroundImage != null) dialogueBoxBackgroundImage.gameObject.SetActive(dialogueBoxBackgroundImage.sprite != null);
-
-            if (dialogueText != null)
+            if (!string.IsNullOrEmpty(currentLine.lineSentenceText))
             {
-                if (!string.IsNullOrEmpty(currentLine.lineSentenceText))
-                {
-                    dialogueText.gameObject.SetActive(true);
-                    typingCoroutine = StartCoroutine(TypeLine(currentLine.lineSentenceText));
-                }
-                else
-                {
-                    dialogueText.text = "";
-                    dialogueText.gameObject.SetActive(false);
-                    isTyping = false;
-                }
+                typingCoroutine = StartCoroutine(TypeLine(currentLine.lineSentenceText));
+            }
+            else
+            {
+                dialogueText.text = "";
+                isTyping = false;
             }
         }
-        else if (currentLine.lineType == LineType.SceneImage)
+    }
+    void ToggleImageOnOff(bool onOff, DialogueLineEntry currentLine)
+    {
+        sceneImageDisplay.gameObject.SetActive(onOff);
+        if (sceneImageDisplay != null)
         {
-            if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(false);
-            if (sceneImageDisplay != null)
+            if (currentLine.lineSceneImage != null)
             {
-                if (currentLine.lineSceneImage != null)
-                {
-                    sceneImageDisplay.sprite = currentLine.lineSceneImage;
-                    sceneImageDisplay.gameObject.SetActive(true);
-                }
-                else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null
-                        && DialogueManager.Instance.currentDialogue.sceneImage != null)
-                {
-                    // Fallback to global scene image
-                    sceneImageDisplay.sprite = DialogueManager.Instance.currentDialogue.sceneImage;
-                    sceneImageDisplay.gameObject.SetActive(true);
-                }
-                else
-                {
-                    sceneImageDisplay.gameObject.SetActive(false);
-                    Debug.LogWarning("[DialogueUI] SceneImage type line has no scene images or first image is null.");
-                }
+                sceneImageDisplay.sprite = currentLine.lineSceneImage;
             }
-            isTyping = false;
+            else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null
+                    && DialogueManager.Instance.currentDialogue.sceneImage != null)
+            {
+                // Fallback to global scene image
+                sceneImageDisplay.sprite = DialogueManager.Instance.currentDialogue.sceneImage;
+            }
+            else
+            {
+                sceneImageDisplay.gameObject.SetActive(false);
+                Debug.LogWarning("[DialogueUI] SceneImage type line has no scene images or first image is null.");
+            }
+        }
+        isTyping = false;
+        if (DialogueManager.Instance.currentDialogue.isSlideShow)
+        {
+            sceneImageDisplay.rectTransform.localPosition = new Vector3(0, 0, 0);
+            sceneImageDisplay.rectTransform.sizeDelta = new Vector2(1820.448f, 996.5786f);
+        }
+        else
+        {
+            sceneImageDisplay.rectTransform.sizeDelta = new Vector2(709.2789f, 523.658f);
+            sceneImageDisplay.rectTransform.localPosition = new Vector2(0, 73.055f);
         }
     }
 
@@ -208,6 +216,7 @@ public class DialogueUI : MonoBehaviour
         StopExistingTyping();
         if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(false);
         if (sceneImageDisplay != null) sceneImageDisplay.gameObject.SetActive(false);
+        if (blackBg != null) blackBg.SetActive(false);
     }
 
     /// <summary>
@@ -267,20 +276,20 @@ public class DialogueUI : MonoBehaviour
         {
             isSkipping = true;
         }
-        else if (!isTyping) 
+        else if (!isTyping)
         {
             if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
             {
-                 DialogueManager.Instance.AdvanceDialogue();
+                DialogueManager.Instance.AdvanceDialogue();
             }
             else
             {
                 Debug.LogWarning("[DialogueUI] SkipOrAdvance: DialogueManager.Instance is null or has no active dialogue.");
             }
         }
-         else
+        else
         {
-             Debug.Log("[DialogueUI] SkipOrAdvance: Currently typing AND already skipping, or some other state. No action.");
+            Debug.Log("[DialogueUI] SkipOrAdvance: Currently typing AND already skipping, or some other state. No action.");
         }
     }
 }

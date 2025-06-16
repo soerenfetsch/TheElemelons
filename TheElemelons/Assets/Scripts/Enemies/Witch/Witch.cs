@@ -2,14 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Codice.Client.BaseCommands.Merge.Restorer.Finder;
-using log4net.Config;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
+
 public enum WitchState
 {
     Walk,
@@ -97,7 +91,6 @@ public class Witch : Enemy
     float dashProbability = 0.2f;
     float medusaCooldown = 12f;
     float medusaProbability = 0.9f;
-    public GameObject medusaGameObject;
     float offensiveSpellCooldown = 3f;
     float offensiveSpellProbability = 0.5f;
     float offensiveSpellCastTime = 1.5f;
@@ -209,7 +202,7 @@ public class Witch : Enemy
         WitchMoveInfos dashInfos = new WitchMoveInfos(dashProbability, dashCooldown, doMethod: DoDash);
         moveStatsDict.Add(WitchMoves.Dash, dashInfos);
         //medusa
-        WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, moveGameObject: medusaGameObject, doMethod: DoMedusa, parentCategory: WitchMoves.SpecialMove);
+        WitchMoveInfos medusaInfos = new WitchMoveInfos(medusaProbability, medusaCooldown, castTime: 1.5f, doMethod: DoMedusa, parentCategory: WitchMoves.SpecialMove);
         moveStatsDict.Add(WitchMoves.Medusa, medusaInfos);
         //snek
         WitchMoveInfos baldInfos = new WitchMoveInfos(baldProbability, baldCooldown, false, castTime: snekCastTime, parentCategory: WitchMoves.SpecialMove, moveGameObject: snekObject, doMethod: DoSnek);
@@ -604,7 +597,7 @@ public class Witch : Enemy
         }
         bodyAnimator.SetBool("Walk", walking);
         bodyAnimator.SetBool("Hover", hovering);
-        wandAnimator.SetBool("Hover", hovering);
+        wandAnimator.SetBool("Hover", hovering || baldy);
         bodyAnimator.SetBool("Bald", baldy);
         sparkleEffect1.SetBool("Hover", hovering || baldy);
         sparkleEffect2.SetBool("Hover", hovering || baldy);
@@ -1055,7 +1048,8 @@ public class Witch : Enemy
     public IEnumerator DoMedusaRoutine()
     {
         hairAnimator.SetBool("Medusa", true);
-        Instantiate(moveStatsDict[WitchMoves.Medusa].moveGameObject, playerTransform.position, Quaternion.Euler(0f, 0f, 0f));
+        BuffDebuffManager.Instance.ApplyBuffDebuff(playerTransform.gameObject, "Medusa", BuffDebuffManager.BuffDebuffType.PetrifiedDebuff,
+        medusaTime, 1, false);
         yield return new WaitForSeconds(medusaTime);
         hairAnimator.SetBool("Medusa", false);
     }

@@ -57,6 +57,10 @@ public class WitchVortex : SpellEffect
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (caster == null)
+        {
+            Destroy(gameObject);
+        }
         DoMovement();
         if (Time.frameCount % 31 == 0)
         {

@@ -28,6 +28,8 @@ public class Altar : InteractableObject
     bool spawned;
 
     [Header("Loot")]
+    public int symbols = 13;
+    bool interacted = false;
     public int maxSpawnableHearts = 3;
     public GameObject collectableHeart;
     public GameObject collectableMaxHeart;
@@ -35,7 +37,8 @@ public class Altar : InteractableObject
     public GameObject collectablePinkPotion;
     List<GameObject> lootList;
     List<Rigidbody2D> rbLootList;
-
+    Health playerHealth;
+    Mana playerMana;
     [Header("Movement")]
     float maxDistance = 4f;
     List<float> maxDistances;
@@ -62,10 +65,17 @@ public class Altar : InteractableObject
         fluidAnimator = transform.GetChild(0).GetComponent<Animator>();
         colliderNormal = transform.GetChild(1).GetComponent<PolygonCollider2D>();
         colliderDestroyed = transform.GetChild(2).GetComponent<PolygonCollider2D>();
+        GameObject player = GameObject.FindWithTag("Player").gameObject;
+        playerHealth = player.GetComponent<Health>();
+        playerMana = player.GetComponent<Mana>();
+        gold = ExceedsMax() ? false : gold;
         animator.SetBool("Gold", gold);
         fluidAnimator.SetBool("Blood", blood);
     }
-
+    public bool ExceedsMax()
+    {
+        return gold && ((blood && playerHealth.GetMaxHealth() > symbols) || (!blood && playerMana.GetMaxMana() > symbols));
+    }
     void InitializeCollider()
     {
         collider2D = GetComponent<PolygonCollider2D>();
@@ -103,8 +113,14 @@ public class Altar : InteractableObject
     /// </summary>
     public override void Interact()
     {
-        Debug.Log("interact altar");
-        StartCoroutine(Destruction());
+        if (!interacted)
+        {
+            interacted = true;
+            bool exceeds = ExceedsMax();
+            gold = exceeds ? false : gold;
+            blood = exceeds ? false : blood;
+            StartCoroutine(Destruction());
+        }
     }
 
     IEnumerator Destruction()

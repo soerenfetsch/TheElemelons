@@ -34,10 +34,14 @@ public class TilemapSaver : MonoBehaviour
             }
         }
 
+#if UNITY_EDITOR
         // Save the asset to make changes persistent
         EditorUtility.SetDirty(tilemapData);
         AssetDatabase.SaveAssets();
         Debug.Log("Tilemap data saved successfully.");
+#else
+        Debug.LogWarning("Tilemap data save is only available in the Unity Editor.");
+#endif
     }
 }
 

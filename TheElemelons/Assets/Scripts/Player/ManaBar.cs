@@ -53,7 +53,9 @@ public class ManaBar : MonoBehaviour
                 }
                 else
                 {
-                    manaStars[i].GetComponent<Animator>().SetFloat("fullness", mana % 1);
+
+                    float stars = (mana <= 0.125f && mana != 0) ? 0.25f : mana;
+                    manaStars[i].GetComponent<Animator>().SetFloat("fullness", stars % 1);
                 }
             }
         }

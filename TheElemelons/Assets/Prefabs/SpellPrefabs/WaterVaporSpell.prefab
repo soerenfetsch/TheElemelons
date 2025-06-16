@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3474139249459477716}
   - component: {fileID: 5220770042572102840}
   - component: {fileID: 7298479856990312483}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WaterVaporSpell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

@@ -48,5 +48,5 @@ MonoBehaviour:
   spellObject: {fileID: 4614930756479306301}
   spellLifeTime: 10
   puddleSpawningTime: 0.3
-  maxPuddleCount: 6
+  maxPuddleCount: 12
   puddle: {fileID: 5623999138696623272, guid: 88df807dac838c54fa0168a6073d0b65, type: 3}

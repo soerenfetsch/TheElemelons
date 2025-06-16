@@ -18,21 +18,25 @@ public class TilePositionManager : MonoBehaviour
     [ContextMenu("Save Tile Positions")]
     public void SaveTilePositions()
     {
-        tilePositionData.tilePositions = new List<Vector2Int>();
+        tilePositionData.tilePositions = new List<Vector2>();
 
         foreach (var position in tilemap.cellBounds.allPositionsWithin)
         {
             TileBase tile = tilemap.GetTile(position);
             if (tile != null)
             {
-                tilePositionData.tilePositions.Add(new Vector2Int(position.x, position.y));
+                tilePositionData.tilePositions.Add(new Vector2(position.x + 0.5f, position.y + 0.5f));
             }
         }
 
+#if UNITY_EDITOR
         // Save the asset to make changes persistent
         EditorUtility.SetDirty(tilePositionData);
         AssetDatabase.SaveAssets();
         Debug.Log("Tilemap data saved successfully.");
+#else
+        Debug.LogWarning("Tile position data save is only available in the Unity Editor.");
+#endif
     }
 
     /// <summary>

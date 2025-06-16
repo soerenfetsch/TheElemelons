@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class TreeLog : Enemy
 {
@@ -153,6 +150,7 @@ public class TreeLog : Enemy
                 }
                 else if (CheckAtHome())
                 {
+                    movement = Vector2.zero;
                     ChangeState(EnemyStatus.Idle);
                     animator.SetBool("wakeUp", false);
                 }
