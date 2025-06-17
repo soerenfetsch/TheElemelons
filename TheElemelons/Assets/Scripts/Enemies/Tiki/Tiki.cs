@@ -1,13 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-
+/// <summary>
+/// AI controller for the Tiki enemy. Handles circling, healing, head attacks, and state transitions.
+/// </summary>
 public enum TikiState
 {
+    /// <summary>Seeks and heals nearby allies.</summary>
     HealFriends,
+    /// <summary>Circles the player and attacks.</summary>
     Circle,
+    /// <summary>Returns to the player if too far away.</summary>
     ComeBack,
 }
+
+/// <summary>
+/// Represents the Tiki's range state relative to the player.
+/// </summary>
 public enum RangeState
 {
     OutOfRange,
@@ -15,88 +24,245 @@ public enum RangeState
     InRange,
     Close
 }
+
+/// <summary>
+/// Controls the Tiki enemy's behavior, including movement, state transitions, spell casting, and head attacks.
+/// </summary>
 public class Tiki : Enemy
 {
+    /// <summary>
+    /// Factor by which Tiki's vulnerability increases when its head is detached.
+    /// </summary>
     public float noHeadVulnerabilityFactor = 2f;
+
+    /// <summary>
+    /// Current Tiki AI state.
+    /// </summary>
     public TikiState currentTikiState;
+
+    // Animator for the Tiki's body.
     Animator bodyAnimator;
+
     [Header("Spells")]
+    /// <summary>
+    /// Prefab for the green attack spell.
+    /// </summary>
     public GameObject greenAttackGameobject;
+    /// <summary>
+    /// Prefab for the heal spell.
+    /// </summary>
     public GameObject healGameobject;
+
     [Header("Skirt")]
+    // Whether the Tiki has a flower skirt.
     bool flowerSkirt = false;
+    // Probability for spawning with a flower skirt.
     float flowerProb = 0.5f;
+    // Animator for the skirt.
     Animator skirtAnimator;
+
     [Header("Ellipse flight")]
+    // Target position for the head's flight.
     Vector2 headTarget;
+    /// <summary>
+    /// Steepness of the head's flight parabola.
+    /// </summary>
     public float steepness;
+    /// <summary>
+    /// Speed of the head's flight.
+    /// </summary>
     public float headSpeed;
+    // Starting position for the head's flight.
     Vector2 startPosition;
+    // Direction of the head's flight (clockwise or counterclockwise).
     int clockDir;
+    // Whether the head has reached its target.
     bool targetReached = false;
+    // Distance traveled by the head.
     float currentDistanceTraveled = 0f;
+    /// <summary>
+    /// Correction factor for head return movement.
+    /// </summary>
     public float correctionFactor = 0.5f;
+    // Initial direction of the head's flight.
     Vector2 directionInitial;
+    // Perpendicular direction for the head's parabola.
     Vector2 perpendicularDirection;
+
     [Header("Head")]
+    /// <summary>
+    /// Current movement vector of the head.
+    /// </summary>
     public Vector2 headMovement;
+    // Whether the head is attached to the body.
     bool headAttached = true;
+    // Whether the head is spinning.
     bool headSpinning = false;
+    /// <summary>
+    /// Speed at which the head spins.
+    /// </summary>
     public float headSpinSpeed = 3f;
+    // Rigidbody2D for the head.
     Rigidbody2D rbHead;
+    // Transform for the head.
     Transform headTransform;
+    /// <summary>
+    /// Center GameObject for the head.
+    /// </summary>
     public GameObject headCenter;
+
     [Header("Pathfinding")]
-    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
+    /// <summary>
+    /// Reference to the pathfinding system.
+    /// </summary>
+    public LineOfSightPathfinder pathfinder;
+
     [Header("BodyMovement")]
+    // Collider for the Tiki's body.
     Collider2D bodyCollider2D;
+    // Raycast hit for wall/player detection.
     RaycastHit2D hit;
+    // Transform for the Tiki's body.
     Transform bodyTransform;
+    /// <summary>
+    /// Direction of circling (1 or -1).
+    /// </summary>
     public int clockwiseFactor = 1;
+    /// <summary>
+    /// Movement speed of the Tiki.
+    /// </summary>
     public float moveSpeed = 1f;
+    // Rigidbody2D for the body.
     Rigidbody2D rbBody;
+    // Counter for direction changes.
     int directionChangeCounter = 0;
+    /// <summary>
+    /// Number of direction changes before possibly switching state.
+    /// </summary>
     public int directionChangeStop = 5;
+    /// <summary>
+    /// Speed multiplier when panicking.
+    /// </summary>
     public float panicWalkSpeedFactor = 1.5f;
+
     [Header("CombatRangeHandling")]
+    /// <summary>
+    /// Preferred combat range.
+    /// </summary>
     public float range = 10f;
+    /// <summary>
+    /// Maximum aggro range.
+    /// </summary>
     public float aggroRange = 30f;
+    /// <summary>
+    /// Minimum allowed range.
+    /// </summary>
     public float minimalRange = 6f;
+    /// <summary>
+    /// Maximum allowed range.
+    /// </summary>
     public float maximalRange = 18f;
+    /// <summary>
+    /// Tolerance for range transitions.
+    /// </summary>
     public float rangeTolerance = 1f;
+    /// <summary>
+    /// Current range state relative to the player.
+    /// </summary>
     public RangeState currentRangeState;
+
     [Header("Combat")]
+    /// <summary>
+    /// Base damage dealt by the Tiki.
+    /// </summary>
     public float baseDamage = 1f;
+    /// <summary>
+    /// Knockback force applied by the Tiki.
+    /// </summary>
     public float thrust = 1f;
+    /// <summary>
+    /// Duration of knockback.
+    /// </summary>
     public float knockTime = 0.3f;
+    // Flash effect for the body.
     FlashEffect flashEffectBody;
+    // Flash effect for the skirt.
     FlashEffect flashEffectSkirt;
+    /// <summary>
+    /// Duration of the flash effect.
+    /// </summary>
     public float flashDuration = 0.2f;
 
     [Header("Effects")]
+    /// <summary>
+    /// Prefab for the death effect.
+    /// </summary>
     public GameObject deathEffect;
+    /// <summary>
+    /// Delay before the death effect is played.
+    /// </summary>
     public float deathEffectDelay = 0.5f;
+
     [Header("LastStand Attack stats")]
+    /// <summary>
+    /// Number of rounds in the last stand attack.
+    /// </summary>
     public int rounds = 4;
+    /// <summary>
+    /// Delay before last stand attack starts.
+    /// </summary>
     public float timeBeforeStarts = 1f;
+    /// <summary>
+    /// Time between each shot in last stand.
+    /// </summary>
     public float timeBetweenShoot = 2f;
+
     [Header("Bools")]
+    // Whether the speed buff has been given.
     bool speedBuffGiven = false;
+    // Whether the Tiki is panicking.
     bool panic = false;
+    // Whether the Tiki is currently doing last stand.
     bool doingLastStand = false;
+
     [Header("Cooldowns")]
+    // Whether the Tiki can throw its head.
     bool canThrowHead = false;
+    /// <summary>
+    /// Cooldown for the spinning head attack.
+    /// </summary>
     public float spinningHeadCooldown = 2.5f;
+    // Whether the Tiki can cast green attack.
     bool canCastGreenAttack = true;
+    /// <summary>
+    /// Cooldown for the green attack.
+    /// </summary>
     public float greenAttackCooldown = 0.8f;
+    // Whether the Tiki can cast heal.
     bool canCastHeal = true;
+    /// <summary>
+    /// Cooldown for the heal spell.
+    /// </summary>
     public float healCooldown = 7f;
+    // Whether the Tiki can cast last stand.
     bool canCastTikiLastStand = true;
+    /// <summary>
+    /// Cooldown for the last stand attack.
+    /// </summary>
     public float tikiLastStandCooldown = 4f;
+
     [Header("HealFriendsStats")]
+    /// <summary>
+    /// Range to detect friends in need of healing.
+    /// </summary>
     public float healDetectRange = 15f;
+    /// <summary>
+    /// Range in which healing is applied.
+    /// </summary>
     public float healingRange = 30f;
+    // Center position of friends to heal.
     Vector2 friendsCenter;
+
     // Start is called before the first frame update
     void Start()
     {

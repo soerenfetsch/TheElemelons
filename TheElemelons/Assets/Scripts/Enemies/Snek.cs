@@ -1,45 +1,83 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Status states for the Snek enemy.
+/// </summary>
 public enum SnekStatus
 {
     Crawl,
     Dash,
     Attack
 }
+
+/// <summary>
+/// Controls the Snek enemy's behavior, including movement, dashing, tongue attacks, and state transitions.
+/// Handles wall avoidance, attack cooldowns, and interaction with the Witch boss.
+/// </summary>
 public class Snek : Enemy
 {
     [Header("Bound Components")]
+    /// <summary>Prefab for the death effect.</summary>
     public GameObject deathEffect;
+    // Delay before the death effect is played.
     float deathEffectDelay = 0.5f;
+    /// <summary>Flash effect for the Snek.</summary>
     public FlashEffect flashEffect;
+    /// <summary>Duration of the flash effect.</summary>
     public float flashDuration = 0.2f;
+    // Pathfinding system reference.
     LineOfSightPathfinder pathfinder;
+    // Rigidbody2D for movement.
     Rigidbody2D rb;
+    // Animator for the Snek.
     Animator animator;
+    // Reference to the Witch (if spawned by Witch).
     GameObject witch;
+
     [Header("Ranges")]
+    // Aggro range for detecting the player.
     float aggroRange = 30f;
+    // Range for dashing towards the player.
     float dashRange = 10f;
+    // Range for tongue attack.
     float tongueRange = 5f;
+
     [Header("Flags")]
+    // Whether the tongue attack can be used.
     bool canTongue = true;
+    // Cooldown for tongue attack.
     float tongueCooldown = 6f;
+    // Duration of the attack state.
     float attackTime = 3f;
+    /// <summary>Current Snek status.</summary>
     public SnekStatus currentSnekStatus = SnekStatus.Crawl;
+    // Whether the Snek has finished spawning.
     bool spawned = true;
+
     [Header("Damage")]
+    // Base damage dealt to the player.
     float baseDamage = 0.5f;
+    // Knockback duration.
     float knockTime = 0.3f;
+    // Knockback force.
     float thrust = 5f;
+
     [Header("Movement")]
+    // Raycast hit for wall detection.
     RaycastHit2D hit;
+    // Movement speed factor (affected by buffs/debuffs).
     float moveFactor = 1f;
+    // Speed while dashing.
     float dashSpeed = 7f;
+    // Speed while attacking.
     float attackSpeed = 10f;
+    // Speed while crawling.
     float crawlSpeed = 4f;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes the Snek, sets up references, and handles spawning if created by the Witch.
+    /// </summary>
     void Start()
     {
         elementType = ElementType.Earth;
@@ -59,11 +97,11 @@ public class Snek : Enemy
             StartCoroutine(Spawn());
         }
     }
+
     /// <summary>
-    /// if snake was spawned by witch, spawn at correct point with correct orientation. 
-    /// start at witch scale and gradually become scale 1.
+    /// If snake was spawned by Witch, spawn at correct point with correct orientation.
+    /// Start at Witch scale and gradually become scale 1.
     /// </summary>
-    /// <returns></returns>
     IEnumerator Spawn()
     {
         aggroRange = 50f;
@@ -93,7 +131,10 @@ public class Snek : Enemy
         }
         spawned = true;
     }
-    // Update is called once per frame
+
+    /// <summary>
+    /// Handles movement, health, range, and state logic each physics frame.
+    /// </summary>
     void FixedUpdate()
     {
         if (spawned)
@@ -108,12 +149,12 @@ public class Snek : Enemy
             DoMovementWithChecks();
         }
     }
+
     /// <summary>
-    /// Short (~1 unit) raycasts in movement direction. hit is saved as global variable.
+    /// Performs short raycasts in the movement direction for wall detection.
     /// </summary>
     void NewRayCast()
     {
-        // check hit
         float rayLength = 2f;
         LayerMask mask = LayerMask.GetMask("Walls");
         RaycastHit2D hit0 = Physics2D.Raycast(transform.position, movement, rayLength, mask);
@@ -121,12 +162,17 @@ public class Snek : Enemy
         RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Quaternion.Euler(0f, 0f, -10f) * movement, rayLength, mask);
         hit = hit0 ? hit0 : (hit1 ? hit1 : (hit2 ? hit2 : hit0));
     }
+
+    /// <summary>
+    /// Updates the animator to reflect the Snek's current state and movement direction.
+    /// </summary>
     void Update()
     {
         UpdateAnimator();
     }
+
     /// <summary>
-    /// Update animator to reflect snake’s current state and movement direction.
+    /// Updates animator parameters for movement and speed.
     /// </summary>
     void UpdateAnimator()
     {
@@ -141,10 +187,9 @@ public class Snek : Enemy
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
     }
+
     /// <summary>
-    /// If raycast from NewRayCast() detects a wall, movement vector is rotated by ~20 deg and new raycasts 
-    /// generated until the snake finds a free path or 
-    /// that movement been rotated by 360 deg. Executes chosen movement.
+    /// Handles wall avoidance and movement execution.
     /// </summary>
     public override void DoMovement()
     {
@@ -161,6 +206,10 @@ public class Snek : Enemy
         Vector2 moving_by = movement * GetMoveSpeed() * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + moving_by);
     }
+
+    /// <summary>
+    /// Freezes or unfreezes the Snek, affecting movement and animation speed.
+    /// </summary>
     public override void OnFreeze(bool freezeOn = true)
     {
         if (freezeOn)
@@ -173,20 +222,25 @@ public class Snek : Enemy
             animator.speed = 1;
         }
     }
+
+    /// <summary>
+    /// Gets the current movement speed based on Snek status.
+    /// </summary>
     public float GetMoveSpeed()
     {
         if (currentSnekStatus == SnekStatus.Dash)
         {
-            return dashSpeed * moveFactor; ;
+            return dashSpeed * moveFactor;
         }
         else if (currentSnekStatus == SnekStatus.Attack)
         {
-            return attackSpeed * moveFactor; ;
+            return attackSpeed * moveFactor;
         }
         return crawlSpeed * moveFactor;
     }
+
     /// <summary>
-    /// Abstract method to enforce state transitions in derived classes.
+    /// Enforces state transitions in derived classes.
     /// </summary>
     /// <param name="newState">The new state to transition to.</param>
     public override void ChangeState(EnemyStatus newState)
@@ -194,6 +248,9 @@ public class Snek : Enemy
         currentState = newState;
     }
 
+    /// <summary>
+    /// Handles aggro, dash, and tongue attack logic based on distance to player.
+    /// </summary>
     void ActOnRange()
     {
         if (Mathf.Abs((transform.position - playerTransform.position).magnitude) < aggroRange)
@@ -222,8 +279,9 @@ public class Snek : Enemy
             }
         }
     }
+
     /// <summary>
-    /// Abstract method to define behavior based on the current state.
+    /// Defines behavior based on the current state.
     /// </summary>
     public override void ActOnStatus()
     {
@@ -250,12 +308,16 @@ public class Snek : Enemy
             OnAttackStatus();
         }
     }
+
+    /// <summary>
+    /// Handles the attack state (no movement).
+    /// </summary>
     void OnAttackStatus()
     {
     }
+
     /// <summary>
-    /// Dash status when snake is ~10 units or closer to player. Snake increases its speed towards player. 
-    /// However, if attackcooldown is still running, snake will chose the direction with which it can move away from the player. 
+    /// Handles dash state: moves quickly toward or away from the player.
     /// </summary>
     void OnDashStatus()
     {
@@ -283,6 +345,7 @@ public class Snek : Enemy
             movement = new Vector2(0, dir.y);
         }
     }
+
     /// <summary>
     /// moves in direction which was decided at the moment it switched into this state (towards player). 
     /// Automatically switches out of state after given time (~2s).
@@ -300,6 +363,7 @@ public class Snek : Enemy
         yield return new WaitForSeconds(tongueCooldown);
         canTongue = true;
     }
+
     /// <summary>
     ///  no movement.
     /// </summary>
@@ -307,6 +371,7 @@ public class Snek : Enemy
     {
         movement = Vector2.zero;
     }
+
     /// <summary>
     /// If snake is too far away, movement speed is decreased. Moves towards player if attack cooldown isnt running, else moves away.
     /// </summary>
@@ -323,8 +388,9 @@ public class Snek : Enemy
         }
         movement = new Vector2(Mathf.Sign(dir.x), Mathf.Sign(dir.y));
     }
+
     /// <summary>
-    /// If health is zero, the snake Dies and triggers the death animation.
+    /// Handles health logic and triggers death effect if health is zero.
     /// </summary>
     public override void ActOnHealth()
     {
@@ -334,15 +400,24 @@ public class Snek : Enemy
             Destroy(gameObject, 0);
         }
     }
+
     /// <summary>
-    /// does nothing.
+    /// Does nothing for mana logic.
     /// </summary>
     public override void ActOnMana()
     { }
+
+    /// <summary>
+    /// Handles knockback and stagger state for the Snek.
+    /// </summary>
     public override void GetKnocked(float knockTime)
     {
         StartCoroutine(HandleStagger(knockTime));
     }
+
+    /// <summary>
+    /// Handles the stagger state and flash effect.
+    /// </summary>
     private IEnumerator HandleStagger(float staggerTime)
     {
         EnemyStatus previousState = currentState;
@@ -351,26 +426,43 @@ public class Snek : Enemy
         yield return new WaitForSeconds(staggerTime);
         ChangeState(previousState);
     }
+
+    /// <summary>
+    /// Modifies the Snek's movement speed by a factor.
+    /// </summary>
     public override void ModifySpeed(float factor)
     {
         moveFactor *= factor;
     }
+
+    /// <summary>
+    /// Modifies the Snek's damage by a factor.
+    /// </summary>
     public override void ModifyDamage(float factor)
     {
         attackFactor *= factor;
     }
+
+    /// <summary>
+    /// Modifies the Snek's defense by a factor.
+    /// </summary>
     public override void ModifyDefense(float factor)
     {
         defenseFactor *= factor;
     }
+
+    /// <summary>
+    /// Does nothing for mana regen.
+    /// </summary>
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
     }
+
     /// <summary>
     /// Deals damage (~0.5 hearts) to the player if they collide.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">The collider that entered the trigger.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&
@@ -382,6 +474,10 @@ public class Snek : Enemy
             CombatManager.ExecuteAttack(gameObject, other.GetComponent<Rigidbody2D>(), elementType, attackDirection, baseDamage, thrust, knockTime);
         }
     }
+
+    /// <summary>
+    /// Enables or disables sight obstruction for the Snek.
+    /// </summary>
     public override void DoObstructSight(bool onOff)
     {
         ObstructSight(onOff);

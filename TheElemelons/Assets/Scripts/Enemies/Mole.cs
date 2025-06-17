@@ -1,14 +1,19 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the Mole enemy's behavior, including digging, attacking, movement, and state transitions.
+/// Handles pathfinding, ripple attacks, invincibility while underground, and animation state changes.
+/// </summary>
 public class Mole : Enemy
 {
     [Header("Components")]
+    /// <summary>Reference to the Mole's arm GameObject.</summary>
     public GameObject arm;
+    /// <summary>Prefab for the ripple attack effect.</summary>
     public GameObject rippleEffectPrefab;
 
+    // Cached component references
     private Transform transformComponent;
     private Rigidbody2D rb2d;
     private BoxCollider2D colliderBox;
@@ -18,36 +23,54 @@ public class Mole : Enemy
     Animator armAnimators;
 
     [Header("Pathfinding")]
-    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
+    /// <summary>Reference to the pathfinding system.</summary>
+    public LineOfSightPathfinder pathfinder;
 
     [Header("Behavior")]
+    /// <summary>Movement speed of the Mole.</summary>
     public float moveSpeed = 1f;
+    /// <summary>Radius within which the Mole will chase the player.</summary>
     public float chaseRadius = 10f;
+    /// <summary>Radius within which the Mole will attack the player.</summary>
     public float attackRadius = 2f;
+    /// <summary>Interval between digging out of the ground.</summary>
     public float digOutInterval = 15f;
 
+    // State flags
     private bool isDugIn = true;
     private bool canDigOut = true;
     private bool isAlive = true;
     private bool isDiggingUp = false;
 
     [Header("Combat")]
+    /// <summary>Base damage dealt by the Mole.</summary>
     public float baseDamage = 1f;
+    /// <summary>Knockback force applied by the Mole.</summary>
     public float thrust = 1f;
+    /// <summary>Duration of knockback.</summary>
     public float knockTime = 0.2f;
+    /// <summary>Cooldown between ripple attacks.</summary>
     public float rippleCooldown = 2f;
+    /// <summary>Duration of the flash effect.</summary>
     public float flashDuration = 0.2f;
 
+    // Time of the last ripple attack
     private float lastRippleTime = 0f;
 
     [Header("Effects")]
+    /// <summary>Prefab for the death effect.</summary>
     public GameObject deathEffect;
+    /// <summary>Delay before the death effect is played.</summary>
     public float deathEffectDelay = 0.5f;
 
     [Header("Animation")]
+    // Name of the last animation clip played.
     private string lastAnimationClip = null;
 
 
+    /// <summary>
+    /// Initializes the Mole with references to the player and pathfinder.
+    /// </summary>
     public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
@@ -57,6 +80,9 @@ public class Mole : Enemy
         InitializeCombatComponents();
     }
 
+    /// <summary>
+    /// Initializes component references and sets up the Mole's state.
+    /// </summary>
     public void InitializeComponents()
     {
         transformComponent = GetComponent<Transform>();
@@ -108,6 +134,9 @@ public class Mole : Enemy
         currentState = EnemyStatus.Idle;
     }
 
+    /// <summary>
+    /// Initializes combat-related factors and sets the Mole as invincible.
+    /// </summary>
     private void InitializeCombatComponents()
     {
         attackFactor = 1f;
@@ -137,6 +166,9 @@ public class Mole : Enemy
         ActOnMana();
     }
 
+    /// <summary>
+    /// Changes the Mole's state to the specified new state.
+    /// </summary>
     public override void ChangeState(EnemyStatus newState)
     {
         if (currentState == newState) return;
@@ -145,12 +177,7 @@ public class Mole : Enemy
 
     /// <summary>
     /// Acts on the current status of the enemy.
-    /// This method handles the behavior of the enemy based on its current state. The enemy can be in one of the following states:
-    /// Idle, Approaching, Attacking, Retreating, or Staggered. The behavior includes checking the player's distance, moving towards
-    /// the player, attacking, retreating to the home position, and handling the stagger state.
-    /// While status idle, the mole remains dug in the ground. For every showInterval, it will pop out of the ground. If the player
-    /// is within the chase radius, it will start moving towards the player. When the player is within the attack radius, it will
-    /// dig up and attack the player.
+    /// Handles behavior based on state: idle (dug in), approaching, attacking, retreating, or staggered.
     /// </summary>
     public override void ActOnStatus()
     {
@@ -198,6 +225,9 @@ public class Mole : Enemy
         }
     }
 
+    /// <summary>
+    /// Changes the animation clip if it is different from the last played.
+    /// </summary>
     private void ChangeAnimationClip(string v)
     {
         if (lastAnimationClip != v)
@@ -207,6 +237,9 @@ public class Mole : Enemy
         }
     }
 
+    /// <summary>
+    /// Coroutine to pop out and dig in after a delay.
+    /// </summary>
     private IEnumerator PopOutandDigIn()
     {
         DigUp();
@@ -215,9 +248,7 @@ public class Mole : Enemy
     }
 
     /// <summary>
-    /// Acts on the current health status of the enemy.
-    /// This method checks if the enemy's health is zero and if the enemy is still alive. If both conditions are met,
-    /// it sets the enemy's alive status to false, spawns a death effect at the enemy's position, and destroys the enemy game object.
+    /// Checks if the Mole's health is zero and handles death.
     /// </summary>
     public override void ActOnHealth()
     {
@@ -230,8 +261,7 @@ public class Mole : Enemy
     }
 
     /// <summary>
-    /// Acts on the current mana status of the enemy.
-    /// There is no mana behavior for the Mole enemy, so this method does nothing.
+    /// No mana behavior for the Mole enemy.
     /// </summary>
     public override void ActOnMana()
     {
@@ -239,15 +269,17 @@ public class Mole : Enemy
     }
 
     /// <summary>
-    /// When the Mole gets knocked back, it enters the staggered state for a certain amount of time.
+    /// Handles knockback and stagger state for the Mole.
     /// </summary>
-    /// <param name="knockTime"></param>
-    /// <returns></returns>
+    /// <param name="knockTime">Duration of the stagger.</param>
     public override void GetKnocked(float knockTime)
     {
         StartCoroutine(HandleStagger(knockTime));
     }
 
+    /// <summary>
+    /// Changes the walk animation based on movement direction.
+    /// </summary>
     private void ChangeWalkAnimation(Vector2 direction)
     {
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
@@ -279,10 +311,8 @@ public class Mole : Enemy
     }
 
     /// <summary>
-    /// Check if the player is within a certain radius of the enemy (just positions)
+    /// Checks if the player is within a certain radius of the enemy (position only).
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
     private bool CheckPlayerWithinRadius(float radius)
     {
         float distance = Vector2.Distance(GetFeetPosition(), playerTransform.position);
@@ -290,22 +320,16 @@ public class Mole : Enemy
     }
 
     /// <summary>
-    /// Check if the player is outside a certain radius of the enemy (just positions)
+    /// Checks if the player is outside a certain radius of the enemy (position only).
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
     private bool CheckPlayerOutsideRadius(float radius)
     {
         return Vector2.Distance(GetFeetPosition(), playerTransform.position) > radius;
     }
 
     /// <summary>
-    /// Check if the player is within a certain reach radius of the enemy (using pathfinding).
-    /// If player is in sight within the radius or a path to the player is reachable inside the
-    /// readius, returns true, else false.
+    /// Checks if the player is reachable within a certain radius using pathfinding.
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
     private bool CheckPlayerReachableWithinRadius(float radius)
     {
         bool reachable = pathfinder.CheckPlayerInSight(GetFeetPosition(), radius) != Vector2.zero
@@ -314,22 +338,20 @@ public class Mole : Enemy
     }
 
     /// <summary>
-    /// Check if the player is outside a certain reach radius of the enemy (using pathfinding).
-    /// If player is in sight outside the radius and a path to the player is not reachable inside the
-    /// readius, returns true, else false.
+    /// Checks if the player is unreachable within a certain radius using pathfinding.
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
     private bool CheckPlayerUnreachableWithinRadius(float radius)
     {
         return pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) == Vector2.zero;
     }
 
+    /// <summary>
+    /// Moves the Mole toward the player using pathfinding.
+    /// </summary>
     private void MoveTowardPlayer()
     {
         if (playerTransform == null) return;
 
-        // Find the best direction to move toward the player using pathfinding (collision at feet level)
         Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
         if (direction == Vector2.zero)
         {
@@ -342,11 +364,17 @@ public class Mole : Enemy
         ChangeWalkAnimation(direction);
     }
 
+    /// <summary>
+    /// Gets the position of the Mole's feet (bottom of collider).
+    /// </summary>
     private Vector2 GetFeetPosition()
     {
         return new Vector2(transformComponent.position.x, colliderBox.bounds.min.y);
     }
 
+    /// <summary>
+    /// Handles the stagger state and animation for the Mole.
+    /// </summary>
     private IEnumerator HandleStagger(float staggerTime)
     {
         EnemyStatus previousState = currentState;
@@ -355,7 +383,6 @@ public class Mole : Enemy
 
         ChangeAnimationClip("Stagger");
         flashEffect?.Flash(flashDuration);
-        // Flash the arm only if arm is active
         if (arm.activeSelf)
             armFlashEffect?.Flash(flashDuration);
 
@@ -364,16 +391,25 @@ public class Mole : Enemy
         ChangeAnimationClip(lastAnimation);
     }
 
+    /// <summary>
+    /// Makes the Mole invincible (used while underground).
+    /// </summary>
     private void MakeInvincible()
     {
         isInvincible = true;
     }
 
+    /// <summary>
+    /// Makes the Mole vulnerable (used when above ground).
+    /// </summary>
     private void MakeVulnerable()
     {
         isInvincible = false;
     }
 
+    /// <summary>
+    /// Triggers the ripple attack in four directions if cooldown has elapsed.
+    /// </summary>
     [ContextMenu("RippleAttack")]
     private void TryAttackWithRipples()
     {
@@ -388,6 +424,9 @@ public class Mole : Enemy
         }
     }
 
+    /// <summary>
+    /// Spawns a ripple attack in the specified direction.
+    /// </summary>
     private void SpawnRipple(float zRotation)
     {
         Vector2 travelDirection = new Vector2(Mathf.Sin(zRotation * Mathf.Deg2Rad), -Mathf.Cos(zRotation * Mathf.Deg2Rad));
@@ -396,44 +435,44 @@ public class Mole : Enemy
         GameObject ripple = Instantiate(rippleEffectPrefab, pivot - offset, Quaternion.Euler(0f, 0f, zRotation));
 
         RippleEffect rippleScript = ripple.GetComponent<RippleEffect>();
-
-        // Optional: subscribe to player hit event
         rippleScript.OnPlayerHit += HandleRipplePlayerHit;
     }
 
+    /// <summary>
+    /// Handles the event when a ripple hits the player.
+    /// </summary>
     private void HandleRipplePlayerHit(Rigidbody2D playerRb, RippleEffect ripple)
     {
-        // Get the hit direction from the z rotation of the ripple
         float zRotation = ripple.transform.rotation.eulerAngles.z;
         Vector2 hitDirection = new Vector2(Mathf.Sin(zRotation * Mathf.Deg2Rad), -Mathf.Cos(zRotation * Mathf.Deg2Rad));
 
         CombatManager.ExecuteAttack(gameObject, playerRb, elementType, hitDirection, baseDamage, thrust, knockTime);
     }
 
+    /// <summary>
+    /// Initiates the dig up animation and state.
+    /// </summary>
     private void DigUp()
     {
-        lastRippleTime = Time.time; // So attacking is started shortly after digging up
-        isDiggingUp = true; // Set digging up state to true
+        lastRippleTime = Time.time;
+        isDiggingUp = true;
         ChangeAnimationClip("Dig Up");
     }
 
     /// <summary>
-    /// Called when the mole digs up. This method is triggered at
-    /// the end of the animation event.
-    /// It enables the arm and allows the attack to be triggered.
-    /// The mole becomes vulnerable when digging up.
+    /// Called when the mole digs up (animation event).
+    /// Enables the arm, makes the mole vulnerable, and transitions to attacking state.
     /// </summary>
-    /// <returns></returns>
     public void OnDigUp()
     {
-        MakeVulnerable(); // Make the mole vulnerable when digging up
-        isDugIn = false; // Set dug in state to false
-        isDiggingUp = false; // Reset digging up state
+        MakeVulnerable();
+        isDugIn = false;
+        isDiggingUp = false;
 
         if (currentState == EnemyStatus.Approaching)
         {
-            arm.SetActive(true); // Enable the arm when digging up
-            movement = Vector2.zero; // Stop movement
+            arm.SetActive(true);
+            movement = Vector2.zero;
             ChangeState(EnemyStatus.Attacking);
             ChangeAnimationClip("Up");
         }
@@ -443,49 +482,63 @@ public class Mole : Enemy
         }
     }
 
+    /// <summary>
+    /// Initiates the dig down animation and disables the arm.
+    /// </summary>
     private void DigDown()
     {
-        arm.SetActive(false); // Disable the arm when digging down
+        arm.SetActive(false);
         ChangeAnimationClip("Dig Down");
     }
 
     /// <summary>
-    /// Called when the mole digs down. This method is triggered at the
-    /// end of the animation by an event.
-    /// It disables the arm and prevents the attack from being triggered.
-    /// The mole becomes invincible when digging down and the dug in state
-    /// is set to true. The state and animation are changed to idle.
+    /// Called when the mole digs down (animation event).
+    /// Makes the mole invincible, sets dug in state, and transitions to idle.
     /// </summary>
-    /// <returns></returns>
     public void OnDigDown()
     {
         MakeInvincible();
         isDugIn = true;
         ChangeAnimationClip("Idle");
-        movement = Vector2.zero; // Stop movement
+        movement = Vector2.zero;
         ChangeState(EnemyStatus.Idle);
     }
 
+    /// <summary>
+    /// Modifies the Mole's movement speed by a factor.
+    /// </summary>
     public override void ModifySpeed(float factor)
     {
         moveSpeed *= factor;
     }
 
+    /// <summary>
+    /// Modifies the Mole's damage by a factor.
+    /// </summary>
     public override void ModifyDamage(float factor)
     {
         attackFactor *= factor;
     }
 
+    /// <summary>
+    /// Modifies the Mole's defense by a factor.
+    /// </summary>
     public override void ModifyDefense(float factor)
     {
         defenseFactor *= factor;
     }
 
+    /// <summary>
+    /// No mana regen behavior for the Mole.
+    /// </summary>
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
     }
 
+    /// <summary>
+    /// Freezes or unfreezes the Mole, affecting movement and animation speed.
+    /// </summary>
     public override void OnFreeze(bool freezeOn = true)
     {
         if (freezeOn)
@@ -501,12 +554,18 @@ public class Mole : Enemy
         }
     }
 
+    /// <summary>
+    /// Moves the Mole based on its current movement vector and speed.
+    /// </summary>
     public override void DoMovement()
     {
         movement = movement.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Enables or disables sight obstruction for the Mole.
+    /// </summary>
     public override void DoObstructSight(bool onOff)
     {
         ObstructSight(onOff);

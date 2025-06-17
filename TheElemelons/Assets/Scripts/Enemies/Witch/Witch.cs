@@ -4,12 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// States for the Witch enemy's behavior.
+/// </summary>
 public enum WitchState
 {
+    /// <summary>Walking state.</summary>
     Walk,
+    /// <summary>Hovering state.</summary>
     Hover,
+    /// <summary>Bald state (after losing hair/snake).</summary>
     Bald
 }
+
+/// <summary>
+/// All possible moves/abilities for the Witch enemy.
+/// </summary>
 public enum WitchMoves
 {
     AnyMove,
@@ -28,65 +38,161 @@ public enum WitchMoves
     GreenSpray,
     None
 }
+
+/// <summary>
+/// Main AI controller for the Witch boss enemy. Handles movement, spellcasting, state transitions, and special attacks.
+/// </summary>
 public class Witch : Enemy
 {
+    /// <summary>
+    /// List of dice values used for move probability checks.
+    /// </summary>
     public List<float> dice;
+
+    // Number of dice used for move selection.
     int diceCount = 3;
+
+    /// <summary>
+    /// Interval (in seconds) between dice rolls.
+    /// </summary>
     public float intervalThrowdice = 6f;
+
+    /// <summary>
+    /// Current state of the Witch.
+    /// </summary>
     public WitchState currentWitchState = WitchState.Walk;
+
     [Header("Health phases")]
+    // Current health phase (affects move selection and spell count).
     int healthPhase = 1;
+
     [Header("CombatRangeHandling")]
+    /// <summary>
+    /// Preferred combat range.
+    /// </summary>
     public float range = 10f;
+    /// <summary>
+    /// Maximum aggro range.
+    /// </summary>
     public float aggroRange = 80f;
+    /// <summary>
+    /// Minimum allowed range.
+    /// </summary>
     public float minimalRange = 6f;
+    /// <summary>
+    /// Maximum allowed range.
+    /// </summary>
     public float maximalRange = 18f;
+    /// <summary>
+    /// Tolerance for range transitions.
+    /// </summary>
     public float rangeTolerance = 1f;
+    // Current range state relative to the player.
     RangeState currentRangeState = RangeState.OutOfRange;
+
     [Header("Buff/Debuff handling")]
+    // Movement speed factor (affected by buffs/debuffs).
     float moveFactor = 1f;
+
     [Header("Movement")]
+    // Raycast hit for wall/player detection.
     RaycastHit2D hit;
+    // Direction of circling (1 or -1).
     int clockwiseFactor = 1;
+    // Counter for direction changes.
     int clockSwitchCounter = 0;
+    // Probability for circling behavior.
     float circleProbability = 0.5f;
+    // Current movement destination.
     Vector3 destination;
+    // List of possible movement nodes.
     List<Vector3> nodeCollection;
+    // Movement speed.
     float moveSpeed = 3f;
+    // Speed multiplier when hovering.
     float hoverSpeedFactor = 1.3f;
+
     [Header("Effects")]
+    /// <summary>
+    /// Prefab for the death effect.
+    /// </summary>
     public GameObject deathEffect;
+    /// <summary>
+    /// Delay before the death effect is played.
+    /// </summary>
     public float deathEffectDelay = 0.5f;
+    // Flash effect for the body.
     FlashEffect flashEffectBody;
+    // Flash effect for the wand.
     FlashEffect flashEffectWand;
+    // Flash effect for the hair.
     FlashEffect flashEffectHair;
+    /// <summary>
+    /// Duration of the flash effect.
+    /// </summary>
     public float flashDuration = 0.2f;
+
     [Header("Bound Components")]
+    // Pathfinding system reference.
     LineOfSightPathfinder pathfinder;
+    // Rigidbody2D for movement.
     Rigidbody2D rb;
+    // Animator for the body.
     Animator bodyAnimator;
+    // Animator for the hair.
     Animator hairAnimator;
+    // Animator for the wand.
     Animator wandAnimator;
+    // Reference to the player's movement script.
     PlayerMovement playerMovement;
+    // Collider for solid body.
     BoxCollider2D solidCollider;
+    // Animator for sparkle effects.
     Animator sparkleEffect1;
     Animator sparkleEffect2;
+    // Collider for the player.
     BoxCollider2D playerCollider;
+
     [Header("Medusa")]
+    /// <summary>
+    /// Duration of the Medusa petrify effect.
+    /// </summary>
     public float medusaTime = 3f;
+
     [Header("Boulder")]
+    /// <summary>
+    /// Damage dealt by the boulder spell.
+    /// </summary>
     public float boulderDamage = 1f;
+    /// <summary>
+    /// Knockback force of the boulder spell.
+    /// </summary>
     public float boulderThrust = 6f;
+    /// <summary>
+    /// Knockback duration of the boulder spell.
+    /// </summary>
     public float boulderKnockTime = 0.8f;
+
     [Header("Dash")]
+    // Maximum number of dashes in a sequence.
     int dashMaxnumber = 3;
+    // Duration of a dash.
     float dashtime = 1;
+    // Dash movement speed.
     float dashSpeed = 12f;
+    // Whether the Witch is currently dashing.
     bool doingDash = false;
+
     [Header("Spell- and MoveCooldowns, can and prob")]
+    // Whether the Witch is currently casting a spell.
     bool isCasting = false;
+    /// <summary>
+    /// Dictionary containing information on all of the Witch’s abilities.
+    /// </summary>
     public Dictionary<WitchMoves, WitchMoveInfos> moveStatsDict;
+    // Probability for recharging a move after cooldown.
     float rechargeProb = 0.4f;
+    // Cooldown and probability values for various moves.
     float dashCooldown = 4f;
     float dashProbability = 0.2f;
     float medusaCooldown = 12f;
@@ -99,18 +205,33 @@ public class Witch : Enemy
     float baldCooldown = 15f;
     float baldProbability = 0.85f;
     float snekCastTime = 1.3f;
+    /// <summary>
+    /// Prefab for the snake enemy.
+    /// </summary>
     public GameObject snekObject;
     float redPoofProbability = 0.15f;
+    /// <summary>
+    /// Prefab for the red poof effect.
+    /// </summary>
     public GameObject redPoofGameObject;
     float redPoofCooldown = 20f;
     float greenPoofProbability = 0.8f;
     float greenPoofCooldown = 10f;
+    /// <summary>
+    /// Prefab for the green poof effect.
+    /// </summary>
     public GameObject greenPoofGameObject;
     float vortexProbability = 0.3f;
     float vortexCooldown = 10f;
+    /// <summary>
+    /// Prefab for the vortex spell.
+    /// </summary>
     public GameObject vortexGameObject;
     float boulderProbability = 0.3f;
     float boulderCastTime = 1.5f;
+    /// <summary>
+    /// Prefab for the boulder spell.
+    /// </summary>
     public GameObject boulderGameObject;
     float specialMoveProbability = 0.8f;
     float specialMoveCooldown = 1f;
@@ -118,9 +239,15 @@ public class Witch : Enemy
     float ramPlayerCooldown = 3f;
     float greenSprayProbability = 0.9f;
     float greenSprayCooldown = 4f;
+    /// <summary>
+    /// Prefab for the green spray spell.
+    /// </summary>
     public GameObject greenSprayGameObject;
 
     [Header("On Death")]
+    /// <summary>
+    /// Event triggered when the Witch dies.
+    /// </summary>
     public Action OnWitchDeath;
 
     // Start is called before the first frame update
@@ -1433,18 +1560,50 @@ public class Witch : Enemy
         ObstructSight(onOff);
     }
 }
+
+/// <summary>
+/// Stores information about a Witch move/ability, such as probability, cooldown, cast time, and related objects.
+/// </summary>
 public class WitchMoveInfos
 {
+    /// <summary>
+    /// Probability of the move being chosen.
+    /// </summary>
     public float probability;
+    /// <summary>
+    /// Cooldown duration for the move.
+    /// </summary>
     public float cooldown;
+    /// <summary>
+    /// Whether the move can currently be executed.
+    /// </summary>
     public bool canDo;
+    /// <summary>
+    /// Index of the dice to use for this move.
+    /// </summary>
     public int dice;
+    /// <summary>
+    /// Time required to cast the move.
+    /// </summary>
     public float castTime;
+    /// <summary>
+    /// GameObject associated with the move (e.g., spell prefab).
+    /// </summary>
     public GameObject moveGameObject;
+    /// <summary>
+    /// Method to execute the move.
+    /// </summary>
     public Action doMethod;
+    /// <summary>
+    /// Parent move category.
+    /// </summary>
     public WitchMoves parentCategory;
+
+    /// <summary>
+    /// Constructor for WitchMoveInfos.
+    /// </summary>
     public WitchMoveInfos(float probability, float cooldown, bool canDo = true, int dice = 0, float castTime = 0,
-    GameObject moveGameObject = null, Action doMethod = null, WitchMoves parentCategory = WitchMoves.AnyMove)
+        GameObject moveGameObject = null, Action doMethod = null, WitchMoves parentCategory = WitchMoves.AnyMove)
     {
         this.probability = probability;
         this.cooldown = cooldown;
@@ -1455,5 +1614,4 @@ public class WitchMoveInfos
         this.doMethod = doMethod;
         this.parentCategory = parentCategory;
     }
-
 }
