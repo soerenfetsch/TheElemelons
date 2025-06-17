@@ -2,23 +2,14 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// ScriptableObject that stores tile references for horizontal and vertical doors used in dungeon tilemaps.
-/// Provides nested classes for organizing door tile variations.
-=======
 /// ScriptableObject that defines tile sets for dungeon doors in all four cardinal directions.
 /// Provides nested classes for horizontal and vertical door tile arrangements.
->>>>>>> Stashed changes
 /// </summary>
 [CreateAssetMenu(fileName = "DoorTileSet", menuName = "ScriptableObjects/DoorTileSet", order = 1)]
 public class DoorTileSet : ScriptableObject
 {
     /// <summary>
-<<<<<<< Updated upstream
-    /// Stores tile references for a horizontal door (top or bottom).
-=======
     /// Represents a horizontal door (top or bottom) composed of multiple tile segments.
->>>>>>> Stashed changes
     /// </summary>
     [System.Serializable]
     public class HorizontalDoor
@@ -50,20 +41,11 @@ public class DoorTileSet : ScriptableObject
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Stores tile references for a vertical door (left or right).
-    /// Tiles are ordered from top to bottom.
-=======
     /// Represents a vertical door (left or right) composed of multiple tile segments from top to bottom.
->>>>>>> Stashed changes
     /// </summary>
     [System.Serializable]
     public class VerticalDoor
     {
-<<<<<<< Updated upstream
-        public TileBase doorOne, doorTwo, doorThree;
-        public TileBase doorFour, doorFive;
-=======
         /// <summary>
         /// The topmost tile of the vertical door.
         /// </summary>
@@ -84,7 +66,6 @@ public class DoorTileSet : ScriptableObject
         /// The bottommost tile of the vertical door.
         /// </summary>
         public TileBase doorFive;
->>>>>>> Stashed changes
     }
 
     /// <summary>

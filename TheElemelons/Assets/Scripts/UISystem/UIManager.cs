@@ -1,14 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Manages all user interface elements in the game, including health/mana bars, buff/debuff icons,
-/// spell selection UI, menu panels, and the boss health bar. Implements a singleton pattern for global access.
-=======
 /// Central UI manager for all in-game and menu UI elements.
 /// Handles health/mana bars, spell selection UI, buff/debuff icons, aiming, and panel switching.
 /// Provides methods for updating UI in response to player actions, buffs, and game state changes.
->>>>>>> Stashed changes
 /// </summary>
 public class UIManager : MonoBehaviour
 {
@@ -22,10 +17,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public GameObject playerObject;
 
-<<<<<<< Updated upstream
-=======
     // Player component references
->>>>>>> Stashed changes
     Health health;
     Mana mana;
     HealthBar healthBar;
@@ -36,24 +28,6 @@ public class UIManager : MonoBehaviour
 
     [Header("Aim")]
     /// <summary>
-<<<<<<< Updated upstream
-    /// Current mouse position in world space.
-    /// </summary>
-    public Vector2 mousePos;
-
-    /// <summary>
-    /// Reference to the main camera used for UI calculations.
-    /// </summary>
-    public Camera cam;
-
-    /// <summary>
-    /// Transform used as the pivot for UI aiming elements.
-    /// </summary>
-    public Transform pivot;
-
-    /// <summary>
-    /// Transform representing the aiming arrow or indicator.
-=======
     /// Current mouse position in world coordinates.
     /// </summary>
     public Vector2 mousePos;
@@ -67,43 +41,11 @@ public class UIManager : MonoBehaviour
     public Transform pivot;
     /// <summary>
     /// Transform for the aiming arrow.
->>>>>>> Stashed changes
     /// </summary>
     public Transform aim_transform;
 
     [Header("Spell Selection UI")]
     /// <summary>
-<<<<<<< Updated upstream
-    /// SpriteRenderer for the first charge slot in the spell selection UI.
-    /// </summary>
-    public SpriteRenderer charge1UI;
-
-    /// <summary>
-    /// SpriteRenderer for the second charge slot in the spell selection UI.
-    /// </summary>
-    public SpriteRenderer charge2UI;
-
-    /// <summary>
-    /// Sprite used for fire element charge.
-    /// </summary>
-    public Sprite fireSprite;
-
-    /// <summary>
-    /// Sprite used for water element charge.
-    /// </summary>
-    public Sprite waterSprite;
-
-    /// <summary>
-    /// Sprite used for earth element charge.
-    /// </summary>
-    public Sprite earthSprite;
-
-    /// <summary>
-    /// Sprite used for wind element charge.
-    /// </summary>
-    public Sprite windSprite;
-
-=======
     /// SpriteRenderer for the first charge slot.
     /// </summary>
     public SpriteRenderer charge1UI;
@@ -128,7 +70,6 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public Sprite windSprite;
     // Reference to the player's Casting script.
->>>>>>> Stashed changes
     Casting castingScript;
 
     [Header("ManaHealthBar Management")]
@@ -137,19 +78,6 @@ public class UIManager : MonoBehaviour
 
     [Header("BuffDebuff Animation Management")]
     /// <summary>
-<<<<<<< Updated upstream
-    /// Animator controlling the speed buff visual effect.
-    /// </summary>
-    public Animator speedBuffAnimator;
-
-    /// <summary>
-    /// Prefab for the question mark effect shown when the player is confused.
-    /// </summary>
-    public GameObject questionMark;
-
-    /// <summary>
-    /// Prefab for the ice crystal effect shown when the player is frozen.
-=======
     /// Animator for speed buff visual effect.
     /// </summary>
     public Animator speedBuffAnimator;
@@ -159,7 +87,6 @@ public class UIManager : MonoBehaviour
     public GameObject questionMark;
     /// <summary>
     /// Prefab for the ice crystal (freeze) effect.
->>>>>>> Stashed changes
     /// </summary>
     public GameObject iceCrystal;
     /// <summary>
@@ -173,34 +100,6 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Canvas Panels")]
     /// <summary>
-<<<<<<< Updated upstream
-    /// Panel for the pause menu UI.
-    /// </summary>
-    public GameObject pauseMenuPanel;
-
-    /// <summary>
-    /// Panel for the start menu UI.
-    /// </summary>
-    public GameObject startMenuPanel;
-
-    /// <summary>
-    /// Panel for the settings menu UI.
-    /// </summary>
-    public GameObject settingsMenuPanel;
-
-    /// <summary>
-    /// Panel for the in-game UI.
-    /// </summary>
-    public GameObject ingamePanel;
-
-    /// <summary>
-    /// Panel for the death screen UI.
-    /// </summary>
-    public GameObject deathScreenPanel;
-
-    /// <summary>
-    /// Panel for the loading screen UI.
-=======
     /// Pause menu panel GameObject.
     /// </summary>
     public GameObject pauseMenuPanel;
@@ -222,26 +121,17 @@ public class UIManager : MonoBehaviour
     public GameObject deathScreenPanel;
     /// <summary>
     /// Load panel GameObject.
->>>>>>> Stashed changes
     /// </summary>
     public GameObject loadPanel;
 
     [Header("Bossbar")]
     /// <summary>
-<<<<<<< Updated upstream
-    /// GameObject representing the boss health bar UI.
-=======
     /// Boss health bar GameObject.
->>>>>>> Stashed changes
     /// </summary>
     public GameObject bossBar;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Unity Awake callback. Initializes the singleton instance and ensures only one UIManager exists.
-=======
     /// Unity Awake method. Sets up the singleton instance and persists across scenes.
->>>>>>> Stashed changes
     /// </summary>
     private void Awake()
     {
@@ -462,17 +352,10 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Instantiates or removes the question mark visual effect when confused.
-    /// </summary>
-    /// <param name="isBuffed">True to show the effect, false to remove it.</param>
-    /// <param name="target">The GameObject affected by the confused effect.</param>
-=======
     /// Instantiate question mark as visual effect when confused.
     /// </summary>
     /// <param name="isBuffed">Whether the confused effect is active.</param>
     /// <param name="target">The target GameObject.</param>
->>>>>>> Stashed changes
     public void SetConfusedEffect(bool isBuffed, GameObject target)
     {
         if (isBuffed)
@@ -490,13 +373,8 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Initialize ice crystal effect when frozen.
     /// </summary>
-<<<<<<< Updated upstream
-    /// <param name="isBuffed">True to show the effect, false to remove it.</param>
-    /// <param name="target">The GameObject affected by the frozen effect.</param>
-=======
     /// <param name="isBuffed">Whether the freeze effect is active.</param>
     /// <param name="target">The target GameObject.</param>
->>>>>>> Stashed changes
     public void SetFreezeEffect(bool isBuffed, GameObject target)
     {
         if (isBuffed)
@@ -579,13 +457,9 @@ public class UIManager : MonoBehaviour
         buffDebuffIconBar.RemoveBuff(type);
     }
 
-<<<<<<< Updated upstream
-    // Registers and unregisters for game status change events.
-=======
     /// <summary>
     /// Registers for game status change events.
     /// </summary>
->>>>>>> Stashed changes
     private void OnEnable()
     {
         GameManager.OnGameStatusChanged += HandleGameStatusChanged;
@@ -599,14 +473,10 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameStatusChanged -= HandleGameStatusChanged;
     }
 
-<<<<<<< Updated upstream
-    // Handles switching UI panels based on the current game status.
-=======
     /// <summary>
     /// Handles switching UI panels based on the current game status.
     /// </summary>
     /// <param name="newStatus">The new game status.</param>
->>>>>>> Stashed changes
     private void HandleGameStatusChanged(GameStatus newStatus)
     {
         Debug.Log($"UIManager: Game status changed to {newStatus}");
@@ -661,11 +531,7 @@ public class UIManager : MonoBehaviour
     public void EnableDeathScreen() => EnablePanel("DeathScreen");
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Enables the ingame panel. Disables all other panels.
-=======
     /// Enables the in-game HUD panel. Disables all other panels.
->>>>>>> Stashed changes
     /// </summary>
     [ContextMenu("Enable Ingame Panel")]
     public void EnableIngamePanel() => EnablePanel("Ingame");
@@ -676,16 +542,11 @@ public class UIManager : MonoBehaviour
     [ContextMenu("Enable Load Panel")]
     public void EnableLoadPanel() => EnablePanel("LoadPanel");
 
-<<<<<<< Updated upstream
-    // Enables the specified panel and disables all other panels.
-    // Possible names are "PauseMenu", "StartMenu", "SettingsMenu", "DeathScreen", "Ingame", and "LoadPanel".
-=======
     /// <summary>
     /// Enables the specified panel and disables all other panels.
     /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu","DeathScreen", and "Ingame".
     /// </summary>
     /// <param name="panelName">The name of the panel to enable.</param>
->>>>>>> Stashed changes
     private void EnablePanel(string panelName)
     {
         GameObject panel = null;
@@ -756,11 +617,7 @@ public class UIManager : MonoBehaviour
     /// Toggles the visibility of the boss bar and locks its health content to the boss's health.
     /// </summary>
     /// <param name="isEnabled">True to show the boss bar, false to hide it.</param>
-<<<<<<< Updated upstream
-    /// <param name="bossHealth">The Health component of the boss, or null to unbind.</param>
-=======
     /// <param name="bossHealth">The boss's health component.</param>
->>>>>>> Stashed changes
     public void ToggleBossBar(bool isEnabled, Health bossHealth)
     {
         if (bossBar == null)

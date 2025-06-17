@@ -105,12 +105,8 @@ public class Altar : InteractableObject
     // Speed at which loot moves.
     float moveSpeed = 3f;
 
-<<<<<<< Updated upstream
-    // Start is called before the first frame update
-=======
     // Start is called before the first frame update.
     // Initializes altar state, components, and loot lists.
->>>>>>> Stashed changes
     void Start()
     {
         InitializeRandomProperties();
@@ -119,12 +115,9 @@ public class Altar : InteractableObject
         InitializeCollider();
     }
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Initializes references to components and player stats, and sets animator flags.
     /// </summary>
->>>>>>> Stashed changes
     public void InitializeGeneral()
     {
         animator = GetComponent<Animator>();
@@ -155,12 +148,9 @@ public class Altar : InteractableObject
         collider2D.points = colliderNormal.points;
     }
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Initializes lists used for loot and movement.
     /// </summary>
->>>>>>> Stashed changes
     public void InitializeLists()
     {
         lootList = new List<GameObject>();
@@ -203,10 +193,7 @@ public class Altar : InteractableObject
         }
     }
 
-<<<<<<< Updated upstream
-=======
     // Handles altar destruction animation and triggers loot selection.
->>>>>>> Stashed changes
     IEnumerator Destruction()
     {
         fluidAnimator.SetTrigger("Bleed");
@@ -218,17 +205,10 @@ public class Altar : InteractableObject
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Determines which loot to spawn based on altar type and spawns it if requested.
-    /// </summary>
-    /// <param name="spawn">If true, spawns the loot immediately.</param>
-    /// <returns>List of loot GameObjects.</returns>
-=======
     /// Chooses which loot to spawn based on altar type and player state.
     /// </summary>
     /// <param name="spawn">Whether to spawn the loot immediately.</param>
     /// <returns>List of loot GameObjects to be spawned.</returns>
->>>>>>> Stashed changes
     public List<GameObject> ChoseLoot(bool spawn = true)
     {
         // add small debuff chance
@@ -259,10 +239,7 @@ public class Altar : InteractableObject
         return lootList;
     }
 
-<<<<<<< Updated upstream
-=======
     // Instantiates and initializes loot objects, setting up their movement properties.
->>>>>>> Stashed changes
     void SpawnLoot()
     {
         for (int i = 0; i < lootList.Count; i++)

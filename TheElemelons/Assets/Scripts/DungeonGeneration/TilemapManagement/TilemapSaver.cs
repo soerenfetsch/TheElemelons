@@ -4,13 +4,8 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Saves the current tilemap data by storing the positions and tiles into the TilemapData object.
-/// Used for persisting and restoring dungeon tilemaps in the editor.
-=======
 /// Saves the current state of a tilemap to a <see cref="TilemapData"/> asset.
 /// Provides functionality to serialize tile positions and their corresponding tiles for later loading.
->>>>>>> Stashed changes
 /// </summary>
 public class TilemapSaver : MonoBehaviour
 {

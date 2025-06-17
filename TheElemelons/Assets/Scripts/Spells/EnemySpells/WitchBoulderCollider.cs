@@ -10,7 +10,7 @@ public class WitchBoulderCollider : MonoBehaviour
     WitchBoulder spellEffect;
 
     /// <summary>
-    /// Unity Start method. Caches the parent WitchBoulder component.
+    /// Caches the parent WitchBoulder component.
     /// </summary>
     void Start()
     {

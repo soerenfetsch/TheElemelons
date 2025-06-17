@@ -37,21 +37,13 @@ public class DialogOnWalkInTrigger : DialogueTrigger
     public bool otherCondition = true; // set externally
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Called when the player interacts with the trigger. (Override does nothing by default.)
-=======
     /// Override for Interact. Not used in this trigger.
->>>>>>> Stashed changes
     /// </summary>
     public override void Interact()
     { }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Initiates the dialogue and starts the cooldown coroutine.
-=======
     /// Triggers the dialogue and starts the cooldown.
->>>>>>> Stashed changes
     /// </summary>
     public virtual void DoDialog()
     {
@@ -59,14 +51,7 @@ public class DialogOnWalkInTrigger : DialogueTrigger
         StartCoroutine(DialogueCooldown());
     }
 
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Coroutine that disables interaction for the duration of the cooldown.
-    /// </summary>
-    /// <returns>IEnumerator for coroutine.</returns>
-=======
     // Coroutine to handle the cooldown between dialogue triggers.
->>>>>>> Stashed changes
     IEnumerator DialogueCooldown()
     {
         canInteract = false;
@@ -74,16 +59,8 @@ public class DialogOnWalkInTrigger : DialogueTrigger
         canInteract = true;
     }
 
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Unity event called when another collider enters the trigger.
-    /// Starts the dialogue if all conditions are met.
-    /// </summary>
-    /// <param name="other">The collider that entered the trigger.</param>
-=======
     // Called when another collider enters the trigger collider attached to this object.
     // If the collider is the player and all conditions are met, triggers the dialogue.
->>>>>>> Stashed changes
     void OnTriggerEnter2D(Collider2D other)
     {
         if (canInteract && other.gameObject.CompareTag("Player") &&

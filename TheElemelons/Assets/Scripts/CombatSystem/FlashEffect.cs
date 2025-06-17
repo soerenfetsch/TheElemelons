@@ -2,12 +2,8 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Handles flashing a SpriteRenderer by swapping its material for a short duration.
-=======
 /// Handles flashing a sprite by swapping its material for a short duration.
 /// Useful for visual feedback on damage or special effects.
->>>>>>> Stashed changes
 /// </summary>
 public class FlashEffect : MonoBehaviour
 {

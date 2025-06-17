@@ -15,78 +15,46 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// The current progression stage of the game.
-=======
     /// The current progression stage of the game (e.g., dungeon, hub, boss).
->>>>>>> Stashed changes
     /// </summary>
     public GameProgressionStage CurrentProgressionStage { get; private set; } = GameProgressionStage.INVALID;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// The previous progression stage before the last change.
-=======
     /// The previous progression stage before the last transition.
->>>>>>> Stashed changes
     /// </summary>
     public GameProgressionStage PreviousProgressionStage { get; private set; } = GameProgressionStage.INVALID;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// The current status of the game (e.g., in-game, menu, paused).
-=======
     /// The current status or mode of the game (e.g., INGAME, PAUSE_MENU).
->>>>>>> Stashed changes
     /// </summary>
     public GameStatus CurrentGameStatus { get; private set; } = GameStatus.MAIN_MENU;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// The previous game status before the last change.
-=======
     /// The previous game status before the last transition.
->>>>>>> Stashed changes
     /// </summary>
     public GameStatus PreviousGameStatus { get; private set; }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Provider for saving and loading game data.
-=======
     /// The save provider responsible for saving and loading game data.
->>>>>>> Stashed changes
     /// </summary>
     public GameSaveProvider SaveProvider;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Reference to the UIManager for UI updates.
-=======
     /// Reference to the UIManager for UI updates and button toggling.
->>>>>>> Stashed changes
     /// </summary>
     public UIManager uiManager;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Event triggered when the game status changes.
-=======
     /// Event invoked whenever the game status changes.
->>>>>>> Stashed changes
     /// </summary>
     public static event Action<GameStatus> OnGameStatusChanged;
 
     // Reference to the player GameObject, for saving/loading player state.
     private GameObject player;
 
-<<<<<<< Updated upstream
-    // Unity Awake callback. Initializes the singleton instance and finds the player GameObject.
-=======
     /// <summary>
     /// Unity Awake callback. Sets up the singleton instance and finds the player.
     /// </summary>
->>>>>>> Stashed changes
     private void Awake()
     {
         Debug.Log($"[GameManager] Awake on {gameObject.name}");
@@ -105,13 +73,9 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
-<<<<<<< Updated upstream
-    // Unity Start callback. Initializes the save provider, registers player death event, and sets up UI.
-=======
     /// <summary>
     /// Unity Start callback. Initializes the save provider, sets up death event, and sets initial progression stage.
     /// </summary>
->>>>>>> Stashed changes
     private void Start()
     {
         Debug.Log("[GameManager] Start called.");
@@ -142,18 +106,11 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Changes the current progression stage and starts the corresponding game stage.
-    /// </summary>
-    /// <param name="newStage">The new progression stage to switch to.</param>
-    /// <param name="isStartScene">Whether this is the start scene (optional).</param>
-=======
     /// Changes the current progression stage and triggers the main game stage logic.
     /// Also saves the game if leaving an in-game stage.
     /// </summary>
     /// <param name="newStage">The new progression stage to switch to.</param>
     /// <param name="isStartScene">If true, treat as a start scene (e.g., main menu).</param>
->>>>>>> Stashed changes
     public void ChangeProgressionStage(GameProgressionStage newStage, bool isStartScene = false)
     {
         Debug.Log($"Changing progression stage from {CurrentProgressionStage} to {newStage}");
@@ -166,11 +123,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Changes the current game status (e.g., in-game, menu, paused) and triggers related events and time scaling.
-=======
     /// Changes the current game status (e.g., INGAME, PAUSE_MENU) and triggers related logic.
->>>>>>> Stashed changes
     /// </summary>
     /// <param name="newStatus">The new game status to switch to.</param>
     public void ChangeGameStatus(GameStatus newStatus)
@@ -215,13 +168,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Resets the progression stage to INVALID.
-=======
     /// <summary>
     /// Resets the progression stage to INVALID (used for main menu or reset).
     /// </summary>
->>>>>>> Stashed changes
     private void ResetProgressionStage()
     {
         CurrentProgressionStage = GameProgressionStage.INVALID;
@@ -229,11 +178,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Starts a new game, resetting save data and setting the progression stage to the introduction.
-=======
     /// Starts a new game, resets save data, and sets the progression stage to CASTLE_INTRODUCTION.
->>>>>>> Stashed changes
     /// </summary>
     public void NewGame()
     {
@@ -245,11 +190,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Continues the game from saved data, restoring progression stage, player stats, and key bindings.
-=======
     /// Continues a saved game by loading save data and restoring player stats and key bindings.
->>>>>>> Stashed changes
     /// </summary>
     public void ContinueSavedGame()
     {
@@ -272,11 +213,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Returns to the main menu and resets the progression stage.
-=======
     /// Returns to the main menu by setting the progression stage to INVALID.
->>>>>>> Stashed changes
     /// </summary>
     public void GoMainMenu()
     {
@@ -316,25 +253,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Starts the main game stage for the current progression stage.
-=======
     /// <summary>
     /// Starts the main game stage logic for the current progression stage.
     /// </summary>
     /// <param name="isStartScene">If true, treat as a start scene (e.g., main menu).</param>
->>>>>>> Stashed changes
     private void StartMainGameStage(bool isStartScene = false)
     {
         MainGame.Instance?.StartGameStage(CurrentProgressionStage, isStartScene);
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Changes the progression stage to the early earth boss stage (for debugging).
-=======
     /// Context menu: changes the progression stage to the EARTH_EARLY_BOSS stage.
->>>>>>> Stashed changes
     /// </summary>
     [ContextMenu("Change to Boss Stage")]
     private void ChangeToBossStage()
@@ -342,13 +271,9 @@ public class GameManager : MonoBehaviour
         ChangeProgressionStage(GameProgressionStage.EARTH_EARLY_BOSS);
     }
 
-<<<<<<< Updated upstream
-    // Handles player death: saves the game, changes status, and hides the boss bar.
-=======
     /// <summary>
     /// Handles player death: saves the game, changes to death screen, stops movement, and hides boss bar.
     /// </summary>
->>>>>>> Stashed changes
     private void HandlePlayerDeath()
     {
         SaveGame(); // Save the game and the player stats so that

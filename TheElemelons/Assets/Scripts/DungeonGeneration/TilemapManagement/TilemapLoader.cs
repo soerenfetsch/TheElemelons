@@ -2,13 +2,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Loads and clears tilemap data for the dungeon. 
-/// Uses a TilemapData ScriptableObject to restore or reset the tilemap's state.
-=======
 /// Loads and manages tilemap data for saving and loading tilemaps in the dungeon.
 /// Provides methods to load tiles from a <see cref="TilemapData"/> asset and clear the tilemap.
->>>>>>> Stashed changes
 /// </summary>
 public class TilemapLoader : MonoBehaviour
 {

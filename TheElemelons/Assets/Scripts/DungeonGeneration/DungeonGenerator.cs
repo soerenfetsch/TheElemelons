@@ -3,13 +3,8 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Controls the procedural generation and visualization of the dungeon.
-/// Handles clearing previous dungeons, generating new maps, and initializing pathfinding and monster management.
-=======
 /// Main controller for procedural dungeon generation and visualization.
 /// Handles the generation, clearing, and initialization of dungeon data, tilemaps, monsters, and pathfinding.
->>>>>>> Stashed changes
 /// </summary>
 public class DungeonGenerator : MonoBehaviour
 {
@@ -67,16 +62,8 @@ public class DungeonGenerator : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Public method to generate the dungeon.
-    /// This method clears the previous dungeon visualization and then calls the procedural generation algorithm
-    /// to create a new dungeon. It can be triggered from the Unity editor using the context menu.
-    /// </summary>
-    [ContextMenu("Generate Dungeon")]
-=======
     /// Generates a new dungeon by clearing the previous visualization and running procedural generation.
     /// </summary>
->>>>>>> Stashed changes
     public void GenerateDungeon()
     {
         Debug.Log("Called the Dungeon Generator");
@@ -88,10 +75,7 @@ public class DungeonGenerator : MonoBehaviour
 
     /// <summary>
     /// Procedural generation of the map and then painting the tiles.
-<<<<<<< Updated upstream
-=======
     /// Updates the map data, paints the tiles, and updates tile position data for pathfinding.
->>>>>>> Stashed changes
     /// </summary>
     private void RunProceduralGeneration()
     {
@@ -118,14 +102,8 @@ public class DungeonGenerator : MonoBehaviour
         return centerPositions;
     }
 
-<<<<<<< Updated upstream
-
-    /// <summary>
-    /// Clears tile positions on application quit.
-=======
     /// <summary>
     /// Clears the tile position data when the application quits.
->>>>>>> Stashed changes
     /// </summary>
     void OnApplicationQuit()
     {

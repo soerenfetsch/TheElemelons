@@ -4,13 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Manages saving and printing tile positions from a Tilemap to a TilePositionData ScriptableObject.
-/// Used for storing and debugging specific tile positions in the dungeon.
-=======
 /// Manages saving and printing tile positions from a <see cref="Tilemap"/> to a <see cref="TilePositionData"/> asset.
 /// Useful for dungeon generation, pathfinding, or feature placement systems that require lists of tile center positions.
->>>>>>> Stashed changes
 /// </summary>
 public class TilePositionManager : MonoBehaviour
 {
@@ -25,12 +20,8 @@ public class TilePositionManager : MonoBehaviour
     public TilePositionData tilePositionData;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Saves the positions of all non-null tiles in the tilemap to the tilePositionData object.
-=======
     /// Saves the center positions of all non-null tiles in the <see cref="tilemap"/> to <see cref="tilePositionData"/>.
     /// Each position is stored as a Vector2 (center of the tile cell).
->>>>>>> Stashed changes
     /// </summary>
     [ContextMenu("Save Tile Positions")]
     public void SaveTilePositions()
@@ -58,11 +49,7 @@ public class TilePositionManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Prints all saved tile positions to the console for debugging.
-=======
     /// Prints all saved tile positions from <see cref="tilePositionData"/> to the console.
->>>>>>> Stashed changes
     /// </summary>
     [ContextMenu("Print tile positions")]
     public void PrintTilePositions()

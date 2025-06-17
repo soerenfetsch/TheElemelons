@@ -4,13 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Visualizes the earth dungeon by painting floor, wall, rim, and door tiles on the appropriate tilemaps.
-/// Handles both closed and open doors, and supports different tile sets for room types.
-=======
 /// Visualizes the Earth dungeon by painting floor, wall, door, and decoration tiles onto Unity Tilemaps.
 /// Supports advanced and basic tile sets, rim tiles, and atlas-based floor patterns.
->>>>>>> Stashed changes
 /// </summary>
 public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 {

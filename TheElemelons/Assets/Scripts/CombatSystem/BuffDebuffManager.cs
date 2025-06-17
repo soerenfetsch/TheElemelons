@@ -4,11 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Manages the application, expiration, and removal of buffs and debuffs on game entities.
-<<<<<<< Updated upstream
-/// Handles effect stacking, UI updates, and stat modifications via the IBuffable interface.
-=======
 /// Handles effect stacking, UI integration, and stat modification via the IBuffable interface.
->>>>>>> Stashed changes
 /// </summary>
 public class BuffDebuffManager : MonoBehaviour
 {
@@ -45,11 +41,7 @@ public class BuffDebuffManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Types of buffs and debuffs supported by the system.
-=======
     /// Types of buffs and debuffs that can be applied to entities.
->>>>>>> Stashed changes
     /// </summary>
     public enum BuffDebuffType
     {
@@ -126,13 +118,6 @@ public class BuffDebuffManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Represents a target entity with a list of active effects.
-    /// </summary>
-    public class TargetEntity
-    {
-        public string Name { get; private set; }
-=======
     /// Structure representing a target entity that can have active effects.
     /// </summary>
     public class TargetEntity
@@ -144,7 +129,6 @@ public class BuffDebuffManager : MonoBehaviour
         /// <summary>
         /// List of currently active effects on this target.
         /// </summary>
->>>>>>> Stashed changes
         public List<BuffDebuff> ActiveEffects = new List<BuffDebuff>();
 
         /// <summary>
@@ -285,10 +269,6 @@ public class BuffDebuffManager : MonoBehaviour
         // Start the timer to remove the buff/debuff after its duration
         StartCoroutine(EffectTimer(target, effect));
     }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     /// <summary>
     /// Apply a named buff or debuff to a target, with optional stacking.
     /// </summary>
@@ -428,17 +408,8 @@ public class BuffDebuffManager : MonoBehaviour
         // Start the timer to remove the buff/debuff after its duration
         StartCoroutine(EffectTimer(target, effect));
     }
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Applies or removes the effect's stat changes via the IBuffable interface.
-    /// </summary>
-    /// <param name="target">The target GameObject.</param>
-    /// <param name="effect">The buff or debuff effect.</param>
-    /// <param name="isApplying">True to apply, false to remove the effect.</param>
-=======
 
     // Applies or removes the effect's stat changes to the target's IBuffable component.
->>>>>>> Stashed changes
     private void ApplyEffectToStats(GameObject target, BuffDebuff effect, bool isApplying)
     {
         if (target == null)
@@ -569,10 +540,6 @@ public class BuffDebuffManager : MonoBehaviour
             }
         }
     }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     /// <summary>
     /// Clear a specific buff or debuff from a target, optionally by name.
     /// </summary>
@@ -609,11 +576,7 @@ public class BuffDebuffManager : MonoBehaviour
     /// Get the active buffs and debuffs for a target.
     /// </summary>
     /// <param name="target">The target GameObject.</param>
-<<<<<<< Updated upstream
-    /// <returns>List of active BuffDebuff effects.</returns>
-=======
     /// <returns>List of active <see cref="BuffDebuff"/> effects.</returns>
->>>>>>> Stashed changes
     public List<BuffDebuff> GetActiveEffects(GameObject target)
     {
         if (target == null)

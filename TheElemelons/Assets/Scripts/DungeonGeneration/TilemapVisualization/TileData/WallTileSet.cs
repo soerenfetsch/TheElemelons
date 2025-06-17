@@ -2,13 +2,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// ScriptableObject that stores tile references for wall tiles used in dungeon tilemaps,
-/// including left, right, top, and bottom walls and their corners.
-=======
 /// ScriptableObject that defines tile sets for dungeon walls, including sides and corners.
 /// Used for flexible wall visualization in dungeon generation.
->>>>>>> Stashed changes
 /// </summary>
 [CreateAssetMenu(fileName = "WallTileSet", menuName = "ScriptableObjects/WallTileSet", order = 1)]
 public class WallTileSet : ScriptableObject

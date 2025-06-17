@@ -3,13 +3,8 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Generates dungeon maps using a bipartitioning algorithm. Handles room creation, corridors, walls, decorations,
-/// monster spawns, shrines, and darkness effects. Integrates with MonsterManager for monster placement.
-=======
 /// Generates dungeon maps using a recursive bipartitioning algorithm.
 /// Handles room creation, corridor connection, wall placement, decorations, monster spawns, doors, shrines, and darkness effects.
->>>>>>> Stashed changes
 /// </summary>
 public class BipartitioningMapGenerator : AbstractMapGenerator
 {
@@ -77,15 +72,9 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     public GameObject darknessEffectPrefab;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Generates the dungeon map and spawns monsters, shrines, and darkness effects.
-    /// </summary>
-    /// <returns>The generated MapData object containing all map information.</returns>
-=======
     /// Generates the entire dungeon map, including rooms, corridors, walls, decorations, monsters, doors, shrines, and darkness.
     /// </summary>
     /// <returns>The generated <see cref="MapData"/> object.</returns>
->>>>>>> Stashed changes
     public override MapData GenerateMap()
     {
         mapData = new MapData();

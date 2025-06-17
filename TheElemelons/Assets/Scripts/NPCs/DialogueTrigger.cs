@@ -2,13 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Triggers and manages dialogue sequences for an NPC when the player interacts.
-/// Handles dialogue progression and game state transitions.
-=======
 /// Base class for NPCs or objects that can trigger dialogue sequences.
 /// Handles dialogue selection, cycling, and interaction logic with the player.
->>>>>>> Stashed changes
 /// </summary>
 public class DialogueTrigger : InteractableNPC
 {
@@ -24,22 +19,13 @@ public class DialogueTrigger : InteractableNPC
     public List<DialogueData> basic_dialogues_list;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Called by PlayerInteraction when the player presses E near this NPC.
-    /// Handles starting and advancing dialogue, and manages game state transitions.
-=======
     /// Called when the player interacts with this NPC or object.
     /// Handles starting or advancing dialogue, and manages dialogue state.
->>>>>>> Stashed changes
     /// </summary>
     public override void Interact()
     {
         // Set game status to dialogue mode
         GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE);
-<<<<<<< Updated upstream
-
-        // If a dialogue is already active, advance it
-=======
         Debug.Log($"[DialogueTrigger] Interact called on {gameObject.name}. nextDialogue index: {nextDialogue}. HasDialogue: {DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue()}");
 
         if (GameManager.Instance == null)
@@ -54,17 +40,12 @@ public class DialogueTrigger : InteractableNPC
         }
 
         // If a dialogue is already active, advance it; otherwise, start a new dialogue sequence.
->>>>>>> Stashed changes
         if (DialogueManager.Instance.HasDialogue())
         {
             DialogueManager.Instance.AdvanceDialogue();
         }
         else
         {
-<<<<<<< Updated upstream
-            // Log when starting a new dialogue sequence for debugging and analytics
-=======
->>>>>>> Stashed changes
             Debug.Log($"[DialogueTrigger] Starting new dialogue sequence from {gameObject.name}.");
 
             // If there are no dialogues, revert game status and exit
@@ -91,12 +72,8 @@ public class DialogueTrigger : InteractableNPC
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Advances the dialogue index, looping if necessary.
-=======
     /// Advances the <see cref="nextDialogue"/> index, cycling through the dialogue list.
     /// Can be overridden for custom dialogue cycling logic.
->>>>>>> Stashed changes
     /// </summary>
     public virtual void IncNextDialogue()
     {
@@ -104,12 +81,8 @@ public class DialogueTrigger : InteractableNPC
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Handles NPC-specific actions based on status (e.g., animations or behaviors).
-=======
     /// Called to handle NPC-specific status updates (e.g., animations or behaviors).
     /// Can be overridden in derived classes.
->>>>>>> Stashed changes
     /// </summary>
     public override void ActOnStatus()
     {

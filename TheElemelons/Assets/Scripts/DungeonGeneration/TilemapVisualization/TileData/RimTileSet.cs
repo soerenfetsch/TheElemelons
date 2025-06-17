@@ -2,13 +2,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// ScriptableObject that stores tile references for rim (border) tiles used in dungeon tilemaps,
-/// including sides and both outer and inner corners.
-=======
 /// ScriptableObject that defines tile sets for dungeon rim (border) tiles, including sides and corners.
 /// Supports both outer and inner corner tiles for flexible dungeon visualization.
->>>>>>> Stashed changes
 /// </summary>
 [CreateAssetMenu(fileName = "RimTileSet", menuName = "ScriptableObjects/RimTileSet", order = 1)]
 public class RimTileSet : ScriptableObject

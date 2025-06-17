@@ -16,13 +16,8 @@ public enum ElementType
 }
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Manages combat interactions, including damage calculations, attack execution, 
-/// and spell instantiation in the game.
-=======
 /// Helper class for combat-related utilities such as temporary invincibility.
 /// Implements a singleton pattern.
->>>>>>> Stashed changes
 /// </summary>
 public class CombatHelper : MonoBehaviour
 {

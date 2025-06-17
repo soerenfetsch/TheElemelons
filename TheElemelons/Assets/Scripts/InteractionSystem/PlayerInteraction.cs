@@ -1,13 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Handles player interaction with nearby interactable objects in the game world.
-/// Finds the closest interactable within range and triggers its interaction logic.
-=======
 /// Handles player interaction with nearby interactable objects.
 /// Manages detection, direction, and range for interactions, and updates tooltips.
->>>>>>> Stashed changes
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
@@ -43,12 +38,9 @@ public class PlayerInteraction : MonoBehaviour
     Vector2 interactionBoxSizeVertical;
     Vector2 interactionBoxSizeHorizontal;
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Unity Start method. Initializes interaction box offsets and gets the ToolTip component.
     /// </summary>
->>>>>>> Stashed changes
     void Start()
     {
         InitializeInteractionBoxes();
@@ -56,11 +48,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Initializes the offsets and sizes for the interaction boxes in each direction.
-=======
     /// Initializes the offsets and sizes for the interaction box in all directions.
->>>>>>> Stashed changes
     /// </summary>
     public void InitializeInteractionBoxes()
     {
@@ -85,14 +73,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Calculates the direction offset for the interaction box based on player movement.
-    /// </summary>
-    /// <returns>The offset vector for the interaction box.</returns>
-=======
     // Calculates the direction offset for the interaction box based on player facing direction.
->>>>>>> Stashed changes
     Vector2 CalcDir()
     {
         Vector2 movement = new Vector2(playerAnimator.GetFloat("Horizontal"), playerAnimator.GetFloat("Vertical"));
@@ -112,14 +93,7 @@ public class PlayerInteraction : MonoBehaviour
         return interactionBoxOffSet;
     }
 
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Calculates the size of the interaction box based on the current direction.
-    /// </summary>
-    /// <returns>The size vector for the interaction box.</returns>
-=======
     // Calculates the size of the interaction box based on its orientation.
->>>>>>> Stashed changes
     Vector2 CalcSize()
     {
         interactionBoxSize = interactionBoxSizeHorizontal;
@@ -130,12 +104,9 @@ public class PlayerInteraction : MonoBehaviour
         return interactionBoxSize;
     }
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Draws the interaction box gizmo in the editor for debugging.
     /// </summary>
->>>>>>> Stashed changes
     void OnDrawGizmos()
     {
         if (gizmosEnabled)
@@ -170,12 +141,9 @@ public class PlayerInteraction : MonoBehaviour
         return closestInteractable;
     }
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Unity Update method. Continuously checks for the closest interactable and updates the tooltip.
     /// </summary>
->>>>>>> Stashed changes
     void Update()
     {
         // Continuously update the tooltip based on whether an interactable is in range.

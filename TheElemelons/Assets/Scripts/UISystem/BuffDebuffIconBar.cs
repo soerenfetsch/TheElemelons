@@ -4,13 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Manages the UI icon bar for displaying active buffs and debuffs on the player.
-/// Handles adding, removing, and updating buff/debuff icons, supporting duplicate instances.
-=======
 /// UI component that displays active buffs and debuffs as icons.
 /// Supports up to 10 simultaneous effects, including duplicates.
->>>>>>> Stashed changes
 /// </summary>
 public class BuffDebuffIconBar : MonoBehaviour
 {

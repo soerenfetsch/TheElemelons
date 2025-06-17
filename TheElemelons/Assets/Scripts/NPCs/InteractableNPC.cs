@@ -1,15 +1,7 @@
-<<<<<<< Updated upstream
-using UnityEngine;
-
-/// <summary>
-/// Abstract base class for interactable non-playable characters (NPCs).
-/// Implements INonPlayableCharacter and provides state management for NPCs.
-=======
 
 /// <summary>
 /// Abstract base class for all interactable NPCs in the game.
 /// Implements <see cref="INonPlayableCharacter"/> and provides state management for NPCs.
->>>>>>> Stashed changes
 /// </summary>
 public abstract class InteractableNPC : InteractableObject, INonPlayableCharacter
 {
@@ -43,11 +35,7 @@ public abstract class InteractableNPC : InteractableObject, INonPlayableCharacte
     public abstract void ActOnStatus();
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Sets the current state of the NPC.
-=======
     /// Sets the current state of the NPC directly.
->>>>>>> Stashed changes
     /// </summary>
     /// <param name="newState">The new state to set.</param>
     public void SetCurrentState(NPCStatus newState)

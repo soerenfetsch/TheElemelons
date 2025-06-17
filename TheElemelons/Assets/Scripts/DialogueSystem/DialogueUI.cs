@@ -3,47 +3,11 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
-<<<<<<< Updated upstream
-/// <summary>
-/// Handles the display and animation of dialogue UI elements, including text, portraits, dialogue box backgrounds, and scene images.
-/// Subscribes to dialogue events and manages typing effects and user input for advancing or skipping dialogue.
-/// </summary>
-public class DialogueUI : MonoBehaviour
-{
-    [Header("UI References - Dialogue Box")]
-    [SerializeField] private GameObject dialogueBoxPanel;
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private Image portraitImage;
-    [SerializeField] public TextMeshProUGUI dialogueText;
-    [SerializeField] private Image dialogueBoxBackgroundImage;
-
-    [Header("UI References - Scene Image")]
-    [SerializeField] private Image sceneImageDisplay;
-    [SerializeField] private GameObject blackBg;
-
-    [Header("Typing Settings")]
-    [SerializeField] private float baseTypingSpeed = 0.03f;
-    [SerializeField] private float randomTypingOffset = 0.01f;
-    [SerializeField] private float linePauseAfterTyping = 0.5f;
-
-    [Header("Sound Settings")]
-    [SerializeField] private AudioSource typingSound;
-
-    private bool isTyping;
-    private bool isSkipping;
-    private Coroutine typingCoroutine;
-
-    /// <summary>
-    /// Subscribes to dialogue events and initializes UI state.
-    /// </summary>
-    private void Awake()
-=======
     /// <summary>
     /// Handles the display and animation of dialogue UI elements, including dialogue box, speaker name, portraits, scene images, and typing effects.
     /// Listens to <see cref="DialogueManager"/> events to update the UI.
     /// </summary>
     public class DialogueUI : MonoBehaviour
->>>>>>> Stashed changes
     {
         [Header("UI References - Dialogue Box")]
         /// <summary>
@@ -56,26 +20,6 @@ public class DialogueUI : MonoBehaviour
         /// </summary>
         [SerializeField] private TextMeshProUGUI nameText;
 
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Unsubscribes from dialogue events.
-    /// </summary>
-    private void OnDestroy()
-    {
-        DialogueManager.OnDialogueStart -= HandleDialogueStart;
-        DialogueManager.OnDialogueUpdate -= HandleDialogueUpdate;
-        DialogueManager.OnDialogueEnded -= HandleDialogueEnded;
-    }
-
-    /// <summary>
-    /// Handles the start of a dialogue sequence, setting up UI elements for the new dialogue.
-    /// </summary>
-    /// <param name="dialogueData">The dialogue data to display.</param>
-    private void HandleDialogueStart(DialogueData dialogueData)
-    {
-        // Set global/default UI elements from DialogueData
-        if (nameText != null)
-=======
         /// <summary>
         /// The image for the speaker's portrait.
         /// </summary>
@@ -135,7 +79,6 @@ public class DialogueUI : MonoBehaviour
         /// Registers event handlers and initializes UI state.
         /// </summary>
         private void Awake()
->>>>>>> Stashed changes
         {
             DialogueManager.OnDialogueStart += HandleDialogueStart;
             DialogueManager.OnDialogueUpdate += HandleDialogueUpdate;
@@ -160,30 +103,8 @@ public class DialogueUI : MonoBehaviour
         // Handles the start of a new dialogue sequence.
         private void HandleDialogueStart(DialogueData dialogueData)
         {
-<<<<<<< Updated upstream
-            Debug.LogError("[DialogueUI] DialogueManager.Instance is null in HandleDialogueStart.");
-        }
-    }
-
-    /// <summary>
-    /// Updates the UI to display the current dialogue line, including text, images, and overrides.
-    /// </summary>
-    /// <param name="currentLine">The current dialogue line entry.</param>
-    private void HandleDialogueUpdate(DialogueLineEntry currentLine)
-    {
-        StopExistingTyping();
-
-        // Apply overrides from currentLine if they exist
-        // If an override is not present, the UI element retains its previous state (set by HandleDialogueStart or a prior HandleDialogueUpdate)
-
-        // Dialogue Box Image Override
-        if (currentLine.overrideDialogueBoxImage != null)
-        {
-            if (dialogueBoxBackgroundImage != null)
-=======
             // Set global/default UI elements from DialogueData
             if (nameText != null)
->>>>>>> Stashed changes
             {
                 nameText.text = dialogueData.speakerName;
                 // Visibility of nameText will be handled by HandleDialogueUpdate based on line type
@@ -200,121 +121,16 @@ public class DialogueUI : MonoBehaviour
             }
             if (sceneImageDisplay != null)
             {
-<<<<<<< Updated upstream
-                dialogueText.text = "";
-                isTyping = false;
-            }
-        }
-    }
-    void ToggleImageOnOff(bool onOff, DialogueLineEntry currentLine)
-    {
-        sceneImageDisplay.gameObject.SetActive(onOff);
-        if (sceneImageDisplay != null)
-        {
-            if (currentLine.lineSceneImage != null)
-            {
-                sceneImageDisplay.sprite = currentLine.lineSceneImage;
-            }
-            else if (DialogueManager.Instance != null && DialogueManager.Instance.currentDialogue != null
-                    && DialogueManager.Instance.currentDialogue.sceneImage != null)
-            {
-                // Fallback to global scene image
-                sceneImageDisplay.sprite = DialogueManager.Instance.currentDialogue.sceneImage;
-            }
-            else
-            {
-                sceneImageDisplay.gameObject.SetActive(false);
-                Debug.LogWarning("[DialogueUI] SceneImage type line has no scene images or first image is null.");
-            }
-        }
-        isTyping = false;
-        if (DialogueManager.Instance.currentDialogue.isSlideShow)
-        {
-            sceneImageDisplay.rectTransform.localPosition = new Vector3(0, 0, 0);
-            sceneImageDisplay.rectTransform.sizeDelta = new Vector2(1820.448f, 996.5786f);
-        }
-        else
-        {
-            sceneImageDisplay.rectTransform.sizeDelta = new Vector2(709.2789f, 523.658f);
-            sceneImageDisplay.rectTransform.localPosition = new Vector2(0, 73.055f);
-        }
-    }
-
-    /// <summary>
-    /// Handles the end of a dialogue sequence, hiding UI elements and stopping typing effects.
-    /// </summary>
-    private void HandleDialogueEnded()
-    {
-        StopExistingTyping();
-        if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(false);
-        if (sceneImageDisplay != null) sceneImageDisplay.gameObject.SetActive(false);
-        if (blackBg != null) blackBg.SetActive(false);
-    }
-
-    /// <summary>
-    /// Stops any ongoing typing coroutine and resets typing state.
-    /// </summary>
-    private void StopExistingTyping()
-    {
-        if (typingCoroutine != null)
-        {
-            StopCoroutine(typingCoroutine);
-            typingCoroutine = null; // Clear the reference
-            isTyping = false;
-        }
-        isSkipping = false;
-    }
-
-    /// <summary>
-    /// Coroutine that animates the typing of a dialogue line character by character, with optional skipping.
-    /// </summary>
-    /// <param name="line">The line of text to type out.</param>
-    /// <returns>IEnumerator for coroutine.</returns>
-    private IEnumerator TypeLine(string line)
-    {
-        isTyping = true;
-        isSkipping = false;
-        if (dialogueText != null) dialogueText.text = ""; else { Debug.LogError("[DialogueUI] TypeLine: dialogueText is NULL!"); yield break; }
-
-
-        foreach (char letter in line)
-        {
-            if (isSkipping)
-            {
-                if (dialogueText != null) dialogueText.text = line;
-                break;
-=======
                 sceneImageDisplay.sprite = dialogueData.sceneImage;
                 // Visibility of sceneImageDisplay will be handled by HandleDialogueUpdate
->>>>>>> Stashed changes
             }
 
             // Ensure panels are in a known state before the first line update
             if (dialogueBoxPanel != null) dialogueBoxPanel.SetActive(false);
             if (sceneImageDisplay != null) sceneImageDisplay.gameObject.SetActive(false);
 
-<<<<<<< Updated upstream
-        isTyping = false;
-        // isSkipping = false; // Resetting skip flag here might be too early if player holds skip. Usually reset on new line.
-        yield return new WaitForSecondsRealtime(linePauseAfterTyping);
-    }
-
-    /// <summary>
-    /// Skips the current typing animation or advances to the next dialogue line if not typing.
-    /// </summary>
-    public void SkipOrAdvance()
-    {
-        if (isTyping && !isSkipping)
-        {
-            isSkipping = true;
-        }
-        else if (!isTyping)
-        {
-            if (DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue())
-=======
             // Tell DialogueManager to process and send the first line's data
             if (DialogueManager.Instance != null)
->>>>>>> Stashed changes
             {
                 DialogueManager.Instance.AdvanceDialogue();
             }

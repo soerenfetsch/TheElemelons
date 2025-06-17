@@ -1,13 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Base class for doors that can be opened or closed by the player or game logic.
-/// Handles sprite and collider state changes when interacted with.
-=======
 /// Represents a door that can be opened or closed by player interaction.
 /// Handles sprite changes and collider toggling based on open/closed state.
->>>>>>> Stashed changes
 /// </summary>
 public class Door : InteractableObject
 {
@@ -32,23 +27,14 @@ public class Door : InteractableObject
     // The collider used for blocking passage when the door is closed.
     BoxCollider2D boxCollider2D;
 
-<<<<<<< Updated upstream
-=======
     // Start is called before the first frame update.
     // Initializes the door's components and state.
->>>>>>> Stashed changes
     void Start()
     {
         Initialize();
     }
 
-<<<<<<< Updated upstream
-    /// <summary>
-    /// Initializes the door's sprite renderer and finds the non-trigger collider.
-    /// </summary>
-=======
     // Finds and assigns the sprite renderer and the non-trigger box collider.
->>>>>>> Stashed changes
     protected void Initialize()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -64,10 +50,7 @@ public class Door : InteractableObject
 
     /// <summary>
     /// Toggles the door's open/closed state if it can be opened.
-<<<<<<< Updated upstream
-=======
     /// Changes the sprite and enables/disables the collider accordingly.
->>>>>>> Stashed changes
     /// </summary>
     public override void Interact()
     {

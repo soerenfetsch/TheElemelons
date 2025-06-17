@@ -1,12 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Represents a portal in the earth area. Handles portal-specific logic and interactions.
-=======
 /// Represents a portal in the earth region of the game.
 /// Handles player interaction and scene transitions specific to earth-themed dungeons or areas.
->>>>>>> Stashed changes
 /// </summary>
 public class EarthPortal : MonoBehaviour
 {

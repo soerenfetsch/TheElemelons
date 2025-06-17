@@ -3,13 +3,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// ScriptableObject that stores tilemap data, including tile positions and their corresponding tiles.
-/// Used for saving and loading tilemaps in the dungeon.
-=======
 /// ScriptableObject that stores tilemap data for saving and loading tilemaps.
 /// Contains lists of tile positions and their corresponding tile assets.
->>>>>>> Stashed changes
 /// </summary>
 [CreateAssetMenu(fileName = "TilemapData", menuName = "ScriptableObjects/TilemapData", order = 1)]
 public class TilemapData : ScriptableObject

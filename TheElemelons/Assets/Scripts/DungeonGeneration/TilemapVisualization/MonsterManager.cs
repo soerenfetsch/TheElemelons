@@ -113,23 +113,16 @@ public class MonsterManager : MonoBehaviour
     public bool endRoomEnemiesDefeated = false;
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Finds player at start and initializes monster list.
-=======
     /// Finds the player and initializes monster lists at start.
->>>>>>> Stashed changes
     /// </summary>
     void Start()
     {
         InitializeParams();
     }
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Initializes references and monster lists.
     /// </summary>
->>>>>>> Stashed changes
     public void InitializeParams()
     {
         playerTransform = GameObject.Find("Player").transform;
@@ -144,11 +137,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Initializes dictionaries for room type settings and enemy selections.
-=======
     /// Initializes dictionaries for enemy selection and stats per room type.
->>>>>>> Stashed changes
     /// </summary>
     public void InitializeRoomTypeSettings()
     {
@@ -166,11 +155,7 @@ public class MonsterManager : MonoBehaviour
         roomTypeSelections.Add(Room.RoomType.BOSS, bossEnemySelection);
     }
 
-<<<<<<< Updated upstream
-    // Update is called once per frame
-=======
     // Update is called once per frame.
->>>>>>> Stashed changes
     void Update()
     {
         // Periodically check for door logic and enemy activation.
@@ -213,14 +198,9 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Opens or closes doors depending on whether the player is close to enemies.
-    /// </summary>
-=======
     /// Opens or closes doors in a room depending on player and enemy presence.
     /// </summary>
     /// <param name="room">The room to update doors for.</param>
->>>>>>> Stashed changes
     public void OpenCloseDoor(Room room)
     {
         bool playerIsInRoom = IsInRoom(playerTransform.position, room);
@@ -247,13 +227,10 @@ public class MonsterManager : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-=======
     /// <summary>
     /// Coroutine to close doors after the player leaves the doorway.
     /// </summary>
     /// <param name="room">The room to close doors for.</param>
->>>>>>> Stashed changes
     public IEnumerator CloseDoors(Room room)
     {
         while (IsInDoor(playerTransform.position, room))
@@ -366,11 +343,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Spawns monsters in each room based on settings and random selection.
-=======
     /// Spawns monsters in each room based on room type and settings.
->>>>>>> Stashed changes
     /// </summary>
     public void SpawnMonsters()
     {
@@ -390,12 +363,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Returns a list of enemies containing a random batch from the selection choice.
-    /// Amount is random and regulated by parameters.
-=======
     /// Selects a random batch of enemies from the selection list.
->>>>>>> Stashed changes
     /// </summary>
     /// <param name="SelectionChoice">List of possible enemy prefabs.</param>
     /// <param name="count">Base number of enemies.</param>
@@ -444,11 +412,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Checks if a position is within room bounds.
-=======
     /// Checks if a position is within the bounds of a room.
->>>>>>> Stashed changes
     /// </summary>
     /// <param name="position">Position to check.</param>
     /// <param name="room">Room to check against.</param>
@@ -465,11 +429,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Returns a list {Vector2 minBounds, Vector2 maxBounds} of room walls.
-=======
     /// Returns the min and max bounds of a room as a list of two Vector2s.
->>>>>>> Stashed changes
     /// </summary>
     /// <param name="room">Room to get bounds for.</param>
     /// <returns>List with min and max bounds as Vector2.</returns>
@@ -495,11 +455,7 @@ public class MonsterManager : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Clears all enemies from the scene.
-=======
     /// Clears all enemies from the scene and the internal list.
->>>>>>> Stashed changes
     /// </summary>
     [ContextMenu("Clear all enemies")]
     public void ClearAllEnemies()

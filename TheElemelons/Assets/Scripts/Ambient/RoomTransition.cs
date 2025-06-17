@@ -1,11 +1,4 @@
 using UnityEngine;
-<<<<<<< Updated upstream
-
-/// <summary>
-/// Handles teleporting the player to a specified destination when entering the trigger area.
-/// </summary>
-=======
->>>>>>> Stashed changes
 public class RoomTransition : MonoBehaviour
 {
     public Vector2 destination;

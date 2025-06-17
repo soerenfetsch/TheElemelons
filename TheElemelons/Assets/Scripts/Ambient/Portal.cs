@@ -2,12 +2,8 @@ using System;
 using UnityEngine;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Represents a portal that can be activated by the player. Handles visual effects and triggers progression or teleportation when entered.
-=======
 /// Represents a portal that can trigger events and visual effects when the player approaches or interacts.
 /// Handles glow animation, activation radius, and portal entry events.
->>>>>>> Stashed changes
 /// </summary>
 public class Portal : MonoBehaviour
 {
@@ -37,11 +33,8 @@ public class Portal : MonoBehaviour
     /// </summary>
     public float activationRadius = 4f;
 
-<<<<<<< Updated upstream
-=======
     // Start is called before the first frame update.
     // Initializes references to player, glow, and light objects.
->>>>>>> Stashed changes
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
@@ -53,20 +46,14 @@ public class Portal : MonoBehaviour
         lightObject = transform.Find("Light").gameObject;
     }
 
-<<<<<<< Updated upstream
-=======
     // Moves both glow objects along their paths.
->>>>>>> Stashed changes
     void DoGlowMovement()
     {
         MoveGlow(glow1);
         MoveGlow(glow2);
     }
 
-<<<<<<< Updated upstream
-=======
     // Moves a single glow object upward, looping back to pointA if it passes pointB.
->>>>>>> Stashed changes
     void MoveGlow(Transform glow)
     {
         Vector2 move_by = Vector2.up * glowMoveSpeed * Time.fixedDeltaTime;
@@ -78,11 +65,8 @@ public class Portal : MonoBehaviour
         glow.position = nextPos;
     }
 
-<<<<<<< Updated upstream
-=======
     // FixedUpdate is called at a fixed interval.
     // Activates or deactivates portal effects based on player proximity.
->>>>>>> Stashed changes
     void FixedUpdate()
     {
         if ((playerTransform.position - transform.position).magnitude < activationRadius)

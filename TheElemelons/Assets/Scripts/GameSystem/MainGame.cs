@@ -5,32 +5,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-<<<<<<< Updated upstream
-/// Controls the main game flow, including stage transitions, scene loading, and special event handling.
-/// Handles player and boss events, dialogue triggers, and manages the progression through the game's main stages.
-=======
 /// Main controller for executing progression-stage-specific content, scene transitions,
 /// and global game logic. Handles scene loading, player state resets, and event-driven
 /// progression for dungeons, bosses, and hub.
->>>>>>> Stashed changes
 /// </summary>
 public class MainGame : MonoBehaviour
 {
     /// <summary>
-<<<<<<< Updated upstream
-    /// Prefab for the collectable earth elemelon.
-    /// </summary>
-    public GameObject earthElemelonCollectablePrefab;
-
-    /// <summary>
-    /// Prefab for the displayable earth elemelon.
-=======
     /// Prefab for the collectable earth elemelon (used in boss rooms).
     /// </summary>
     public GameObject earthElemelonCollectablePrefab;
     /// <summary>
     /// Prefab for the displayable earth elemelon (used in the castle hub).
->>>>>>> Stashed changes
     /// </summary>
     public GameObject earthElemelonDisplayablePrefab;
 
@@ -40,26 +26,6 @@ public class MainGame : MonoBehaviour
     public static MainGame Instance { get; private set; }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// List of dialogue data for the King's introduction.
-    /// </summary>
-    public List<DialogueData> kingIntroDialoguesList;
-
-    /// <summary>
-    /// List of repetitive dialogue data for the King.
-    /// </summary>
-    public List<DialogueData> kingRepetitiveDialoguesList;
-
-    /// <summary>
-    /// List of dialogue data for the King's ending.
-    /// </summary>
-    public List<DialogueData> kingEndDialoguesList;
-
-    // Tracks if the King dialogue is currently active.
-    private static bool kingDialogueActive = false;
-
-    // Unity Awake callback. Initializes the singleton instance and ensures persistence across scenes.
-=======
     /// List of king's introductory dialogues.
     /// </summary>
     public List<DialogueData> kingIntroDialoguesList;
@@ -78,7 +44,6 @@ public class MainGame : MonoBehaviour
     /// <summary>
     /// Unity Awake method. Sets up the singleton instance and persists across scenes.
     /// </summary>
->>>>>>> Stashed changes
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -92,28 +57,17 @@ public class MainGame : MonoBehaviour
     }
 
     /// <summary>
-<<<<<<< Updated upstream
-    /// Starts the specified game stage, loading the appropriate scene and initializing stage logic.
-    /// </summary>
-    /// <param name="stage">The progression stage to start.</param>
-    /// <param name="isStartScene">Whether this is the start scene (optional).</param>
-=======
     /// Starts the specified game progression stage, loading the correct scene and initializing content.
     /// </summary>
     /// <param name="stage">The progression stage to start.</param>
     /// <param name="isStartScene">If true, treat as a start scene (e.g., main menu).</param>
->>>>>>> Stashed changes
     public void StartGameStage(GameProgressionStage stage, bool isStartScene = false)
     {
         Debug.Log("Starting game stage: " + stage);
         StartCoroutine(StartGameStageAsync(stage, isStartScene));
     }
 
-<<<<<<< Updated upstream
-    // Coroutine to load the scene and handle stage-specific logic.
-=======
     // Coroutine to load the scene and execute the logic for the given progression stage.
->>>>>>> Stashed changes
     private IEnumerator StartGameStageAsync(GameProgressionStage stage, bool isStartScene = false)
     {
         // Load scene of the game stage
@@ -168,26 +122,16 @@ public class MainGame : MonoBehaviour
         Debug.Log("Main Menu Stage started.");
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the castle introduction stage.
-=======
     // Handles logic for the castle introduction stage (e.g., cutscene).
->>>>>>> Stashed changes
     private void HandleCastleIntroStage()
     {
         // TODO: Play the castle intro cutscene
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the early castle stage, including portal event setup.
-    private void HandleCastleEarlyStage()
-    {
-=======
     // Handles logic for the early castle hub stage.
     private void HandleCastleEarlyStage()
     {
         // Add event to the earth portal to start the earth early stage
->>>>>>> Stashed changes
         Portal portal = FindAnyObjectByType<Portal>();
         if (portal != null)
         {
@@ -203,11 +147,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the early earth stage, including boss room access.
-=======
     // Handles logic for the early earth dungeon stage.
->>>>>>> Stashed changes
     private void HandleEarthEarlyStage()
     {
         // Allow the boss room to be accessed when all monsters are defeated
@@ -243,11 +183,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the early earth boss stage, including player teleport and boss defeat event.
-=======
     // Handles logic for the earth dungeon boss room stage.
->>>>>>> Stashed changes
     private void HandleEarthEarlyBossStage()
     {
         // Teleport the player to the start location of the boss room
@@ -280,11 +216,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Sets up the event for collecting the earth elemelon and progressing the stage.
-=======
     // Sets up the event for collecting the earth elemelon to trigger progression.
->>>>>>> Stashed changes
     private static void SetupEarthElemelonPickup(GameObject earthElemelon)
     {
         CollectableEarthElemelon collectableEarthElemelon = earthElemelon.GetComponent<CollectableEarthElemelon>();
@@ -302,11 +234,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the castle end stage, including King dialogue event setup.
-=======
     // Handles logic for the castle end stage (after returning from earth dungeon).
->>>>>>> Stashed changes
     private void HandleCastleEndStage()
     {
         Action<DialogueData> onKingDialogueStarted = null;
@@ -341,11 +269,7 @@ public class MainGame : MonoBehaviour
         DialogueManager.OnDialogueEnded += onKingDialogueEnded;
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the late castle stage, including portal event setup.
-=======
     // Handles logic for the late castle hub stage.
->>>>>>> Stashed changes
     private void HandleCastleLateStage()
     {
         // Add the event to the earth portal to start the earth late stage
@@ -364,11 +288,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the late earth stage, including boss room access.
-=======
     // Handles logic for the late earth dungeon stage.
->>>>>>> Stashed changes
     private void HandleEarthLateStage()
     {
         // Allow the boss room to be accessed when all monsters are defeated
@@ -404,11 +324,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Handles logic for the late earth boss stage, including player teleport and boss defeat event.
-=======
     // Handles logic for the late earth dungeon boss room stage.
->>>>>>> Stashed changes
     private void HandleEarthLateBossStage()
     {
         // Teleport the player to the start location of the boss room
@@ -475,11 +391,7 @@ public class MainGame : MonoBehaviour
         yield return null;
     }
 
-<<<<<<< Updated upstream
-    // Resets the player's position to the initial spawn point.
-=======
     // Resets the player's position to the initial spawn point in the castle hub.
->>>>>>> Stashed changes
     private static void ResetPlayerPosition()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -540,24 +452,16 @@ public class MainGame : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    // Waits for a delay, then changes the progression stage.
-=======
     // Coroutine to change the progression stage after a delay (e.g., after boss death).
->>>>>>> Stashed changes
     private IEnumerator ChangeProgressionStageAfterDelay(GameProgressionStage stage, float delay)
     {
         yield return new WaitForSeconds(delay);
         GameManager.Instance.ChangeProgressionStage(stage);
     }
 
-<<<<<<< Updated upstream
-    // Spawns the earth elemelon displayable in the scene.
-=======
     /// <summary>
     /// Spawns the earth elemelon displayable prefab in the scene (e.g., in the king's room).
     /// </summary>
->>>>>>> Stashed changes
     private void SpawnEarthElemelon()
     {
         // Spawn the earth elemelon collectable in the scene
