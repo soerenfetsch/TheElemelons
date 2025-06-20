@@ -537,6 +537,11 @@ public class SpearShieldMan : Enemy
         ChangeState(EnemyStatus.Staggered);
         string lastAnimation = lastAnimationClip;
 
+        if (lastAnimation == "Stagger")
+            lastAnimation = "Idle"; // If already staggered, revert to idle animation
+        if (previousState == EnemyStatus.Staggered)
+            previousState = EnemyStatus.Idle; // If already staggered, revert to idle state
+
         ChangeAnimationClip("Stagger");
         flashEffect?.Flash(flashDuration);
         if (spearInstance != null)
