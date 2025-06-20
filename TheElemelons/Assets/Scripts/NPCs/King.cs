@@ -48,11 +48,13 @@ public class King : DialogueTrigger
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
         ChangeState(NPCStatus.Walking);
-        dialogueDictionary = new Dictionary<List<DialogueData>, bool>();
-        dialogueDictionary.Add(intro, false);
-        dialogueDictionary.Add(thankYou, false);
-        dialogueDictionary.Add(standardDialogue, true);
-        dialogueDictionary.Add(endDialogue, true);
+        dialogueDictionary = new Dictionary<List<DialogueData>, bool>
+        {
+            { intro, false },
+            { thankYou, false },
+            { standardDialogue, true },
+            { endDialogue, true }
+        };
     }
     void Update()
     {

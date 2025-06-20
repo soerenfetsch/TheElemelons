@@ -26,6 +26,20 @@ public class KingTest
 #endif
         Animator prefabKingAnimator = ingamePanelPrefab.GetComponent<Animator>();
         animator.runtimeAnimatorController = prefabKingAnimator.runtimeAnimatorController;
+
+        // Add the dialog data
+        List<DialogueData> introDialogue = new();
+        List<DialogueData> thanksDialogue = new();
+        List<DialogueData> standardDialogue = new();
+        List<DialogueData> endDialogue = new();
+        kingScript.intro = introDialogue;
+        kingScript.thankYou = thanksDialogue;
+        kingScript.standardDialogue = standardDialogue;
+        kingScript.endDialogue = endDialogue;
+
+        // Add a game manager instance
+        new GameObject("GameManager").AddComponent<GameManager>();
+
         kingScript.SetCurrentState(NPCStatus.Idle);
     }
 
@@ -39,7 +53,7 @@ public class KingTest
     {
         kingScript.SetCurrentState(NPCStatus.Idle);
         Vector3 position = mockTarget.transform.position;
-        yield return null;
+        yield return new WaitForFixedUpdate();
         Assert.True(AreVectorsApproximatelyEqual(position, mockTarget.transform.position), "Idle king must not move");
     }
     [UnityTest]
@@ -50,7 +64,7 @@ public class KingTest
         kingScript.SetWalkSpeed(10f);
         kingScript.SetWalkDist(1f);
         kingScript.TestCallFixedUpdate();
-        yield return null;
+        yield return new WaitForFixedUpdate();
         Vector2 movement = kingScript.GetMovement();
         Assert.AreEqual(movement.x, 1, "king must move to the right");
         Assert.AreEqual(movement.y, 0, "king musnt move in y");
