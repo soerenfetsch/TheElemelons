@@ -409,4 +409,9 @@ public class InputManager : MonoBehaviour
             Debug.Log($"  - FINAL: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
         }
     }
+
+    public void UpdateInputPossible(bool possible)
+    {
+        canInput = possible;
+    }
 }

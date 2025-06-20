@@ -40,12 +40,12 @@ public class CleanseSpell : SpellEffect
     {
         if (playerInput != null)
         {
-            playerInput.canInput = false;
+            playerInput?.UpdateInputPossible(false);
         }
         yield return new WaitForSeconds(animationtime);
         if (playerInput != null)
         {
-            playerInput.canInput = true;
+            playerInput?.UpdateInputPossible(true);
         }
         Destroy(gameObject);
     }

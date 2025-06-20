@@ -70,7 +70,7 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     void Update()
     {
         // Placeholder for player-specific update logic.
-        inputManager.canInput = frozenByThings <= 0;
+        inputManager?.UpdateInputPossible(frozenByThings <= 0);
     }
 
     /// <summary>
