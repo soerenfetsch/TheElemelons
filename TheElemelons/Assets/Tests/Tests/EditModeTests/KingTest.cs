@@ -18,7 +18,7 @@ public class KingTest
     {
         mockTarget = new GameObject();
         kingScript = mockTarget.AddComponent<King>();
-        mockTarget.AddComponent<Rigidbody2D>();
+        Rigidbody2D rigidBody = mockTarget.AddComponent<Rigidbody2D>();
         Animator animator = mockTarget.AddComponent<Animator>();
 #if UNITY_EDITOR
         var ingamePanelPrefab = AssetDatabase.LoadAssetAtPath<Transform>("Assets/Prefabs/NPCPrefabs/King.prefab");
@@ -36,6 +36,7 @@ public class KingTest
         kingScript.thankYou = thanksDialogue;
         kingScript.standardDialogue = standardDialogue;
         kingScript.endDialogue = endDialogue;
+        kingScript.InitializeComponents(rigidBody, animator);
 
         // Add a game manager instance
         new GameObject("GameManager").AddComponent<GameManager>();
@@ -46,29 +47,32 @@ public class KingTest
     [TearDown]
     public void Teardown()
     {
-        GameObject.DestroyImmediate(mockTarget);
+        Object.DestroyImmediate(mockTarget);
     }
-    [UnityTest]
-    public IEnumerator ActOnStatusIdle()
+
+    [Test]
+    public void ActOnStatusIdle()
     {
         kingScript.SetCurrentState(NPCStatus.Idle);
         Vector3 position = mockTarget.transform.position;
-        yield return new WaitForFixedUpdate();
+        
         Assert.True(AreVectorsApproximatelyEqual(position, mockTarget.transform.position), "Idle king must not move");
     }
-    [UnityTest]
-    public IEnumerator ActOnStatusWalkHline()
+
+    [Test]
+    public void ActOnStatusWalkHline()
     {
         kingScript.SetCurrentState(NPCStatus.Walking);
         kingScript.SetWalkPattern(WalkPattern.HLine);
         kingScript.SetWalkSpeed(10f);
         kingScript.SetWalkDist(1f);
         kingScript.TestCallFixedUpdate();
-        yield return new WaitForFixedUpdate();
+        
         Vector2 movement = kingScript.GetMovement();
         Assert.AreEqual(movement.x, 1, "king must move to the right");
         Assert.AreEqual(movement.y, 0, "king musnt move in y");
     }
+
     private static bool AreVectorsApproximatelyEqual(Vector2 a, Vector2 b, float tolerance = 0.01f)
     {
         return Vector2.Distance(a, b) < tolerance;

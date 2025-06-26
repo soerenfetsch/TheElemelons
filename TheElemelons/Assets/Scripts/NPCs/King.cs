@@ -45,8 +45,10 @@ public class King : DialogueTrigger
     public Vector2 movement;
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
+        InitializeComponents(
+            gameObject.GetComponent<Rigidbody2D>(),
+            gameObject.GetComponent<Animator>()
+        );
         ChangeState(NPCStatus.Walking);
         dialogueDictionary = new Dictionary<List<DialogueData>, bool>
         {
@@ -56,6 +58,13 @@ public class King : DialogueTrigger
             { endDialogue, true }
         };
     }
+
+    public void InitializeComponents(Rigidbody2D rb, Animator animator)
+    {
+        this.rb = rb;
+        this.animator = animator;
+    }
+
     void Update()
     {
         switch (GameManager.Instance.CurrentProgressionStage)
