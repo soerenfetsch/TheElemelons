@@ -113,7 +113,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - Given a hash map of floor positions, the wall positions are the positions adjacent to the floor positions but not contained in them
 - **Create doors**: Creates the door positions between rooms and corridors
   - Given room positions and corridor positions the door position is in the middle of the corridor adjacent to a room
-- **Create monster spawnpoints**: For each room have a different pool of possible monsters depending on whether the room is of type NORMAL or ADVANCED, the ADVANCED rooms should have harder monsters. In each room select a random number of 0-5 floor positions, where the specific monster that is supposed to spawn there is denoted.
+- **Create monster spawnpoints**: For each room have a different pool of possible monsters depending on whether the room is of type NORMAL or ADVANCED, the ADVANCED rooms should have harder monsters. In each room select a random number of 0-5 floor positions, where the specific monster that is supposed to spawn there is denoted. The spawn positions have to be unique.
 - **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
 - **Create shrine positions**: With a variable probability between 0 and 40% for each room that is of type NORMAL or ADVANCED, spawn a shrine in the room at a random viable position if one is found. A position is viable if it is 3 tiles away from any wall and has a 3x3 field for the shrine without any monster positions.
 - **Spawn Altars**: Given the shrine spawn points, instantiate altars at the given position.
