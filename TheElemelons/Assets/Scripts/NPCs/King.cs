@@ -107,10 +107,16 @@ public class King : DialogueTrigger
         base.Interact();
         if (basic_dialogues_list == thankYou && !alreadyThanked)
         {
-            GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
-            alreadyThanked = true;
-            GameObject.Find("CastElement").GetComponent<ToolTipTrigger>().otherCondition = true;
+            DialogueManager.OnDialogueEnded += ExecuteThankYou;
         }
+    }
+    public void ExecuteThankYou()
+    {
+        GameManager.Instance.ChangeProgressionStage(GameProgressionStage.CASTLE_EARLY);
+        alreadyThanked = true;
+        GameObject.Find("CastElement").GetComponent<ToolTipTrigger>().otherCondition = true;
+        DialogueManager.OnDialogueEnded -= ExecuteThankYou;
+
     }
     public override void IncNextDialogue()
     {
