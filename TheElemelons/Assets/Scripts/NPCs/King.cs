@@ -136,11 +136,11 @@ public class King : DialogueTrigger
             case GameProgressionStage.CASTLE_INTRODUCTION:
                 if (treeEnemy != null)
                 {
-                    basic_dialogues_list = intro;
+                    changeBasicDialogueList(intro);
                 }
                 else
                 {
-                    basic_dialogues_list = thankYou;
+                    changeBasicDialogueList(thankYou);
                     if (!alreadyDone)
                     {
                         alreadyDone = true;
@@ -150,20 +150,28 @@ public class King : DialogueTrigger
                 }
                 break;
             case GameProgressionStage.CASTLE_END:
-                basic_dialogues_list = endDialogue;
+                changeBasicDialogueList(endDialogue);
                 break;
             case GameProgressionStage.CASTLE_LATE:
-                basic_dialogues_list = standardDialogue;
+                changeBasicDialogueList(standardDialogue);
                 break;
             case GameProgressionStage.EARTH_LATE_BOSS:
-                basic_dialogues_list = standardDialogue;
+                changeBasicDialogueList(standardDialogue);
                 break;
             case GameProgressionStage.EARTH_LATE:
-                basic_dialogues_list = standardDialogue;
+                changeBasicDialogueList(standardDialogue);
                 break;
             default:
-                basic_dialogues_list = standardDialogue;
+                changeBasicDialogueList(standardDialogue);
                 break;
+        }
+    }
+    void changeBasicDialogueList(List<DialogueData> newlist)
+    {
+        if (basic_dialogues_list != newlist)
+        {
+            basic_dialogues_list = newlist;
+            nextDialogue = 0;
         }
     }
 
