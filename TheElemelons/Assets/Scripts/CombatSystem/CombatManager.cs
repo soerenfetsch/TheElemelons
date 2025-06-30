@@ -270,7 +270,7 @@ public static class CombatManager
         var attackerScript = attacker.GetComponent<ICombatant>();
         var targetScript = target.GetComponent<ICombatant>();
 
-        if (attackerScript != null && targetScript != null)
+        if (attacker != null && attackerScript != null && targetScript != null)
         {
             // Check if the target is invincible.
             if (targetScript.isInvincible)
