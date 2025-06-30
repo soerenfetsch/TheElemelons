@@ -233,8 +233,7 @@ using System.Collections;
                 else
                 {
                     sceneImageDisplay.gameObject.SetActive(false);
-                    Debug.LogWarning("[DialogueUI] SceneImage type line has no scene images or first image is null.");
-                }
+                    }
             }
             isTyping = false;
             if (DialogueManager.Instance.currentDialogue.isSlideShow)
