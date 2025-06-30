@@ -44,9 +44,9 @@ public class EarthSkinBuffEffect : MonoBehaviour
         playerAnimator.SetFloat("Vertical", -1);
         playerAnimator.SetFloat("Horizontal", 0);
         playerRigidBody.velocity = new Vector2(0, 0);
-        inputManager.canInput = false;
+        inputManager?.UpdateInputPossible(false);
         yield return new WaitForSeconds(1.5f);
-        inputManager.canInput = true;
+        inputManager?.UpdateInputPossible(true);
     }
     public IEnumerator Expire()
     {

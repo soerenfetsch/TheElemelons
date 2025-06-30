@@ -20,6 +20,11 @@ public class CollectableHeart : Collectable
     }
     protected override void OnCollect()
     {
+        if (playerHealth == null)
+        {
+            // When player health is not set up yet, wait for collectable to drop first
+            return;
+        }
         playerHealth.AddHealth(healValue);
         StartCoroutine(Expire());
     }

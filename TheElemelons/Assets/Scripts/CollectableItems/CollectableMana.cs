@@ -19,6 +19,11 @@ public class CollectableMana : Collectable
     }
     protected override void OnCollect()
     {
+        if (playerMana == null)
+        {
+            // When player mana is not set up yet, wait for collectable to drop first
+            return;
+        }
         playerMana.AddMana(1);
         StartCoroutine(Expire());
     }

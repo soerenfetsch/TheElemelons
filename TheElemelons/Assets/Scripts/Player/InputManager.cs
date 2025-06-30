@@ -261,7 +261,6 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleMenuInputs()
     {
-        Debug.Log("Main Menu Input Handling");
         canMove = false;
         canInput = false;
     }
@@ -271,7 +270,6 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleSettingsInputs()
     {
-        Debug.Log("Settings Menu Input Handling");
         canMove = false;
         canInput = false;
     }
@@ -281,7 +279,6 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandlePauseMenuInputs()
     {
-        Debug.Log("Pause Menu Input Handling");
         canMove = false;
         canInput = false;
     }
@@ -303,7 +300,6 @@ public class InputManager : MonoBehaviour
     /// </summary>
     private void HandleDeathScreenInputs()
     {
-        Debug.Log("Death Screen Input Handling");
         canMove = false;
         canInput = false;
     }
@@ -412,5 +408,10 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log($"  - FINAL: Action: {kvp.Key}, Key: {kvp.Value} ({(int)kvp.Value})");
         }
+    }
+
+    public void UpdateInputPossible(bool possible)
+    {
+        canInput = possible;
     }
 }

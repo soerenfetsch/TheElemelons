@@ -21,13 +21,15 @@ public class MonsterManagerTest
         generator.dungeonWidth = 100;
         generator.dungeonHeight = 100;
         room = new Room();
-        for (int x = 1; x <= 3; x++)
+        // Make room big enough to fit at least 3 monsters
+        for (int x = 1; x <= 7; x++)
         {
-            for (int y = 1; y <= 3; y++)
+            for (int y = 1; y <= 7; y++)
             {
                 room.AddFloorPosition(new Vector2Int(x, y));
             }
         }
+        room.roomType = Room.RoomType.NORMAL;
         mapData.AddRoom(room);
         generator.CreateWalls(mapData);
         generator.CreateDoorPositions(mapData);
@@ -60,14 +62,55 @@ public class MonsterManagerTest
         monsterManager.ClearAllEnemies();
         Assert.AreEqual(0, monsterManager.allMonsters.Count, "didnt clear all monsters");
     }
+
     [Test]
-    public void TestSelectRandomSpawnPositions()
+    public void TestSelectRandomSpawnPositions_SelectsPositionsInFloorPositions()
     {
         int count = 3;
         List<Vector2Int> spawnPositions = MonsterManager.SelectSpawnPositions(count, room);
+        Assert.AreEqual(count, spawnPositions.Count,
+                        $"Wrong number of spawn positions selected: {spawnPositions.Count} instead of {count}");
         for (int i = 0; i < count; i++)
         {
-            Assert.True(MonsterManager.IsInRoom(spawnPositions[i], room), "Spawnposition out of bounds");
+            Debug.Log($"Spawn Position {i}: {spawnPositions[i]}");
+            Assert.True(room.floorPositions.Contains(spawnPositions[i]),
+                        "Spawnposition not contained in floor");
         }
+    }
+
+    [Test]
+    public void TestSelectRandomSpawnPositions_SelectsUniquePositions()
+    {
+        int count = 3;
+        List<Vector2Int> spawnPositions = MonsterManager.SelectSpawnPositions(count, room);
+        Assert.AreEqual(count, spawnPositions.Count,
+                        $"Wrong number of spawn positions selected: {spawnPositions.Count} instead of {count}");
+        HashSet<Vector2Int> uniquePositions = new HashSet<Vector2Int>(spawnPositions);
+        Assert.AreEqual(count, uniquePositions.Count,
+                        $"Selected spawn positions are not unique: "
+                        + "{ spawnPositions[0]}, {spawnPositions[1]}, {spawnPositions[2]}");
+    }
+
+    [Test]
+    public void TestSelectRandomSpawnPositions_AdjustsCountWhenAvailableSpaceTooLow()
+    {
+        // Construct a room where only 1-2 positions are available
+        Room smallRoom = new Room();
+        for (int x = 0; x <= 3; x++)
+        {
+            for (int y = 0; y <= 3; y++)
+            {
+                smallRoom.AddFloorPosition(new Vector2Int(x, y));
+            }
+        }
+        smallRoom.roomType = Room.RoomType.NORMAL;
+        mapData.AddRoom(smallRoom);
+        generator.CreateWalls(mapData);
+        generator.CreateDoorPositions(mapData);
+
+        int count = 10; // Request more positions than available
+        List<Vector2Int> spawnPositions = MonsterManager.SelectSpawnPositions(count, smallRoom);
+        Assert.LessOrEqual(spawnPositions.Count, 2,
+                           "Too many spawn positions picked!");
     }
 }

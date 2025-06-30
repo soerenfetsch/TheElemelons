@@ -20,6 +20,11 @@ public class CollectableMaxMana : Collectable
     }
     protected override void OnCollect()
     {
+        if (playerMana == null)
+        {
+            // When player mana is not set up yet, wait for collectable to drop first
+            return;
+        }
         playerMana.SetMaxMana(playerMana.GetMaxMana() + 1);
         StartCoroutine(Expire());
     }

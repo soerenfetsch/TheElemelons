@@ -77,7 +77,8 @@ public class GameManager : MonoBehaviour
             SaveGame();
         PreviousProgressionStage = CurrentProgressionStage; // Store the previous stage
         CurrentProgressionStage = newStage;
-        StartMainGameStage(isStartScene);
+        if (Application.isPlaying)  // Guardrail for edit mode testing
+            StartMainGameStage(isStartScene);
     }
 
     public void ChangeGameStatus(GameStatus newStatus)
