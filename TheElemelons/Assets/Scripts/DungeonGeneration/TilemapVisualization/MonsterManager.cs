@@ -391,23 +391,48 @@ public class MonsterManager : MonoBehaviour
     {
         List<Vector2Int> positions = new();
         List<Vector2> bounds = GetRoomBounds(room);
-        int x = 0;
-        int y = 0;
+
+        // First construct all possible positions
+        HashSet<Vector2Int> possiblePositions = new();
         if (room.roomType != Room.RoomType.START)
         {
-            for (int i = 0; i < count; i++)
+            for (int x = (int)bounds[0].x + 2; x <= (int)bounds[1].x - 2; x++)
             {
-                x = (int)Random.Range(bounds[0].x + 2, bounds[1].x - 2);
-                y = (int)Random.Range(bounds[0].y + 2, bounds[1].y - 2);
-
+                for (int y = (int)bounds[0].y + 2; y <= (int)bounds[1].y - 2; y++)
+                {
+                    possiblePositions.Add(new Vector2Int(x, y));
+                }
             }
         }
         else
         {
-            x = (int)Random.Range(bounds[0].x + 2, ((bounds[1].x - bounds[0].x) / 2) + bounds[0].x - 2);
-            y = (int)Random.Range(bounds[0].y + 2, bounds[1].y - 2);
+            // If the room is a start room, we limit the x position to the left half of the room
+            for (int x = (int)bounds[0].x + 2; x <= ((bounds[1].x - bounds[0].x) / 2) + bounds[0].x - 2; x++)
+            {
+                for (int y = (int)bounds[0].y + 2; y <= (int)bounds[1].y - 2; y++)
+                {
+                    possiblePositions.Add(new Vector2Int(x, y));
+                }
+            }
         }
-        positions.Add(new Vector2Int(x, y));
+
+        // If the possible position count is smaller than the specified, log a warning
+        if (possiblePositions.Count < count)
+        {
+            Debug.LogWarning($"Not enough possible spawn positions in room {room.roomType}. "
+                             + $"Requested: {count}, Available: {possiblePositions.Count}");
+            count = possiblePositions.Count; // Adjust count to available positions
+        }
+
+        // Randomly select positions from the possible positions
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Random.Range(0, possiblePositions.Count);
+            Vector2Int selectedPosition = possiblePositions.ElementAt(randomIndex);
+            positions.Add(selectedPosition);
+            possiblePositions.Remove(selectedPosition); // Remove to ensure uniqueness
+        }
+        
         return positions;
     }
 

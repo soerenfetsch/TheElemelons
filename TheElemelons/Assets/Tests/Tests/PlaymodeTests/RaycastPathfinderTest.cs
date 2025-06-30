@@ -25,8 +25,8 @@ public class RaycastPathfinderPlayModeTests
     public IEnumerator FindBestDirection_NoObstacles_ReturnsGoalDirection()
     {
         // Arrange
-        Vector2 ownPosition = Vector2.zero;
-        Vector2 goalPosition = new Vector2(1, 1);
+        Vector2 ownPosition = new Vector2(100f, 100f);
+        Vector2 goalPosition = new Vector2(101f, 101f);
 
         // Act
         Vector2 bestDirection = RaycastPathfinder.FindBestDirection(ownPosition, goalPosition);
@@ -43,17 +43,19 @@ public class RaycastPathfinderPlayModeTests
     public IEnumerator FindBestDirection_WithObstacle_AvoidsObstacle()
     {
         // Arrange
-        Vector2 ownPosition = Vector2.zero;
-        Vector2 goalPosition = new Vector2(3, 3);
+        Vector2 ownPosition = new Vector2(100, 100);
+        Vector2 goalPosition = new Vector2(103, 103);
 
         // Create a test obstacle.
         GameObject obstacle = new GameObject("Obstacle");
         BoxCollider2D collider = obstacle.AddComponent<BoxCollider2D>();
         collider.size = new Vector2(1f, 1f); // Large enough to block the ray
-        obstacle.transform.position = new Vector2(1.5f, 1.5f);
+        obstacle.transform.position = new Vector2(101.5f, 101.5f);
         obstacle.layer = LayerMask.NameToLayer("Default");
 
+        Physics2D.SyncTransforms(); // Ensure the physics system is updated before testing.
         yield return new WaitForFixedUpdate(); // Wait for physics updates.
+        yield return new WaitForFixedUpdate();
         
         // Act
         Vector2 bestDirection = RaycastPathfinder.FindBestDirection(ownPosition, goalPosition);
@@ -83,7 +85,6 @@ public class RaycastPathfinderPlayModeTests
             }
         }
     }
-
 
     private static bool AreVectorsApproximatelyEqual(Vector2 a, Vector2 b, float tolerance = 0.01f)
     {

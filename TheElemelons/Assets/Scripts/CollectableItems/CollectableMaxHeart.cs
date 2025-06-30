@@ -29,11 +29,13 @@ public class CollectableMaxHeart : Collectable
     /// </summary>
     protected override void OnCollect()
     {
-        if (playerHealth.GetMaxHealth() < 9)
+        if (playerHealth == null)
         {
-            playerHealth.SetMaxHealth(playerHealth.GetMaxHealth() + 1);
-            playerHealth.SetHealth(playerHealth.GetMaxHealth());
+            // When player health is not set up yet, wait for collectable to drop first
+            return;
         }
+        playerHealth.SetMaxHealth(playerHealth.GetMaxHealth() + 1);
+        playerHealth.SetHealth(playerHealth.GetMaxHealth());
         StartCoroutine(Expire());
     }
 

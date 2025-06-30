@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
+  player: {fileID: 0}
   pathfinder: {fileID: 0}
   moveSpeed: 1
   chaseRadius: 10
@@ -61,6 +62,7 @@ MonoBehaviour:
   baseDamage: 1
   thrust: 15
   knockTime: 0.4
+  flashDuration: 0.2
   deathEffect: {fileID: 6313023283250807194, guid: 077af1b4b79ac5a46a192dd3437fb204, type: 3}
   deathEffectDelay: 1
 --- !u!212 &6894997854453123198
@@ -348,7 +350,7 @@ PolygonCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

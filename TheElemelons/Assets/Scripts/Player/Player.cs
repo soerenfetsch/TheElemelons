@@ -103,8 +103,8 @@ public class Player : MonoBehaviour, ICombatant, IBuffable
     /// </summary>
     void Update()
     {
-        // Disable input if frozen by any effect.
-        inputManager.canInput = frozenByThings <= 0;
+        // Placeholder for player-specific update logic.
+        inputManager?.UpdateInputPossible(frozenByThings <= 0);
     }
 
     /// <summary>

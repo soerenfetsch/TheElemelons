@@ -29,10 +29,12 @@ public class CollectableMaxMana : Collectable
     /// </summary>
     protected override void OnCollect()
     {
-        if (playerMana.GetMaxMana() < 9)
+        if (playerMana == null)
         {
-            playerMana.SetMaxMana(playerMana.GetMaxMana() + 1);
+            // When player mana is not set up yet, wait for collectable to drop first
+            return;
         }
+        playerMana.SetMaxMana(playerMana.GetMaxMana() + 1);
         StartCoroutine(Expire());
     }
 

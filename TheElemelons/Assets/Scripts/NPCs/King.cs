@@ -106,14 +106,24 @@ public class King : DialogueTrigger
     /// </summary>
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
+        InitializeComponents(
+            gameObject.GetComponent<Rigidbody2D>(),
+            gameObject.GetComponent<Animator>()
+        );
         ChangeState(NPCStatus.Walking);
-        dialogueDictionary = new Dictionary<List<DialogueData>, bool>();
-        dialogueDictionary.Add(intro, false);
-        dialogueDictionary.Add(thankYou, false);
-        dialogueDictionary.Add(standardDialogue, true);
-        dialogueDictionary.Add(endDialogue, true);
+        dialogueDictionary = new Dictionary<List<DialogueData>, bool>
+        {
+            { intro, false },
+            { thankYou, false },
+            { standardDialogue, true },
+            { endDialogue, true }
+        };
+    }
+
+    public void InitializeComponents(Rigidbody2D rb, Animator animator)
+    {
+        this.rb = rb;
+        this.animator = animator;
     }
 
     /// <summary>
