@@ -1,9 +1,13 @@
-using UnityEngine;
 
-
+/// <summary>
+/// Abstract base class for all interactable NPCs in the game.
+/// Implements <see cref="INonPlayableCharacter"/> and provides state management for NPCs.
+/// </summary>
 public abstract class InteractableNPC : InteractableObject, INonPlayableCharacter
 {
-    // Current status of the NPC
+    /// <summary>
+    /// Current status of the NPC (e.g., Idle, Walking).
+    /// </summary>
     protected NPCStatus currentState = NPCStatus.Idle;
 
     /// <summary>
@@ -26,8 +30,14 @@ public abstract class InteractableNPC : InteractableObject, INonPlayableCharacte
 
     /// <summary>
     /// Defines how the NPC behaves based on its current state.
+    /// Must be implemented by derived classes.
     /// </summary>
     public abstract void ActOnStatus();
+
+    /// <summary>
+    /// Sets the current state of the NPC directly.
+    /// </summary>
+    /// <param name="newState">The new state to set.</param>
     public void SetCurrentState(NPCStatus newState)
     {
         currentState = newState;

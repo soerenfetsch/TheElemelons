@@ -1,31 +1,74 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
+/// <summary>
+/// Visualizes the Earth dungeon by painting floor, wall, door, and decoration tiles onto Unity Tilemaps.
+/// Supports advanced and basic tile sets, rim tiles, and atlas-based floor patterns.
+/// </summary>
 public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 {
-    public Tilemap floorTilemap, collisionTilemap, decorationTilemap; // Tilemaps for floors and walls
-    public WallTileSet basicWalls, advancedWalls; // Tiles for the walls
-    public TilemapData floorAtlasTilemapData;                         // Atlas tilemap for floor patterns
-    public RimTileSet basicRims, advancedRims; // Rim tiles
-    // For the top and bottom doors the tiles are named after their respective position
-    public DoorTileSet doorTileSet; // Door tileset for all four doors
+    /// <summary>
+    /// Tilemap for floor tiles.
+    /// </summary>
+    public Tilemap floorTilemap;
+    /// <summary>
+    /// Tilemap for collision (wall) tiles.
+    /// </summary>
+    public Tilemap collisionTilemap;
+    /// <summary>
+    /// Tilemap for decoration tiles.
+    /// </summary>
+    public Tilemap decorationTilemap;
+
+    /// <summary>
+    /// Wall tile set for basic rooms.
+    /// </summary>
+    public WallTileSet basicWalls;
+    /// <summary>
+    /// Wall tile set for advanced rooms.
+    /// </summary>
+    public WallTileSet advancedWalls;
+
+    /// <summary>
+    /// Atlas tilemap data for floor patterns.
+    /// </summary>
+    public TilemapData floorAtlasTilemapData;
+
+    /// <summary>
+    /// Rim tile set for basic rooms.
+    /// </summary>
+    public RimTileSet basicRims;
+    /// <summary>
+    /// Rim tile set for advanced rooms.
+    /// </summary>
+    public RimTileSet advancedRims;
+
+    /// <summary>
+    /// Door tile set for all four doors (closed).
+    /// </summary>
+    public DoorTileSet doorTileSet;
+    /// <summary>
+    /// Door tile set for all four doors (open).
+    /// </summary>
     public DoorTileSet openDoorTileSet;
+
+    /// <summary>
+    /// Enum for rim tile positions.
+    /// </summary>
     protected enum RimPosition
     {
         UpperTopLeft, UpperTopRight, UpperBottomLeft, UpperBottomRight,
         UpperTop, UpperLeft, UpperRight, UpperBottom,
         LowerTopLeft, LowerTopRight, LowerBottomLeft, LowerBottomRight
     };
+
+    // Atlas tilemap instance for floor patterns.
     protected Tilemap atlasTilemap;
 
     /// <summary>
-    /// Initializes the atlas tilemap from TilemapData.
+    /// Initializes the atlas tilemap from <see cref="floorAtlasTilemapData"/>.
     /// </summary>
     private void InitializeAtlasTilemap()
     {
@@ -42,7 +85,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
                 atlasTilemap.SetTile(tilePosition, tile);
             }
 
-            // We need to compress the bounds of the tilemap to get accurate BoundsInt
+            // Compress the bounds of the tilemap to get accurate BoundsInt
             atlasTilemap.CompressBounds();
         }
     }
@@ -99,7 +142,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
     }
 
     /// <summary>
-    /// Paints the tiles on the map.
+    /// Paints the tiles on the map: floor, walls, doors, and decorations.
     /// </summary>
     /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public override void PaintTiles(MapData mapData)
@@ -122,9 +165,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     /// <summary>
     /// Paints the floor tiles at the given positions in the map data.
-    /// This method initializes the atlas tilemap, calculates the center of each room, and determines the possible area of the source tilemap.
-    /// It then uses a random seed to select a starting point and paints the floor tiles based on the positions and room types.
-    /// If a floor position is at the rim of the floor, it uses the border tiles; otherwise, it maps between the floor positions and the positions on the atlas tilemap.
+    /// Uses atlas-based patterns and rim tiles for room borders.
     /// </summary>
     /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void PaintFloor(MapData mapData)
@@ -150,10 +191,6 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         int yLen = yMax - yMin + 1;
         BoundsInt sourceMapBounds = atlasTilemap.cellBounds;
 
-        Debug.Log("Atlas source bounds: " + sourceMapBounds);
-        Debug.Log("Atlas min and max x: " + sourceMapBounds.xMin + ", " + sourceMapBounds.xMax);
-        Debug.Log("Atlas min and max y: " + sourceMapBounds.yMin + ", " + sourceMapBounds.yMax);
-
         if (sourceMapBounds.xMax - xLen < sourceMapBounds.xMin)
         {
             Debug.LogWarning("Dungeon is larger in x direction than the given atlas map");
@@ -167,11 +204,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         int xRand = UnityEngine.Random.Range(sourceMapBounds.xMin, sourceMapBounds.xMax - xLen);
         int yRand = UnityEngine.Random.Range(sourceMapBounds.yMin, sourceMapBounds.yMax - yLen);
 
-        Debug.Log("Random starting point: " + xRand + ", " + yRand);
-
         Vector3Int startingPos = new Vector3Int(xRand, yRand, 0);
-        Debug.Log("The tile at starting position is: " + atlasTilemap.GetTile(startingPos));
-
 
         foreach (var position in mapData.floorPositions)
         {
@@ -349,7 +382,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     /// <summary>
     /// Decorates the dungeon with additional elements.
-    /// Is left empty for now.
+    /// Currently not implemented.
     /// </summary>
     /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void DecorateDungeon(MapData mapData)
@@ -359,9 +392,7 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     /// <summary>
     /// Paints the doors at the specified positions in the map data.
-    /// This method iterates through the door positions of each room and determines the direction of each door
-    /// (top, bottom, left, or right) based on the surrounding floor positions. It then paints the door in the
-    /// appropriate direction.
+    /// Determines the direction of each door and paints it using the appropriate tile set.
     /// </summary>
     /// <param name="mapData">The map data containing the floor positions, rooms, and door positions.</param>
     public void PaintDoors(MapData mapData)
@@ -370,8 +401,8 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
         {
             foreach (Vector2Int door in room.doorPositions)
             {
-                // First find out whether door is top, bottom, left or right
-                Vector2Int doorDirection; // right for top, down for right, left for bottom, up for left
+                // Determine door direction: up, down, left, or right
+                Vector2Int doorDirection;
                 if (room.floorPositions.Contains(door + Vector2Int.down))
                 {
                     // Top door
@@ -441,10 +472,10 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
 
     /// <summary>
     /// Paints the door at the specified position in the given room.
-    /// This method paints the door based on the door direction and the room type.
+    /// Paints the door based on the door direction and the room type.
     /// </summary>
     /// <param name="position">The position of the door.</param>
-    /// <param name="doorDirection">The direction of the door. up, down, left or right.</param>
+    /// <param name="doorDirection">The direction of the door (up, down, left, or right).</param>
     /// <param name="room">The room the door is in.</param>
     public void PaintDoor(Vector2Int position, Vector2Int doorDirection, Room room)
     {
@@ -533,6 +564,14 @@ public class EarthDungeonTileVizualizer : AbstractTilemapVisualizer
             );
         }
     }
+
+    /// <summary>
+    /// Paints an open door at the specified position in the given room.
+    /// Paints the open door based on the door direction and the room type.
+    /// </summary>
+    /// <param name="position">The position of the door.</param>
+    /// <param name="doorDirection">The direction of the door (up, down, left, or right).</param>
+    /// <param name="room">The room the door is in.</param>
     public void PaintOpenDoor(Vector2Int position, Vector2Int doorDirection, Room room)
     {
         // Paint the door based on the door direction, initial position is in the middle of the door

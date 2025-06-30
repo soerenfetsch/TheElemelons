@@ -1,15 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for NPCs or objects that can trigger dialogue sequences.
+/// Handles dialogue selection, cycling, and interaction logic with the player.
+/// </summary>
 public class DialogueTrigger : InteractableNPC
 {
+    /// <summary>
+    /// Index of the next dialogue to trigger from <see cref="basic_dialogues_list"/>.
+    /// </summary>
     [Header("Dialogue")]
     protected int nextDialogue = 0;
+
+    /// <summary>
+    /// List of dialogue data assets available for this trigger.
+    /// </summary>
     public List<DialogueData> basic_dialogues_list;
 
+    /// <summary>
+    /// Called when the player interacts with this NPC or object.
+    /// Handles starting or advancing dialogue, and manages dialogue state.
+    /// </summary>
     public override void Interact()
     {
-        // This method is called by PlayerInteraction when the player presses E near this NPC
+        // Set game status to dialogue mode
         GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE);
         Debug.Log($"[DialogueTrigger] Interact called on {gameObject.name}. nextDialogue index: {nextDialogue}. HasDialogue: {DialogueManager.Instance != null && DialogueManager.Instance.HasDialogue()}");
 
@@ -24,40 +39,28 @@ public class DialogueTrigger : InteractableNPC
             return;
         }
 
-        // GameManager.Instance.ChangeGameStatus(GameStatus.DIALOGUE); // Moved to DialogueManager.StartDialogue
-
+        // If a dialogue is already active, advance it; otherwise, start a new dialogue sequence.
         if (DialogueManager.Instance.HasDialogue())
         {
-            Debug.Log($"[DialogueTrigger] Advancing existing dialogue via DialogueManager on {gameObject.name}.");
             DialogueManager.Instance.AdvanceDialogue();
         }
         else
         {
-            //string dialogueKey = basic_dialogues_list[nextDialogue++].name;
             Debug.Log($"[DialogueTrigger] Starting new dialogue sequence from {gameObject.name}.");
+
+            // If there are no dialogues, revert game status and exit
             if (basic_dialogues_list == null || basic_dialogues_list.Count == 0)
             {
-                Debug.LogError($"[DialogueTrigger] basic_dialogues_list is null or empty on {gameObject.name}!");
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME); // Revert status if dialogue can't start
+                Debug.LogWarning("[DialogueTrigger] No dialogues found for this NPC."); // Log warning for missing data
                 return;
-            }
-            if (nextDialogue >= basic_dialogues_list.Count || nextDialogue < 0)
-            {
-                Debug.LogWarning($"[DialogueTrigger] nextDialogue index ({nextDialogue}) is out of bounds for basic_dialogues_list (Count: {basic_dialogues_list.Count}) on {gameObject.name}. Resetting to 0.");
-                nextDialogue = 0;
-                if (basic_dialogues_list.Count == 0)
-                { // Double check after reset if list was empty
-                    Debug.LogError($"[DialogueTrigger] basic_dialogues_list is empty even after reset on {gameObject.name}!");
-                    GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
-                    return;
-                }
             }
 
             DialogueData dataToStart = basic_dialogues_list[nextDialogue];
             if (dataToStart == null)
             {
-                Debug.LogError($"[DialogueTrigger] DialogueData at basic_dialogues_list[{nextDialogue}] is NULL on {gameObject.name}!");
                 GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
+                Debug.LogWarning($"[DialogueTrigger] DialogueData at index {nextDialogue} is null."); // Log warning for null dialogue
                 IncNextDialogue(); // Try to advance for next time, or clamp
                 return;
             }
@@ -67,11 +70,20 @@ public class DialogueTrigger : InteractableNPC
             IncNextDialogue();
         }
     }
+
+    /// <summary>
+    /// Advances the <see cref="nextDialogue"/> index, cycling through the dialogue list.
+    /// Can be overridden for custom dialogue cycling logic.
+    /// </summary>
     public virtual void IncNextDialogue()
     {
         nextDialogue = (nextDialogue + 1) % basic_dialogues_list.Count;
     }
 
+    /// <summary>
+    /// Called to handle NPC-specific status updates (e.g., animations or behaviors).
+    /// Can be overridden in derived classes.
+    /// </summary>
     public override void ActOnStatus()
     {
         // Example: handle NPC animations or behaviors

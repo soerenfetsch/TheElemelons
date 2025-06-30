@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class RoomTransition : MonoBehaviour
 {
     public Vector2 destination;
@@ -17,6 +14,5 @@ public class RoomTransition : MonoBehaviour
         {
             other.transform.parent.position = destination;
         }
-        
     }
 }

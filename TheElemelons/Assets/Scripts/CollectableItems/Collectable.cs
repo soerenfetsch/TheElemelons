@@ -1,29 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Abstract base class for all collectable items in the game.
+/// Handles general logic for hovering, following the player, and triggering collection effects.
+/// </summary>
 public abstract class Collectable : MonoBehaviour
 {
+    // Force applied to the collectable when pulled toward the player.
     protected float force = 10f;
+    // Range within which the collectable is attracted to the player.
     protected float range = 1f;
+    // Reference to the player's Rigidbody2D.
     protected Rigidbody2D player;
+    // Reference to the player's Transform.
     protected Transform playerTransform;
+    // Reference to the player's Health component.
     protected Health playerHealth;
+    // Reference to the player's Mana component.
     protected Mana playerMana;
+    // Animator for collectable animations.
     protected Animator animator;
+    // Rigidbody2D for physics interactions.
     protected Rigidbody2D rb;
+    // Whether this collectable has already been collected.
     protected bool collected;
+    // Collider for detecting collection.
     protected BoxCollider2D boxCollider2D;
+    // SpriteRenderer for visual effects.
     protected SpriteRenderer spriteRenderer;
+
     [Header("Hovering Motion")]
+    // Amplitude of the hovering motion.
     protected float amplitude = 0.1f;
+    // Frequency of the hovering motion.
     protected float frequency = 0.3f;
+    // The fixed point around which the collectable hovers.
     protected Vector2 fixpoint;
+    /// <summary>
+    /// Prefab for the collectable's shadow.
+    /// </summary>
     public GameObject shadowObject;
+    // Transform for the shadow instance.
     protected Transform shadow;
+    // Vertical offset for the shadow.
     protected float shadowOffset = 0.7f;
+    // Scale of the shadow.
     protected float shadowScale = 1f;
 
+    /// <summary>
+    /// Initializes references to player, rigidbody, colliders, animator, and shadow.
+    /// </summary>
     public void InitializeGeneral()
     {
         player = GameObject.Find("Player").GetComponent<Rigidbody2D>();
@@ -37,9 +63,10 @@ public abstract class Collectable : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
     /// <summary>
-    /// Object is pulled towards player in in range (~2 units), else performs a hovering motion on a fixed location.
-    /// If already collected follow the player
+    /// Object is pulled towards player if in range (~2 units), else performs a hovering motion on a fixed location.
+    /// If already collected, follows the player.
     /// </summary>
     protected void Movement()
     {
@@ -63,10 +90,11 @@ public abstract class Collectable : MonoBehaviour
             transform.position = player.position;
         }
     }
+
     /// <summary>
-    /// Calls the abstract method OnCollect() if collision with the player detected.
+    /// Calls the abstract method <see cref="OnCollect"/> if collision with the player is detected.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">The collider that entered the trigger.</param>
     protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player") &&
@@ -75,5 +103,10 @@ public abstract class Collectable : MonoBehaviour
             OnCollect();
         }
     }
+
+    /// <summary>
+    /// Called when the collectable is collected by the player.
+    /// Must be implemented by derived classes to define specific collection behavior.
+    /// </summary>
     protected abstract void OnCollect();
 }

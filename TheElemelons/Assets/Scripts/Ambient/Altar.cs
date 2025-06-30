@@ -1,43 +1,100 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
-/// Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
-///Case not golden and  blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1 on interact.
-///Case golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1 on interact.
-///Case not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense or speed) 
-/// that has a duration of ~2mins on interact.
+/// Represents an altar that spawns different loot depending on its type and player interaction.
+/// - Golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1.
+/// - Not golden and blood: Spawns 1-3 collectable hearts that each heal the player’s health by 1.
+/// - Golden and pink fluid: Spawns a golden collectable mana star that increases the player’s max mana by 1.
+/// - Not golden and pink fluid: Spawns a collectable potion that grants the player a random buff (damage, defense, or speed) for ~2 minutes.
 /// </summary>
 public class Altar : InteractableObject
 {
     [Header("Altar Type Probabilities")]
+    /// <summary>
+    /// Probability that the altar is golden.
+    /// </summary>
     public float goldChance = 0.5f;
+
+    /// <summary>
+    /// Probability that the altar contains blood.
+    /// </summary>
     public float bloodChance = 0.5f;
 
     [Header("Bound Components")]
+    // Animator for the altar's fluid animation.
     Animator fluidAnimator;
+    // Animator for the altar's main animation.
     Animator animator;
+    // Collider for the altar's normal state.
     PolygonCollider2D colliderNormal;
+    // Collider for the altar's destroyed state.
     PolygonCollider2D colliderDestroyed;
+    // The active collider for the altar.
     new PolygonCollider2D collider2D;
+
     [Header("Flags")]
+    /// <summary>
+    /// Whether the altar is golden.
+    /// </summary>
     public bool gold = false;
+
+    /// <summary>
+    /// Whether the altar contains blood.
+    /// </summary>
     public bool blood = false;
+
+    // Whether loot has been spawned.
     bool spawned;
+
     [Header("Loot")]
+    /// <summary>
+    /// The number of symbols required for max upgrades.
+    /// </summary>
     public int symbols = 13;
+
+    // Whether the altar has already been interacted with.
     bool interacted = false;
+
+    /// <summary>
+    /// Maximum number of hearts that can be spawned.
+    /// </summary>
     public int maxSpawnableHearts = 3;
+
+    /// <summary>
+    /// Prefab for a collectable heart (heals player).
+    /// </summary>
     public GameObject collectableHeart;
+
+    /// <summary>
+    /// Prefab for a collectable max heart (increases max health).
+    /// </summary>
     public GameObject collectableMaxHeart;
+
+    /// <summary>
+    /// Prefab for a collectable max mana (increases max mana).
+    /// </summary>
     public GameObject collectableMaxMana;
+
+    /// <summary>
+    /// Prefab for a collectable pink potion (grants random buff).
+    /// </summary>
     public GameObject collectablePinkPotion;
+
+    // List of loot prefabs to spawn.
     List<GameObject> lootList;
+    // List of rigidbodies for spawned loot.
     List<Rigidbody2D> rbLootList;
+    // Reference to the player's health.
     Health playerHealth;
+    // Reference to the player's mana.
     Mana playerMana;
+
     [Header("Movement")]
+    // Maximum distance loot can travel.
     float maxDistance = 4f;
+    // Lists for loot movement and trajectory.
     List<float> maxDistances;
     List<float> distances;
     List<float> amplitudes;
@@ -45,8 +102,11 @@ public class Altar : InteractableObject
     List<int> xsign;
     List<int> ysign;
     List<Vector2> dirs;
+    // Speed at which loot moves.
     float moveSpeed = 3f;
-    // Start is called before the first frame update
+
+    // Start is called before the first frame update.
+    // Initializes altar state, components, and loot lists.
     void Start()
     {
         InitializeRandomProperties();
@@ -54,6 +114,10 @@ public class Altar : InteractableObject
         InitializeLists();
         InitializeCollider();
     }
+
+    /// <summary>
+    /// Initializes references to components and player stats, and sets animator flags.
+    /// </summary>
     public void InitializeGeneral()
     {
         animator = GetComponent<Animator>();
@@ -67,15 +131,26 @@ public class Altar : InteractableObject
         animator.SetBool("Gold", gold);
         fluidAnimator.SetBool("Blood", blood);
     }
+
+    /// <summary>
+    /// Checks if the player already exceeds the maximum allowed upgrades.
+    /// </summary>
+    /// <returns>True if the player exceeds max upgrades, otherwise false.</returns>
     public bool ExceedsMax()
     {
         return gold && ((blood && playerHealth.GetMaxHealth() > symbols) || (!blood && playerMana.GetMaxMana() > symbols));
     }
+
+    // Initializes the collider for the altar.
     void InitializeCollider()
     {
         collider2D = GetComponent<PolygonCollider2D>();
         collider2D.points = colliderNormal.points;
     }
+
+    /// <summary>
+    /// Initializes lists used for loot and movement.
+    /// </summary>
     public void InitializeLists()
     {
         lootList = new List<GameObject>();
@@ -89,6 +164,7 @@ public class Altar : InteractableObject
         ysign = new List<int>();
     }
 
+    // Randomly determines if the altar is golden or contains blood based on probabilities.
     private void InitializeRandomProperties()
     {
         if (Random.Range(0f, 1f) < goldChance)
@@ -116,6 +192,8 @@ public class Altar : InteractableObject
             StartCoroutine(Destruction());
         }
     }
+
+    // Handles altar destruction animation and triggers loot selection.
     IEnumerator Destruction()
     {
         fluidAnimator.SetTrigger("Bleed");
@@ -125,6 +203,12 @@ public class Altar : InteractableObject
         collider2D.points = colliderDestroyed.points;
         ChoseLoot();
     }
+
+    /// <summary>
+    /// Chooses which loot to spawn based on altar type and player state.
+    /// </summary>
+    /// <param name="spawn">Whether to spawn the loot immediately.</param>
+    /// <returns>List of loot GameObjects to be spawned.</returns>
     public List<GameObject> ChoseLoot(bool spawn = true)
     {
         // add small debuff chance
@@ -154,9 +238,10 @@ public class Altar : InteractableObject
         }
         return lootList;
     }
+
+    // Instantiates and initializes loot objects, setting up their movement properties.
     void SpawnLoot()
     {
-
         for (int i = 0; i < lootList.Count; i++)
         {
             GameObject current = Instantiate(lootList[i], transform.position, Quaternion.Euler(0, 0, 0));
@@ -173,8 +258,9 @@ public class Altar : InteractableObject
         }
         spawned = true;
     }
+
     /// <summary>
-    ///  if the collectables have spawned, calls DoMovement().
+    /// If the collectables have spawned, calls DoMovement().
     /// </summary>
     void FixedUpdate()
     {
@@ -183,10 +269,11 @@ public class Altar : InteractableObject
             DoMovement();
         }
     }
+
     /// <summary>
-    /// Moves each collectable around in a parabola shaped trajectory. 
+    /// Moves each collectable around in a parabola-shaped trajectory. 
     /// The distance each collectable travels is measured and after a short random distance, 
-    /// the movement is interupted and their collectable scripts become enabled.
+    /// the movement is interrupted and their collectable scripts become enabled.
     /// </summary>
     void DoMovement()
     {
@@ -211,9 +298,9 @@ public class Altar : InteractableObject
                 xsign.Remove(xsign[i]);
                 ysign.Remove(ysign[i]);
             }
-
         }
     }
+
     /// <summary>
     /// After all spawned collectables have travelled their desired distance and their collectable 
     /// scripts have been activated, Update() deactivates the altar’s altar script.
@@ -225,5 +312,4 @@ public class Altar : InteractableObject
             transform.GetComponent<Altar>().enabled = false;
         }
     }
-
 }

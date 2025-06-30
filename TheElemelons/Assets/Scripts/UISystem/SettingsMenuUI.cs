@@ -1,23 +1,47 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the settings menu UI, including key binding management and navigation.
+/// Allows rebinding of keys for player actions and returning to the previous menu.
+/// </summary>
 public class SettingsMenuUI : MonoBehaviour
 {
+    /// <summary>
+    /// The panel that contains all key binding entries.
+    /// </summary>
     public Transform contentPanel;
+
+    /// <summary>
+    /// The back button GameObject.
+    /// </summary>
     public GameObject backButtonObject;
+
+    /// <summary>
+    /// The prefab for a single key binding entry row.
+    /// </summary>
     public GameObject keyBindingEntryPrefab;
+
+    /// <summary>
+    /// Reference to the InputManager for key binding logic.
+    /// </summary>
     public InputManager inputManager;
 
+    /// <summary>
+    /// The font asset used for key binding entry text.
+    /// </summary>
     public TMP_FontAsset font;
+
+    // Reference to the back button component.
     private Button backButton;
+    // Whether a key is currently being rebound.
     private bool isRebinding = false;
+    // Dictionary mapping action names to their entry GameObjects.
     private Dictionary<string, GameObject> keyBindingEntries = new Dictionary<string, GameObject>();
 
-    // TODO: Get actions from InputManager
+    // List of actions that can be rebound.
     private List<string> actions = new List<string> {
         "MoveLeft", "MoveRight", "MoveUp", "MoveDown",
         "CastSpell", "ClearCharges",
@@ -26,6 +50,9 @@ public class SettingsMenuUI : MonoBehaviour
         "Interact"
     };
 
+    /// <summary>
+    /// Unity Start method. Initializes key bindings and the back button.
+    /// </summary>
     public void Start()
     {
         if (inputManager == null)
@@ -48,6 +75,9 @@ public class SettingsMenuUI : MonoBehaviour
         InitializeBackButton();
     }
 
+    /// <summary>
+    /// Initializes the back button and attaches its click event.
+    /// </summary>
     private void InitializeBackButton()
     {
         backButton = backButtonObject.GetComponent<Button>();
@@ -60,12 +90,18 @@ public class SettingsMenuUI : MonoBehaviour
         backButton.onClick.AddListener(() => OnBackButtonClicked());
     }
 
+    /// <summary>
+    /// Handles the back button click, returning to the previous menu if not rebinding.
+    /// </summary>
     private void OnBackButtonClicked()
     {
         if (isRebinding) return;
         GameManager.Instance.ChangeGameStatus(GameManager.Instance.PreviousGameStatus);
     }
 
+    /// <summary>
+    /// Initializes the key binding entries for all actions.
+    /// </summary>
     private void InitializeKeyBindings()
     {
         foreach (string action in actions)
@@ -76,6 +112,12 @@ public class SettingsMenuUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instantiates a key binding entry row and sets up its UI and click event.
+    /// </summary>
+    /// <param name="actionName">The action name.</param>
+    /// <param name="keyName">The current key binding as a string.</param>
+    /// <returns>The created entry GameObject.</returns>
     private GameObject CreateKeyBindingEntry(string actionName, string keyName)
     {
         GameObject entry = Instantiate(keyBindingEntryPrefab, contentPanel);
@@ -113,6 +155,10 @@ public class SettingsMenuUI : MonoBehaviour
         return entry;
     }
 
+    /// <summary>
+    /// Handles the click event for rebinding a key for a specific action.
+    /// </summary>
+    /// <param name="actionName">The action to rebind.</param>
     private void OnKeyBindButtonClicked(string actionName)
     {
         if (isRebinding) return; // Prevent multiple rebinding at the same time
@@ -129,6 +175,11 @@ public class SettingsMenuUI : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Updates the displayed key binding for a specific action in the UI.
+    /// </summary>
+    /// <param name="actionName">The action name.</param>
+    /// <param name="newKey">The new key as a string.</param>
     public void UpdateKeyBindingEntry(string actionName, string newKey)
     {
         if (keyBindingEntries.TryGetValue(actionName, out GameObject entry))
@@ -137,5 +188,4 @@ public class SettingsMenuUI : MonoBehaviour
             txt.text = newKey;
         }
     }
-
 }

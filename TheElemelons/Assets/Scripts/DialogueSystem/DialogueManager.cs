@@ -1,23 +1,58 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages the flow of dialogue sequences, including starting, advancing, and ending dialogues.
+/// Handles broadcasting dialogue events to the UI and other systems.
+/// </summary>
 public class DialogueManager : MonoBehaviour
 {
+    /// <summary>
+    /// Singleton instance of the DialogueManager.
+    /// </summary>
     public static DialogueManager Instance { get; private set; }
 
     [Header("Dialogue Assets")]
+    /// <summary>
+    /// If true, dialogue will auto-advance after a delay.
+    /// </summary>
     [SerializeField] private bool autoPlay = false;
+
+    /// <summary>
+    /// Delay (in seconds) before auto-advancing to the next dialogue line.
+    /// </summary>
     [SerializeField] private float autoPlayDelay = 5f;
+
+    /// <summary>
+    /// The currently active dialogue data.
+    /// </summary>
     public DialogueData currentDialogue;
+
+    /// <summary>
+    /// The index of the current line in the dialogue.
+    /// </summary>
     public int currentLineIndex = 0;
+
+    // Reference to the currently running auto-play coroutine.
     private Coroutine autoPlayCoroutine;
 
+    /// <summary>
+    /// Event fired when a new dialogue sequence starts.
+    /// </summary>
     public static event Action<DialogueData> OnDialogueStart;
+
+    /// <summary>
+    /// Event fired when the current dialogue line changes.
+    /// </summary>
     public static event Action<DialogueLineEntry> OnDialogueUpdate;
+
+    /// <summary>
+    /// Event fired when the dialogue sequence ends.
+    /// </summary>
     public static event Action OnDialogueEnded;
 
+    // Unity Awake callback. Sets up the singleton instance.
     private void Awake()
     {
         if (Instance == null)
@@ -31,6 +66,11 @@ public class DialogueManager : MonoBehaviour
             return;
         }
     }
+
+    /// <summary>
+    /// Starts a new dialogue sequence.
+    /// </summary>
+    /// <param name="dialogueToStart">The DialogueData asset to start.</param>
     public void StartDialogue(DialogueData dialogueToStart)
     {
         if (dialogueToStart == null || dialogueToStart.dialogueLines == null || dialogueToStart.dialogueLines.Count == 0)
@@ -54,11 +94,18 @@ public class DialogueManager : MonoBehaviour
         OnDialogueStart?.Invoke(currentDialogue);
     }
 
+    /// <summary>
+    /// Returns true if a dialogue is currently active.
+    /// </summary>
     public bool HasDialogue()
     {
         return currentDialogue != null;
     }
 
+    /// <summary>
+    /// Advances to the next line in the current dialogue sequence.
+    /// Ends the dialogue if there are no more lines.
+    /// </summary>
     public void AdvanceDialogue()
     {
         if (currentDialogue == null) return;
@@ -81,6 +128,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    // Processes the current dialogue line, invokes update events, and handles auto-play if enabled.
     private void ProcessCurrentLine()
     {
         DialogueLineEntry currentEntry = currentDialogue.dialogueLines[currentLineIndex];
@@ -101,7 +149,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Ends the dialogue sequence.
+    /// Ends the dialogue sequence and resets state.
     /// </summary>
     private void EndDialogue()
     {
@@ -114,8 +162,8 @@ public class DialogueManager : MonoBehaviour
         OnDialogueEnded?.Invoke();
         currentDialogue = null;
         currentLineIndex = -1; // Reset line index for next dialogue
-
-        if (GameManager.Instance != null) // ----------------------- change to previous status -> have to update gamemanager for that
+        
+        if (GameManager.Instance != null)
         {
             GameManager.Instance.ChangeGameStatus(GameStatus.INGAME);
         }
@@ -125,6 +173,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    // Coroutine to auto-advance or end the dialogue after a delay.
     private IEnumerator AutoAdvanceOrEndAfterDelay(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);

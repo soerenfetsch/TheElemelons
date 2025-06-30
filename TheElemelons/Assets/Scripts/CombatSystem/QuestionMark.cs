@@ -1,19 +1,25 @@
 using UnityEngine;
 
 /// <summary>
-/// Visual effect for the confused debuff
+/// Visual effect for the confused debuff.
+/// Attaches a question mark above the affected entity's head and follows its movement.
 /// </summary>
 public class QuestionMark : MonoBehaviour
 {
+    // Reference to the collider of the parent (victim) entity.
     Collider2D parentCollider;
+    // Reference to the parent (victim) transform.
     Transform parent;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
+    // Initializes the parent and parent collider references.
     void Start()
     {
         Debug.Log("question mark");
         InitializeParent();
     }
+
+    // Finds and assigns the parent transform and its trigger collider.
     void InitializeParent()
     {
         if (transform.parent == null)
@@ -30,6 +36,8 @@ public class QuestionMark : MonoBehaviour
             }
         }
     }
+
+    // Finds the closest valid victim (player or enemy with Health) within a radius and sets it as the parent.
     void FindVictim()
     {
         LayerMask victimMask = LayerMask.GetMask("Enemies", "Player");
@@ -54,6 +62,9 @@ public class QuestionMark : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // FixedUpdate is called at a fixed interval.
+    // Keeps the question mark above the parent's head, following its movement.
     void FixedUpdate()
     {
         if (parent == null)

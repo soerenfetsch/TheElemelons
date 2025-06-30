@@ -4,17 +4,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Main controller for executing progression-stage-specific content, scene transitions,
+/// and global game logic. Handles scene loading, player state resets, and event-driven
+/// progression for dungeons, bosses, and hub.
+/// </summary>
 public class MainGame : MonoBehaviour
 {
-    public GameObject earthElemelonCollectablePrefab; // Prefab for the collectable earth elemelon
-    public GameObject earthElemelonDisplayablePrefab; // Prefab for the displayable earth elemelon
+    /// <summary>
+    /// Prefab for the collectable earth elemelon (used in boss rooms).
+    /// </summary>
+    public GameObject earthElemelonCollectablePrefab;
+    /// <summary>
+    /// Prefab for the displayable earth elemelon (used in the castle hub).
+    /// </summary>
+    public GameObject earthElemelonDisplayablePrefab;
+
+    /// <summary>
+    /// Singleton instance of MainGame.
+    /// </summary>
     public static MainGame Instance { get; private set; }
+
+    /// <summary>
+    /// List of king's introductory dialogues.
+    /// </summary>
     public List<DialogueData> kingIntroDialoguesList;
+    /// <summary>
+    /// List of king's repetitive dialogues.
+    /// </summary>
     public List<DialogueData> kingRepetitiveDialoguesList;
+    /// <summary>
+    /// List of king's end dialogues.
+    /// </summary>
     public List<DialogueData> kingEndDialoguesList;
 
+    // Tracks if the king's dialogue is currently active (for progression).
     private static bool kingDialogueActive = false;
 
+    /// <summary>
+    /// Unity Awake method. Sets up the singleton instance and persists across scenes.
+    /// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -27,12 +56,18 @@ public class MainGame : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Persist across scenes
     }
 
+    /// <summary>
+    /// Starts the specified game progression stage, loading the correct scene and initializing content.
+    /// </summary>
+    /// <param name="stage">The progression stage to start.</param>
+    /// <param name="isStartScene">If true, treat as a start scene (e.g., main menu).</param>
     public void StartGameStage(GameProgressionStage stage, bool isStartScene = false)
     {
         Debug.Log("Starting game stage: " + stage);
         StartCoroutine(StartGameStageAsync(stage, isStartScene));
     }
 
+    // Coroutine to load the scene and execute the logic for the given progression stage.
     private IEnumerator StartGameStageAsync(GameProgressionStage stage, bool isStartScene = false)
     {
         // Load scene of the game stage
@@ -44,7 +79,7 @@ public class MainGame : MonoBehaviour
         GameStatus sceneStatus = isStartScene ? GameStatus.MAIN_MENU : GameStatus.INGAME;
         GameManager.Instance.ChangeGameStatus(sceneStatus);
 
-        // Scene is now loaded
+        // Scene is now loaded; handle stage-specific logic
         switch (stage)
         {
             case GameProgressionStage.INVALID:
@@ -81,18 +116,22 @@ public class MainGame : MonoBehaviour
         yield return null;
     }
 
+    // Handles logic for the INVALID stage (main menu).
     private void HandleInvalidStage()
     {
         Debug.Log("Main Menu Stage started.");
     }
 
+    // Handles logic for the castle introduction stage (e.g., cutscene).
     private void HandleCastleIntroStage()
     {
         // TODO: Play the castle intro cutscene
     }
+
+    // Handles logic for the early castle hub stage.
     private void HandleCastleEarlyStage()
     {
-
+        // Add event to the earth portal to start the earth early stage
         Portal portal = FindAnyObjectByType<Portal>();
         if (portal != null)
         {
@@ -108,6 +147,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Handles logic for the early earth dungeon stage.
     private void HandleEarthEarlyStage()
     {
         // Allow the boss room to be accessed when all monsters are defeated
@@ -143,6 +183,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Handles logic for the earth dungeon boss room stage.
     private void HandleEarthEarlyBossStage()
     {
         // Teleport the player to the start location of the boss room
@@ -175,6 +216,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Sets up the event for collecting the earth elemelon to trigger progression.
     private static void SetupEarthElemelonPickup(GameObject earthElemelon)
     {
         CollectableEarthElemelon collectableEarthElemelon = earthElemelon.GetComponent<CollectableEarthElemelon>();
@@ -192,6 +234,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Handles logic for the castle end stage (after returning from earth dungeon).
     private void HandleCastleEndStage()
     {
         Action<DialogueData> onKingDialogueStarted = null;
@@ -226,6 +269,7 @@ public class MainGame : MonoBehaviour
         DialogueManager.OnDialogueEnded += onKingDialogueEnded;
     }
 
+    // Handles logic for the late castle hub stage.
     private void HandleCastleLateStage()
     {
         // Add the event to the earth portal to start the earth late stage
@@ -244,6 +288,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Handles logic for the late earth dungeon stage.
     private void HandleEarthLateStage()
     {
         // Allow the boss room to be accessed when all monsters are defeated
@@ -279,6 +324,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Handles logic for the late earth dungeon boss room stage.
     private void HandleEarthLateBossStage()
     {
         // Teleport the player to the start location of the boss room
@@ -292,7 +338,7 @@ public class MainGame : MonoBehaviour
             Debug.LogError("Player GameObject not found in the scene.");
         }
 
-        // If the boss is defeated, drop the earth elemelon in the boss room
+        // If the boss is defeated, progress to the next stage after a delay
         GameObject witchObject = GameObject.Find("Witch");
         Witch witch = witchObject?.GetComponent<Witch>();
         if (witch != null)
@@ -309,6 +355,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Loads the specified scene asynchronously and resets player position if needed.
     private static IEnumerator LoadScene(string sceneToLoad)
     {
         if (!string.IsNullOrEmpty(sceneToLoad) && SceneManager.GetActiveScene().name != sceneToLoad
@@ -337,14 +384,14 @@ public class MainGame : MonoBehaviour
 
         // Also reset the player position if Castle Hub scene already loaded or if the previous progression stage was invalid
         if (GameManager.Instance.PreviousProgressionStage == GameProgressionStage.INVALID
-
-        && sceneToLoad == "Castle_Hub_Scene")
+            && sceneToLoad == "Castle_Hub_Scene")
         {
             ResetPlayerPosition();
         }
         yield return null;
     }
 
+    // Resets the player's position to the initial spawn point in the castle hub.
     private static void ResetPlayerPosition()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -358,6 +405,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Returns the scene name for a given progression stage.
     private static string GetSceneForStage(GameProgressionStage stage)
     {
         switch (stage)
@@ -385,6 +433,7 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Resets the player's health, mana, and clears buffs/debuffs.
     private static void ResetPlayerCombatStatus()
     {
         // Find player in the scene and reset it
@@ -403,12 +452,16 @@ public class MainGame : MonoBehaviour
         }
     }
 
+    // Coroutine to change the progression stage after a delay (e.g., after boss death).
     private IEnumerator ChangeProgressionStageAfterDelay(GameProgressionStage stage, float delay)
     {
         yield return new WaitForSeconds(delay);
         GameManager.Instance.ChangeProgressionStage(stage);
     }
 
+    /// <summary>
+    /// Spawns the earth elemelon displayable prefab in the scene (e.g., in the king's room).
+    /// </summary>
     private void SpawnEarthElemelon()
     {
         // Spawn the earth elemelon collectable in the scene

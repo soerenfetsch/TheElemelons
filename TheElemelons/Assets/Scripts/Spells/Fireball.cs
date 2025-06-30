@@ -1,59 +1,104 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
 /// Fireball has 3 states:
-/// creating: no movement
-/// propagating: propagates in casting direction
-/// exploding: fireball has collided and now explodes and deals damage to enemies in collider
+/// <list type="bullet">
+/// <item><description>creating: no movement</description></item>
+/// <item><description>propagating: propagates in casting direction</description></item>
+/// <item><description>exploding: fireball has collided and now explodes and deals damage to enemies in collider</description></item>
+/// </list>
 /// </summary>
 public enum FireballState
 {
+    /// <summary>
+    /// Fireball is being created (no movement).
+    /// </summary>
     creating,
+    /// <summary>
+    /// Fireball is propagating in the casting direction.
+    /// </summary>
     propagating,
+    /// <summary>
+    /// Fireball is exploding and deals damage to enemies in collider.
+    /// </summary>
     exploding
 }
+
 /// <summary>
-/// Fireball class inherits from Spell Effect
-/// Fireball explodes after given time or collision and deals damage to enemies in collider
+/// Fireball class inherits from SpellEffect.
+/// Fireball explodes after given time or collision and deals damage to enemies in collider.
 /// </summary>
 public class Fireball : SpellEffect
 {
     [Header("Hit")]
+    /// <summary>
+    /// Force applied to targets when hit by the explosion.
+    /// </summary>
     public float thrust = 7f;
+
+    /// <summary>
+    /// Duration of the knockback effect on targets.
+    /// </summary>
     public float knockTime = 0.4f;
+
+    /// <summary>
+    /// Damage dealt by the fireball to targets.
+    /// </summary>
     public float damage = 2f;
+
     [Header("Movement")]
     /// <summary>
-    /// time fireball spends in creating state
+    /// Time fireball spends in creating state.
     /// </summary>
     public float focusTime = 0.6f;
+
     /// <summary>
-    /// time fireball spends in propagating state
+    /// Time fireball spends in propagating state.
     /// </summary>
     public float flyTime = 3f;
+
     /// <summary>
-    /// time fireball spends in exploding state
+    /// Time fireball spends in exploding state.
     /// </summary>
     public float explodeTime = 0.5f;
+
     /// <summary>
-    /// propagation speed
+    /// Propagation speed.
     /// </summary>
     public float moveSpeed = 1f;
+
     [Header("Linked Components")]
+    /// <summary>
+    /// Rigidbody2D component for movement.
+    /// </summary>
     public Rigidbody2D myRigidbody;
+
+    /// <summary>
+    /// Animator for fireball animations.
+    /// </summary>
     public Animator animator;
+
+    /// <summary>
+    /// Transform of the casting point.
+    /// </summary>
     public Transform castPoint;
+
+    /// <summary>
+    /// Collider for the fireball's hitbox.
+    /// </summary>
     public BoxCollider2D boxCollider2D;
+
     [Header("Internal Infos")]
     /// <summary>
-    /// current fireball state
+    /// Current fireball state.
     /// </summary>
     public FireballState currentState;
+
     /// <summary>
-    /// spellstype (fire fire), currentstate and orientation of fireball are set
-    /// expiration timer of fireball is set (explodes after flytime at latest)
-    /// focus timer is started to get to propagating state
+    /// Spellstype (fire fire), currentstate and orientation of fireball are set,
+    /// expiration timer of fireball is set (explodes after flytime at latest),
+    /// focus timer is started to get to propagating state.
     /// </summary>
     void Start()
     {
@@ -67,8 +112,9 @@ public class Fireball : SpellEffect
         StartCoroutine(Expire());
         StartCoroutine(StartFocus());
     }
+
     /// <summary>
-    /// explosion triggered after flytime at latest
+    /// Explosion triggered after flytime at latest.
     /// </summary>
     private IEnumerator Expire()
     {
@@ -78,8 +124,9 @@ public class Fireball : SpellEffect
             StartCoroutine(Explode());
         }
     }
+
     /// <summary>
-    /// switch to propagating state after focustime
+    /// Switch to propagating state after focustime.
     /// </summary>
     public IEnumerator StartFocus()
     {
@@ -87,9 +134,10 @@ public class Fireball : SpellEffect
         currentState = FireballState.propagating;
         animator.SetTrigger("fly");
     }
+
     /// <summary>
-    /// explosion: update state to exploding, set rigidbody to kinematic, 
-    // velocity 0, adapt collider scale to explosion sprite and destrox gameobject after explosion time
+    /// Explosion: update state to exploding, set rigidbody to kinematic, 
+    /// velocity 0, adapt collider scale to explosion sprite and destroy GameObject after explosion time.
     /// </summary>
     private IEnumerator Explode()
     {
@@ -101,8 +149,9 @@ public class Fireball : SpellEffect
         yield return new WaitForSeconds(explodeTime);
         Destroy(gameObject);
     }
+
     /// <summary>
-    /// add force to fireball in casting direction while in propagating state
+    /// Add force to fireball in casting direction while in propagating state.
     /// </summary>
     void FixedUpdate()
     {
@@ -111,10 +160,12 @@ public class Fireball : SpellEffect
             myRigidbody.AddForce(transform.up * moveSpeed, ForceMode2D.Impulse);
         }
     }
+
     /// <summary>
-    /// if fireball currently propagating, collision with enemy or anything else will trigger explosion
-    /// if fireball is exploding, collision with enemy deals damage to enemy
+    /// If fireball currently propagating, collision with enemy or anything else will trigger explosion.
+    /// If fireball is exploding, collision with enemy deals damage to enemy.
     /// </summary>
+    /// <param name="other">The collider of the object that the spell collides with.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.gameObject.CompareTag("Spell")
@@ -134,10 +185,16 @@ public class Fireball : SpellEffect
             }
         }
     }
+
+    /// <summary>
+    /// Turns off the fireball's light effect after a short delay.
+    /// </summary>
     public void TurnLightOff()
     {
         StartCoroutine(TurnLightOffCoroutine());
     }
+
+    // Coroutine to turn off the light effect.
     IEnumerator TurnLightOffCoroutine()
     {
         transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);

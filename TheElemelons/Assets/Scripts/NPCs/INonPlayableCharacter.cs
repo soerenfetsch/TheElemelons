@@ -1,34 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 
 /// <summary>
-/// Enum defining common NPC states
+/// Enum defining common NPC states.
 /// </summary>
 public enum NPCStatus
 {
+    /// <summary>
+    /// NPC is idle (not moving or acting).
+    /// </summary>
     Idle,
+    /// <summary>
+    /// NPC is walking or moving.
+    /// </summary>
     Walking
 }
 
-
+/// <summary>
+/// Interface for all non-playable characters (NPCs).
+/// Provides methods for changing state, querying current state, and acting based on state.
+/// </summary>
 public interface INonPlayableCharacter
 {
     /// <summary>
-    /// Method to change the NPC's state
+    /// Changes the NPC's state to the specified new state.
     /// </summary>
-    /// <param name="newState"></param>
+    /// <param name="newState">The new state to set.</param>
     public void ChangeState(NPCStatus newState);
 
     /// <summary>
-    /// Get the current state of the NPC
+    /// Gets the current state of the NPC.
     /// </summary>
-    /// <returns>NPCStatus current status</returns>
+    /// <returns>The current <see cref="NPCStatus"/>.</returns>
     public NPCStatus GetCurrentState();
 
     /// <summary>
-    /// Method to act based on the current status
+    /// Performs an action based on the NPC's current status.
     /// </summary>
     public void ActOnStatus();
 }

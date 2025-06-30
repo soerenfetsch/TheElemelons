@@ -1,24 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Floating light spell that orbits the caster, providing illumination and following the player within a certain range.
+/// Fades out and is destroyed after its lifetime expires.
+/// </summary>
 public class LightSpell : SpellEffect
 {
+    /// <summary>
+    /// Duration the light spell remains active before fading out.
+    /// </summary>
     public float spellLifeTime = 60f;
+
+    // Duration of the fade-out effect.
     float fadeDuration = 3f;
+    // SpriteRenderer for fading the light.
     SpriteRenderer spriteRenderer;
+    // Transform of the caster (player).
     Transform casterTransform;
+    // Rigidbody2D for movement.
     Rigidbody2D rb;
+    // Preferred orbit range from the caster.
     float range = 2f;
+    // Maximum allowed distance from the caster before hurrying back.
     float maxDistance = 5f;
+    // Tolerance for range transitions.
     float tolerance = 2f;
+    // Normal and hurry movement speeds.
     float normalSpeed = 3f;
     float hurrySpeed = 8f;
     float maxSpeed;
+    // Directional factors for orbiting.
     int clockWiseFactor = 1;
     float circlefactor = 1;
+    // Current range state relative to the caster.
     RangeState currentRangeState;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes references, sets orbit direction, and starts the expiration coroutine.
+    /// </summary>
     void Start()
     {
         casterTransform = caster.transform;
@@ -28,6 +48,10 @@ public class LightSpell : SpellEffect
         circlefactor = Random.Range(0, 2) > 0 ? -1 : 1;
         currentRangeState = RangeState.InRange;
     }
+
+    /// <summary>
+    /// Handles the spell's lifetime, fades out, and destroys the object.
+    /// </summary>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
@@ -50,7 +74,10 @@ public class LightSpell : SpellEffect
         }
         Destroy(gameObject);
     }
-    // Update is called once per frame
+
+    /// <summary>
+    /// Handles orbiting and following logic every physics frame.
+    /// </summary>
     void FixedUpdate()
     {
         if (Time.frameCount % 120 == 0 && UnityEngine.Random.Range(0f, 1f) < 0.1f)
@@ -64,6 +91,8 @@ public class LightSpell : SpellEffect
         CalcRangeState();
         ActOnRange();
     }
+
+    // Calculates the current range state relative to the caster.
     void CalcRangeState()
     {
         RangeState nextRangeState = RangeState.Close;
@@ -90,9 +119,10 @@ public class LightSpell : SpellEffect
             currentRangeState = nextRangeState;
         }
     }
+
+    // Applies movement logic based on the current range state.
     void ActOnRange()
     {
-
         Vector2 movement = casterTransform.position - transform.position;
         float dist = movement.magnitude;
         if (currentRangeState == RangeState.OutOfRange)
@@ -116,7 +146,6 @@ public class LightSpell : SpellEffect
         if (rb.velocity.magnitude > maxSpeed)
         {
             rb.velocity = rb.velocity.normalized * maxSpeed;
-            //rb.AddForce(-rb.velocity.normalized * 0.4f, ForceMode2D.Impulse);
         }
         else if (rb.velocity.magnitude > maxSpeed - tolerance)
         {

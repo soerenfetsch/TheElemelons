@@ -1,21 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
-/// icecrystal effect for freeze debuff
+/// Visual effect for the freeze debuff ("BlizzardIce").
+/// Handles the ice crystal animation, unfreezing logic, and interaction with fire spells.
 /// </summary>
 public class IceCrystal : MonoBehaviour
 {
+    // Whether the unfreezing process has started.
     bool unfreezing = false;
+
+    // Duration the freeze effect lasts before auto-unfreeze.
     float freezeTime = 5f;
+
+    // (Unused) Lifetime of the spell.
     float spellLifeTime;
+
+    // Reference to the mask transform (for unfreeze animation).
     Transform mask;
+
+    // Reference to the mask destination transform (for unfreeze animation).
     Transform maskDestination;
+
+    // Reference to the ice visual transform.
     Transform ice;
+
+    /// <summary>
+    /// The frozen target GameObject.
+    /// </summary>
     public GameObject target;
+
+    // Reference to the frozen target's Enemy script.
     Enemy targetScript;
+
+    // Duration of the fade-out animation when unfreezing.
     float fadeDuration = 2f;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes child references and starts the freeze timer.
+    /// </summary>
     void Start()
     {
         ice = transform.GetChild(0);
@@ -23,12 +46,20 @@ public class IceCrystal : MonoBehaviour
         maskDestination = transform.GetChild(2);
         StartCoroutine(Expire());
     }
-    // unfreeze after bufflifetime
+
+    /// <summary>
+    /// Waits for freezeTime, then triggers unfreeze.
+    /// </summary>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(freezeTime);
         Unfreeze();
     }
+
+    /// <summary>
+    /// Sets the frozen victim, attaches the effect, and aligns transforms.
+    /// </summary>
+    /// <param name="victim">The GameObject to freeze.</param>
     public void SetVictim(GameObject victim)
     {
         target = victim;
@@ -38,6 +69,10 @@ public class IceCrystal : MonoBehaviour
         targetScript = victim.GetComponent<Enemy>();
         target.transform.position = transform.position;
     }
+
+    /// <summary>
+    /// Initiates the unfreezing process if not already started.
+    /// </summary>
     public void Unfreeze()
     {
         if (!unfreezing)
@@ -45,8 +80,11 @@ public class IceCrystal : MonoBehaviour
             StartCoroutine(UnfreezeCoroutine());
             unfreezing = true;
         }
-
     }
+
+    /// <summary>
+    /// Animates the mask moving, fades out, and clears the freeze debuff.
+    /// </summary>
     IEnumerator UnfreezeCoroutine()
     {
         float fadeTimer = fadeDuration;
@@ -58,6 +96,7 @@ public class IceCrystal : MonoBehaviour
         {
             if (fadeTimer < fadeDuration / 4f)
             {
+                // Remove the freeze debuff from the target.
                 BuffDebuffManager.Instance.ClearEffect(target, BuffDebuffManager.BuffDebuffType.FreezeDebuff, effectName: "BlizzardIce");
             }
             fadeTimer -= Time.deltaTime * chunkiness;
@@ -68,10 +107,11 @@ public class IceCrystal : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
     /// <summary>
-    /// fire spells can melt the ice prematurely
+    /// Allows fire spells to melt the ice prematurely.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">Collider that enters the ice crystal's trigger.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
         SpellEffect spellEffect = other.gameObject.GetComponent<SpellEffect>();

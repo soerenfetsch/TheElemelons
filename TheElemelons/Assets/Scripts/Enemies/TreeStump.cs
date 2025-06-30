@@ -1,36 +1,61 @@
 using System.Collections;
 using UnityEngine;
+
+/// <summary>
+/// Controls the TreeLog enemy's behavior, including patrolling, chasing, attacking, retreating, and handling state transitions.
+/// Integrates pathfinding, attack logic, and animation state changes.
+/// </summary>
 public class TreeLog : Enemy
 {
     [Header("Components")]
+    // Reference to the transform component.
     private Transform transformComponent;
+    // Rigidbody2D for movement.
     private Rigidbody2D rb2d;
+    // Collider for the TreeLog.
     private BoxCollider2D colliderBox;
+    // AttackCollider for handling attack logic.
     private AttackCollider attackCollider;
+    // Animator for controlling animations.
     private Animator animator;
+    // FlashEffect for visual feedback.
     private FlashEffect flashEffect;
 
     [Header("Pathfinding")]
-    public LineOfSightPathfinder pathfinder; // Reference to the pathfinding system.
+    /// <summary>Reference to the pathfinding system.</summary>
+    public LineOfSightPathfinder pathfinder;
 
     [Header("Behavior")]
+    // Home position for retreating.
     private Vector2 homePosition;
+    // Whether the TreeLog is alive.
     private bool isAlive = true;
+    /// <summary>Movement speed of the TreeLog.</summary>
     public float moveSpeed = 1f;
+    /// <summary>Radius within which the TreeLog will chase the player.</summary>
     public float chaseRadius = 5f;
+    /// <summary>Radius within which the TreeLog will attack the player.</summary>
     public float attackRadius = 0.2f;
 
     [Header("Combat")]
+    /// <summary>Base damage dealt by the TreeLog.</summary>
     public float baseDamage = 1f;
+    /// <summary>Knockback force applied by the TreeLog.</summary>
     public float thrust = 1f;
+    /// <summary>Duration of knockback.</summary>
     public float knockTime = 0.2f;
+    /// <summary>Duration of the flash effect.</summary>
     public float flashDuration = 0.2f;
 
     [Header("Effects")]
+    /// <summary>Prefab for the death effect.</summary>
     public GameObject deathEffect;
+    /// <summary>Delay before the death effect is played.</summary>
     public float deathEffectDelay = 0.5f;
 
-
+    /// <summary>
+    /// Initializes the TreeLog with references to the player and pathfinder.
+    /// </summary>
     public void Initialize(Transform player, LineOfSightPathfinder pathfinder)
     {
         playerTransform = player;
@@ -40,6 +65,9 @@ public class TreeLog : Enemy
         InitializeCombatComponents();
     }
 
+    /// <summary>
+    /// Initializes component references and sets up the TreeLog's state.
+    /// </summary>
     public void InitializeComponents()
     {
         transformComponent = GetComponent<Transform>();
@@ -57,6 +85,9 @@ public class TreeLog : Enemy
         homePosition = transformComponent.position;
     }
 
+    /// <summary>
+    /// Initializes combat-related factors and subscribes to attack events.
+    /// </summary>
     private void InitializeCombatComponents()
     {
         attackFactor = 1f;
@@ -92,10 +123,15 @@ public class TreeLog : Enemy
         ActOnHealth();
         ActOnMana();
     }
+
     void Update()
     {
         ChangeWalkAnimation();
     }
+
+    /// <summary>
+    /// Changes the current state of the TreeLog.
+    /// </summary>
     public override void ChangeState(EnemyStatus newState)
     {
         currentState = newState;
@@ -103,16 +139,13 @@ public class TreeLog : Enemy
 
     /// <summary>
     /// Acts on the current status of the enemy.
-    /// This method handles the behavior of the enemy based on its current state. The enemy can be in one of the following states:
-    /// Idle, Approaching, Attacking, Retreating, or Staggered. The behavior includes checking the player's distance, moving towards
-    /// the player, attacking, retreating to the home position, and handling the stagger state.
+    /// Handles Idle, Approaching, Attacking, Retreating, and Staggered states.
     /// </summary>
     public override void ActOnStatus()
     {
         switch (currentState)
         {
             case EnemyStatus.Idle:
-
                 // Wait until player is within chase or attack radius
                 if (CheckPlayerWithinRadius(chaseRadius))
                 {
@@ -159,11 +192,19 @@ public class TreeLog : Enemy
                 break;
         }
     }
+
+    /// <summary>
+    /// Moves the TreeLog based on its current movement vector and speed.
+    /// </summary>
     public override void DoMovement()
     {
         movement = movement.normalized;
         rb2d.MovePosition((Vector2)transformComponent.position + movement * moveSpeed * Time.deltaTime);
     }
+
+    /// <summary>
+    /// Freezes or unfreezes the TreeLog, affecting movement and animation speed.
+    /// </summary>
     public override void OnFreeze(bool freezeOn = true)
     {
         if (freezeOn)
@@ -176,9 +217,10 @@ public class TreeLog : Enemy
             animator.speed = 1;
         }
     }
+
     /// <summary>
     /// Acts on the current health status of the enemy.
-    /// This method checks if the enemy's health is zero and if the enemy is still alive. If both conditions are met,
+    /// Checks if the enemy's health is zero and if the enemy is still alive. If both conditions are met,
     /// it sets the enemy's alive status to false, spawns a death effect at the enemy's position, and destroys the enemy game object.
     /// </summary>
     public override void ActOnHealth()
@@ -203,13 +245,13 @@ public class TreeLog : Enemy
     /// <summary>
     /// When the TreeStump gets knocked back, it enters the staggered state for a certain amount of time.
     /// </summary>
-    /// <param name="knockTime"></param>
-    /// <returns></returns>
+    /// <param name="knockTime">Duration of the stagger.</param>
     public override void GetKnocked(float knockTime)
     {
         StartCoroutine(HandleStagger(knockTime));
     }
 
+    // Changes the walk animation based on movement direction.
     private void ChangeWalkAnimation()
     {
         Vector2 direction = movement;
@@ -242,20 +284,20 @@ public class TreeLog : Enemy
     }
 
     /// <summary>
-    /// Check if the player is within a certain radius of the enemy (just positions)
+    /// Check if the player is within a certain radius of the enemy (just positions).
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
+    /// <param name="radius">Radius to check.</param>
+    /// <returns>True if player is within radius, false otherwise.</returns>
     private bool CheckPlayerWithinRadius(float radius)
     {
         return Vector2.Distance(GetFeetPosition(), playerTransform.position) <= radius;
     }
 
     /// <summary>
-    /// Check if the player is outside a certain radius of the enemy (just positions)
+    /// Check if the player is outside a certain radius of the enemy (just positions).
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
+    /// <param name="radius">Radius to check.</param>
+    /// <returns>True if player is outside radius, false otherwise.</returns>
     private bool CheckPlayerOutsideRadius(float radius)
     {
         return Vector2.Distance(GetFeetPosition(), playerTransform.position) > radius;
@@ -263,11 +305,10 @@ public class TreeLog : Enemy
 
     /// <summary>
     /// Check if the player is within a certain reach radius of the enemy (using pathfinding).
-    /// If player is in sight within the radius or a path to the player is reachable inside the
-    /// readius, returns true, else false.
+    /// Returns true if player is in sight or reachable within the radius.
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
+    /// <param name="radius">Radius to check.</param>
+    /// <returns>True if player is reachable, false otherwise.</returns>
     private bool CheckPlayerReachableWithinRadius(float radius)
     {
         bool reachable = pathfinder.CheckPlayerInSight(GetFeetPosition(), radius) != Vector2.zero
@@ -277,21 +318,20 @@ public class TreeLog : Enemy
 
     /// <summary>
     /// Check if the player is outside a certain reach radius of the enemy (using pathfinding).
-    /// If player is in sight outside the radius and a path to the player is not reachable inside the
-    /// readius, returns true, else false.
+    /// Returns true if player is not reachable within the radius.
     /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
+    /// <param name="radius">Radius to check.</param>
+    /// <returns>True if player is unreachable, false otherwise.</returns>
     private bool CheckPlayerUnreachableWithinRadius(float radius)
     {
         return pathfinder.CheckPlayerReachable(GetFeetPosition(), radius) == Vector2.zero;
     }
 
+    // Moves the TreeLog toward the player using pathfinding.
     private void MoveTowardPlayer()
     {
         if (playerTransform == null) return;
 
-        // Find the best direction to move toward the player using pathfinding (collision at feet level)
         Vector2 direction = pathfinder.CheckPlayerInSight(GetFeetPosition(), chaseRadius);
         if (direction == Vector2.zero)
         {
@@ -303,23 +343,26 @@ public class TreeLog : Enemy
         movement = direction;
     }
 
+    // Moves the TreeLog toward its home position using pathfinding.
     private void MoveTowardHome()
     {
-        // Find the best direction to move toward the home using pathfinding (collision at feet level)
         Vector2 direction = RaycastPathfinder.FindBestDirection(GetFeetPosition(), homePosition);
         movement = direction;
     }
 
+    // Checks if the TreeLog is at its home position.
     private bool CheckAtHome()
     {
         return Vector2.Distance(GetFeetPosition(), homePosition) < 0.2f;
     }
 
+    // Gets the position of the TreeLog's feet (bottom of collider).
     private Vector2 GetFeetPosition()
     {
         return new Vector2(transformComponent.position.x, colliderBox.bounds.min.y);
     }
 
+    // Handles the stagger state and animation for the TreeLog.
     private IEnumerator HandleStagger(float staggerTime)
     {
         ChangeState(EnemyStatus.Staggered);
@@ -330,6 +373,7 @@ public class TreeLog : Enemy
         ChangeState(EnemyStatus.Idle);
     }
 
+    // Handles the attack event when the player is hit.
     private void HandleAttack(Rigidbody2D playerRb)
     {
         if (playerRb == null || isMovementBlocked) return;
@@ -338,35 +382,53 @@ public class TreeLog : Enemy
         CombatManager.ExecuteAttack(gameObject, playerRb, elementType, attackDirection, baseDamage, thrust, knockTime);
     }
 
+    // Enables the attack collider.
     private void EnableAttackCollider()
     {
         attackCollider.EnableAttack();
     }
 
+    // Disables the attack collider.
     private void DisableAttackCollider()
     {
         attackCollider.DisableAttack();
     }
 
+    /// <summary>
+    /// Modifies the TreeLog's movement speed by a factor.
+    /// </summary>
     public override void ModifySpeed(float factor)
     {
         moveSpeed *= factor;
     }
 
+    /// <summary>
+    /// Modifies the TreeLog's damage by a factor.
+    /// </summary>
     public override void ModifyDamage(float factor)
     {
         attackFactor *= factor;
     }
 
+    /// <summary>
+    /// Modifies the TreeLog's defense by a factor.
+    /// </summary>
     public override void ModifyDefense(float factor)
     {
         defenseFactor *= factor;
     }
 
+    /// <summary>
+    /// Does nothing for mana regen.
+    /// </summary>
     public override void ModifyManaRegen(float factor)
     {
         // Do nothing
     }
+
+    /// <summary>
+    /// Enables or disables sight obstruction for the TreeLog.
+    /// </summary>
     public override void DoObstructSight(bool onOff)
     {
         ObstructSight(onOff);

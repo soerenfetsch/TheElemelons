@@ -2,44 +2,67 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Bomb Spell class inherits from Spell Effect
-/// Bomb explodes after given time and deals damage to enemies in collider
+/// Bomb Spell class inherits from SpellEffect.
+/// Bomb explodes after a given time and deals damage to enemies in its collider.
 /// </summary>
 public class Bomb_Spell : SpellEffect
 {
     [Header("Hit")]
+    /// <summary>
+    /// Force applied to targets when hit by the explosion.
+    /// </summary>
     public float thrust = 7f;
+
+    /// <summary>
+    /// Duration of the knockback effect on targets.
+    /// </summary>
     public float knockTime = 0.4f;
+
+    /// <summary>
+    /// Damage dealt by the bomb to targets.
+    /// </summary>
     public float damage = 2f;
+
     [Header("Animation")]
     /// <summary>
-    /// time between each blinking animation
+    /// Time between each blinking animation before explosion.
     /// </summary>
     public float blinkTime = 0.1f;
-    public Animator blinkingAnimator;
-    [Header("Explosion")]
-    public BoxCollider2D boxCollider2D;
+
     /// <summary>
-    /// duration of explosion
+    /// Animator for the blinking and explosion animation.
+    /// </summary>
+    public Animator blinkingAnimator;
+
+    [Header("Explosion")]
+    /// <summary>
+    /// Collider used for the explosion hitbox.
+    /// </summary>
+    public BoxCollider2D boxCollider2D;
+
+    /// <summary>
+    /// Duration of the explosion effect.
     /// </summary>
     public float explodeTime = 0.5f;
+
     /// <summary>
-    /// scale of gameobject during explosion
+    /// Scale of the GameObject during the explosion.
     /// </summary>
     public Vector2 explosionScale;
 
     /// <summary>
-    /// Set Spelltype (fire earth) and start Bomb timer for explosion
+    /// Set spell type (fire earth) and start bomb timer for explosion.
     /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.fire, ChargeTypes.earth);
         StartCoroutine(BlinkTime());
-        //dimmed light half shadow
+        // Dimmed light half shadow
         transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);
     }
+
     /// <summary>
-    /// make bomb blink for set time, then trigger explosion
+    /// Make bomb blink for set time, then trigger explosion.
     /// </summary>
     public IEnumerator BlinkTime()
     {
@@ -51,26 +74,27 @@ public class Bomb_Spell : SpellEffect
         }
         StartCoroutine(Explode());
     }
+
     /// <summary>
-    /// Trigger explosion: Update animator and activate collisions, destroy gameobject after explosiontime
+    /// Trigger explosion: update animator and activate collisions, destroy GameObject after explosion time.
     /// </summary>
     private IEnumerator Explode()
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).GetChild(1).gameObject.SetActive(true); //light
+        transform.GetChild(1).GetChild(1).gameObject.SetActive(true); // light
         blinkingAnimator.SetTrigger("explode");
         boxCollider2D.enabled = true;
         gameObject.transform.localScale = explosionScale;
         yield return new WaitForSeconds(explodeTime);
         Destroy(gameObject);
     }
+
     /// <summary>
-    /// Registers collisions during explosion and deals damage to enemies that collide
+    /// Registers collisions during explosion and deals damage to enemies that collide.
     /// </summary>
-    /// /// <param name="other">The collider of the object that the spell collides with.</param>
+    /// <param name="other">The collider of the object that the spell collides with.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger && other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
         {
             Rigidbody2D hit = other.GetComponent<Rigidbody2D>();
@@ -82,10 +106,16 @@ public class Bomb_Spell : SpellEffect
             }
         }
     }
+
+    /// <summary>
+    /// Turns off the bomb's light effect after a short delay.
+    /// </summary>
     public void TurnLightOff()
     {
         StartCoroutine(TurnLightOffCoroutine());
     }
+
+    // Coroutine to turn off the light effect.
     IEnumerator TurnLightOffCoroutine()
     {
         transform.Find("Light/HalfShadowMask").gameObject.SetActive(false);

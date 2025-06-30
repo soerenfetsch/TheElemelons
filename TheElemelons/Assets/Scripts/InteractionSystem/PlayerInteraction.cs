@@ -1,28 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Handles player interaction with nearby interactable objects.
+/// Manages detection, direction, and range for interactions, and updates tooltips.
+/// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
+    /// <summary>
+    /// Reference to the ToolTip component for displaying interaction prompts.
+    /// </summary>
     ToolTip toolTip;
-    // Radius within which the player can interact
+
+    /// <summary>
+    /// Enables or disables drawing of interaction gizmos in the editor.
+    /// </summary>
     public bool gizmosEnabled = false;
-    public LayerMask interactableLayer; // Ensure interactable objects have this layer
+
+    /// <summary>
+    /// Layer mask used to filter interactable objects.
+    /// </summary>
+    public LayerMask interactableLayer;
+
+    /// <summary>
+    /// Reference to the player's Animator for determining facing direction.
+    /// </summary>
     public Animator playerAnimator;
+
+    // Offsets for the interaction box in each direction.
     Vector2 interactionBoxOffSetUp;
     Vector2 interactionBoxOffSetDown;
     Vector2 interactionBoxOffSetLeft;
     Vector2 interactionBoxOffSetRight;
     Vector2 interactionBoxOffSet;
+
+    // Size of the interaction box for vertical and horizontal orientations.
     Vector2 interactionBoxSize;
     Vector2 interactionBoxSizeVertical;
     Vector2 interactionBoxSizeHorizontal;
+
+    /// <summary>
+    /// Unity Start method. Initializes interaction box offsets and gets the ToolTip component.
+    /// </summary>
     void Start()
     {
         InitializeInteractionBoxes();
         toolTip = GetComponent<ToolTip>();
     }
+
+    /// <summary>
+    /// Initializes the offsets and sizes for the interaction box in all directions.
+    /// </summary>
     public void InitializeInteractionBoxes()
     {
         interactionBoxOffSetDown = new Vector2(-0.076f, -0.245f);
@@ -32,10 +59,10 @@ public class PlayerInteraction : MonoBehaviour
         interactionBoxSizeVertical = new Vector2(0.63f, 1.25f);
         interactionBoxSizeHorizontal = new Vector2(1f, 0.63f);
     }
+
     /// <summary>
-    /// Finds the closest interactable object to the player within interactionRange
-    /// of the player which can be interacted with and interacts with it.
-    /// If no interactable object is found, nothing happens.
+    /// Finds the closest interactable object to the player within interaction range
+    /// and interacts with it. If no interactable object is found, nothing happens.
     /// </summary>
     public void InteractWithClosestInteractable()
     {
@@ -45,6 +72,8 @@ public class PlayerInteraction : MonoBehaviour
             closestInteractable.Interact();
         }
     }
+
+    // Calculates the direction offset for the interaction box based on player facing direction.
     Vector2 CalcDir()
     {
         Vector2 movement = new Vector2(playerAnimator.GetFloat("Horizontal"), playerAnimator.GetFloat("Vertical"));
@@ -63,6 +92,8 @@ public class PlayerInteraction : MonoBehaviour
         }
         return interactionBoxOffSet;
     }
+
+    // Calculates the size of the interaction box based on its orientation.
     Vector2 CalcSize()
     {
         interactionBoxSize = interactionBoxSizeHorizontal;
@@ -72,6 +103,10 @@ public class PlayerInteraction : MonoBehaviour
         }
         return interactionBoxSize;
     }
+
+    /// <summary>
+    /// Draws the interaction box gizmo in the editor for debugging.
+    /// </summary>
     void OnDrawGizmos()
     {
         if (gizmosEnabled)
@@ -79,15 +114,15 @@ public class PlayerInteraction : MonoBehaviour
             Gizmos.DrawCube(transform.position + (Vector3)CalcDir(), size: CalcSize());
         }
     }
+
     /// <summary>
-    /// Finds the closest interactable object to the player within interactionRange
-    /// of the player which can be interacted with.
+    /// Finds the closest interactable object to the player within interaction range.
     /// </summary>
-    /// <returns>InteractableObject or null if none found</returns>
+    /// <returns>The closest <see cref="InteractableObject"/> or null if none found.</returns>
     private InteractableObject FindClosestInteractable()
     {
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)CalcDir(),
-        size: CalcSize(), angle: 0, layerMask: interactableLayer);
+            size: CalcSize(), angle: 0, layerMask: interactableLayer);
         InteractableObject closestInteractable = null;
         float minDistance = Mathf.Infinity;
         foreach (Collider2D collider in colliders)
@@ -105,28 +140,30 @@ public class PlayerInteraction : MonoBehaviour
         }
         return closestInteractable;
     }
+
+    /// <summary>
+    /// Unity Update method. Continuously checks for the closest interactable and updates the tooltip.
+    /// </summary>
     void Update()
     {
-        if (true)
+        // Continuously update the tooltip based on whether an interactable is in range.
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)CalcDir(),
+            size: CalcSize(), angle: 0, layerMask: interactableLayer);
+        InteractableObject closestInteractable = null;
+        float minDistance = Mathf.Infinity;
+        foreach (Collider2D collider in colliders)
         {
-            Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + (Vector3)CalcDir(),
-        size: CalcSize(), angle: 0, layerMask: interactableLayer);
-            InteractableObject closestInteractable = null;
-            float minDistance = Mathf.Infinity;
-            foreach (Collider2D collider in colliders)
+            InteractableObject interactable = collider.GetComponent<InteractableObject>();
+            if (interactable != null && interactable.CanInteract(transform))
             {
-                InteractableObject interactable = collider.GetComponent<InteractableObject>();
-                if (interactable != null && interactable.CanInteract(transform))
+                float distance = Vector2.Distance(transform.position, collider.transform.position);
+                if (distance < minDistance)
                 {
-                    float distance = Vector2.Distance(transform.position, collider.transform.position);
-                    if (distance < minDistance)
-                    {
-                        minDistance = distance;
-                        closestInteractable = interactable;
-                    }
+                    minDistance = distance;
+                    closestInteractable = interactable;
                 }
             }
-            toolTip.canInteract = closestInteractable != null;
         }
+        toolTip.canInteract = closestInteractable != null;
     }
 }

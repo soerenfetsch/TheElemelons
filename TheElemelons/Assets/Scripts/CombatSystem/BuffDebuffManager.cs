@@ -2,14 +2,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// Manages the application, expiration, and removal of buffs and debuffs on game entities.
+/// Handles effect stacking, UI integration, and stat modification via the IBuffable interface.
+/// </summary>
 public class BuffDebuffManager : MonoBehaviour
 {
-    // Singleton instance
+    /// <summary>
+    /// Singleton instance of the BuffDebuffManager.
+    /// </summary>
     public static BuffDebuffManager Instance { get; private set; }
-    private UIManager _uiManager;
-    private BuffDebuffManager() { } // Prevent instantiation
 
+    // Reference to the UIManager for updating UI elements related to buffs/debuffs.
+    private UIManager _uiManager;
+
+    // Private constructor to prevent instantiation.
+    private BuffDebuffManager() { }
+
+    // Unity Awake callback. Sets up the singleton instance and caches the UIManager reference.
     private void Awake()
     {
         if (Instance == null)
@@ -30,7 +40,9 @@ public class BuffDebuffManager : MonoBehaviour
         }
     }
 
-    // Buff/Debuff types
+    /// <summary>
+    /// Types of buffs and debuffs that can be applied to entities.
+    /// </summary>
     public enum BuffDebuffType
     {
         SpeedBuff,
@@ -47,25 +59,54 @@ public class BuffDebuffManager : MonoBehaviour
         PetrifiedDebuff
     }
 
-    // Buff/Debuff data structure
+    /// <summary>
+    /// Data structure representing a single buff or debuff effect.
+    /// </summary>
     [Serializable]
     public class BuffDebuff
     {
+        /// <summary>
+        /// The type of buff or debuff.
+        /// </summary>
         public BuffDebuffType type;
+        /// <summary>
+        /// Duration in seconds for which the effect is active.
+        /// </summary>
         public float duration;
+        /// <summary>
+        /// The value of the effect as a factor (e.g., 1.5x speed).
+        /// </summary>
         public float effectValue;
 
+        /// <summary>
+        /// Delegate called when the effect is applied.
+        /// </summary>
         public Action<BuffDebuff> OnApply;
+        /// <summary>
+        /// Delegate called when the effect expires.
+        /// </summary>
         public Action<BuffDebuff> OnExpire;
+        /// <summary>
+        /// Optional name for the effect (used for stacking logic).
+        /// </summary>
         public string name = "none";
+        /// <summary>
+        /// Whether this effect can be stacked with others of the same type.
+        /// </summary>
         public bool stackable = true;
 
+        /// <summary>
+        /// Constructs a new BuffDebuff with the specified type, duration, and value.
+        /// </summary>
         public BuffDebuff(BuffDebuffType type, float duration, float effectValue)
         {
             this.type = type;
             this.duration = duration;
             this.effectValue = effectValue;
         }
+        /// <summary>
+        /// Constructs a new BuffDebuff with a name, type, duration, value, and stackability.
+        /// </summary>
         public BuffDebuff(string name, BuffDebuffType type, float duration, float effectValue, bool stackable)
         {
             this.type = type;
@@ -76,16 +117,28 @@ public class BuffDebuffManager : MonoBehaviour
         }
     }
 
-    // Target entity structure
+    /// <summary>
+    /// Structure representing a target entity that can have active effects.
+    /// </summary>
     public class TargetEntity
     {
-        public string Name { get; private set; } // Name of the target
+        /// <summary>
+        /// Name of the target.
+        /// </summary>
+        public string Name { get; private set; }
+        /// <summary>
+        /// List of currently active effects on this target.
+        /// </summary>
         public List<BuffDebuff> ActiveEffects = new List<BuffDebuff>();
 
+        /// <summary>
+        /// Constructs a new TargetEntity with the given name.
+        /// </summary>
         public TargetEntity(string name)
         {
             Name = name;
         }
+
         /// <summary>
         /// Applies a buff or debuff effect to the target.
         /// </summary>
@@ -109,6 +162,7 @@ public class BuffDebuffManager : MonoBehaviour
         }
     }
 
+    // Maps GameObjects to their corresponding TargetEntity for effect tracking.
     private Dictionary<GameObject, TargetEntity> targets = new Dictionary<GameObject, TargetEntity>();
 
     /// <summary>
@@ -187,7 +241,6 @@ public class BuffDebuffManager : MonoBehaviour
                 }
                 else if (effectType == BuffDebuffType.ConfusedDebuff)
                 {
-
                     Debug.Log("calling ui manager to remove question mark");
                     _uiManager?.SetConfusedEffect(false, target);
                 }
@@ -216,6 +269,15 @@ public class BuffDebuffManager : MonoBehaviour
         // Start the timer to remove the buff/debuff after its duration
         StartCoroutine(EffectTimer(target, effect));
     }
+    /// <summary>
+    /// Apply a named buff or debuff to a target, with optional stacking.
+    /// </summary>
+    /// <param name="target">The target GameObject.</param>
+    /// <param name="buffName">The name of the buff/debuff.</param>
+    /// <param name="effectType">Type of buff or debuff.</param>
+    /// <param name="duration">Duration of the effect.</param>
+    /// <param name="effectValue">Value of the effect as a factor.</param>
+    /// <param name="stackable">Whether the effect can stack.</param>
     public void ApplyBuffDebuff(GameObject target, string buffName, BuffDebuffType effectType, float duration, float effectValue, bool stackable)
     {
         // If not stackable and effect already active, stop old effect before starting new
@@ -346,6 +408,8 @@ public class BuffDebuffManager : MonoBehaviour
         // Start the timer to remove the buff/debuff after its duration
         StartCoroutine(EffectTimer(target, effect));
     }
+
+    // Applies or removes the effect's stat changes to the target's IBuffable component.
     private void ApplyEffectToStats(GameObject target, BuffDebuff effect, bool isApplying)
     {
         if (target == null)
@@ -430,12 +494,21 @@ public class BuffDebuffManager : MonoBehaviour
     /// <summary>
     /// Coroutine to manage effect duration.
     /// </summary>
+    /// <param name="target">The target GameObject.</param>
+    /// <param name="effect">The buff or debuff effect.</param>
     private System.Collections.IEnumerator EffectTimer(GameObject target, BuffDebuff effect)
     {
         yield return new WaitForSeconds(effect.duration);
 
         // Check that the target still exists and the effect is still active
-        if (targets.ContainsKey(target) && !ReferenceEquals(target, null) && Instance.GetActiveEffects(target).Contains(effect))
+        if (target == null || !targets.ContainsKey(target))
+        {
+            // Clean up dictionary entry if needed
+            targets.Remove(target);
+            yield break;
+        }
+
+        if (Instance.GetActiveEffects(target).Contains(effect))
         {
             targets[target].RemoveEffect(effect);
             ApplyEffectToStats(target, effect, false);
@@ -467,6 +540,12 @@ public class BuffDebuffManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Clear a specific buff or debuff from a target, optionally by name.
+    /// </summary>
+    /// <param name="target">The target GameObject.</param>
+    /// <param name="type">The type of buff/debuff to clear.</param>
+    /// <param name="effectName">Optional effect name to match.</param>
     public void ClearEffect(GameObject target, BuffDebuffType type, string effectName = "")
     {
         if (target == null)
@@ -496,6 +575,8 @@ public class BuffDebuffManager : MonoBehaviour
     /// <summary>
     /// Get the active buffs and debuffs for a target.
     /// </summary>
+    /// <param name="target">The target GameObject.</param>
+    /// <returns>List of active <see cref="BuffDebuff"/> effects.</returns>
     public List<BuffDebuff> GetActiveEffects(GameObject target)
     {
         if (target == null)
@@ -511,5 +592,4 @@ public class BuffDebuffManager : MonoBehaviour
 
         return new List<BuffDebuff>();
     }
-
 }

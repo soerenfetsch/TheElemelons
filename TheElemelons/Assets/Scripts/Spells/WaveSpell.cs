@@ -1,25 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using UnityEngine;
+
 /// <summary>
-/// Wave
-/// deals some damage
+/// Wave spell that travels forward, dealing damage and knockback to enemies and creating splash effects on contact.
+/// The wave is blocked by walls and is destroyed after a short duration.
 /// </summary>
 public class WaveSpell : SpellEffect
 {
+    // Lifetime of the wave spell before it expires.
     float spellLifeTime = 3f;
+    // Movement speed of the wave.
     float moveSpeed = 1f;
+    // Direction of movement.
     Vector2 movement;
+    // Rigidbody2D for moving the wave.
     new Rigidbody2D rigidbody2D;
+    // Points from which to cast raycasts for wall detection.
     List<Transform> rayCastPoints;
+    // Stores the first raycast hit (if any).
     RaycastHit2D hit;
+    /// <summary>
+    /// Prefab for the splash visual effect.
+    /// </summary>
     public GameObject splashEffect;
+    // Tracks which rigidbodies have splash effects attached.
     Dictionary<Rigidbody2D, GameObject> victims;
+    // Damage dealt to enemies.
     float damage = 1f;
+    // Knockback force applied to enemies.
     float thrust = 20f;
+    // Duration of knockback.
     float knockTime = 0.7f;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes the wave's direction, rotation, raycast points, and starts the expiration timer.
+    /// </summary>
     void Start()
     {
         spellType = new ChargeTuple(ChargeTypes.water, ChargeTypes.water);
@@ -36,7 +52,9 @@ public class WaveSpell : SpellEffect
         StartCoroutine(Expire());
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Moves the wave forward unless a wall is detected.
+    /// </summary>
     void FixedUpdate()
     {
         if (!hit)
@@ -45,12 +63,12 @@ public class WaveSpell : SpellEffect
             rigidbody2D.MovePosition(rigidbody2D.position + movement * moveSpeed * Time.fixedDeltaTime);
         }
     }
+
     /// <summary>
-    /// raycast to that wave doesnt move through walls
+    /// Performs raycasts to prevent the wave from moving through walls.
     /// </summary>
     void DoRaycasts()
     {
-
         float rayLength = 0.8f;
         LayerMask mask = LayerMask.GetMask("Interactable", "Walls");
         foreach (Transform point in rayCastPoints)
@@ -61,6 +79,10 @@ public class WaveSpell : SpellEffect
             }
         }
     }
+
+    /// <summary>
+    /// Waits for spellLifeTime, then triggers the shrink animation and destroys the wave.
+    /// </summary>
     IEnumerator Expire()
     {
         yield return new WaitForSeconds(spellLifeTime);
@@ -68,14 +90,15 @@ public class WaveSpell : SpellEffect
         yield return new WaitForSeconds(1.1f);
         Destroy(transform.gameObject);
     }
+
     /// <summary>
-    /// damage enemy, summon splash visual effect
+    /// Deals damage and knockback to enemies, and attaches splash effects to enemies and the player on contact.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">The collider that entered the trigger.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy") && other.isTrigger &&
-        other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
+            other.GetComponent<Enemy>().GetCurrentState() != EnemyStatus.Staggered)
         {
             Rigidbody2D otherRb = other.gameObject.GetComponent<Rigidbody2D>();
             if (!victims.ContainsKey(otherRb))
@@ -99,10 +122,11 @@ public class WaveSpell : SpellEffect
             }
         }
     }
+
     /// <summary>
-    /// remove splash effect
+    /// Removes splash effect from enemies when they exit the wave.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">The collider that exited the trigger.</param>
     void OnTriggerExit2D(Collider2D other)
     {
         Rigidbody2D otherRb = other.GetComponent<Rigidbody2D>();
@@ -111,8 +135,9 @@ public class WaveSpell : SpellEffect
             RemoveSplash(otherRb);
         }
     }
+
     /// <summary>
-    /// remove splash effect
+    /// Removes all splash effects when the wave is destroyed.
     /// </summary>
     void OnDestroy()
     {
@@ -121,6 +146,8 @@ public class WaveSpell : SpellEffect
             RemoveSplash(key, editList: false);
         }
     }
+
+    // Removes the splash effect from a given rigidbody and resets its velocity.
     void RemoveSplash(Rigidbody2D key, bool editList = true)
     {
         Destroy(victims[key].gameObject);

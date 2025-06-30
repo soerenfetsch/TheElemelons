@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Elemental types used for combat interactions.
+/// </summary>
 public enum ElementType
 {
     Fire,
@@ -12,6 +15,10 @@ public enum ElementType
     None
 }
 
+/// <summary>
+/// Helper class for combat-related utilities such as temporary invincibility.
+/// Implements a singleton pattern.
+/// </summary>
 public class CombatHelper : MonoBehaviour
 {
     private static CombatHelper _instance;
@@ -65,6 +72,9 @@ public class CombatHelper : MonoBehaviour
 /// </summary>
 public static class CombatManager
 {
+    /// <summary>
+    /// Duration (in seconds) for which a target is invincible after being hit.
+    /// </summary>
     public const float invincibilityDuration = 0.2f;
 
     /// <summary>
@@ -73,6 +83,7 @@ public static class CombatManager
     /// </summary>
     public static Action OnPlayerDeath;
 
+    // Lookup table for elemental damage multipliers.
     private static Dictionary<ElementType, Dictionary<ElementType, float>> damageTable = new Dictionary<ElementType, Dictionary<ElementType, float>>()
     {
         {ElementType.Fire, new Dictionary<ElementType, float>(){
@@ -136,10 +147,10 @@ public static class CombatManager
 
     /// <summary>
     /// Calculates damage based on attack and defense element types and modifiers.
-    /// Damage multiplier is calculated by multiplying the damage multipliers of the attacking elements
-    /// Fire: 1.25x against Earth, Earth: 1.25x against Wind, Water: 1.25x against Fire, Wind: 1.25x against Water 
+    /// Damage multiplier is calculated by multiplying the damage multipliers of the attacking elements.
+    /// Fire: 1.25x against Earth, Earth: 1.25x against Wind, Water: 1.25x against Fire, Wind: 1.25x against Water.
     /// None: 1x against all elements, rest are 1x against each other.
-    /// Final damage is calculated as baseDamage * damageMultiplier * attackFactor * defenseFactor
+    /// Final damage is calculated as baseDamage * damageMultiplier * attackFactor / defenseFactor.
     /// </summary>
     /// <param name="attackTypes">Tuple of attacking elements.</param>
     /// <param name="defenseType">Defending element.</param>
@@ -164,7 +175,7 @@ public static class CombatManager
     /// <summary>
     /// Overload for CalculateDamage for ChargeTuple attack types.
     /// </summary>
-    /// <param name="attackType">Attacking element.</param>
+    /// <param name="attackTypes">ChargeTuple of attack elements.</param>
     /// <param name="defenseType">Defending element.</param>
     /// <param name="baseDamage">Base damage of the attack.</param>
     /// <param name="attackFactor">Attack factor multiplier.</param>
@@ -240,7 +251,6 @@ public static class CombatManager
         hit.GetComponent<ICombatant>()?.GetKnocked(knockTime);
     }
 
-
     /// <summary>
     /// Executes an attack with elemental attributes (ChargeTuple attack types).
     /// Only executes attack if the target is not invincible.
@@ -312,7 +322,7 @@ public static class CombatManager
     /// </summary>
     /// <param name="attacker">The attacking GameObject.</param>
     /// <param name="target">The target's Rigidbody2D.</param>
-    /// <param name="attackTypes">ChargeTuple of attack elements.</param>
+    /// <param name="attackType">Attacking element.</param>
     /// <param name="attackDirection">Direction of the attack.</param>
     /// <param name="baseDamage">Base damage of the attack.</param>
     /// <param name="thrust">Knockback strength.</param>
@@ -375,7 +385,7 @@ public static class CombatManager
     /// </summary>
     /// <param name="attacker">The attacking GameObject.</param>
     /// <param name="target">The target's Rigidbody2D.</param>
-    /// <param name="attackTypes">ChargeTuple of attack elements.</param>
+    /// <param name="attackTypes">Tuple of attack elements.</param>
     /// <param name="attackDirection">Direction of the attack.</param>
     /// <param name="baseDamage">Base damage of the attack.</param>
     /// <param name="thrust">Knockback strength.</param>

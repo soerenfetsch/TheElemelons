@@ -1,11 +1,27 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Loads and manages tilemap data for saving and loading tilemaps in the dungeon.
+/// Provides methods to load tiles from a <see cref="TilemapData"/> asset and clear the tilemap.
+/// </summary>
 public class TilemapLoader : MonoBehaviour
 {
+    /// <summary>
+    /// The <see cref="TilemapData"/> asset containing the saved tile positions and tiles.
+    /// </summary>
     public TilemapData tilemapData;
+
+    /// <summary>
+    /// The <see cref="Tilemap"/> component to load tiles into or clear.
+    /// </summary>
     public Tilemap tilemap;
 
+    /// <summary>
+    /// Constructs a new TilemapLoader with the given tilemap data and tilemap.
+    /// </summary>
+    /// <param name="tilemapData">The tilemap data asset to use for loading.</param>
+    /// <param name="tilemap">The tilemap to load into or clear.</param>
     public TilemapLoader(TilemapData tilemapData, Tilemap tilemap)
     {
         this.tilemapData = tilemapData;
@@ -13,9 +29,9 @@ public class TilemapLoader : MonoBehaviour
     }
 
     /// <summary>
-    /// Loads the tilemap data from the TilemapData object and sets the tiles on the tilemap.
+    /// Loads the tilemap data from the <see cref="TilemapData"/> object and sets the tiles on the tilemap.
     /// This method clears all existing tiles on the tilemap and then sets the tiles based on the positions
-    /// and tile data stored in the TilemapData object.
+    /// and tile data stored in the <see cref="TilemapData"/> object.
     /// </summary>
     [ContextMenu("Load Tilemap Data")]
     public void LoadTilemapData()

@@ -2,28 +2,79 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Generates dungeon maps using a recursive bipartitioning algorithm.
+/// Handles room creation, corridor connection, wall placement, decorations, monster spawns, doors, shrines, and darkness effects.
+/// </summary>
 public class BipartitioningMapGenerator : AbstractMapGenerator
 {
+    // The map data being generated.
     MapData mapData;
-    public MonsterManager monsterManager;
-    public Vector2Int startPosition = new Vector2Int(0, 0);
-    public int minRoomWidth = 10;
-    public int minRoomHeight = 10;
-    public int dungeonWidth = 100;
-    public int dungeonHeight = 100;
-    public int offset = 3; // How many tiles offset for walls, etc.
 
-    // Define how wide the corridors are
+    /// <summary>
+    /// Reference to the MonsterManager for spawning monsters.
+    /// </summary>
+    public MonsterManager monsterManager;
+
+    /// <summary>
+    /// The starting position for the dungeon (bottom-left corner).
+    /// </summary>
+    public Vector2Int startPosition = new Vector2Int(0, 0);
+
+    /// <summary>
+    /// Minimum width for generated rooms.
+    /// </summary>
+    public int minRoomWidth = 10;
+
+    /// <summary>
+    /// Minimum height for generated rooms.
+    /// </summary>
+    public int minRoomHeight = 10;
+
+    /// <summary>
+    /// Total width of the dungeon.
+    /// </summary>
+    public int dungeonWidth = 100;
+
+    /// <summary>
+    /// Total height of the dungeon.
+    /// </summary>
+    public int dungeonHeight = 100;
+
+    /// <summary>
+    /// Offset for walls and room boundaries.
+    /// </summary>
+    public int offset = 3;
+
+    /// <summary>
+    /// Width of corridors connecting rooms.
+    /// </summary>
     public int corridorWidth = 2;
 
-    // For spawning shrines in rooms
+    /// <summary>
+    /// Probability that a room will contain a shrine.
+    /// </summary>
     public float roomShrineProbability = 0.2f;
+
+    /// <summary>
+    /// Prefab for shrine objects.
+    /// </summary>
     public GameObject shrinePrefab;
 
-    // For making rooms dark
+    /// <summary>
+    /// Probability that a room will be dark.
+    /// </summary>
     public float darkRoomProbability = 0.1f;
+
+    /// <summary>
+    /// Prefab for darkness effect in rooms.
+    /// </summary>
     public GameObject darknessEffectPrefab;
 
+    /// <summary>
+    /// Generates the entire dungeon map, including rooms, corridors, walls, decorations, monsters, doors, shrines, and darkness.
+    /// </summary>
+    /// <returns>The generated <see cref="MapData"/> object.</returns>
     public override MapData GenerateMap()
     {
         mapData = new MapData();
@@ -46,6 +97,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return mapData;
     }
 
+    // Randomly marks rooms as dark based on probability.
     private void CreateDarkRooms(MapData mapData)
     {
         foreach (var room in mapData.rooms)
@@ -78,6 +130,11 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    /// <summary>
+    /// Splits the dungeon space into rooms using recursive bipartitioning and creates random rooms within each space.
+    /// </summary>
+    /// <param name="roomList">The list to populate with generated rooms.</param>
+    /// <returns>List of BoundsInt representing the spaces for each room.</returns>
     protected List<BoundsInt> CreateRooms(List<Room> roomList)
     {
         BoundsInt initialSpace = new BoundsInt((Vector3Int)startPosition, new Vector3Int(dungeonWidth, dungeonHeight, 0));
@@ -93,6 +150,14 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return roomSpaces;
     }
 
+    /// <summary>
+    /// Connects rooms with corridors by finding the closest room centers and updating the map data.
+    /// Also sets the start and end rooms, and places the player and end portal.
+    /// </summary>
+    /// <param name="spaceBounds">List of room bounding boxes.</param>
+    /// <param name="rooms">List of generated rooms.</param>
+    /// <param name="mapData">The map data to update.</param>
+    /// <returns>Set of Vector2Int positions representing corridor tiles.</returns>
     protected HashSet<Vector2Int> CreateCorridorsOrdering(List<BoundsInt> spaceBounds, List<Room> rooms, MapData mapData)
     {
         // Get the centers of the bounding boxes and map them to the corresponding rooms
@@ -151,6 +216,14 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return corridorPositions;
     }
 
+    /// <summary>
+    /// Connects two room centers with a corridor of the specified width.
+    /// </summary>
+    /// <param name="currentRoomCenter">The starting room center.</param>
+    /// <param name="destination">The destination room center.</param>
+    /// <param name="xDestMin">Minimum x of the destination room.</param>
+    /// <param name="xDestMax">Maximum x of the destination room.</param>
+    /// <returns>Set of Vector2Int positions representing the corridor tiles.</returns>
     protected HashSet<Vector2Int> ConnectRooms(Vector2Int currentRoomCenter, Vector2Int destination,
                                              int xDestMin, int xDestMax)
     {
@@ -217,6 +290,12 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return corridor;
     }
 
+    /// <summary>
+    /// Finds the closest point in a list of room centers to the current room center.
+    /// </summary>
+    /// <param name="currentRoomCenter">The current room center.</param>
+    /// <param name="roomCenters">List of other room centers.</param>
+    /// <returns>The closest room center.</returns>
     protected Vector2Int FindClosesPointTo(Vector2Int currentRoomCenter, List<Vector2Int> roomCenters)
     {
         Vector2Int closest = Vector2Int.zero;
@@ -383,7 +462,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     /// and if there is a clear 3x3 area centered on the position before placing a shrine.
     /// The shrine positions are added to both the room and the map data.
     /// </summary>
-    /// <param name="mapData"></param>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void CreateShrinePositions(MapData mapData)
     {
         System.Random rng = new System.Random();
@@ -422,6 +501,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    // Checks if a position is at least 3 tiles away from any wall.
     private bool IsShrineFarFromWall(Vector2Int pos, HashSet<Vector2Int> floorPositions)
     {
         for (int dx = -3; dx <= 3; dx++)
@@ -438,6 +518,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return true;
     }
 
+    // Checks if a 3x3 area centered on pos is clear and not occupied by monsters.
     private bool IsShrineSpaceAvailable(Vector2Int pos, Room room)
     {
         for (int dx = -1; dx <= 1; dx++)
@@ -454,12 +535,22 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return true;
     }
 
+    /// <summary>
+    /// Placeholder for trap placement logic. Not yet implemented.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void createTrapPositions(MapData mapData)
     {
         //TODO: Implement this
     }
 
-    // Recursive bipartitioning to split space into rooms
+    /// <summary>
+    /// Recursively splits the dungeon space into rooms using bipartitioning.
+    /// </summary>
+    /// <param name="spaceToSplit">The space to split.</param>
+    /// <param name="minWidth">Minimum width for a room.</param>
+    /// <param name="minHeight">Minimum height for a room.</param>
+    /// <returns>List of BoundsInt representing the spaces for each room.</returns>
     protected List<BoundsInt> BipartitionSpace(BoundsInt spaceToSplit, int minWidth, int minHeight)
     {
         Queue<BoundsInt> roomsQueue = new Queue<BoundsInt>();
@@ -507,6 +598,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         return roomsList;
     }
 
+    // Splits a room vertically and enqueues the resulting subrooms.
     protected void SplitVertically(Queue<BoundsInt> roomsQueue, BoundsInt room)
     {
         var xSplit = Random.Range(1, room.size.x); // (1, room.size.x - 1)
@@ -517,6 +609,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         roomsQueue.Enqueue(room2);
     }
 
+    // Splits a room horizontally and enqueues the resulting subrooms.
     protected void SplitHorizontally(Queue<BoundsInt> roomsQueue, BoundsInt room)
     {
         var ySplit = Random.Range(1, room.size.y); // (1, room.size.y - 1)
@@ -527,7 +620,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         roomsQueue.Enqueue(room2);
     }
 
-    // Create a random room shape in a partitioned space
+    // Creates a random room shape in a partitioned space (currently a rectangle minus the offset for walls).
     protected HashSet<Vector2Int> CreateRandomRoomInSpace(BoundsInt space)
     {
         // For now just create a rectangle exactly within the space minus the offset for walls
@@ -549,6 +642,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     /// This method iterates through the rooms and instantiates shrine prefabs at the specified positions.
     /// The shrine prefab should be assigned in the inspector.
     /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void SpawnShrines(MapData mapData)
     {
         foreach (var room in mapData.rooms)
@@ -560,6 +654,10 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    /// <summary>
+    /// Randomly sets the darkness state of a room based on probability.
+    /// </summary>
+    /// <param name="room">The room to update.</param>
     public void RandomlySetRoomDarkness(Room room)
     {
         // Randomly set the room to be dark with a certain probability
@@ -573,6 +671,11 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
         }
     }
 
+    /// <summary>
+    /// Spawns darkness effects in rooms marked as dark.
+    /// Instantiates the darkness effect prefab and scales it to fit the room.
+    /// </summary>
+    /// <param name="mapData">The map data containing the floor positions and rooms.</param>
     public void SpawnDarknessInRooms(MapData mapData)
     {
         if (darknessEffectPrefab == null)
@@ -599,6 +702,5 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
             darknessEffect.transform.localScale = new Vector3(roomSize.x, roomSize.y, 1);
         }
     }
-
 }
 

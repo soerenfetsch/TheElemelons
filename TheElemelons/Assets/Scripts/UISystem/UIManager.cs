@@ -1,56 +1,137 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Central UI manager for all in-game and menu UI elements.
+/// Handles health/mana bars, spell selection UI, buff/debuff icons, aiming, and panel switching.
+/// Provides methods for updating UI in response to player actions, buffs, and game state changes.
+/// </summary>
 public class UIManager : MonoBehaviour
 {
+    /// <summary>
+    /// Singleton instance of UIManager.
+    /// </summary>
     public static UIManager Instance { get; private set; }
+
+    /// <summary>
+    /// Reference to the player GameObject.
+    /// </summary>
     public GameObject playerObject;
+
+    // Player component references
     Health health;
     Mana mana;
     HealthBar healthBar;
     ManaBar manaBar;
     BuffDebuffIconBar buffDebuffIconBar;
     PlayerMovement playerMovement;
-
     InputManager inputManager;
+
     [Header("Aim")]
+    /// <summary>
+    /// Current mouse position in world coordinates.
+    /// </summary>
     public Vector2 mousePos;
+    /// <summary>
+    /// Reference to the main camera.
+    /// </summary>
     public Camera cam;
+    /// <summary>
+    /// Transform used as the pivot for aiming.
+    /// </summary>
     public Transform pivot;
+    /// <summary>
+    /// Transform for the aiming arrow.
+    /// </summary>
     public Transform aim_transform;
+
     [Header("Spell Selection UI")]
+    /// <summary>
+    /// SpriteRenderer for the first charge slot.
+    /// </summary>
     public SpriteRenderer charge1UI;
+    /// <summary>
+    /// SpriteRenderer for the second charge slot.
+    /// </summary>
     public SpriteRenderer charge2UI;
+    /// <summary>
+    /// Sprite for fire charge.
+    /// </summary>
     public Sprite fireSprite;
+    /// <summary>
+    /// Sprite for water charge.
+    /// </summary>
     public Sprite waterSprite;
+    /// <summary>
+    /// Sprite for earth charge.
+    /// </summary>
     public Sprite earthSprite;
+    /// <summary>
+    /// Sprite for wind charge.
+    /// </summary>
     public Sprite windSprite;
+    // Reference to the player's Casting script.
     Casting castingScript;
+
     [Header("ManaHealthBar Management")]
     float lastMana;
     float lastHealth;
+
     [Header("BuffDebuff Animation Management")]
+    /// <summary>
+    /// Animator for speed buff visual effect.
+    /// </summary>
     public Animator speedBuffAnimator;
+    /// <summary>
+    /// Prefab for the confused (question mark) effect.
+    /// </summary>
     public GameObject questionMark;
+    /// <summary>
+    /// Prefab for the ice crystal (freeze) effect.
+    /// </summary>
     public GameObject iceCrystal;
+    /// <summary>
+    /// Prefab for the earth skin buff effect.
+    /// </summary>
     public GameObject earthSkinEffect;
+    /// <summary>
+    /// Prefab for the petrified player effect.
+    /// </summary>
     public GameObject petrifiedPlayerEffect;
+
     [Header("UI Canvas Panels")]
+    /// <summary>
+    /// Pause menu panel GameObject.
+    /// </summary>
     public GameObject pauseMenuPanel;
+    /// <summary>
+    /// Start menu panel GameObject.
+    /// </summary>
     public GameObject startMenuPanel;
+    /// <summary>
+    /// Settings menu panel GameObject.
+    /// </summary>
     public GameObject settingsMenuPanel;
+    /// <summary>
+    /// In-game HUD panel GameObject.
+    /// </summary>
     public GameObject ingamePanel;
+    /// <summary>
+    /// Death screen panel GameObject.
+    /// </summary>
     public GameObject deathScreenPanel;
+    /// <summary>
+    /// Load panel GameObject.
+    /// </summary>
     public GameObject loadPanel;
 
     [Header("Bossbar")]
+    /// <summary>
+    /// Boss health bar GameObject.
+    /// </summary>
     public GameObject bossBar;
 
-
     /// <summary>
-    /// Singleton instance of UIManager.
+    /// Unity Awake method. Sets up the singleton instance and persists across scenes.
     /// </summary>
     private void Awake()
     {
@@ -66,8 +147,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Start is called before the first frame update.
-    /// Initializes the UIManager by getting references to various components on the player object.
+    /// Unity Start method. Initializes references to player components and UI elements.
     /// </summary>
     void Start()
     {
@@ -84,8 +164,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Update is called once per frame.
-    /// Updates the health bar, mana bar, buff/debuff icons, and speed buff animation.
+    /// Unity Update method. Updates health/mana bars, buff/debuff icons, and speed buff animation.
     /// </summary>
     void Update()
     {
@@ -106,8 +185,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// FixedUpdate is called at a fixed interval.
-    /// Updates the aiming arrow based on the player's input.
+    /// Unity FixedUpdate method. Updates the aiming arrow based on player input.
     /// </summary>
     void FixedUpdate()
     {
@@ -118,11 +196,7 @@ public class UIManager : MonoBehaviour
         UpdateAimingArrow();
     }
 
-    // Health Management
-
-    /// <summary>
-    /// Updates the health bar to reflect the player's current health.
-    /// </summary>
+    // Updates the health bar UI to match the player's current health.
     void UpdateHealthBar()
     {
         healthBar.UpdateHeartFullness(health.GetHealth(), health.GetMaxHealth());
@@ -161,11 +235,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Mana Management
-
-    /// <summary>
-    /// Updates the mana bar to reflect the player's current mana.
-    /// </summary>
+    // Updates the mana bar UI to match the player's current mana.
     void UpdateManaBar()
     {
         manaBar.UpdateStarFullness(mana.GetMana(), mana.GetMaxMana());
@@ -203,8 +273,6 @@ public class UIManager : MonoBehaviour
             manaBar.Heal();
         }
     }
-
-    // Spell Selection
 
     /// <summary>
     /// Loads the sprite for the selected charge type into the spell selection UI.
@@ -257,11 +325,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Aiming
-
-    /// <summary>
-    /// Updates the aiming arrow based on the player's input.
-    /// </summary>
+    // Updates the aiming arrow to match the player's current aim direction.
     void UpdateAimingArrow()
     {
         mousePos = inputManager.GetMousePosition();
@@ -269,11 +333,7 @@ public class UIManager : MonoBehaviour
         aim_transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    // BuffDebuff Animation Management
-
-    /// <summary>
-    /// Updates the speed buff animation based on the player's movement.
-    /// </summary>
+    // Updates the speed buff animation based on the player's movement.
     private void UpdateSpeedBuffAnimation()
     {
         Vector2 movement = playerMovement.GetMovement();
@@ -290,16 +350,16 @@ public class UIManager : MonoBehaviour
     {
         speedBuffAnimator.SetBool("run", isBuffed);
     }
+
     /// <summary>
-    /// instantiate question mark as visual effect when confused
+    /// Instantiate question mark as visual effect when confused.
     /// </summary>
-    /// <param name="isBuffed"></param>
-    /// <param name="target"></param>
+    /// <param name="isBuffed">Whether the confused effect is active.</param>
+    /// <param name="target">The target GameObject.</param>
     public void SetConfusedEffect(bool isBuffed, GameObject target)
     {
         if (isBuffed)
         {
-
             Vector3 pos = target.transform.position;
             GameObject questionMarkEffect = Instantiate(questionMark, pos, Quaternion.Euler(0, 0, 0));
             questionMarkEffect.transform.parent = target.transform;
@@ -309,16 +369,16 @@ public class UIManager : MonoBehaviour
             Destroy(target.transform.Find("QuestionMark(Clone)").gameObject);
         }
     }
+
     /// <summary>
-    /// Initialize ice crystal effect when frozen
+    /// Initialize ice crystal effect when frozen.
     /// </summary>
-    /// <param name="isBuffed"></param>
-    /// <param name="target"></param>
+    /// <param name="isBuffed">Whether the freeze effect is active.</param>
+    /// <param name="target">The target GameObject.</param>
     public void SetFreezeEffect(bool isBuffed, GameObject target)
     {
         if (isBuffed)
         {
-
             Vector3 pos = target.transform.position;
             GameObject freezeEffect = Instantiate(iceCrystal, pos, Quaternion.Euler(0, 0, 0));
             freezeEffect.GetComponent<IceCrystal>().SetVictim(target);
@@ -328,6 +388,12 @@ public class UIManager : MonoBehaviour
             Destroy(target.transform.Find("IceCrystalEffect(Clone)").gameObject);
         }
     }
+
+    /// <summary>
+    /// Initialize earth skin effect when buffed.
+    /// </summary>
+    /// <param name="isBuffed">Whether the earth skin effect is active.</param>
+    /// <param name="target">The target GameObject.</param>
     public void SetEarthSkinEffect(bool isBuffed, GameObject target)
     {
         if (target.CompareTag("Player"))
@@ -342,6 +408,12 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Initialize petrified effect when buffed.
+    /// </summary>
+    /// <param name="isBuffed">Whether the petrified effect is active.</param>
+    /// <param name="target">The target GameObject.</param>
     public void SetPetrifiedEffect(bool isBuffed, GameObject target)
     {
         if (target.CompareTag("Player"))
@@ -356,6 +428,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
     // BuffDebuff Icon Management
 
     /// <summary>
@@ -384,16 +457,26 @@ public class UIManager : MonoBehaviour
         buffDebuffIconBar.RemoveBuff(type);
     }
 
+    /// <summary>
+    /// Registers for game status change events.
+    /// </summary>
     private void OnEnable()
     {
         GameManager.OnGameStatusChanged += HandleGameStatusChanged;
     }
 
+    /// <summary>
+    /// Unregisters from game status change events.
+    /// </summary>
     private void OnDisable()
     {
         GameManager.OnGameStatusChanged -= HandleGameStatusChanged;
     }
 
+    /// <summary>
+    /// Handles switching UI panels based on the current game status.
+    /// </summary>
+    /// <param name="newStatus">The new game status.</param>
     private void HandleGameStatusChanged(GameStatus newStatus)
     {
         Debug.Log($"UIManager: Game status changed to {newStatus}");
@@ -437,15 +520,19 @@ public class UIManager : MonoBehaviour
 
     /// <summary>
     /// Enables the settings menu panel. Disables all other panels.
-    /// </summary> 
+    /// </summary>
     [ContextMenu("Enable Settings Menu")]
     public void EnableSettingsMenu() => EnablePanel("SettingsMenu");
+
+    /// <summary>
+    /// Enables the death screen panel. Disables all other panels.
+    /// </summary>
     [ContextMenu("Enable Death Menu")]
     public void EnableDeathScreen() => EnablePanel("DeathScreen");
 
     /// <summary>
-    /// Enables the ingame panel. Disables all other panels.
-    /// </summary> 
+    /// Enables the in-game HUD panel. Disables all other panels.
+    /// </summary>
     [ContextMenu("Enable Ingame Panel")]
     public void EnableIngamePanel() => EnablePanel("Ingame");
 
@@ -459,7 +546,7 @@ public class UIManager : MonoBehaviour
     /// Enables the specified panel and disables all other panels.
     /// Possible names are "PauseMenu", "StartMenu", "SettingsMenu","DeathScreen", and "Ingame".
     /// </summary>
-    /// <param name="panelName"></param>
+    /// <param name="panelName">The name of the panel to enable.</param>
     private void EnablePanel(string panelName)
     {
         GameObject panel = null;
@@ -499,6 +586,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Disables all UI panels.
     private void DisableAllPanels()
     {
         pauseMenuPanel?.SetActive(false);
@@ -523,14 +611,13 @@ public class UIManager : MonoBehaviour
         {
             startMenuPanel?.GetComponent<StartMenuUI>()?.DisableContinueGame();
         }
-
     }
 
     /// <summary>
-    /// Toggles the visibility of the boss bar and locks its health content
-    /// to the boss's health.
+    /// Toggles the visibility of the boss bar and locks its health content to the boss's health.
     /// </summary>
     /// <param name="isEnabled">True to show the boss bar, false to hide it.</param>
+    /// <param name="bossHealth">The boss's health component.</param>
     public void ToggleBossBar(bool isEnabled, Health bossHealth)
     {
         if (bossBar == null)

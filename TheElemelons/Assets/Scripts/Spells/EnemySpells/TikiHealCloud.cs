@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
 /// spell that heals 1 nearest enemy that isnt tiki
 /// healing occurs gradually over time

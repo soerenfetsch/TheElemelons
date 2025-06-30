@@ -5,11 +5,22 @@ using UnityEngine;
 
 /// <summary>
 /// Manages player input and key bindings across different game states.
+/// Handles movement, spell casting, camera, interaction, and menu controls.
 /// </summary>
 public class InputManager : MonoBehaviour
 {
+    /// <summary>
+    /// Maximum allowed camera zoom.
+    /// </summary>
     public float maxZoom = 8f;
+    /// <summary>
+    /// Minimum allowed camera zoom.
+    /// </summary>
     public float minZoom = 3f;
+
+    /// <summary>
+    /// Singleton instance of InputManager.
+    /// </summary>
     public static InputManager Instance { get; private set; }
 
     /// <summary>
@@ -30,12 +41,26 @@ public class InputManager : MonoBehaviour
     /// </summary>
     public PlayerInteraction playerInteraction;
 
+    // Camera and pivot references
     private Camera mainCamera;
     private CameraMovement cameraMovement;
+    /// <summary>
+    /// Transform used as the pivot for aiming.
+    /// </summary>
     public Transform pivot;
+
+    /// <summary>
+    /// Whether input is currently enabled.
+    /// </summary>
     public bool canInput = true;
+    /// <summary>
+    /// Whether player movement is currently enabled.
+    /// </summary>
     public bool canMove = true;
+
+    // Tracks the current game state for input handling.
     private GameStatus currentGameState;
+
     /// <summary>
     /// Initializes the InputManager and references required components.
     /// </summary>
@@ -69,6 +94,10 @@ public class InputManager : MonoBehaviour
         GameManager.OnGameStatusChanged -= HandleGameStatusChanged;
     }
 
+    /// <summary>
+    /// Handles changes in game status and updates input/movement flags.
+    /// </summary>
+    /// <param name="newStatus">The new game status.</param>
     private void HandleGameStatusChanged(GameStatus newStatus)
     {
         currentGameState = newStatus;
@@ -91,15 +120,12 @@ public class InputManager : MonoBehaviour
             case GameStatus.INGAME:
                 HandleGameplayInputs();
                 break;
-
             case GameStatus.MAIN_MENU:
                 HandleMenuInputs();
                 break;
-
             case GameStatus.SETTINGS_MENU:
                 HandleSettingsInputs();
                 break;
-
             case GameStatus.PAUSE_MENU:
                 HandlePauseMenuInputs();
                 break;
@@ -163,7 +189,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles gameplay-related inputs.
+    /// Handles gameplay-related inputs (movement, spell casting, interaction, camera).
     /// </summary>
     private void HandleGameplayInputs()
     {
@@ -190,7 +216,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Processes spell casting inputs.
+    /// Processes spell casting inputs (casting, clearing, selecting charges).
     /// </summary>
     private void HandleSpellCastingInputs()
     {
@@ -211,7 +237,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Processes camera-related inputs.
+    /// Processes camera-related inputs (zoom in/out).
     /// </summary>
     private void HandleCameraInputs()
     {
@@ -285,7 +311,7 @@ public class InputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dialogue inputs.
+    /// Handles dialogue inputs (advances or skips dialogue).
     /// </summary>
     private void HandleDialogueInputs()
     {
@@ -316,6 +342,10 @@ public class InputManager : MonoBehaviour
         return Mathf.Atan2(aim_dir.y, aim_dir.x) * Mathf.Rad2Deg + 90f;
     }
 
+    /// <summary>
+    /// Gets the mouse position in world coordinates.
+    /// </summary>
+    /// <returns>Mouse position as a Vector2.</returns>
     public Vector2 GetMousePosition()
     {
         return mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -344,6 +374,7 @@ public class InputManager : MonoBehaviour
         StartCoroutine(WaitForKeyPress(action, onRebindComplete));
     }
 
+    // Coroutine to wait for a key press and update the binding.
     private IEnumerator WaitForKeyPress(string action, Action<KeyCode> onRebindComplete)
     {
         Debug.Log($"Waiting for new key binding for action: {action}");
@@ -366,6 +397,8 @@ public class InputManager : MonoBehaviour
             yield return null;
         }
     }
+
+    /// <summary>
     /// Handles global inputs, such as toggling the pause menu.
     /// </summary>
     private void HandleGlobalInputs()
@@ -385,6 +418,10 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Exports the current key bindings as a list of serializable entries.
+    /// </summary>
+    /// <returns>List of key binding entries for saving.</returns>
     public List<GameSaveData.KeyBindingEntry> ExportKeyBindings()
     {
         Debug.Log($"[InputManager] Exporting {keyBindings.Count} keybindings.");
@@ -396,6 +433,10 @@ public class InputManager : MonoBehaviour
         return list;
     }
 
+    /// <summary>
+    /// Imports key bindings from a list of entries (used for loading).
+    /// </summary>
+    /// <param name="entries">List of key binding entries to import.</param>
     public void ImportKeyBindings(List<GameSaveData.KeyBindingEntry> entries)
     {
         if (entries == null) { Debug.LogWarning("[InputManager] ImportKeyBindings: entries list is NULL."); return; }

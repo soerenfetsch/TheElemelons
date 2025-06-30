@@ -1,14 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Visual and animation effect for the petrified (stone) debuff on the player.
+/// Handles animator switching, movement locking, and effect expiration for the player.
+/// </summary>
 public class Petrified_Player : MonoBehaviour
 {
+    // Reference to the player's transform.
     Transform playerTransform;
+    // Reference to the player's InputManager.
     InputManager inputManager;
+    // Animator for the petrified effect.
     Animator animator;
+    // Small vertical offset to position the effect below the player.
     float offset = 0.01f;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Initializes references, sets up petrified animation state, and locks player movement.
+    /// </summary>
     void Start()
     {
         playerTransform = GameObject.Find("Player").transform;
@@ -28,6 +38,11 @@ public class Petrified_Player : MonoBehaviour
         playerTransform.GetComponent<PlayerMovement>().SetMovement(Vector2.zero);
         transform.SetParent(playerTransform, worldPositionStays: true);
     }
+
+    /// <summary>
+    /// Plays the decompose animation and destroys the petrified effect after a delay.
+    /// </summary>
+    /// <returns>Coroutine enumerator.</returns>
     public IEnumerator Expire()
     {
         animator.SetTrigger("Decompose");

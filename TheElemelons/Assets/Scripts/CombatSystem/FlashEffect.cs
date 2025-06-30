@@ -1,7 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles flashing a sprite by swapping its material for a short duration.
+/// Useful for visual feedback on damage or special effects.
+/// </summary>
 public class FlashEffect : MonoBehaviour
 {
     /// <summary>
@@ -10,6 +13,7 @@ public class FlashEffect : MonoBehaviour
     /// </summary>
     [Tooltip("Material to switch to during the flash.")]
     public Material flashMaterial;
+
     /// <summary>
     /// The SpriteRenderer that should flash.
     /// </summary>
@@ -22,6 +26,8 @@ public class FlashEffect : MonoBehaviour
     // The currently running coroutine.
     private Coroutine flashRoutine;
 
+    // Start is called before the first frame update.
+    // Caches the original material from the SpriteRenderer.
     void Start()
     {
         // Get the material that the SpriteRenderer uses, 
@@ -53,6 +59,7 @@ public class FlashEffect : MonoBehaviour
         flashRoutine = StartCoroutine(FlashRoutine(duration));
     }
 
+    // Coroutine that swaps to the flash material, waits, then restores the original material.
     private IEnumerator FlashRoutine(float duration)
     {
         // Swap to the flashMaterial.

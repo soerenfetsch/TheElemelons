@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-
 
 /// <summary>
 /// Represents a room in the dungeon, storing positions of various elements and their types.
@@ -11,7 +8,7 @@ public class Room
 {
     public bool areDoorsOpen = false;
     public bool isDark = false;
-    
+
     /// <summary>
     /// Floor positions within the room.
     /// </summary>
@@ -36,8 +33,9 @@ public class Room
     /// Positions where monsters can spawn.
     /// </summary>
     public HashSet<Vector2Int> monsterSpawnPositions { get; private set; }
+
     /// <summary>
-    /// Monsters in the room
+    /// Monsters in the room.
     /// </summary>
     public HashSet<GameObject> monsters { get; private set; }
 
@@ -65,8 +63,6 @@ public class Room
     /// The type of the room.
     /// </summary>
     public RoomType roomType;
-
-
 
     /// <summary>
     /// Initializes a new room with empty positions and a default type.
@@ -206,8 +202,9 @@ public class Room
     }
 }
 
-
-// Class to hold the map data (positions for floors, walls, decorations, and monsters)
+/// <summary>
+/// Holds the map data for the dungeon, including positions for floors, walls, decorations, monsters, shrines, traps, doors, and rooms.
+/// </summary>
 public class MapData
 {
     public Vector2 playerSpawn { get; private set; }

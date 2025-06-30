@@ -4,52 +4,100 @@ using TMPro;
 using UnityEngine;
 using Regex = System.Text.RegularExpressions.Regex;
 
+/// <summary>
+/// Enum representing the different types of tutorial tips that can be shown in the tooltip.
+/// </summary>
 public enum TutorialTip
 {
+    /// <summary>
+    /// No tutorial tip is active.
+    /// </summary>
     None,
+    /// <summary>
+    /// Tip for shooting or casting a spell.
+    /// </summary>
     Shoot,
+    /// <summary>
+    /// Tip for clearing the current spell selection.
+    /// </summary>
     ClearSpell,
+    /// <summary>
+    /// Tip for player movement.
+    /// </summary>
     Walk,
+    /// <summary>
+    /// Tip for interacting with objects.
+    /// </summary>
     Interact,
+    /// <summary>
+    /// Tip for selecting a single element.
+    /// </summary>
     SelectElement,
+    /// <summary>
+    /// Tip for selecting multiple elements (initial state before selecting one).
+    /// </summary>
     SelectElements,
+    /// <summary>
+    /// Tip for casting a spell after selecting elements.
+    /// </summary>
     CastElements,
+    /// <summary>
+    /// Tip related to the field of view or camera.
+    /// </summary>
     FieldOfView
 }
+
 /// <summary>
 /// Makes tooltips appear and disappear under certain conditions.
-/// If Tooltip receives a tutorial tip type from tooltiptrigger, the corresponding tip is displayed 
-/// (i.e. “Move: [W][A][S][D]”). The tooltip stays visible until the player inputs one of the described keys,  
+/// If Tooltip receives a tutorial tip type from tooltiptrigger, the corresponding tip is displayed
+/// (i.e. “Move: [W][A][S][D]”). The tooltip stays visible until the player inputs one of the described keys,
 /// until a new tooltip is triggered or until he dies.
-/// The interact tip appears whenever the player can interact with an object and 
-/// isn't provided by tooltiptrigger. It only disappears if 
+/// The interact tip appears whenever the player can interact with an object and
+/// isn't provided by tooltiptrigger. It only disappears if
 /// the player can’t interact anymore or if another tutorial tip type has been set
 /// </summary>
 public class ToolTip : MonoBehaviour
 {
+    // Reference to the main camera.
     Camera mainCamera;
+    // Anchor position for the tooltip.
     Vector3 toolTipAnchor;
+    // List of keys the player must press to clear the current tip.
     List<KeyCode> keyToPress;
+    /// <summary>
+    /// Whether the player can currently interact with something.
+    /// </summary>
     public bool canInteract;
+    // The current tutorial tip being displayed.
     TutorialTip currentTip;
+    /// <summary>
+    /// Reference to the TMP_Text component used for displaying the tooltip.
+    /// </summary>
     public TMP_Text tooltip;
+    // Reference to the InputManager for key binding lookups.
     InputManager inputManager;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Unity Start method. Initializes references and anchor position.
+    /// </summary>
     void Start()
     {
         inputManager = GetComponent<InputManager>();
         mainCamera = Camera.main;
         toolTipAnchor = tooltip.transform.localPosition;
     }
+
+    /// <summary>
+    /// Enables or disables the tooltip display.
+    /// </summary>
+    /// <param name="onOff">True to show the tooltip, false to hide it.</param>
     public void ToggleToolTipOnOff(bool onOff)
     {
         tooltip.transform.parent.gameObject.SetActive(onOff);
     }
+
     /// <summary>
-    /// if current tutorial tip is not none, display according tip
-    /// else if can interact, display corresponding tip
-    /// else no tip
-    /// scale and position text according to camera zoom and number of lines
+    /// Updates the tooltip each frame based on the current tutorial tip, interaction state, and camera zoom.
     /// </summary>
     void Update()
     {
@@ -140,25 +188,32 @@ public class ToolTip : MonoBehaviour
             tooltip.fontSize = 2f;
         }
     }
+
     /// <summary>
-    /// remove tip
+    /// Removes the current tutorial tip.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Empty string (for clearing the tooltip).</returns>
     string OnTutorialSuccess()
     {
         ChangeCurrentTip(TutorialTip.None);
         return "";
     }
+
+    /// <summary>
+    /// Changes the current tutorial tip being displayed.
+    /// </summary>
+    /// <param name="tip">The new tutorial tip to display.</param>
     public void ChangeCurrentTip(TutorialTip tip)
     {
         currentTip = tip;
         Debug.Log(currentTip.ToString());
     }
+
     /// <summary>
-    /// changes displayed string for certain keys, i.e Alpha0 -> 0
+    /// Returns a user-friendly string for the key binding of a given action.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name">The action name.</param>
+    /// <returns>Formatted key binding string.</returns>
     string GetKeyBind(string name)
     {
         KeyCode key = inputManager.keyBindings[name];

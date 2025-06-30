@@ -31,6 +31,9 @@ public class Casting : MonoBehaviour
     public Animator wandAnimator;
 
     [Header("Mana Management")]
+    /// <summary>
+    /// Reference to the player's mana script.
+    /// </summary>
     public Mana manaScript;
 
     [Header("Charges")]
@@ -38,23 +41,77 @@ public class Casting : MonoBehaviour
     /// Maximum number of charges the player can hold.
     /// </summary>
     public int maxCharges = 2;
+
+    /// <summary>
+    /// The current tuple of selected charges.
+    /// </summary>
     public ChargeTuple currentCharges = new ChargeTuple();
+
     [Header("Spell Selection")]
+    /// <summary>
+    /// Spell prefab for no-type (empty) charge.
+    /// </summary>
     public GameObject noTypeSpell;
+    /// <summary>
+    /// Spell prefab for wind.
+    /// </summary>
     public GameObject windSpell;
+    /// <summary>
+    /// Spell prefab for fire-fire.
+    /// </summary>
     public GameObject firefireSpell;
+    /// <summary>
+    /// Spell prefab for fire-earth.
+    /// </summary>
     public GameObject fireearthSpell;
+    /// <summary>
+    /// Spell prefab for earth-wind.
+    /// </summary>
     public GameObject earthwindSpell;
+    /// <summary>
+    /// Spell prefab for fire-wind.
+    /// </summary>
     public GameObject firewindSpell;
+    /// <summary>
+    /// Spell prefab for earth-water.
+    /// </summary>
     public GameObject earthwaterSpell;
+    /// <summary>
+    /// Spell prefab for earth (single).
+    /// </summary>
     public GameObject earthSpell;
+    /// <summary>
+    /// Spell prefab for earth-earth.
+    /// </summary>
     public GameObject earthearthSpell;
+    /// <summary>
+    /// Spell prefab for wind-wind.
+    /// </summary>
     public GameObject windwindSpell;
+    /// <summary>
+    /// Spell prefab for water (single).
+    /// </summary>
     public GameObject waterSpell;
+    /// <summary>
+    /// Spell prefab for water-wind.
+    /// </summary>
     public GameObject waterWindSpell;
+    /// <summary>
+    /// Spell prefab for water-water.
+    /// </summary>
     public GameObject waterWaterSpell;
+    /// <summary>
+    /// Spell prefab for water-fire.
+    /// </summary>
     public GameObject waterFireSpell;
+    /// <summary>
+    /// Spell prefab for fire (single).
+    /// </summary>
     public GameObject fireSpell;
+
+    /// <summary>
+    /// Mana cost for the current spell.
+    /// </summary>
     public float manaCost = 1f;
 
     /// <summary>
@@ -63,9 +120,17 @@ public class Casting : MonoBehaviour
     public Dictionary<ChargeTuple, SpellEffect> chargeToSpell = new Dictionary<ChargeTuple, SpellEffect>();
 
     [Header("Internal Stuff")]
+    /// <summary>
+    /// Reference to the player's movement script.
+    /// </summary>
     public PlayerMovement playerMovement;
+
+    // Reference to the Player component.
     private Player player;
 
+    /// <summary>
+    /// Initializes spell dictionary and component references.
+    /// </summary>
     private void Start()
     {
         // Initializes variables and setups.
@@ -86,7 +151,6 @@ public class Casting : MonoBehaviour
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.water, ChargeTypes.water), waterWaterSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.water, ChargeTypes.fire), waterFireSpell.GetComponent<SpellEffect>());
         chargeToSpell.Add(new ChargeTuple(ChargeTypes.fire, ChargeTypes.notype), fireSpell.GetComponent<SpellEffect>());
-
     }
 
     /// <summary>
@@ -119,9 +183,11 @@ public class Casting : MonoBehaviour
         return manaScript.mana >= manaCost;
     }
 
+    /// <summary>
+    /// Unity Update method. Handles wand animation state.
+    /// </summary>
     private void Update()
     {
-
         // Handles wand animations.
         if (wandAnimator.GetBool("Charge"))
         {
@@ -143,9 +209,9 @@ public class Casting : MonoBehaviour
         }
     }
 
+    // Handles wand animation timing for removing charge visual.
     private IEnumerator RemoveWand()
     {
-        // Times wand animation.
         yield return new WaitForSeconds(0.5f);
         wandAnimator.SetBool("Charge", false);
     }
@@ -163,7 +229,7 @@ public class Casting : MonoBehaviour
             wandAnimator.SetBool("CanCast", true);
             manaScript.SubtractMana(manaCost);
             CombatManager.InstantiateSpell(newSpell, gameObject, castpoint.position, Quaternion.Euler(0, 0, 0));
-            //clear chargetuple and according ui
+            // Clear charge tuple and corresponding UI
             ClearCharges();
             UIManager.Instance.ClearChargeSprites();
             manaScript.justCasted = true;
@@ -176,13 +242,16 @@ public class Casting : MonoBehaviour
         StartCoroutine(StopCastAnimation());
     }
 
+    // Handles wand animation timing for casting.
     private IEnumerator StopCastAnimation()
     {
-        // Times wand animation.
         yield return new WaitForSeconds(0.75f);
         wandAnimator.SetBool("RaiseWand", false);
     }
 
+    /// <summary>
+    /// Clears all current charges and updates the UI.
+    /// </summary>
     public void ClearCharges()
     {
         wandAnimator.SetBool("Charge", true);

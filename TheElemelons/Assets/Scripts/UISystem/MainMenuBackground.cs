@@ -1,24 +1,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the animated background for the main menu, including the witch and magic circle.
+/// Responds to mouse movement and button positions to create a dynamic parallax effect.
+/// </summary>
 public class MainMenuBackground : MonoBehaviour
 {
+    /// <summary>
+    /// Reference to the witch's RectTransform.
+    /// </summary>
     RectTransform witch;
+
+    /// <summary>
+    /// The anchor (original) position of the witch.
+    /// </summary>
     Vector3 witchAnchor;
+
+    /// <summary>
+    /// Reference to the magic circle's RectTransform.
+    /// </summary>
     RectTransform magicCircle;
+
+    /// <summary>
+    /// The anchor (original) position of the magic circle.
+    /// </summary>
     Vector3 magicCircleAnchor;
+
+    /// <summary>
+    /// List of button transforms in the main menu.
+    /// </summary>
     List<Transform> buttons;
+
+    /// <summary>
+    /// Current mouse position in world coordinates.
+    /// </summary>
     Vector3 mousePos;
+
+    /// <summary>
+    /// Reference to the main camera.
+    /// </summary>
     Camera mainCamera;
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Unity Start method. Initializes references and anchor positions.
+    /// </summary>
     void Start()
     {
         Initialize();
     }
+
+    /// <summary>
+    /// Updates the mouse position in world coordinates.
+    /// </summary>
     void GetMousePos()
     {
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
+
+    /// <summary>
+    /// Initializes references to UI elements, anchor positions, and button list.
+    /// </summary>
     void Initialize()
     {
         witch = transform.GetChild(2).GetComponent<RectTransform>();
@@ -37,16 +79,34 @@ public class MainMenuBackground : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Unity FixedUpdate method. Updates mouse position and animates the background.
+    /// </summary>
     void FixedUpdate()
     {
         GetMousePos();
         MoveBackground();
     }
+
+    /// <summary>
+    /// Smoothly maps a value x to a range [min, max] using an arctangent function.
+    /// </summary>
+    /// <param name="x">Input value.</param>
+    /// <param name="min">Minimum output value.</param>
+    /// <param name="max">Maximum output value.</param>
+    /// <returns>Mapped value between min and max.</returns>
     float f(float x, float min, float max)
     {
         return (Mathf.Atan(x) * (2 / Mathf.PI) * ((max - min) / 2)) + min;
     }
+
+    /// <summary>
+    /// Smoothly interpolates between previous and next values, limited by speed.
+    /// </summary>
+    /// <param name="previous">Previous value.</param>
+    /// <param name="next">Target value.</param>
+    /// <param name="speed">Maximum change per second.</param>
+    /// <returns>New interpolated value.</returns>
     float changeSpeed(float previous, float next, float speed)
     {
         float diff = next - previous;
@@ -57,6 +117,11 @@ public class MainMenuBackground : MonoBehaviour
         }
         return previous + diff;
     }
+
+    /// <summary>
+    /// Animates the witch and magic circle based on mouse position and button locations.
+    /// Creates a parallax and scaling effect for the main menu background.
+    /// </summary>
     void MoveBackground()
     {
         Vector3 moveFactor = new Vector3(300f, -200f, 0);

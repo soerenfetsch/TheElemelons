@@ -1,26 +1,43 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+
 /// <summary>
-/// Dash inherits from SpellEffect
-/// Player is propelled in direction he was facing for given time
-/// cant input movement while dash is active
+/// Dash inherits from SpellEffect.
+/// Player is propelled in the direction they were facing for a given time.
+/// Player cannot input movement while dash is active.
 /// </summary>
 public class Dash : SpellEffect
 {
-    public float dashTime = 0.3f;
-    public float dashDistance = 5f;
-    float dashSpeed;
-    PlayerMovement playerMovement;
-    Rigidbody2D playerRigidBody;
-    InputManager inputManager;
-    Transform playerTransform;
-    GameObject player;
-    Animator animator;
-    Vector2 move;
     /// <summary>
-    /// initialize spelltype (notype, wind), Start dodash coroutine
+    /// Duration of the dash in seconds.
+    /// </summary>
+    public float dashTime = 0.3f;
+
+    /// <summary>
+    /// Distance to dash in world units.
+    /// </summary>
+    public float dashDistance = 5f;
+
+    // Calculated dash speed based on distance and time.
+    float dashSpeed;
+
+    // Reference to the player's movement script.
+    PlayerMovement playerMovement;
+    // Reference to the player's Rigidbody2D.
+    Rigidbody2D playerRigidBody;
+    // Reference to the player's input manager.
+    InputManager inputManager;
+    // Reference to the player's transform.
+    Transform playerTransform;
+    // Reference to the player GameObject.
+    GameObject player;
+    // Reference to the dash animator.
+    Animator animator;
+    // Direction vector for the dash.
+    Vector2 move;
+
+    /// <summary>
+    /// Initializes spell type (notype, wind) and starts the dash coroutine.
     /// </summary>
     void Start()
     {
@@ -34,26 +51,29 @@ public class Dash : SpellEffect
         animator = gameObject.GetComponent<Animator>();
         StartCoroutine(DoDash());
     }
+
     /// <summary>
-    /// lock movement inputs for player, compute dash movement vector, pass values to dash animator, wait out dashtime
-    /// then destroy gameobject
+    /// Locks movement inputs for the player, computes dash movement vector, passes values to dash animator, waits out dash time,
+    /// then destroys the dash GameObject.
     /// </summary>
     IEnumerator DoDash()
     {   
-        //playerMovement.SetMovement(new Vector2(0,0));
+        // Optionally reset movement: playerMovement.SetMovement(new Vector2(0,0));
         inputManager.canMove = false;
         move = new Vector2(player.GetComponent<Animator>().GetFloat("Horizontal"), player.GetComponent<Animator>().GetFloat("Vertical"));
         animator.SetFloat("Horizontal", move.x);
         animator.SetFloat("Vertical", move.y);
         move.Normalize();
-        Physics2D.IgnoreLayerCollision(3,8);
+        Physics2D.IgnoreLayerCollision(3, 8);
         yield return new WaitForSeconds(dashTime);
-        Physics2D.IgnoreLayerCollision(3,8,false);
+        Physics2D.IgnoreLayerCollision(3, 8, false);
         inputManager.canMove = true;
         Destroy(gameObject);
     }
+
     /// <summary>
-    /// move player in given direction (calculated in dodash) and given speed, update dash gameobject position for the animation
+    /// Moves the player in the given direction (calculated in DoDash) and at the given speed.
+    /// Updates dash GameObject position for the animation.
     /// </summary>
     void FixedUpdate()
     {
