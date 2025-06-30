@@ -82,6 +82,8 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         HandleGlobalInputs(); // Seperate global inputs from state specific inputs
+        HandleCameraInputs(); // Camera inputs are always handled
+        
         if (!canInput) return;
 
         switch (currentGameState)
@@ -171,7 +173,6 @@ public class InputManager : MonoBehaviour
             HandleSpellCastingInputs();
             HandleInteractionInputs();
         }
-        HandleCameraInputs();
     }
 
     /// <summary>

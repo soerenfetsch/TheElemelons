@@ -174,7 +174,6 @@ public class DialogueUI : MonoBehaviour
             else
             {
                 sceneImageDisplay.gameObject.SetActive(false);
-                Debug.LogWarning("[DialogueUI] SceneImage type line has no scene images or first image is null.");
             }
         }
         isTyping = false;
