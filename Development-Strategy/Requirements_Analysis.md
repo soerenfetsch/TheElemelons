@@ -144,11 +144,11 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.2.6 Monster Manager
 
-- **Manage monsters** Keep references of all monsters in the dungeon
+- **Manage monsters** Keep references of all monsters in the dungeon. Close and open doors depending on where the player and monsters are
 - **Spawn Monsters**: Given the monster spawn points with monster names of the map data, instantiate the respective monster prefabs with health = max health and mana = max mana, and initialize pathfinding and other dependencies on the player. Save references to the monsters, so the manager knows when all are defeated.
 - **On all monsters defeated**: Emits an event once all the monsters of the dungeon are cleared/defeated, this can be used by the **Main Game** to progress the game.
 
-#### 2.2.7 Shrines:
+#### 2.2.7 Altars:
 
 - **Types**: Shrine can be golden or not, and can either contain blood or a pink fluid.
   - Case golden and blood: Spawns a golden collectable heart that increases the player’s max health by 1 on interact.
@@ -208,7 +208,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.3.5 Tiki (Enemy)
 
-- Act on status:
+- **Act on status**:
   - while status 'idle': If player moves into chase radius then status is updated to 'walk',
   - while status ‘walk': tiki pathfinds to player until he reaches his attack range and status is updated to 'circle’
   - while status ‘circle': the tiki circles around the player at a given radius. If the tiki hits a wall, he changes direction. In order to avoid getting stuck, the circling range is varied randomly at each collision. after a given number of wall collisions, he switches back into ‘walk’.  If there is an enemy nearby that is low on health, tiki will update status to 'heal’. This is not possible if the head is detached.
@@ -216,7 +216,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - Animations should reflect whether tiki is walking or idle.
 - if the tikis health is below 50%, its movespeed increases by x1.5
 - Get Damage: The tikis head is invincible. The body is vulnerable. Killing the body will make the head disappear. The body is much more resistant when attached to the head.
-- Attack: After circling the player for a certain time, the tikis head will start spinning and detach from the body to attack the player, then reattach to the body. The head cannot receive damage. If the distance and the tiki is shorter than the tikis range and the head is attached, the tiki will shoot the player with a weak spell.
+- **Attack**: After circling the player for a certain time, the tikis head will start spinning and detach from the body to attack the player, then reattach to the body. The head cannot receive damage. If the distance and the tiki is shorter than the tikis range and the head is attached, the tiki will shoot the player with a weak spell.
 - Act on health: If the tiki’s health is below 25% health  and the player is out of range for a flying head attack, tiki will shoot its spell in all directions.
 - Change state: Given the new state, check if state is possible (possibleStates in Tiki) and then change the state to the new state if the new state is possible for Tiki
 - Check health status: If health is zero, the Tiki Dies and triggers the death animation
@@ -307,23 +307,31 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Apply Buff or Debuff**: Start a timer of given length to apply the buff or debuff during the timer to any buffable object (Enemy or Player) and execute the effects. Then if the target of the buff/debuff is the player, delegate the UI Manager to create the buff/debuff effect in the UI, buffs and debuffs should have a name and a stackable attribute whether they can stack. If the buff/debuff is stackable a buffable object can have unlimited buffs/debuffs of the same name, if not only one of the name should be applied and if another is attempted to be applied, nothing happens.
 - The different buffs are:
     - Speed buff: Player or Enemy have increased movement speed during the application
-    - Damage buff: Player or Enemy have increased damage (using a damage factor)
+    - Strength buff: Player or Enemy have increased damage (using a damage factor)
     - Defense buff: Player or Enemy have increased defense (using a defense factor)
     - Mana regen buff: Player of Enemy have increased mana regen
+    - Hidden: Buff that can only apply to the player. While this buff is active, the enemies cannot see the player and will walk around randomly.
  - The different debuffs are:
     - Slowness debuff: Player or Enemy have decreased movement speed during the application
     - Weakness debuff: Player or Enemy have decreased damage (using a damage factor)
     - Fragility debuff: Player or Enemy have decreased defense (using a defense factor)
     - Mana regen debuff: Player of Enemy have decreased mana regen
+    - Freeze: Freezes the target into an ice crystal. While this debuff is active, the target cannot move, interact or attack.
+    - Petrified: Turns the target into stone. While this debuff is active, the target cannot move, interact or attack.
+    - Confused: Debuff that can only apply to enemies. While this debuff is active, the target walks around randomly.
   - Each buff has an associated duration and an effect factor, for the duration of the effect the respective attribute (movement speed, damage, etc.) is multiplied (buff) or divided (debuff) by the given factor (factors stack, i.e if two buffs with factor 2 are applied, the resulting factor is 4)
   - **Speed Buff** additional animations: If the speed buff is applied to the player, the UI Manager should continuously update the speed buff animation which shows dust particles in the opposite direction of the movement during the duration of the speed buff (see update and start speed buff animation in the UI Manager)
-
+- **Freeze** additional animations: Ice crystal appears around target while debuff active
+- **Confused** additional animation: question mark above target's head while debuff active
+- **Petrified** additional animation for player: Target turned into stone while debuff active
+- **Defense Buff** additional animation for player: Target covered in dirt/mud while buff active 
 #### 2.4.3 Health
 
 - **Subtract Health**: subtracts a floating input from the total health, if health drop below zero, health is set to zero
 - **Add health**: adds a floating input to the total health, if health gets higher than max health, health is set to max health
 - **Get health**: Returns the current total health value
 - **Is zero**: Returns true if the current health is zero, false otherwise
+- **Set new max health**: sets a new max health, should be positive interger
 
 #### 2.4.4 Mana
 
@@ -331,6 +339,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **Add mana**: adds a floating input to the total mana, if mana gets higher than max mana, mana is set to max mana
 - **Get mana**: Returns the current total mana value
 - **Is zero**: Returns true if the current mana is zero, false otherwise
+- - **Set new max mana**: sets a new max mana, should be positive interger
 
 ### 2.4.5 Collectables
 
@@ -379,7 +388,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 - **In CASTLE_INTRODUCTION**:
   - Scene: Castle Hub Scene
-  - Starts with a cut scene dialog of the witch where she laughs about having stolen the elemelons.
+  - Starts with a cut scene slide show dialog explaining what elemelons are and that the witch stole them
   - Then, cuts to a cut scene dialog of the king where he finds that his four elemelons have been stolen.
   - Then, the game is set to ingame and the player is spawned in the castle hub.
   - The king has a special dialogue, telling the player who the evil witch is, that the player witch has to save him and retrieve the elemelons. The king also tells the player that for the first dungeon she will have to travel to an earth dungeon to get the first earth elemelon back.
