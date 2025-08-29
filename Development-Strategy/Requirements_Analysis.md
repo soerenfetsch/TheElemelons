@@ -389,21 +389,21 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **In CASTLE_INTRODUCTION**:
   - Scene: Castle Hub Scene
   - Starts with a cut scene slide show dialog explaining what elemelons are and that the witch stole them
-  - Then, cuts to a cut scene dialog of the king where he finds that his four elemelons have been stolen.
-  - Then, the game is set to ingame and the player is spawned in the castle hub.
+  - Then, the game is set to ingame and the player is spawned in the castle hub. The controls are explained to him via tooltips. He has to talk to the king.
   - The king has a special dialogue, telling the player who the evil witch is, that the player witch has to save him and retrieve the elemelons. The king also tells the player that for the first dungeon she will have to travel to an earth dungeon to get the first earth elemelon back.
-  - After that dialogue has concluded, the game progresses to stage CASTLE_EARLY.
+  - The king asks the player to kill a monster in his bedroom. 
+  - After this task is done and the player talks to the king again, the way towards the dungeon is unlocked and the game progresses to stage CASTLE_EARLY.
  
 - **In CASTLE_EARLY**:
   - Scene: Castle Hub Scene
   - The king now has three repetitive dialogues where he greets the player, tells the player not to trust the evil witch, and that he counts on the player.
-  - When the player enters the earth door portal (door to the first dungeon), the game progresses to the stage EARTH_EARLY.
+  - When the player enters the earth dungeon portal, the game progresses to the stage EARTH_EARLY.
  
 - **In EARTH_EARLY**:
   - Scene: Earth Dungeon Scene
-  - The earth dungeon is generated and populated with monsters (TreeStump, Mole, Tiki, SpearShieldsMan).
-  - In the last room of the dungeon (denoted by Room Type END), there is a door to the boss room, which is unlocked if the last normal monster is beaten (**Monster Manager** should have an event to trigger this).
-  - If the player enters the boss room door, they are teleported to the boss room where the evil witch is waiting with the earth elemelon sitting on a shrine.
+  - The earth dungeon is generated and populated with monsters (TreeStump, Mole, Tiki, SpearShieldsMan, Snek).
+  - In the last room of the dungeon (denoted by Room Type END), there is a portal to the boss room, which is unlocked if the last normal monster is beaten (**Monster Manager** should have an event to trigger this).
+  - If the player enters the boss room portal, they are teleported to the boss room where the evil witch is waiting with the earth elemelon sitting on a shrine.
   - Once the player has beaten the evil witch in the boss fight, the game progresses to stage CASTLE_END.
   - If the player dies during the dungeon playthrough, the game progression stage is reset to CASTLE_EARLY and the **Game Manager** is instructed to execute the player death screen.
  
@@ -482,7 +482,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 #### 2.6.8 Bossbar:
 
 - Given an attached healthscript, visualizes how much health compared to maxhealth the enemy/player etc of the script has.
-
+-**Update** Updates how much health is shown according to the attached health script
 ### 2.7 Interaction and Dialogue System
 
 #### 2.7.1 Dialogue Manager
@@ -555,7 +555,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ## 4. Assumptions and Dependencies
 - The game will be developed using **Unity version 2022.3.50f1**.
-- The project will utilize **Pixelart** for creating 2D assets and animations for the visuals.
+- The project will primarily utilize **pixelart visuals** for 2D assets and animations.
 - The game will primarily target **Windows** operating systems.
 - Development tools like **Git** for version control, **Trello** for task management, and **Lucidchart** for diagram creation will be used to ensure efficient project tracking and collaboration.
 
@@ -568,7 +568,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 5. **Entering an Elemental Dungeon**
 6. **Navigating Dungeon and Hazards**
 7. **Combat with Elemental Enemies**
-8. **Elemental Final Dungeon Boss Battle**
+8. **Elemental Dungeon Boss Battle**
 9. **Collecting the Elemental Elemelon and Returning to the King**
 10. **Redoing the Dungeon**
 
@@ -601,7 +601,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - **In-Game HUD**: Displays health, mana, and elemental slots.
 - **Pause Menu**: Access to settings, grimoire, and quit.
 - **Settings Menu**: Adjust sound, controls, and visual effects.
-- **Grimoire (Spellbook)**: Review spell combinations and effects.
 - **Interaction with King**: Dialogue with king when returning Elemelons.
 
 ## 7. Glossary
