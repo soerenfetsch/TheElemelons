@@ -3,7 +3,7 @@
 ## 1. Introduction
 
 ### 1.1 Purpose of the System
-*The Elemelons* is a 2D dungeon crawler game where players explore elemental-themed dungeons, battle enemies, and retrieve magical artifacts called Elemelons. The goal is to restore balance to the kingdom by collecting all four Elemelons. The game emphasizes exploration, puzzle-solving, and tactical combat, providing players with an engaging fantasy experience.
+*The Elemelons* is a 2D dungeon crawler game where players explore elemental-themed dungeons, battle enemies, and retrieve magical artifacts called Elemelons. The goal is to restore balance to the kingdom by collecting all four Elemelons. The game emphasizes exploration, and tactical combat, providing players with an engaging fantasy experience.
 
 ### 1.2 Scope of the System
 The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, and pixel art. The target audience includes players aged 12 and above. *The Elemelons* will be developed for the PC platform using Unity version 2022.3.50f1.
@@ -13,18 +13,16 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 - Implement a tactical combat system that emphasizes spell-casting and resource management.
 - Develop procedurally generated dungeons to ensure replayability.
 - Deliver a polished visual experience with 2D pixel art and fluid animations.
-- Create engaging puzzles that require players to combine elemental abilities.
 
 ### 1.4 Definitions, Acronyms, and Abbreviations
 - **Player**: The main character controlled by the user, capable of casting spells and navigating dungeons.
 - **Spell**: A magical ability created by combining elemental powers, used for combat or interacting with the environment.
 - **Elements**: Basic building blocks for spells; includes Fire, Water, Earth, and Wind.
 - **Enemy**: Non-playable characters that oppose the player, often with elemental strength.
-- **Boss**: A powerful enemy encountered at the end of each dungeon, representing the dungeon's element and guarding an Elemelon.
-- **Dungeons**: Procedurally generated environments where the player encounters enemies, solves puzzles, and collects items.
+- **Boss**: A powerful enemy encountered at the end of a dungeon, representing the dungeon's element and guarding an Elemelon.
+- **Dungeons**: Procedurally generated environments where the player encounters enemies and collects items.
 - **NPC (Non-Player Character)**: Characters like the King who interact with the player but are not controlled by the player.
-- **Traps**:Environmental hazards that harm or hinder the player, such as spikes or fire pits.
-- **Shrine**: An object found in dungeons that restores the player's health when interacted with.
+- **Altar**: An object found in dungeons that restores the player's health, increases his maximal health or mana, or grants a random buff when interacted with.
 - **Health**: A resource representing the player's life, displayed as hearts in the HUD.
 
 ## 2. Functional Requirements
@@ -68,15 +66,20 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - Use the combat manager to instantiate the spell game object
  
   - With no charges selected: cast a basic attack spell that is stationary at the casting point. It lingers at the point for a small time (variable to be changed ~ 1 sec) and if it collides with an enemy, deals a small amount of damage (variable to be changed ~ 0.5 hearts)
+  - With fire, none: A floating, harmless flame appears that floats around and follows the player. Serves to illuminate darkness.
   - With fire, fire selected: casts a fireball that first charges up for a short while (< 1 second) and then flies into the given direction and has a longer spell lifetime (variable to be changed ~ 3 sec), explodes on impact (wall, enemy) and deals large amount of damage (variable to be changed ~ 2 hearts) in an AOE where the radius of effect is an edittable variable ~ 1.5 tiles
-  - With wind, none selected: casts a speed buff spell that boosts the movement speed of the player by a factor (variable between 1 and 2) for a variable amount of time (3-30 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the speed buff animation as long as the buff is applied (see Buff/Debuff Manager for details)
+  - With wind, Wind selected: casts a speed buff spell that boosts the movement speed of the player by a factor (variable between 1 and 2) for a longer  time (~30 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the speed buff animation as long as the buff is applied (see Buff/Debuff Manager for details). The buff should not be stackable.
   - With fire, earth: cast stationary bomb that triggers an AOE explosion after ~3 seconds, damaging all non-staggered enemies in its range
-  - With fire, wind: cast a fast fire tornado that deals small damage when it collides with enemies. Bounces off walls and can also randomly change its propagation direction. Expires after medium time ~5s
+  - With fire, wind: cast a fast fire tornado that deals small damage when it collides with enemies. Bounces off walls. Expires after medium time ~5s
   - With earth, wind: cast a circle of 6 shards that rotate around the player and individually break at impact with enemy and deal minor damage (~0.5hearts). If any shards are left at end of spell lifetime (~10s), they break
-  - With water, earth: For some time (positive integer can be altered ~5s) the player leaves behind small puddles of a given radius (positive integer can be altered ~1.5 units) in which Enemies that touch the puddle get a slowness buff (slowness factor can be altered ~0.3 and effect time very short ~ 1s) that is not stackable but gets reapplied as long as the Enemy touches the puddle. Debuff handling should be done in the BuffDebuff-Manager, the puddle should have a sprite that shows a muddy puddle.
-  - With earth, earth: Raises a wall at an variable distance (~ 1-2 units) in the direction from the player to the place where the user is pointing (with the mouse). The wall is ~0.5 units wide and should have a collider that blocks all Enemies and spells. The flat part of the wall is facing the player.
-  - With earth, none selected: casts a defense buff spell that boosts the defense factor of the player by a factor (variable between 1 and 2) for a variable amount of time (3-30 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the earth defense animation as long as the buff is applied (see Buff/Debuff Manager for details). The eath defense animation should show an earth layer that encompasses the player sprite
-  - With wind, wind: Player dashes forward an variable distance (~5 units) in the direction from the player to the place where the user is pointing (with the mouse). Should show a dash animation with trails behind the moving player sprite. If the player collides with a collider during the dash, the dash is stopped.
+  - With water, earth: For some time (positive integer can be altered ~6s) the player leaves behind small puddles of a given radius (positive integer can be altered ~1.5 units) in which Enemies that touch the puddle get a slowness debuff (slowness factor can be altered ~0.3 and effect time very short ~ 1s) that is not stackable but gets reapplied as long as the Enemy touches the puddle. Debuff handling should be done in the BuffDebuff-Manager, the puddle should have a sprite that shows a muddy puddle.
+  - With earth, earth: Raises a solid wall at an variable distance (~ 1-2 units) in the direction from the player to the place where the user is pointing (with the mouse). The wall is ~0.5 units wide and should have a collider that blocks all Enemies and spells. The flat part of the wall is approximately facing the player. Should disappear after around 7s.
+  - With earth, none selected: casts a defense buff spell that boosts the defense factor of the player by a factor (variable between 1 and 2) for a longer time (~20 sec). Should delegate the buff creation to the Buff/Debuff Manager which in return delegates the icon creation and display to the UI Manager. The Buff/Debuff Manager should start the earth defense animation as long as the buff is applied (see Buff/Debuff Manager for details). The eath defense animation should show an earth layer that encompasses the player sprite. Player cannot move while the earth layer appearance animation is playing.
+  - With wind, none: Player dashes forward an variable distance (~5 units) in the direction from the player to the place where the user is pointing (with the mouse). Should show a dash animation with trails behind the moving player sprite. If the player collides with a collider during the dash, the dash is stopped.
+  - With water, none: water splash cleanses player of all buffs and debuffs instantly with a small animation that takes around 1 sec. Player cannot move during animation.
+  - With water, water: a large (~3x5 units) tsunami wave is cast in the direction the player is aiming. The wavefront deals medium damage (~1.5 hearts). The wave disappears after around 2 secs.
+  - With water, wind: A blizzard cloud that wobbles around randomly appears. Enemies that come in contact with it are frozen into ice crystals froma short time (2s) and cannot perform any kind of action while frozen. Diffuses after around 7 s.
+  - With water, fire: A large (~8x8 units) cloud of water vapour appears. The player is hidden from enemies while inside the cloud and the enemies cannot locate the player while inside the cloud unless extremely close (~1 unit). Diffuses after around 13 s.
  
 #### 2.1.4 Input Manager
 
@@ -99,7 +102,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 #### 2.2.2 Map Generator (abstract)
 
-- **Generate Map**: Given a start point create all data necessary for the map data and return a MapData object. Should create floor, wall, deco, monster spawn point, door, shrine and trap positions as well as the different rooms
+- **Generate Map**: Given a start point create all data necessary for the map data and return a MapData object. Should create floor, wall, monster spawn point, door, altar, darkness (for darkened rooms) positions as well as the different rooms
   - should call abstract methods for all the map positions which can later be implemented in the concrete map generators
   - positions should be saved in hash set objects
  
@@ -115,7 +118,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
   - Given room positions and corridor positions the door position is in the middle of the corridor adjacent to a room
 - **Create monster spawnpoints**: For each room have a different pool of possible monsters depending on whether the room is of type NORMAL or ADVANCED, the ADVANCED rooms should have harder monsters. In each room select a random number of 0-5 floor positions, where the specific monster that is supposed to spawn there is denoted. The spawn positions have to be unique.
 - **Create decoration positions**: Randomly select positions on the floor and wall to place decorations (solid and not solid)
-- **Create shrine positions**: With a variable probability between 0 and 40% for each room that is of type NORMAL or ADVANCED, spawn a shrine in the room at a random viable position if one is found. A position is viable if it is 3 tiles away from any wall and has a 3x3 field for the shrine without any monster positions.
+- **Create altar positions**: With a variable probability between 0 and 40% for each room that is of type NORMAL or ADVANCED, spawn a shrine in the room at a random viable position if one is found. A position is viable if it is 3 tiles away from any wall and has a 3x3 field for the shrine without any monster positions.
 - **Spawn Altars**: Given the shrine spawn points, instantiate altars at the given position.
 - **Create dark rooms**: With a variable probability between 0 and 20% for each room that is of type NORMAL or ADVANCED, select rooms to be a dark room in which the player cannot see anything except darkness. The only way for the player to see, is to spawn the fire light around him using the according spell.
 
@@ -159,7 +162,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 #### 2.2.8 Dark Rooms:
 
 - **Shroud in Darkness**: The player should not be able to see anything except darkness inside a dark room, monsters and tiles are hidden like a dark filter above the room.
-- **Allow light**: Using the fire light spell, the player has to be able to light a dark room around the circular light cone which exposes the actual contents of the room.
+- **Allow light**: Using the fire none spell, the player has to be able to light a dark room around the circular light cone which exposes the actual contents of the room. Other fire based spells also create some light, but aren't very suited for illumination as they're are short lived or produce little light.
 
 ### 2.3 Enemy System
 
