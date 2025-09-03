@@ -539,7 +539,7 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 ### 3.4 User Interface and Experience
 - The **user interface** must be intuitive and accessible, with clear indicators for health, mana, and player objectives.
 - **Visual effects** for spells, damage, and status changes must be designed to provide immediate feedback to the player, enhancing engagement.
-- The game must support **keyboard and controller** inputs, allowing players to choose their preferred control method.
+- The game must support **keyboard** inputs, allowing players to choose their preferred control method.
 
 ### 3.5 Resource Management
 - **Memory usage** must be optimized to ensure stable performance, especially during dungeon generation and combat sequences.
