@@ -543,7 +543,6 @@ The game targets casual to midcore players who enjoy fantasy, dungeon crawlers, 
 
 ### 3.5 Resource Management
 - **Memory usage** must be optimized to ensure stable performance, especially during dungeon generation and combat sequences.
-- **Audio and visual assets** must be loaded dynamically to minimize initial load times and ensure smooth transitions between scenes.
 
 ### 3.6 Coding Standards
 - For our code we follow the standard C# coding guidelines for .NET development (https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
