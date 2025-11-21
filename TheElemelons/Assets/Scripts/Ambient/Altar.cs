@@ -167,11 +167,13 @@ public class Altar : InteractableObject
     // Randomly determines if the altar is golden or contains blood based on probabilities.
     private void InitializeRandomProperties()
     {
-        if (Random.Range(0f, 1f) < goldChance)
+        float goldDice = Random.Range(0f, 1f);
+        float bloodDice = Random.Range(0f, 1f);
+        if (goldDice < goldChance)
         {
             gold = true;
         }
-        if (Random.Range(0f, 1f) < bloodChance)
+        if (bloodDice < bloodChance)
         {
             blood = true;
         }
