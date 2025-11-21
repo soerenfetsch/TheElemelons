@@ -54,7 +54,7 @@ public class BipartitioningMapGenerator : AbstractMapGenerator
     /// <summary>
     /// Probability that a room will contain a shrine.
     /// </summary>
-    public float roomShrineProbability = 0.2f;
+    public float roomShrineProbability = 0.3f;
 
     /// <summary>
     /// Prefab for shrine objects.

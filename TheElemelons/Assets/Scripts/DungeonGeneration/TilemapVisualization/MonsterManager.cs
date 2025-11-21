@@ -213,8 +213,8 @@ public class MonsterManager : MonoBehaviour
                 {
                     earthDungeonTileVizualizer.PaintOpenDoor(door, GetDoorDir(room, door), room);
                 }
+                room.areDoorsOpen = true;
             }
-            room.areDoorsOpen = true;
         }
         else
         {
@@ -223,8 +223,26 @@ public class MonsterManager : MonoBehaviour
                 // Close doors
                 StartCoroutine(CloseDoors(room));
             }
-            room.areDoorsOpen = false;
         }
+    }
+
+    private Room GetClosestRoom()
+    {
+        Room closestRoom = mapData.rooms[0];
+        float dist = Mathf.Infinity;
+        foreach (Room room in mapData.rooms)
+        {
+            List<Vector2> bounds = GetRoomBounds(room);
+            Vector2 size = bounds[1] - bounds[0];
+            Vector2 center = bounds[0] + size / 2;
+            float curdist = Vector2.Distance(center, playerTransform.position);
+            if (curdist < dist)
+            {
+                dist = curdist;
+                closestRoom = room;
+            }
+        }
+        return closestRoom;
     }
 
     /// <summary>
@@ -237,9 +255,13 @@ public class MonsterManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.3f);
         }
-        foreach (Vector2Int door in room.doorPositions)
+        if (IsInRoom(playerTransform.position, room))
         {
-            earthDungeonTileVizualizer.PaintDoor(door, GetDoorDir(room, door), room);
+            foreach (Vector2Int door in room.doorPositions)
+            {
+                earthDungeonTileVizualizer.PaintDoor(door, GetDoorDir(room, door), room);
+            }
+            room.areDoorsOpen = false;
         }
     }
 
@@ -432,7 +454,7 @@ public class MonsterManager : MonoBehaviour
             positions.Add(selectedPosition);
             possiblePositions.Remove(selectedPosition); // Remove to ensure uniqueness
         }
-        
+
         return positions;
     }
 
