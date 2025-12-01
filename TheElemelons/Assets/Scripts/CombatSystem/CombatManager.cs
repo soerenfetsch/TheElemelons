@@ -88,7 +88,7 @@ public static class CombatManager
     {
         {ElementType.Fire, new Dictionary<ElementType, float>(){
             {ElementType.Fire, 1f},
-            {ElementType.Water, 1f},
+            {ElementType.Water, 0.75f},
             {ElementType.Earth, 1.25f},
             {ElementType.Wind, 1f},
             {ElementType.None, 1f}
@@ -97,11 +97,11 @@ public static class CombatManager
             {ElementType.Fire, 1.25f},
             {ElementType.Water, 1f},
             {ElementType.Earth, 1f},
-            {ElementType.Wind, 1f},
+            {ElementType.Wind, 0.75f},
             {ElementType.None, 1f}
         }},
         {ElementType.Earth, new Dictionary<ElementType, float>(){
-            {ElementType.Fire, 1f},
+            {ElementType.Fire, 0.75f},
             {ElementType.Water, 1f},
             {ElementType.Earth, 1f},
             {ElementType.Wind, 1.25f},
@@ -110,7 +110,7 @@ public static class CombatManager
         {ElementType.Wind, new Dictionary<ElementType, float>(){
             {ElementType.Fire, 1f},
             {ElementType.Water, 1.25f},
-            {ElementType.Earth, 1f},
+            {ElementType.Earth, 0.75f},
             {ElementType.Wind, 1f},
             {ElementType.None, 1f}
         }},

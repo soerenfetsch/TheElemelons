@@ -108,6 +108,7 @@ public class Fireball : SpellEffect
         transform.rotation = castPoint.rotation;
         GetComponent<SpriteRenderer>().flipX = true;
         GetComponent<SpriteRenderer>().flipY = true;
+        boxCollider2D.enabled = false;
 
         StartCoroutine(Expire());
         StartCoroutine(StartFocus());
@@ -133,6 +134,7 @@ public class Fireball : SpellEffect
         yield return new WaitForSeconds(focusTime);
         currentState = FireballState.propagating;
         animator.SetTrigger("fly");
+        boxCollider2D.enabled = true;
     }
 
     /// <summary>
